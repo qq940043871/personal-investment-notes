@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-把工作区根目录下 13 份「八股文 / 面试题深度整理」合并为一个单文件「面试背诵集合」HTML。
+把仓库 banks/ 下 13 份「八股文 / 面试题深度整理」合并为一个单文件「面试背诵集合」HTML。
 暗色 Ocean Gradient 风格，内联 CSS/JS，无外部依赖。
 """
 import re
@@ -8,7 +8,7 @@ import json
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BANKS = os.path.join(ROOT, "it", "interview-kit", "banks")
+BANKS = os.path.join(ROOT, "banks")
 OUT = os.path.join(BANKS, "面试背诵集合.html")
 
 # ---------------------------------------------------------------

@@ -6,4 +6,4 @@
 - `pages/home.html` — 简历
 - `pages/work-experience/` — 各项目实战经验文档(AI 服务、B2B、电商、区块链、视频监控、清算平台等)
 
-面试题库见仓库根 `banks/`(含 `banks/face-exp/` 架构师真题)。
+面试题库见仓库根 `banks/`(含 `banks/面试真题/` 架构师真题)。

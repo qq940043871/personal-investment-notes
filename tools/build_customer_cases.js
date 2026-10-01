@@ -1,4 +1,5 @@
-const pptxgen = require("C:/Users/qq940/.workbuddy/binaries/node/workspace/node_modules/pptxgenjs");
+const path = require("path");
+const pptxgen = require("pptxgenjs");
 
 const pres = new pptxgen();
 pres.layout = "LAYOUT_WIDE"; // 13.33 x 7.5
@@ -250,6 +251,6 @@ groups.forEach((g, gi) => {
   });
 })();
 
-pres.writeFile({ fileName: "D:/ai_show/hello_my_boy/B2B产品服务客户案例.pptx" }).then((f) => {
+pres.writeFile({ fileName: path.resolve(__dirname, "../cases/customer-cases/B2B产品服务客户案例.pptx") }).then((f) => {
   console.log("SAVED:", f);
 });

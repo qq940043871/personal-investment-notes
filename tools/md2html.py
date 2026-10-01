@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""interview-kit/banks 题库 Markdown → 单文件 HTML 通用渲染器。
+"""banks/ 题库 Markdown → 单文件 HTML 通用渲染器。
 
 用法：
     python md2html.py                 # 按 TOPICS 渲染 banks/ 下全部已配置主题
@@ -15,7 +15,7 @@ import io
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BANKS = os.path.join(ROOT, "it", "interview-kit", "banks")
+BANKS = os.path.join(ROOT, "banks")
 
 # 各题库配色（brand / brand2 / hero 渐变起止），未登记文件用 DEFAULT
 DEFAULT = {"brand": "#2563eb", "brand2": "#1d4ed8", "hero1": "#1e3a8a", "hero2": "#2563eb", "hero3": "#1d4ed8",

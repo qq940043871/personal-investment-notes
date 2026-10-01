@@ -596,7 +596,7 @@ body {
 // ===================== DIRECTORY TREE DATA =====================
 const TREE = [
   {
-    name: '01-面试备战', icon: '🎯', count: 10, open: true,
+    name: '01-面试备战', icon: '🎯', count: 12, open: true,
     files: [
       '01-面试核心策略手册.md',
       '02-业务价值与客户运营.md',
@@ -607,6 +607,8 @@ const TREE = [
       '07-面试问答与话术实战.md',
       '08-国企面试焦点分析.md',
       '09-简历与自我介绍脚本.md',
+      '10-背诵版-产品与个人综合手册.md',
+      '背诵版-手机版.html',
       'B2B技术经理简历PPT.pptx'
     ]
   },
@@ -672,18 +674,11 @@ const TREE = [
       '模拟面试方案合集(01-04).md',
       '模拟面试流程与提示词手册.md'
     ]
-  },
-  {
-    name: '脚本', icon: '📜', count: 2,
-    files: [
-      'build_ppt.js',
-      'build_ppt_biz.js'
-    ]
   }
 ];
 
 // Root-level files
-const ROOT_FILES = ['文章总结_全目录概览.md'];
+const ROOT_FILES = ['00-全目录概览.md'];
 
 // ===================== STATE =====================
 let currentFilePath = '';

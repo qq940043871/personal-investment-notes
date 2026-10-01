@@ -8,8 +8,12 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-SRC = r"d:/ai_show/hello_my_boy/投标技术方案/01-技术方案正文.md"
-OUT = r"d:/ai_show/hello_my_boy/投标技术方案/大宗商品交易平台投标技术方案.docx"
+import os
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+CASE_DIR = os.path.normpath(os.path.join(_HERE, "..", "cases", "bid-proposal"))
+SRC = os.path.join(CASE_DIR, "01-技术方案正文.md")
+OUT = os.path.join(CASE_DIR, "大宗商品交易平台投标技术方案.docx")
 
 doc = Document()
 

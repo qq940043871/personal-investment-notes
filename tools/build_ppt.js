@@ -783,7 +783,7 @@ pres.title = "B2B大宗贸易供应链 — 技术经理能力介绍";
 // ================================================================
 // WRITE
 // ================================================================
-const outPath = path.resolve(__dirname, "B2B技术经理-能力全景介绍.pptx");
+const outPath = path.resolve(__dirname, "../prep/06-演示材料/B2B技术经理-能力全景介绍.pptx");
 pres.writeFile({ fileName: outPath }).then(() => {
   console.log("PPT generated: " + outPath);
 }).catch(e => {

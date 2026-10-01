@@ -384,7 +384,7 @@ function lightTitle(s, t, sub) {
   s.addText("汇报人：【您的姓名】  ·  B2B 平台技术经理", { x: 0.8, y: 4.3, w: 8.4, h: 0.4, fontSize: 12, fontFace: "Arial", color: C.teal, margin: 0 });
 }
 
-const outFile = path.join(__dirname, "产品全业务链条与运营思路.pptx");
+const outFile = path.join(__dirname, "../prep/06-演示材料/产品全业务链条与运营思路.pptx");
 pres.writeFile({ fileName: outFile }).then(f => {
   console.log("✅ PPT generated:", f);
 }).catch(e => {
