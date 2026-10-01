@@ -15,7 +15,7 @@ import io
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BANKS = os.path.join(ROOT, "interview-kit", "banks")
+BANKS = os.path.join(ROOT, "it", "interview-kit", "banks")
 
 # 各题库配色（brand / brand2 / hero 渐变起止），未登记文件用 DEFAULT
 DEFAULT = {"brand": "#2563eb", "brand2": "#1d4ed8", "hero1": "#1e3a8a", "hero2": "#2563eb", "hero3": "#1d4ed8",

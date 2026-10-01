@@ -8,7 +8,7 @@ import json
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BANKS = os.path.join(ROOT, "interview-kit", "banks")
+BANKS = os.path.join(ROOT, "it", "interview-kit", "banks")
 OUT = os.path.join(BANKS, "面试背诵集合.html")
 
 # ---------------------------------------------------------------
