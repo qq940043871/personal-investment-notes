@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPT 幻灯片图片库 — 预览</title>
+<style>
+:root {
+  --bg: #f1f5f9;
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e2e8f0;
+  --text: #1a202c;
+  --text-secondary: #64748b;
+  --accent: #2563eb;
+  --accent-light: #eff6ff;
+  --card-bg: #ffffff;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  --tag-bg: #f1f5f9;
+  --divider: #e2e8f0;
+  --scrollbar: #cbd5e1;
+  --badge-png: #7c3aed;
+  --badge-jpg: #0891b2;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ======== SIDEBAR ======== */
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.sidebar-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.sidebar-header h1 {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.sidebar-header .subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.sidebar-stats {
+  display: flex;
+  gap: 6px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--sidebar-border);
+  flex-wrap: wrap;
+}
+
+.stat-chip {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--tag-bg);
+  color: var(--text-secondary);
+}
+
+.tree-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 0;
+}
+
+.tree-container::-webkit-scrollbar { width: 4px; }
+.tree-container::-webkit-scrollbar-track { background: transparent; }
+.tree-container::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 2px; }
+
+.folder { user-select: none; }
+
+.folder-header {
+  display: flex;
+  align-items: center;
+  padding: 6px 16px;
+  cursor: pointer;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.folder-header:hover { background: var(--accent-light); }
+
+.folder-arrow {
+  font-size: 10px;
+  color: var(--text-secondary);
+  width: 14px;
+  text-align: center;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.folder.open > .folder-header .folder-arrow { transform: rotate(90deg); }
+
+.folder-icon { font-size: 14px; flex-shrink: 0; }
+
+.folder-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder-count {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.folder-children { display: none; }
+.folder.open > .folder-children { display: block; }
+
+.gallery-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 18px 5px 48px;
+  cursor: pointer;
+  font-size: 13px;
+  gap: 6px;
+  color: var(--text);
+  transition: background 0.15s;
+  border-left: 3px solid transparent;
+}
+
+.gallery-item:hover { background: var(--accent-light); }
+.gallery-item.active {
+  background: var(--accent-light);
+  border-left-color: var(--accent);
+  font-weight: 500;
+}
+
+.file-type-badge {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+.file-type-badge.png { background: #ede9fe; color: #6d28d9; }
+.file-type-badge.jpg { background: #cffafe; color: #0e7490; }
+.file-type-badge.pdf { background: #fecaca; color: #b91c1c; }
+
+/* ======== MAIN ======== */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--sidebar-border);
+  gap: 12px;
+  min-height: 50px;
+}
+
+.toolbar .title {
+  font-size: 14px;
+  font-weight: 600;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toolbar .info {
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.gallery-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.gallery-area::-webkit-scrollbar { width: 6px; }
+.gallery-area::-webkit-scrollbar-track { background: transparent; }
+.gallery-area::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 3px; }
+
+/* Gallery grid */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.thumb-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: var(--card-shadow);
+  position: relative;
+}
+
+.thumb-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.thumb-card .img-wrap {
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s;
+}
+
+.thumb-card img.lazy {
+  opacity: 0;
+}
+
+.thumb-card img.loaded {
+  opacity: 1;
+}
+
+.thumb-card .label {
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+/* ======== LIGHTBOX ======== */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 9999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox.open {
+  display: flex;
+}
+
+.lightbox-header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  color: #fff;
+  font-size: 14px;
+  background: rgba(0,0,0,0.4);
+}
+
+.lightbox-counter {
+  color: rgba(255,255,255,0.8);
+}
+
+.lightbox-filename {
+  color: rgba(255,255,255,0.6);
+  font-size: 12px;
+}
+
+.lb-close {
+  width: 36px; height: 36px;
+  border: none;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.lb-close:hover { background: rgba(255,255,255,0.25); }
+
+.lightbox-img-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 80px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.lightbox-img-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+.lb-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px; height: 80px;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 28px;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lb-nav:hover { background: rgba(255,255,255,0.2); }
+.lb-nav.prev { left: 12px; border-radius: 0 8px 8px 0; }
+.lb-nav.next { right: 12px; border-radius: 8px 0 0 8px; }
+.lb-nav:disabled { opacity: 0.2; cursor: default; }
+
+.lb-thumb-strip {
+  display: flex;
+  gap: 4px;
+  padding: 8px 20px 12px;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.lb-thumb-strip::-webkit-scrollbar { height: 4px; }
+.lb-thumb-strip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+
+.lb-thumb {
+  width: 48px; height: 30px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.4;
+  border: 2px solid transparent;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+
+.lb-thumb:hover { opacity: 0.7; }
+.lb-thumb.active { opacity: 1; border-color: #fff; }
+.lb-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* ======== WELCOME ======== */
+.welcome {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 100%; text-align: center;
+  color: var(--text-secondary);
+}
+
+.welcome .icon { font-size: 56px; margin-bottom: 14px; }
+.welcome h2 { font-size: 20px; color: var(--text); margin-bottom: 8px; }
+.welcome p { font-size: 14px; line-height: 1.6; max-width: 440px; }
+
+/* Loading */
+.loading-state {
+  display: flex; align-items: center; justify-content: center;
+  height: 100%; color: var(--text-secondary); font-size: 14px; gap: 10px;
+}
+
+.spinner {
+  width: 20px; height: 20px;
+  border: 2px solid var(--sidebar-border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ======== OBSERVER notice for lazy loading ======== */
+.observer-sentinel {
+  height: 1px;
+  grid-column: 1 / -1;
+}
+</style>
+</head>
+<body>
+
+<!-- ======== SIDEBAR ======== -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h1>🎞️ PPT 幻灯片图片库</h1>
+    <div class="subtitle">数字产业链服务平台 · 多版本导出</div>
+  </div>
+
+  <div class="sidebar-stats">
+    <span class="stat-chip">🖼️ 569 张图片</span>
+    <span class="stat-chip">📄 1 个PDF</span>
+    <span class="stat-chip">📦 129 MB</span>
+  </div>
+
+  <div class="tree-container" id="treeContainer">
+    <!-- JS populated -->
+  </div>
+</aside>
+
+<!-- ======== MAIN ======== -->
+<main class="main">
+  <div class="toolbar">
+    <span class="title" id="galleryTitle">请从左侧选择图库</span>
+    <span class="info" id="galleryInfo"></span>
+  </div>
+  <div class="gallery-area" id="galleryArea">
+    <div class="welcome">
+      <div class="icon">🖼️</div>
+      <h2>PPT 幻灯片图片库</h2>
+      <p>共 569 张幻灯片截图，覆盖 8 个版本（v3/v4/v5/preview/final 等），点击左侧目录浏览各版本幻灯片。</p>
+      <p style="margin-top:8px;font-size:12px;">点击缩略图可放大查看，支持键盘 ← → 翻页</p>
+    </div>
+  </div>
+</main>
+
+<!-- ======== LIGHTBOX ======== -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-header">
+    <span class="lightbox-counter" id="lbCounter"></span>
+    <span class="lightbox-filename" id="lbFilename"></span>
+    <button class="lb-close" onclick="closeLightbox()" title="关闭 (Esc)">✕</button>
+  </div>
+
+  <button class="lb-nav prev" id="lbPrev" onclick="lightboxNav(-1)" title="上一张 (←)">‹</button>
+  <button class="lb-nav next" id="lbNext" onclick="lightboxNav(1)" title="下一张 (→)">›</button>
+
+  <div class="lightbox-img-wrap" id="lbImgWrap">
+    <img id="lbImg" src="" alt="">
+  </div>
+
+  <div class="lb-thumb-strip" id="lbThumbStrip"></div>
+</div>
+
+<script>
+// ==================== GALLERY DEFINITIONS ====================
+// Each gallery: { id, label, folder, files: [{name, path}] }
+const GALLERIES = [];
+
+// --- Helper: generate sequential file list ---
+function seq(prefix, start, end, ext, folder) {
+  const digits = String(end).length;
+  const list = [];
+  for (let i = start; i <= end; i++) {
+    const name = prefix + String(i).padStart(digits, '0') + '.' + ext;
+    list.push({ name, path: folder ? folder + '/' + name : name });
+  }
+  return list;
+}
+
+// Root: 170 slides (PNG)
+GALLERIES.push({
+  id: 'root-slides',
+  label: '幻灯片（主序列）',
+  folder: '',
+  count: 170,
+  files: seq('数字产业链服务平台_s', 1, 170, 'png', '')
+});
+
+// _analysis subdirectories (all JPG sequences)
+const ANALYSIS_DIRS = [
+  { id: 'v3',  label: 'v3（精选16页）',    count: 16 },
+  { id: 'v4',  label: 'v4（完整60页）',    count: 60 },
+  { id: 'v5',  label: 'v5（完整60页）',    count: 60 },
+  { id: 'preview',   label: 'preview（60页）',    count: 60 },
+  { id: 'preview2',  label: 'preview2（60页）',   count: 60 },
+  { id: 'final',     label: 'final（60页）',      count: 60 },
+  { id: 'final_all', label: 'final_all（60页）',  count: 60 },
+];
+
+ANALYSIS_DIRS.forEach(d => {
+  const folder = '_analysis/pptx_' + d.id;
+  // v3 has non-sequential pages
+  if (d.id === 'v3') {
+    const v3pages = [1,2,5,7,9,17,18,29,34,35,39,42,48,52,56,60];
+    GALLERIES.push({
+      id: 'analysis-v3',
+      label: 'v3（精选16页）',
+      folder,
+      count: 16,
+      files: v3pages.map(p => {
+        const name = 'p' + String(p).padStart(3, '0') + '.jpg';
+        return { name, path: folder + '/' + name };
+      })
+    });
+  } else {
+    GALLERIES.push({
+      id: 'analysis-' + d.id,
+      label: d.label,
+      folder,
+      count: 60,
+      files: seq('p', 1, 60, 'jpg', folder)
+    });
+  }
+});
+
+// _analysis scattered files
+const SCATTERED = [
+  // contact PNGs
+  ...seq('contact_', 1, 9, 'png', '_analysis'),
+  // verify JPGs
+  ...[5,19,20,29,34,48,52,54,60].map(p => ({
+    name: 'verify_p' + String(p).padStart(3, '0') + '.jpg',
+    path: '_analysis/verify_p' + String(p).padStart(3, '0') + '.jpg'
+  })),
+  // misc
+  { name: 'p019_full.jpg', path: '_analysis/p019_full.jpg' },
+  { name: 'pptx_contact.jpg', path: '_analysis/pptx_contact.jpg' },
+  { name: 'pptx_contact2.jpg', path: '_analysis/pptx_contact2.jpg' },
+  { name: 'pptx_contact4.jpg', path: '_analysis/pptx_contact4.jpg' },
+  { name: 'pptx_v5_contact.jpg', path: '_analysis/pptx_v5_contact.jpg' },
+];
+
+GALLERIES.push({
+  id: 'analysis-scattered',
+  label: '散文件（分析/验证）',
+  folder: '_analysis',
+  count: SCATTERED.length,
+  files: SCATTERED
+});
+
+// PDF (separate gallery)
+GALLERIES.push({
+  id: 'analysis-pdf',
+  label: '再现版 PDF',
+  folder: '_analysis',
+  count: 1,
+  files: [{ name: '数字产业链服务平台_再现版.pdf', path: '_analysis/数字产业链服务平台_再现版.pdf' }],
+  isBinary: true
+});
+
+// ==================== STATE ====================
+let currentGallery = null;
+let lightboxIndex = -1;
+let galleryEls = []; // {gallery, domItems: []}
+
+// ==================== BUILD TREE ====================
+function buildTree() {
+  const container = document.getElementById('treeContainer');
+  let html = '';
+
+  // Root folder
+  html += '<div class="folder open">';
+  html += '<div class="folder-header" onclick="toggleFolder(this)">';
+  html += '<span class="folder-arrow">▶</span><span class="folder-icon">📁</span>';
+  html += '<span class="folder-label">ppt /</span><span class="folder-count">170</span>';
+  html += '</div><div class="folder-children">';
+
+  // Root gallery
+  const rootG = GALLERIES.find(g => g.id === 'root-slides');
+  html += galleryItemHTML(rootG, 'png');
+
+  html += '</div></div>';
+
+  // _analysis folder
+  html += '<div class="folder">';
+  html += '<div class="folder-header" onclick="toggleFolder(this)">';
+  html += '<span class="folder-arrow">▶</span><span class="folder-icon">📁</span>';
+  html += '<span class="folder-label">_analysis /</span><span class="folder-count">399+1</span>';
+  html += '</div><div class="folder-children">';
+
+  // Analysis sub-galleries
+  GALLERIES.forEach(g => {
+    if (g.id === 'root-slides') return;
+    const ext = g.isBinary ? 'pdf' : (g.files[0] && g.files[0].name.endsWith('.png') ? 'png' : 'jpg');
+    html += galleryItemHTML(g, ext);
+  });
+
+  html += '</div></div>';
+
+  container.innerHTML = html;
+}
+
+function galleryItemHTML(g, ext) {
+  const badgeCls = ext === 'png' ? 'png' : (ext === 'pdf' ? 'pdf' : 'jpg');
+  return `<div class="gallery-item" data-gid="${g.id}" onclick="openGallery('${g.id}')">
+    <span class="file-type-badge ${badgeCls}">${ext.toUpperCase()}</span>
+    <span>${g.label}</span>
+    <span style="font-size:11px;color:var(--text-secondary);margin-left:auto;">${g.count}</span>
+  </div>`;
+}
+
+function toggleFolder(header) {
+  header.parentElement.classList.toggle('open');
+}
+
+// ==================== GALLERY RENDERING ====================
+function openGallery(gid) {
+  const g = GALLERIES.find(g => g.id === gid);
+  if (!g) return;
+
+  // Update active state
+  document.querySelectorAll('.gallery-item').forEach(el => el.classList.remove('active'));
+  const item = document.querySelector(`.gallery-item[data-gid="${gid}"]`);
+  if (item) item.classList.add('active');
+
+  currentGallery = g;
+  lightboxIndex = -1;
+  galleryEls = [];
+
+  document.getElementById('galleryTitle').textContent = g.label;
+  document.getElementById('galleryInfo').textContent = g.count + ' 个文件';
+
+  const area = document.getElementById('galleryArea');
+
+  if (g.isBinary) {
+    area.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;color:var(--text-secondary);">
+      <div style="font-size:56px;">📄</div>
+      <h3>数字产业链服务平台_再现版.pdf</h3>
+      <p>PDF 文件不支持在线预览</p>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-primary" onclick="window.open('${g.files[0].path}','_blank')">📄 打开 PDF</button>
+        <a href="${g.files[0].path}" download style="text-decoration:none;">
+          <button class="btn">⬇ 下载</button>
+        </a>
+      </div>
+    </div>`;
+    return;
+  }
+
+  // Build gallery grid
+  let gridHTML = '<div class="gallery-grid" id="galleryGrid">';
+
+  g.files.forEach((f, i) => {
+    gridHTML += `<div class="thumb-card" data-idx="${i}" onclick="openLightbox(${i})">
+      <div class="img-wrap">
+        <img src="${f.path}" alt="${f.name}" class="lazy" loading="lazy"
+             onload="this.classList.replace('lazy','loaded')" onerror="this.parentElement.innerHTML='<span style=font-size:12px;color:#94a3b8>加载失败</span>'">
+      </div>
+      <div class="label">${f.name}</div>
+    </div>`;
+  });
+
+  gridHTML += '</div>';
+  area.innerHTML = gridHTML;
+
+  // Store DOM references
+  const grid = document.getElementById('galleryGrid');
+  if (grid) {
+    const cards = grid.querySelectorAll('.thumb-card');
+    cards.forEach(card => {
+      galleryEls.push(card);
+    });
+  }
+}
+
+// ==================== LIGHTBOX ====================
+function openLightbox(idx) {
+  if (!currentGallery || currentGallery.isBinary) return;
+  const g = currentGallery;
+  lightboxIndex = idx;
+  const f = g.files[idx];
+
+  document.getElementById('lbImg').src = f.path;
+  document.getElementById('lbCounter').textContent = `${idx + 1} / ${g.count}`;
+  document.getElementById('lbFilename').textContent = f.name;
+  document.getElementById('lightbox').classList.add('open');
+
+  updateNavButtons();
+  buildThumbStrip();
+  scrollThumbIntoView();
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lbImg').src = '';
+}
+
+function lightboxNav(dir) {
+  if (!currentGallery) return;
+  const newIdx = lightboxIndex + dir;
+  if (newIdx < 0 || newIdx >= currentGallery.files.length) return;
+  openLightbox(newIdx);
+}
+
+function updateNavButtons() {
+  document.getElementById('lbPrev').disabled = lightboxIndex <= 0;
+  document.getElementById('lbNext').disabled = lightboxIndex >= currentGallery.files.length - 1;
+}
+
+function buildThumbStrip() {
+  const strip = document.getElementById('lbThumbStrip');
+  const g = currentGallery;
+
+  // Only show strip for galleries with > 1 image
+  if (g.files.length <= 1) { strip.innerHTML = ''; return; }
+
+  let html = '';
+  g.files.forEach((f, i) => {
+    const active = i === lightboxIndex ? ' active' : '';
+    html += `<div class="lb-thumb${active}" onclick="openLightbox(${i})">
+      <img src="${f.path}" alt="${f.name}" loading="lazy">
+    </div>`;
+  });
+  strip.innerHTML = html;
+}
+
+function scrollThumbIntoView() {
+  const active = document.querySelector('.lb-thumb.active');
+  if (active) {
+    active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+}
+
+// ==================== KEYBOARD ====================
+document.addEventListener('keydown', function(e) {
+  const lb = document.getElementById('lightbox');
+  if (!lb.classList.contains('open')) return;
+
+  if (e.key === 'ArrowLeft') { e.preventDefault(); lightboxNav(-1); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); lightboxNav(1); }
+  else if (e.key === 'Escape') { e.preventDefault(); closeLightbox(); }
+});
+
+// Close lightbox on background click (but not on image/nav)
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
+
+// ==================== INIT ====================
+buildTree();
+</script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>方法速查卡：5 Whys + 业务-技术映射</title>
+<style>
+  @page {
+    size: A4;
+    margin: 13mm 11mm;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Source Han Sans SC", sans-serif;
+    color: #1a1a1a;
+    font-size: 8.5pt;
+    line-height: 1.55;
+    background: #fff;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 188mm;
+    margin: 0 auto;
+  }
+
+  /* ---- 页头 ---- */
+  .header {
+    text-align: center;
+    margin-bottom: 4mm;
+  }
+  .header h1 {
+    font-size: 14pt;
+    font-weight: 700;
+    color: #0b5394;
+    letter-spacing: 0.5px;
+    margin-bottom: 1mm;
+  }
+  .header .tagline {
+    font-size: 8pt;
+    color: #888;
+  }
+
+  /* ---- 双栏 ---- */
+  .two-col {
+    display: flex;
+    gap: 5mm;
+    margin-bottom: 3mm;
+  }
+  .col {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* ---- 块样式 ---- */
+  .box {
+    border: 1px solid #c8d6e5;
+    border-radius: 3px;
+    padding: 3mm 3.5mm;
+    margin-bottom: 3mm;
+    background: #fafbfd;
+  }
+  .box h2 {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0b5394;
+    margin-bottom: 2mm;
+    padding-bottom: 1.5mm;
+    border-bottom: 2px solid #0b5394;
+  }
+  .box h3 {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #333;
+    margin: 2.5mm 0 1mm 0;
+  }
+
+  /* ---- 五层追问列表 ---- */
+  .level-list {
+    list-style: none;
+    padding: 0;
+  }
+  .level-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 2mm;
+    padding: 1.2mm 0;
+    border-bottom: 1px dotted #dde;
+  }
+  .level-list li:last-child { border-bottom: none; }
+  .level-list .badge {
+    flex-shrink: 0;
+    width: 16mm;
+    padding: 0.8mm 0;
+    text-align: center;
+    font-size: 7pt;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 2px;
+    line-height: 1.3;
+  }
+  .b-l1 { background: #e74c3c; }
+  .b-l2 { background: #e67e22; }
+  .b-l3 { background: #2980b9; }
+  .b-l4 { background: #8e44ad; }
+  .b-l5 { background: #2c3e50; }
+  .level-list .text { flex: 1; line-height: 1.45; }
+  .level-list .text strong { color: #0b5394; }
+  .level-list .text .ask {
+    display: block;
+    font-size: 7.5pt;
+    color: #888;
+    margin-top: 0.5mm;
+  }
+
+  /* ---- 映射三栏 ---- */
+  .map-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8pt;
+    margin-top: 2mm;
+  }
+  .map-table th {
+    background: #0b5394;
+    color: #fff;
+    padding: 1.2mm 2mm;
+    font-size: 7.5pt;
+    text-align: center;
+  }
+  .map-table td {
+    border: 1px solid #c8d6e5;
+    padding: 1.2mm 2mm;
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  .map-table tr:nth-child(even) td { background: #fafbfd; }
+  .col-biz { color: #e74c3c; font-weight: 600; }
+  .col-tech { color: #2980b9; font-weight: 600; }
+  .col-loss { color: #e67e22; font-weight: 600; }
+
+  /* ---- 速记卡片 ---- */
+  .note {
+    background: #fff8e1;
+    border: 1px solid #f0d88a;
+    border-radius: 3px;
+    padding: 2.5mm 3.5mm;
+    font-size: 8pt;
+    margin-bottom: 3mm;
+    line-height: 1.5;
+  }
+  .note strong { color: #c0392b; }
+
+  /* ---- 底部横栏 ---- */
+  .footer-strip {
+    border-top: 2px solid #0b5394;
+    padding-top: 2.5mm;
+    display: flex;
+    gap: 4mm;
+    font-size: 7.5pt;
+    color: #555;
+    line-height: 1.5;
+  }
+  .footer-strip .item {
+    flex: 1;
+  }
+  .footer-strip .item h4 {
+    font-size: 8pt;
+    color: #0b5394;
+    margin-bottom: 1mm;
+  }
+
+  /* ---- 打印优化 ---- */
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ===== 页头 ===== -->
+  <div class="header">
+    <h1>5 Whys 追问法 &amp; 业务-技术映射地图</h1>
+    <div class="tagline">B2B技术经理速查卡 · A4单页 · 从技术排障到业务洞察</div>
+  </div>
+
+  <!-- ===== 双栏主体 ===== -->
+  <div class="two-col">
+
+    <!-- ===== 左栏：5 Whys ===== -->
+    <div class="col">
+      <div class="box">
+        <h2>一、5 Whys 追问法</h2>
+        <p style="font-size:7.5pt;color:#888;margin-bottom:2mm;">丰田生产方式迁移 · 从表面症状到决策层根因</p>
+
+        <ol class="level-list">
+          <li>
+            <span class="badge b-l1">L1 现象</span>
+            <span class="text"><strong>可见的故障表现是什么？</strong><span class="ask">服务超时 / 数据丢失 / 接口报错 / 用户投诉</span></span>
+          </li>
+          <li>
+            <span class="badge b-l2">L2 操作</span>
+            <span class="text"><strong>是什么操作触发了这个现象？</strong><span class="ask">找出导致异常的具体行为或变更：上线/配置/流量</span></span>
+          </li>
+          <li>
+            <span class="badge b-l3">L3 原理</span>
+            <span class="text"><strong>底层技术原理层面的根因？</strong><span class="ask">并发竞争 / 缓存失效 / 索引失效 / 内存碎片 / GC</span></span>
+          </li>
+          <li>
+            <span class="badge b-l4">L4 设计</span>
+            <span class="text"><strong>架构设计是否存在缺陷或权衡失当？</strong><span class="ask">耦合设计 / 缺少熔断 / 数据模型不合理</span></span>
+          </li>
+          <li>
+            <span class="badge b-l5">L5 决策</span>
+            <span class="text"><strong>最初的技术选型决策是否有根本偏差？</strong><span class="ask">选型假设 / 容量预估 / CAP取舍 / 成本约束</span></span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="box">
+        <h3>实战案例：订单查询慢</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:7.5pt;margin-top:1.5mm;">
+          <tr style="background:#f5f7fa;">
+            <td style="padding:1mm 2mm;border:1px solid #dde;width:12mm;text-align:center;font-weight:700;">L1</td>
+            <td style="padding:1mm 2mm;border:1px solid #dde;">查询P99从200ms→8s</td>
+          </tr>
+          <tr>
+            <td style="padding:1mm 2mm;border:1px solid #dde;text-align:center;font-weight:700;">L2</td>
+            <td style="padding:1mm 2mm;border:1px solid #dde;">新功能引用了WHERE DATE()函数</td>
+          </tr>
+          <tr style="background:#f5f7fa;">
+            <td style="padding:1mm 2mm;border:1px solid #dde;text-align:center;font-weight:700;">L3</td>
+            <td style="padding:1mm 2mm;border:1px solid #dde;">函数运算破坏B+Tree有序性→索引失效→全表扫描</td>
+          </tr>
+          <tr>
+            <td style="padding:1mm 2mm;border:1px solid #dde;text-align:center;font-weight:700;">L4</td>
+            <td style="padding:1mm 2mm;border:1px solid #dde;">设计阶段未识别高频时间范围查询模式</td>
+          </tr>
+          <tr style="background:#f5f7fa;">
+            <td style="padding:1mm 2mm;border:1px solid #dde;text-align:center;font-weight:700;">L5</td>
+            <td style="padding:1mm 2mm;border:1px solid #dde;">缺少查询模式评审机制，索引策略未按业务查询驱动</td>
+          </tr>
+        </table>
+        <p style="font-size:7pt;color:#888;margin-top:1.5mm;">▸ 面试答到L3=及格，L4=加分，L5=技术决策者水平</p>
+      </div>
+    </div>
+
+    <!-- ===== 右栏：业务-技术映射 ===== -->
+    <div class="col">
+      <div class="box">
+        <h2>二、业务-技术映射地图</h2>
+        <p style="font-size:7.5pt;color:#888;margin-bottom:2mm;">三维标注体系 · 让技术人员看到代码背后的业务代价</p>
+
+        <h3>三维标注结构</h3>
+        <table class="map-table">
+          <tr>
+            <th style="width:25%">维度</th>
+            <th style="width:40%">标注内容</th>
+            <th style="width:35%">回答的问题</th>
+          </tr>
+          <tr>
+            <td class="col-biz">① 业务语言</td>
+            <td>用业务方能听懂的语言描述该环节的业务目标与价值</td>
+            <td>"这一步在业务上干什么？"</td>
+          </tr>
+          <tr>
+            <td class="col-tech">② 技术模块</td>
+            <td>标注支撑此环节的技术模块及依赖关系</td>
+            <td>"技术上是哪些系统在跑？"</td>
+          </tr>
+          <tr>
+            <td class="col-loss">③ 业务损失</td>
+            <td>量化故障后的业务代价（金额/客户/合规）</td>
+            <td>"挂了会损失什么？"</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="box">
+        <h3>示例：大宗交易核心链路</h3>
+        <table class="map-table" style="font-size:7.5pt;">
+          <tr>
+            <th style="width:22%">业务环节</th>
+            <th style="width:40%">技术模块 &amp; 依赖</th>
+            <th style="width:38%">故障代价</th>
+          </tr>
+          <tr>
+            <td class="col-biz">挂牌报价</td>
+            <td>交易模块 → 行情服务 → MinIO</td>
+            <td class="col-loss">挂不上 = 没生意</td>
+          </tr>
+          <tr>
+            <td class="col-biz">询价撮合</td>
+            <td>C撮合引擎 ← DS桥接 ← 业务中台</td>
+            <td class="col-loss">撮不上 = 不成交</td>
+          </tr>
+          <tr>
+            <td class="col-biz">合同签约</td>
+            <td>合同模块 → 电子签章 → 模板引擎</td>
+            <td class="col-loss">签不了 = 前功尽弃</td>
+          </tr>
+          <tr>
+            <td class="col-biz">结算支付</td>
+            <td>支付网关 → 银行接口 → 对账服务</td>
+            <td class="col-loss">付不了 = 直接资损</td>
+          </tr>
+          <tr>
+            <td class="col-biz">履约发货</td>
+            <td>履约保证 → 物流接口 → 状态机</td>
+            <td class="col-loss">发不出 = 违约赔付</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 底部穿线 ===== -->
+  <div class="footer-strip">
+    <div class="item">
+      <h4>两条方法的关系</h4>
+      5 Whys 从技术故障向下钻（技术→原理→决策）；映射地图从业务链路向上联（业务→技术→代价）。两者合起来构成 <strong>"从代码到老板"</strong> 的完整叙事链。
+    </div>
+    <div class="item">
+      <h4>面试中的用法</h4>
+      <strong>问技术题</strong> → 用 5 Whys 展示深度（至少到L3）；<strong>问业务题</strong> → 用映射地图展示全局视野；<strong>问价值题</strong> → 映射地图的"业务损失"一列直接翻译为"我守住的是什么"。
+    </div>
+    <div class="item">
+      <h4>落地口诀</h4>
+      每个事故追五层，每个环节标三栏。<br>
+      排障不是结束，是学习开始。<br>
+      代码背后的钱，才是真正的价值。
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

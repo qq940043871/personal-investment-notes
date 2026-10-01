@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>面试备战资料库 — 文件索引与预览</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+:root {
+  --bg: #f8f9fa;
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e2e8f0;
+  --text: #1a202c;
+  --text-secondary: #64748b;
+  --accent: #2563eb;
+  --accent-light: #eff6ff;
+  --accent-hover: #1d4ed8;
+  --card-bg: #ffffff;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  --tag-bg: #f1f5f9;
+  --tag-text: #475569;
+  --divider: #e2e8f0;
+  --code-bg: #f1f5f9;
+  --table-border: #e2e8f0;
+  --table-stripe: #f8fafc;
+  --scrollbar: #cbd5e1;
+  --scrollbar-track: #f1f5f9;
+  --badge-md: #3b82f6;
+  --badge-html: #f97316;
+  --badge-pptx: #dc2626;
+  --badge-js: #eab308;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  width: 320px;
+  min-width: 320px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.sidebar-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.sidebar-header h1 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.sidebar-header .subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.sidebar-stats {
+  display: flex;
+  gap: 8px;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--sidebar-border);
+  flex-wrap: wrap;
+}
+
+.stat-chip {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+}
+
+.stat-chip.md { background: #eff6ff; color: #2563eb; }
+.stat-chip.html { background: #fff7ed; color: #ea580c; }
+.stat-chip.pptx { background: #fef2f2; color: #dc2626; }
+
+.search-box {
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.search-box input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--sidebar-border);
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+
+.search-box input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+
+.search-box input::placeholder {
+  color: #94a3b8;
+}
+
+.tree-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.tree-container::-webkit-scrollbar { width: 4px; }
+.tree-container::-webkit-scrollbar-track { background: transparent; }
+.tree-container::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 2px; }
+
+.folder {
+  user-select: none;
+}
+
+.folder-header {
+  display: flex;
+  align-items: center;
+  padding: 6px 20px 6px 16px;
+  cursor: pointer;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  transition: background 0.15s;
+}
+
+.folder-header:hover {
+  background: var(--accent-light);
+}
+
+.folder-arrow {
+  font-size: 10px;
+  color: var(--text-secondary);
+  width: 14px;
+  text-align: center;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.folder.open > .folder-header .folder-arrow {
+  transform: rotate(90deg);
+}
+
+.folder-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.folder-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder-count {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.folder-children {
+  display: none;
+}
+
+.folder.open > .folder-children {
+  display: block;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 20px 5px 48px;
+  cursor: pointer;
+  font-size: 13px;
+  gap: 6px;
+  color: var(--text);
+  transition: background 0.15s;
+  border-left: 3px solid transparent;
+}
+
+.file-item:hover {
+  background: var(--accent-light);
+}
+
+.file-item.active {
+  background: var(--accent-light);
+  border-left-color: var(--accent);
+  font-weight: 500;
+}
+
+.file-type-badge {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.file-type-badge.md { background: #dbeafe; color: #1d4ed8; }
+.file-type-badge.html { background: #ffedd5; color: #c2410c; }
+.file-type-badge.pptx { background: #fecaca; color: #b91c1c; }
+.file-type-badge.js { background: #fef9c3; color: #a16207; }
+
+.file-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.no-results {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* === MAIN CONTENT === */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.content-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--sidebar-border);
+  gap: 12px;
+  min-height: 52px;
+}
+
+.content-toolbar .current-file {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.content-toolbar .actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn {
+  padding: 6px 14px;
+  border: 1px solid var(--sidebar-border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 40px;
+}
+
+.content-area::-webkit-scrollbar { width: 6px; }
+.content-area::-webkit-scrollbar-track { background: transparent; }
+.content-area::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 3px; }
+
+/* === WELCOME === */
+.welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.welcome-icon {
+  font-size: 56px;
+  margin-bottom: 16px;
+}
+
+.welcome h2 {
+  font-size: 20px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.welcome p {
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 420px;
+}
+
+/* === MARKDOWN RENDERED === */
+.markdown-body {
+  max-width: 860px;
+  margin: 0 auto;
+  line-height: 1.75;
+  font-size: 15px;
+}
+
+.markdown-body h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--divider);
+  color: var(--text);
+}
+
+.markdown-body h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 28px 0 12px;
+  color: var(--text);
+}
+
+.markdown-body h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 22px 0 10px;
+  color: var(--text);
+}
+
+.markdown-body h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 18px 0 8px;
+}
+
+.markdown-body p {
+  margin: 10px 0;
+  color: #334155;
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin: 8px 0;
+  padding-left: 24px;
+  color: #334155;
+}
+
+.markdown-body li {
+  margin: 4px 0;
+}
+
+.markdown-body a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+
+.markdown-body blockquote {
+  border-left: 4px solid var(--accent);
+  padding: 8px 16px;
+  margin: 14px 0;
+  background: var(--accent-light);
+  color: #475569;
+  font-size: 14px;
+  border-radius: 0 6px 6px 0;
+}
+
+.markdown-body code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  color: #e11d48;
+}
+
+.markdown-body pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 14px 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.markdown-body pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 14px;
+}
+
+.markdown-body th {
+  background: #f1f5f9;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid var(--table-border);
+  color: var(--text);
+}
+
+.markdown-body td {
+  padding: 9px 14px;
+  border: 1px solid var(--table-border);
+  color: #334155;
+}
+
+.markdown-body tr:nth-child(even) td {
+  background: var(--table-stripe);
+}
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid var(--divider);
+  margin: 24px 0;
+}
+
+.markdown-body strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+/* === HTML IFRAME === */
+.html-preview-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* === BINARY FILE === */
+.binary-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  gap: 16px;
+  color: var(--text-secondary);
+}
+
+.binary-placeholder .file-icon {
+  font-size: 64px;
+}
+
+.binary-placeholder p {
+  font-size: 14px;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--sidebar-border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  gap: 12px;
+  color: var(--text-secondary);
+}
+
+.error-state .err-icon {
+  font-size: 48px;
+}
+</style>
+</head>
+<body>
+
+<!-- ============= SIDEBAR ============= -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h1>📚 面试备战资料库</h1>
+    <div class="subtitle">B2B大宗贸易供应链技术经理</div>
+  </div>
+
+  <div class="sidebar-stats">
+    <span class="stat-chip md">27 .md</span>
+    <span class="stat-chip html">7 .html</span>
+    <span class="stat-chip pptx">5 .pptx</span>
+    <span class="stat-chip">2 .js</span>
+    <span class="stat-chip">41 文件</span>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="搜索文件名..." oninput="filterTree()">
+  </div>
+
+  <div class="tree-container" id="treeContainer">
+    <!-- Populated by JS -->
+  </div>
+</aside>
+
+<!-- ============= MAIN ============= -->
+<main class="main">
+  <div class="content-toolbar" id="contentToolbar">
+    <span class="current-file" id="currentFileName">请从左侧选择文件</span>
+    <div class="actions" id="toolbarActions" style="display:none;">
+      <button class="btn" onclick="window.open(currentFilePath, '_blank')">📄 新窗口打开</button>
+      <button class="btn" id="downloadBtn" onclick="downloadFile()">⬇ 下载</button>
+    </div>
+  </div>
+
+  <div class="content-area" id="contentArea">
+    <div class="welcome">
+      <div class="welcome-icon">📖</div>
+      <h2>面试备战资料库</h2>
+      <p>41 份精心整理的面试备战文档（已按主题整合），覆盖面试话术、技术架构、B2B业务、职业发展、模拟面试等 8 大主题。</p>
+      <p style="margin-top:8px;font-size:13px;">点击左侧文件树开始浏览 →</p>
+    </div>
+  </div>
+</main>
+
+<script>
+// ===================== DIRECTORY TREE DATA =====================
+const TREE = [
+  {
+    name: '01-面试备战', icon: '🎯', count: 10, open: true,
+    files: [
+      '01-面试核心策略手册.md',
+      '02-业务价值与客户运营.md',
+      '03-业务全链路场景手册.md',
+      '04-技术栈全景与面试题库.md',
+      '05-中间件与基础补课.md',
+      '06-角色定位与技术竞争力.md',
+      '07-面试问答与话术实战.md',
+      '08-国企面试焦点分析.md',
+      '09-简历与自我介绍脚本.md',
+      'B2B技术经理简历PPT.pptx'
+    ]
+  },
+  {
+    name: '02-技术成长', icon: '📈', count: 4,
+    files: [
+      '面试技术复习综合手册.md',
+      '技术经理成长体系手册.md',
+      'SAGA编排器详细介绍.md',
+      '技术经理提升计划A4打印版.html'
+    ]
+  },
+  {
+    name: '03-架构决策', icon: '🏗️', count: 4,
+    files: [
+      '架构方法论与选型设计手册.md',
+      '异构架构策略与真实系统叙事手册.md',
+      '平台化治理与多租户架构手册.md',
+      '郑大信息B2B系统技术难点与痛点解决手册.md'
+    ]
+  },
+  {
+    name: '04-B2B业务分析', icon: '💼', count: 4,
+    files: [
+      'B2B业务场景与痛点全景手册.md',
+      'B2B平台功能与产品设计手册.md',
+      'B2B客户案例与行业对标手册.md',
+      'B2B平台设计规范与审查方法论手册.md'
+    ]
+  },
+  {
+    name: '05-工具与排版', icon: '🔧', count: 5,
+    files: [
+      'A4排版提升指南.html',
+      'L2到L4晋级路线图-A4一页纸.html',
+      'microservices-architecture-handdrawn.html',
+      'RICE优先级决策矩阵.html',
+      '方法速查卡-5Whys与业务技术映射.html'
+    ]
+  },
+  {
+    name: '06-演示材料', icon: '📊', count: 7,
+    files: [
+      'B2B技术经理-能力全景介绍.pptx',
+      'Cookie认证失败-5Why根因分析.pptx',
+      'Cookie认证失败-5Why根因分析报告.md',
+      '产品全业务链条与运营思路.pptx',
+      '产品全业务链条与运营思路-手机电子书.html',
+      '数字产业链服务平台_再现版_含痛点方案.pptx',
+      '数字产业链服务平台PPT全量分析.md'
+    ]
+  },
+  {
+    name: '07-职业发展', icon: '🚀', count: 2,
+    files: [
+      '职业发展进阶路线图手册.md',
+      '技术情报收集与跨部门沟通手册.md'
+    ]
+  },
+  {
+    name: '08-模拟面试', icon: '🎤', count: 2,
+    files: [
+      '模拟面试方案合集(01-04).md',
+      '模拟面试流程与提示词手册.md'
+    ]
+  },
+  {
+    name: '脚本', icon: '📜', count: 2,
+    files: [
+      'build_ppt.js',
+      'build_ppt_biz.js'
+    ]
+  }
+];
+
+// Root-level files
+const ROOT_FILES = ['文章总结_全目录概览.md'];
+
+// ===================== STATE =====================
+let currentFilePath = '';
+let currentFileType = '';
+let allFileItems = []; // {el, folder, filename}
+
+// ===================== BUILD TREE =====================
+function getExtClass(filename) {
+  const ext = filename.split('.').pop().toLowerCase();
+  const map = { md: 'md', html: 'html', pptx: 'pptx', js: 'js' };
+  return map[ext] || '';
+}
+
+function buildTree() {
+  const container = document.getElementById('treeContainer');
+  let html = '';
+
+  // Root files
+  html += '<div class="folder open"><div class="folder-header" data-folder="root" onclick="toggleFolder(this)">';
+  html += '<span class="folder-arrow">▶</span><span class="folder-icon">📁</span>';
+  html += '<span class="folder-label">根目录</span><span class="folder-count">1</span></div>';
+  html += '<div class="folder-children">';
+  ROOT_FILES.forEach(f => {
+    const extCls = getExtClass(f);
+    html += `<div class="file-item" data-filename="${f}" data-folder="root" onclick="openFile('root', '${f}')">`;
+    html += `<span class="file-type-badge ${extCls}">${f.split('.').pop()}</span>`;
+    html += `<span class="file-name">${f}</span></div>`;
+  });
+  html += '</div></div>';
+
+  // Subfolders
+  TREE.forEach(folder => {
+    const isOpen = folder.open ? ' open' : '';
+    html += `<div class="folder${isOpen}">`;
+    html += `<div class="folder-header" data-folder="${folder.name}" onclick="toggleFolder(this)">`;
+    html += '<span class="folder-arrow">▶</span>';
+    html += `<span class="folder-icon">${folder.icon}</span>`;
+    html += `<span class="folder-label">${folder.name}</span>`;
+    html += `<span class="folder-count">${folder.count}</span></div>`;
+    html += '<div class="folder-children">';
+    folder.files.forEach(f => {
+      const extCls = getExtClass(f);
+      html += `<div class="file-item" data-filename="${f}" data-folder="${folder.name}" onclick="openFile('${folder.name}', '${f}')">`;
+      html += `<span class="file-type-badge ${extCls}">${f.split('.').pop()}</span>`;
+      html += `<span class="file-name">${f}</span></div>`;
+    });
+    html += '</div></div>';
+  });
+
+  container.innerHTML = html;
+
+  // Collect all file items for search
+  allFileItems = [];
+  container.querySelectorAll('.file-item').forEach(el => {
+    allFileItems.push({
+      el,
+      folder: el.dataset.folder,
+      filename: el.dataset.filename
+    });
+  });
+}
+
+// ===================== ACTIONS =====================
+function toggleFolder(header) {
+  const folder = header.parentElement;
+  folder.classList.toggle('open');
+}
+
+function openFile(folder, filename) {
+  // Update active state
+  document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active'));
+  const selector = folder === 'root'
+    ? `.file-item[data-filename="${CSS.escape(filename)}"][data-folder="root"]`
+    : `.file-item[data-filename="${CSS.escape(filename)}"][data-folder="${CSS.escape(folder)}"]`;
+  const item = document.querySelector(selector);
+  if (item) item.classList.add('active');
+
+  // Build path
+  const folderPath = folder === 'root' ? '' : folder + '/';
+  currentFilePath = folderPath + filename;
+  currentFileType = filename.split('.').pop().toLowerCase();
+
+  // Update toolbar
+  document.getElementById('currentFileName').textContent = folder === 'root' ? filename : `${folder}/${filename}`;
+  document.getElementById('toolbarActions').style.display = 'flex';
+
+  // Handle preview
+  const contentArea = document.getElementById('contentArea');
+
+  if (currentFileType === 'md') {
+    loadMarkdown(currentFilePath);
+  } else if (currentFileType === 'html') {
+    contentArea.innerHTML = `<iframe class="html-preview-frame" src="${currentFilePath}"></iframe>`;
+  } else if (currentFileType === 'pptx' || currentFileType === 'js') {
+    showBinaryPlaceholder(filename, currentFileType);
+  } else {
+    contentArea.innerHTML = '<div class="error-state"><div class="err-icon">❓</div><p>不支持的文件格式</p></div>';
+  }
+}
+
+function loadMarkdown(path) {
+  const contentArea = document.getElementById('contentArea');
+  contentArea.innerHTML = '<div class="loading"><div class="spinner"></div>加载中...</div>';
+
+  fetch(path)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.text();
+    })
+    .then(md => {
+      const html = marked.parse(md);
+      contentArea.innerHTML = `<div class="markdown-body">${html}</div>`;
+      contentArea.scrollTop = 0;
+    })
+    .catch(err => {
+      contentArea.innerHTML = `<div class="error-state">
+        <div class="err-icon">⚠️</div>
+        <p>无法加载文件: ${path}</p>
+        <p style="font-size:12px;color:#94a3b8;">${err.message}<br>请确保通过 HTTP 服务器访问此页面（非 file:// 协议）</p>
+        <button class="btn" onclick="window.open('${path}','_blank')">在新窗口打开</button>
+      </div>`;
+    });
+}
+
+function showBinaryPlaceholder(filename, type) {
+  const icons = { pptx: '📊', js: '💻' };
+  const labels = { pptx: 'PowerPoint 演示文稿', js: 'JavaScript 脚本' };
+  const contentArea = document.getElementById('contentArea');
+  const path = currentFilePath;
+  contentArea.innerHTML = `<div class="binary-placeholder">
+    <div class="file-icon">${icons[type] || '📄'}</div>
+    <h3>${filename}</h3>
+    <p>${labels[type] || type.toUpperCase() + ' 文件'}</p>
+    <p style="font-size:13px;">此文件类型不支持在线预览</p>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-primary" onclick="downloadFile()">⬇ 下载文件</button>
+      <button class="btn" onclick="window.open('${path}','_blank')">📄 新窗口打开</button>
+    </div>
+  </div>`;
+}
+
+function downloadFile() {
+  const a = document.createElement('a');
+  a.href = currentFilePath;
+  a.download = currentFilePath.split('/').pop();
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+// ===================== SEARCH =====================
+function filterTree() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const container = document.getElementById('treeContainer');
+
+  if (!query) {
+    // Show all
+    allFileItems.forEach(item => item.el.style.display = '');
+    container.querySelectorAll('.folder').forEach(f => f.style.display = '');
+    return;
+  }
+
+  // Filter
+  const matchingFolders = new Set();
+  let hasResults = false;
+
+  allFileItems.forEach(item => {
+    const match = item.filename.toLowerCase().includes(query);
+    item.el.style.display = match ? '' : 'none';
+    if (match) {
+      matchingFolders.add(item.folder);
+      hasResults = true;
+    }
+  });
+
+  // Show/hide folders that have matches, auto-open them
+  container.querySelectorAll('.folder').forEach(folderEl => {
+    const header = folderEl.querySelector('.folder-header');
+    const folderName = header ? header.dataset.folder : null;
+    if (folderName && matchingFolders.has(folderName)) {
+      folderEl.style.display = '';
+      folderEl.classList.add('open');
+    } else if (folderName === undefined) {
+      folderEl.style.display = '';
+    } else {
+      folderEl.style.display = 'none';
+    }
+  });
+
+  // Show "no results" if needed
+  let noResultsEl = document.getElementById('noResultsMsg');
+  if (!hasResults && query) {
+    if (!noResultsEl) {
+      noResultsEl = document.createElement('div');
+      noResultsEl.id = 'noResultsMsg';
+      noResultsEl.className = 'no-results';
+      noResultsEl.textContent = '没有匹配的文件';
+      container.appendChild(noResultsEl);
+    }
+  } else if (noResultsEl) {
+    noResultsEl.remove();
+  }
+}
+
+// ===================== INIT =====================
+buildTree();
+
+// Keyboard shortcut: Ctrl+F / Cmd+F to focus search
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+});
+</script>
+
+</body>
+</html>

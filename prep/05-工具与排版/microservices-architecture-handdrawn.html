@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2B 大宗贸易微服务系统架构图</title>
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --text: #1e1e1e;
+    --subtle: #6b7280;
+    --grid-dot: #d1d5db;
+    --access-fill: #ECFDF3;
+    --access-stroke: #027A48;
+    --gateway-fill: #F5F3FF;
+    --gateway-stroke: #7A5AF8;
+    --business-fill: #F8FAFC;
+    --business-stroke: #334155;
+    --engine-fill: #FFF7ED;
+    --engine-stroke: #C4320A;
+    --data-fill: #F0F9FF;
+    --data-stroke: #026AA2;
+    --external-fill: #F4F3FF;
+    --external-stroke: #6941C6;
+    --ds-fill: #EFF8FF;
+    --ds-stroke: #175CD3;
+    --conn-color: #9ca3af;
+    --conn-highlight: #1F2937;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #FFFFFF;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 48px;
+    color: var(--text);
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #111827;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: var(--subtle);
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .diagram-wrap {
+    width: 100%;
+    max-width: 1160px;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #FAFBFC;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  svg { display: block; width: 100%; height: auto; }
+
+  /* Component rectangles */
+  .comp-rect {
+    transition: all 0.25s ease;
+    cursor: pointer;
+  }
+  .comp-rect:hover {
+    filter: brightness(0.96);
+    stroke-width: 2.5px !important;
+  }
+
+  /* Connection lines */
+  .conn {
+    transition: all 0.3s ease;
+  }
+  .conn.dimmed {
+    opacity: 0.12;
+  }
+  .conn.highlighted {
+    stroke: var(--conn-highlight) !important;
+    stroke-width: 2.2px !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  /* Dashed monitoring line */
+  .conn-dash {
+    transition: all 0.3s ease;
+  }
+  .conn-dash.dimmed {
+    opacity: 0.08;
+  }
+  .conn-dash.highlighted {
+    stroke: #D92D20 !important;
+    stroke-width: 2px !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  /* Component text hover */
+  .comp-group { cursor: pointer; }
+  .comp-group:hover .comp-rect {
+    filter: brightness(0.94);
+  }
+
+  /* Layer labels */
+  .layer-label {
+    font-size: 11px;
+    fill: #9CA3AF;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+
+  /* Legend */
+  .legend-box {
+    transition: all 0.2s ease;
+  }
+
+  .hover-hint {
+    font-size: 11px;
+    color: #9CA3AF;
+    text-align: center;
+    margin-top: 12px;
+    font-style: italic;
+  }
+
+  .tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: #1F2937;
+    color: #F9FAFB;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.18s;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  .tooltip.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<h1>B2B 大宗贸易微服务系统架构</h1>
+<p class="subtitle">异构四层架构 · Java 微服务 + C 语言撮合引擎 · 悬停组件高亮关联连接</p>
+
+<div class="diagram-wrap">
+<svg viewBox="0 0 1150 600" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- Hand-drawn roughness filter for shapes -->
+    <filter id="handdrawn" x="-4%" y="-4%" width="108%" height="108%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" result="noise" seed="2"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <!-- Lighter roughness for connection lines -->
+    <filter id="handdrawn-line" x="-3%" y="-3%" width="106%" height="106%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.055" numOctaves="2" result="noise" seed="7"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.4" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+
+    <!-- Arrowhead marker -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 2 2 L 9 5 L 2 8" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+
+    <!-- Arrowhead marker for highlighted state -->
+    <marker id="arrow-hl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 2 2 L 9 5 L 2 8" fill="none" stroke="#1F2937" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+
+    <!-- Reverse arrowhead (for bidirectional) -->
+    <marker id="arrow-rev" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 8 2 L 1 5 L 8 8" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+
+    <!-- Dot grid pattern (Excalidraw style) -->
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="15" cy="15" r="0.9" fill="#D1D5DB" opacity="0.7"/>
+    </pattern>
+
+  </defs>
+
+  <!-- ============ BACKGROUND GRID ============ -->
+  <rect x="0" y="0" width="1150" height="600" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1150" height="600" fill="url(#grid)" opacity="0.6"/>
+
+  <!-- ============ LAYER LABELS (left side) ============ -->
+  <text x="16" y="78" class="layer-label">接入层</text>
+  <text x="16" y="198" class="layer-label">网关层</text>
+  <text x="16" y="327" class="layer-label">业务中台</text>
+  <text x="16" y="458" class="layer-label">数据层</text>
+  <text x="956" y="160" class="layer-label">外部接口</text>
+
+  <!-- Subtle layer dividers -->
+  <line x1="40" y1="130" x2="930" y2="130" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="4 6"/>
+  <line x1="40" y1="250" x2="930" y2="250" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="4 6"/>
+  <line x1="40" y1="390" x2="930" y2="390" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="4 6"/>
+  <line x1="40" y1="510" x2="930" y2="510" stroke="#E5E7EB" stroke-width="0.5" stroke-dasharray="4 6"/>
+
+  <!-- ============ CONNECTION LINES (behind components) ============ -->
+  <g id="connections" filter="url(#handdrawn-line)">
+
+    <!-- c1: 外部大屏 → midservice -->
+    <path id="conn-c1" class="conn" data-from="dashboard" data-to="midservice"
+      d="M 123 100 C 123 133, 160 133, 160 160"
+      fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+      marker-end="url(#arrow)"/>
+
+    <!-- c2: 普通客户端 → midservice -->
+    <path id="conn-c2" class="conn" data-from="client" data-to="midservice"
+      d="M 363 100 C 363 133, 270 133, 270 160"
+      fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+      marker-end="url(#arrow)"/>
+
+    <!-- c3: 机构客户端 → midservice -->
+    <path id="conn-c3" class="conn" data-from="institution" data-to="midservice"
+      d="M 628 100 C 628 133, 440 133, 440 160"
+      fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+      marker-end="url(#arrow)"/>
+
+    <!-- c4: midservice → DS数据中心 -->
+    <path id="conn-c4" class="conn" data-from="midservice" data-to="ds"
+      d="M 150 220 C 150 250, 143 250, 143 280"
+      fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+      marker-end="url(#arrow)"/>
+
+    <!-- c5: midservice → 管理系统 -->
+    <path id="conn-c5" class="conn" data-from="midservice" data-to="mgmt"
+      d="M 290 220 C 290 250, 588 250, 588 280"
+      fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+      marker-end="url(#arrow)"/>
+
+    <!-- c6: midservice → 业务服务集群 -->
+    <path id="conn-c6" class="conn" data-from="midservice" data-to="bizsvc"
+      d="M 440 220 C 440 250, 810 250, 810 280"
+      fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+      marker-end="url(#arrow)"/>
+
+    <!-- c7: DS数据中心 ↔ 交易核心 (bidirectional upper) -->
+    <path id="conn-c7a" class="conn" data-from="ds" data-to="trading"
+      d="M 250 310 L 275 310"
+      fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+      marker-end="url(#arrow)"/>
+
+    <!-- c7: 交易核心 → DS数据中心 (bidirectional lower) -->
+    <path id="conn-c7b" class="conn" data-from="trading" data-to="ds"
+      d="M 275 332 L 250 332"
+      fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+      marker-end="url(#arrow)"/>
+
+    <!-- c8: 业务服务集群 → MySQL -->
+    <path id="conn-c8" class="conn" data-from="bizsvc" data-to="mysql"
+      d="M 770 357 C 770 391, 238 391, 238 420"
+      fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+      marker-end="url(#arrow)"/>
+
+    <!-- c9: 业务服务集群 → MinIO -->
+    <path id="conn-c9" class="conn" data-from="bizsvc" data-to="minio"
+      d="M 830 357 C 830 391, 503 391, 503 420"
+      fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+      marker-end="url(#arrow)"/>
+
+    <!-- c10: 业务服务集群 → 外部接口集群 -->
+    <path id="conn-c10" class="conn" data-from="bizsvc" data-to="external"
+      d="M 915 315 L 940 315"
+      fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round"
+      marker-end="url(#arrow)"/>
+
+    <!-- c11: midmon ⇢ midservice (dashed monitoring) -->
+    <path id="conn-c11" class="conn-dash" data-from="midmon" data-to="midservice"
+      d="M 550 193 L 510 193"
+      fill="none" stroke="#F87171" stroke-width="1.5" stroke-linecap="round"
+      stroke-dasharray="6 4"/>
+
+  </g>
+
+  <!-- ============ COMPONENTS ============ -->
+
+  <!-- Row 1: 接入层 -->
+  <g class="comp-group" data-id="dashboard" id="comp-dashboard">
+    <rect class="comp-rect" x="35" y="45" width="175" height="55" rx="6" ry="6"
+      fill="#ECFDF3" stroke="#027A48" stroke-width="1.8" filter="url(#handdrawn)"/>
+    <text x="123" y="68" text-anchor="middle" font-size="13" font-weight="500" fill="#065F46">外部大屏</text>
+    <text x="123" y="86" text-anchor="middle" font-size="11" fill="#6B7280">实时数据看板</text>
+  </g>
+
+  <g class="comp-group" data-id="client" id="comp-client">
+    <rect class="comp-rect" x="255" y="45" width="215" height="55" rx="6" ry="6"
+      fill="#ECFDF3" stroke="#027A48" stroke-width="1.8" filter="url(#handdrawn)"/>
+    <text x="363" y="68" text-anchor="middle" font-size="13" font-weight="500" fill="#065F46">普通客户端</text>
+    <text x="363" y="86" text-anchor="middle" font-size="11" fill="#6B7280">PC 端 · 移动端</text>
+  </g>
+
+  <g class="comp-group" data-id="institution" id="comp-institution">
+    <rect class="comp-rect" x="515" y="45" width="225" height="55" rx="6" ry="6"
+      fill="#ECFDF3" stroke="#027A48" stroke-width="1.8" filter="url(#handdrawn)"/>
+    <text x="628" y="68" text-anchor="middle" font-size="13" font-weight="500" fill="#065F46">机构客户端</text>
+    <text x="628" y="86" text-anchor="middle" font-size="11" fill="#6B7280">PC 端 · 移动端 · API 直连</text>
+  </g>
+
+  <!-- Row 2: 网关层 -->
+  <g class="comp-group" data-id="midservice" id="comp-midservice">
+    <rect class="comp-rect" x="35" y="165" width="470" height="55" rx="6" ry="6"
+      fill="#F5F3FF" stroke="#7A5AF8" stroke-width="1.8" filter="url(#handdrawn)"/>
+    <text x="270" y="188" text-anchor="middle" font-size="13" font-weight="500" fill="#4C1D95">midservice 1 / 2 / 3（网关集群）</text>
+    <text x="270" y="206" text-anchor="middle" font-size="11" fill="#6B7280">Java Web 自研 · 多实例负载 · 请求路由</text>
+  </g>
+
+  <g class="comp-group" data-id="midmon" id="comp-midmon">
+    <rect class="comp-rect" x="550" y="165" width="165" height="55" rx="6" ry="6"
+      fill="#F5F3FF" stroke="#7A5AF8" stroke-width="1.8" filter="url(#handdrawn)"/>
+    <text x="633" y="188" text-anchor="middle" font-size="13" font-weight="500" fill="#4C1D95">midmon 监控</text>
+    <text x="633" y="206" text-anchor="middle" font-size="11" fill="#6B7280">Java Web · 健康检测</text>
+  </g>
+
+  <!-- Row 3: 业务中台 -->
+  <g class="comp-group" data-id="ds" id="comp-ds">
+    <rect class="comp-rect" x="35" y="285" width="215" height="72" rx="6" ry="6"
+      fill="#EFF8FF" stroke="#175CD3" stroke-width="2" filter="url(#handdrawn)"/>
+    <text x="143" y="312" text-anchor="middle" font-size="13" font-weight="500" fill="#1E40AF">DS 数据中心</text>
+    <text x="143" y="330" text-anchor="middle" font-size="11" fill="#6B7280">Java 桥接层 · 防腐层</text>
+    <text x="143" y="346" text-anchor="middle" font-size="10" fill="#9CA3AF">协议转换 C↔Java</text>
+  </g>
+
+  <g class="comp-group" data-id="trading" id="comp-trading">
+    <rect class="comp-rect" x="280" y="285" width="190" height="72" rx="6" ry="6"
+      fill="#FFF7ED" stroke="#C4320A" stroke-width="2" filter="url(#handdrawn)"/>
+    <text x="375" y="312" text-anchor="middle" font-size="13" font-weight="500" fill="#9A3412">交易核心</text>
+    <text x="375" y="330" text-anchor="middle" font-size="11" fill="#6B7280">C 语言 · 单线程撮合</text>
+    <text x="375" y="346" text-anchor="middle" font-size="10" fill="#9CA3AF">内存撮合 · 异步落库</text>
+  </g>
+
+  <g class="comp-group" data-id="mgmt" id="comp-mgmt">
+    <rect class="comp-rect" x="500" y="285" width="175" height="72" rx="6" ry="6"
+      fill="#F8FAFC" stroke="#334155" stroke-width="1.8" filter="url(#handdrawn)"/>
+    <text x="588" y="316" text-anchor="middle" font-size="13" font-weight="500" fill="#1E293B">管理系统</text>
+    <text x="588" y="336" text-anchor="middle" font-size="11" fill="#6B7280">Java 微服务</text>
+  </g>
+
+  <g class="comp-group" data-id="bizsvc" id="comp-bizsvc">
+    <rect class="comp-rect" x="705" y="285" width="210" height="72" rx="6" ry="6"
+      fill="#F8FAFC" stroke="#334155" stroke-width="1.8" filter="url(#handdrawn)"/>
+    <text x="810" y="312" text-anchor="middle" font-size="13" font-weight="500" fill="#1E293B">业务服务集群</text>
+    <text x="810" y="330" text-anchor="middle" font-size="11" fill="#6B7280">12+ 微服务集群</text>
+    <text x="810" y="346" text-anchor="middle" font-size="10" fill="#9CA3AF">Hessian 内部调用</text>
+  </g>
+
+  <!-- Row 4: 数据层 -->
+  <g class="comp-group" data-id="mysql" id="comp-mysql">
+    <rect class="comp-rect" x="130" y="425" width="215" height="55" rx="6" ry="6"
+      fill="#F0F9FF" stroke="#026AA2" stroke-width="1.8" filter="url(#handdrawn)"/>
+    <text x="238" y="448" text-anchor="middle" font-size="13" font-weight="500" fill="#075985">MySQL 双实例</text>
+    <text x="238" y="466" text-anchor="middle" font-size="11" fill="#6B7280">Canal 数据同步 · 缓存服务</text>
+  </g>
+
+  <g class="comp-group" data-id="minio" id="comp-minio">
+    <rect class="comp-rect" x="410" y="425" width="185" height="55" rx="6" ry="6"
+      fill="#F0F9FF" stroke="#026AA2" stroke-width="1.8" filter="url(#handdrawn)"/>
+    <text x="503" y="448" text-anchor="middle" font-size="13" font-weight="500" fill="#075985">MinIO 对象存储</text>
+    <text x="503" y="466" text-anchor="middle" font-size="11" fill="#6B7280">文件 · 图片 · 文档</text>
+  </g>
+
+  <!-- Row 2-4 right: 外部接口集群 -->
+  <g class="comp-group" data-id="external" id="comp-external">
+    <rect class="comp-rect" x="945" y="165" width="170" height="315" rx="6" ry="6"
+      fill="#F4F3FF" stroke="#6941C6" stroke-width="1.8" filter="url(#handdrawn)"/>
+    <text x="1030" y="200" text-anchor="middle" font-size="13" font-weight="500" fill="#4C1D95">外部接口集群</text>
+    <line x1="965" y1="215" x2="1095" y2="215" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="1030" y="238" text-anchor="middle" font-size="11" fill="#6B7280">银行 · 短信 · 证书</text>
+    <text x="1030" y="258" text-anchor="middle" font-size="11" fill="#6B7280">物流 · CTRM · 开票</text>
+    <text x="1030" y="278" text-anchor="middle" font-size="11" fill="#6B7280">咨询 · 企查查</text>
+    <text x="1030" y="298" text-anchor="middle" font-size="11" fill="#6B7280">供应链金融</text>
+    <line x1="965" y1="313" x2="1095" y2="313" stroke="#D1D5DB" stroke-width="0.5"/>
+    <text x="1030" y="336" text-anchor="middle" font-size="10" fill="#9CA3AF">9+ 外部系统对接</text>
+    <text x="1030" y="354" text-anchor="middle" font-size="10" fill="#9CA3AF">HTTP / HTTPS</text>
+  </g>
+
+  <!-- Bidirectional connection label -->
+  <text x="263" y="304" text-anchor="middle" font-size="9" fill="#C4320A" font-weight="500">TCP</text>
+  <text x="263" y="340" text-anchor="middle" font-size="9" fill="#C4320A" font-weight="500">报文</text>
+
+  <!-- ============ COLOR LEGEND ============ -->
+  <g id="legend" transform="translate(750, 520)">
+    <text x="0" y="0" font-size="11" font-weight="600" fill="#374151">图例</text>
+
+    <!-- Access -->
+    <rect x="0" y="10" width="26" height="14" rx="3" fill="#ECFDF3" stroke="#027A48" stroke-width="1.2" filter="url(#handdrawn)"/>
+    <text x="32" y="22" font-size="10" fill="#4B5563">接入层</text>
+
+    <!-- Gateway -->
+    <rect x="100" y="10" width="26" height="14" rx="3" fill="#F5F3FF" stroke="#7A5AF8" stroke-width="1.2" filter="url(#handdrawn)"/>
+    <text x="132" y="22" font-size="10" fill="#4B5563">网关层</text>
+
+    <!-- Business -->
+    <rect x="200" y="10" width="26" height="14" rx="3" fill="#F8FAFC" stroke="#334155" stroke-width="1.2" filter="url(#handdrawn)"/>
+    <text x="232" y="22" font-size="10" fill="#4B5563">业务中台</text>
+
+    <!-- DS -->
+    <rect x="0" y="34" width="26" height="14" rx="3" fill="#EFF8FF" stroke="#175CD3" stroke-width="1.2" filter="url(#handdrawn)"/>
+    <text x="32" y="46" font-size="10" fill="#4B5563">桥接层(DS)</text>
+
+    <!-- Engine -->
+    <rect x="100" y="34" width="26" height="14" rx="3" fill="#FFF7ED" stroke="#C4320A" stroke-width="1.2" filter="url(#handdrawn)"/>
+    <text x="132" y="46" font-size="10" fill="#4B5563">撮合引擎(C)</text>
+
+    <!-- Data -->
+    <rect x="200" y="34" width="26" height="14" rx="3" fill="#F0F9FF" stroke="#026AA2" stroke-width="1.2" filter="url(#handdrawn)"/>
+    <text x="232" y="46" font-size="10" fill="#4B5563">数据层</text>
+
+    <!-- External -->
+    <rect x="0" y="58" width="26" height="14" rx="3" fill="#F4F3FF" stroke="#6941C6" stroke-width="1.2" filter="url(#handdrawn)"/>
+    <text x="32" y="70" font-size="10" fill="#4B5563">外部接口</text>
+
+    <!-- Dashed line -->
+    <line x1="100" y1="65" x2="130" y2="65" stroke="#F87171" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="136" y="68" font-size="10" fill="#4B5563">监控链路</text>
+  </g>
+
+  <!-- ============ HOVER TOOLTIP ============ -->
+  <foreignObject x="0" y="0" width="0" height="0">
+    <div id="tooltip" class="tooltip"></div>
+  </foreignObject>
+
+</svg>
+</div>
+
+<p class="hover-hint">悬停任意组件查看其所有关联连接 &nbsp;|&nbsp; 虚线 = 监控链路 &nbsp;|&nbsp; DS↔交易核心 = TCP + 自定义二进制报文</p>
+
+<script>
+(function() {
+  var tooltip = document.getElementById('tooltip');
+  var compGroups = document.querySelectorAll('.comp-group');
+  var allConns = document.querySelectorAll('.conn, .conn-dash');
+  var highlighted = [];
+
+  function dimAllExcept(keepIds) {
+    var keepSet = new Set(keepIds);
+    for (var i = 0; i < allConns.length; i++) {
+      var el = allConns[i];
+      if (keepSet.has(el.id)) {
+        el.classList.add('highlighted');
+        el.classList.remove('dimmed');
+        // Switch to highlighted marker
+        if (el.getAttribute('marker-end') === 'url(#arrow)') {
+          el.setAttribute('marker-end', 'url(#arrow-hl)');
+        }
+      } else {
+        el.classList.add('dimmed');
+        el.classList.remove('highlighted');
+        // Reset marker
+        if (el.getAttribute('marker-end') === 'url(#arrow-hl)') {
+          el.setAttribute('marker-end', 'url(#arrow)');
+        }
+      }
+    }
+    highlighted = keepIds;
+  }
+
+  function resetAll() {
+    for (var i = 0; i < allConns.length; i++) {
+      var el = allConns[i];
+      el.classList.remove('dimmed', 'highlighted');
+      if (el.getAttribute('marker-end') === 'url(#arrow-hl)') {
+        el.setAttribute('marker-end', 'url(#arrow)');
+      }
+    }
+    highlighted = [];
+  }
+
+  function findRelatedConns(compId) {
+    var ids = [];
+    for (var i = 0; i < allConns.length; i++) {
+      var el = allConns[i];
+      var from = el.getAttribute('data-from');
+      var to = el.getAttribute('data-to');
+      if (from === compId || to === compId) {
+        ids.push(el.id);
+      }
+    }
+    return ids;
+  }
+
+  for (var i = 0; i < compGroups.length; i++) {
+    var group = compGroups[i];
+    var compId = group.getAttribute('data-id');
+
+    group.addEventListener('mouseenter', function(e) {
+      var id = this.getAttribute('data-id');
+      var related = findRelatedConns(id);
+      dimAllExcept(related);
+
+      // Show tooltip
+      var rect = this.getBoundingClientRect();
+      tooltip.textContent = this.querySelector('text').textContent + ' — ' + related.length + ' 条连接';
+      tooltip.classList.add('show');
+      tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
+      tooltip.style.top = (rect.top - 36) + 'px';
+    });
+
+    group.addEventListener('mouseleave', function() {
+      resetAll();
+      tooltip.classList.remove('show');
+    });
+
+    group.addEventListener('mousemove', function(e) {
+      tooltip.style.left = (e.clientX - tooltip.offsetWidth / 2) + 'px';
+      tooltip.style.top = (e.clientY - 36) + 'px';
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

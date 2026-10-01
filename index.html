@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>interview-kit · 面试与业务材料</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230d1117'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='16' fill='%23e8a33d'%3E%3E_%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg:#0d1117; --panel:#161b22; --ink:#e6edf3; --muted:#91a0ae;
+      --accent:#e8a33d; --line:#2b3543; --ok:#7ee0a3;
+      --mono:"Cascadia Code",Consolas,monospace;
+      --sans:system-ui,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;padding:32px 24px 48px}
+    .wrap{max-width:920px;margin:0 auto}
+    .bar{font-family:var(--mono);font-size:12.5px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:28px}
+    .bar b{color:var(--ok);font-weight:500}
+    h1{margin:0 0 8px;font-size:28px;letter-spacing:-0.02em}
+    .lead{color:var(--muted);margin:0 0 28px;max-width:600px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+    a.card{display:block;padding:18px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:inherit;text-decoration:none;transition:border-color .15s,transform .15s}
+    a.card:hover{border-color:#3d4a5c;transform:translateY(-2px)}
+    a.card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .tag{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 8px}
+    h3{margin:10px 0 6px;font-size:16px}
+    p{margin:0;font-size:13px;color:var(--muted)}
+    .path{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-family:var(--mono);font-size:12px;color:#b7c2cd;word-break:break-all}
+    footer{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="bar"><b>ok</b> · interview-kit · banks / prep / cases / slides</div>
+    <h1>interview-kit</h1>
+    <p class="lead">面试题库、备战手册、B2B 案例与投标材料。LLM 课程在 <code>ai-study/</code>，知识长文在 <code>knowledge-base/</code>。</p>
+    <div class="grid">
+      <a class="card" href="banks/" target="_blank">
+        <span class="tag">banks</span>
+        <h3>面试题库</h3>
+        <p>Java / MySQL / Redis / Nginx / Linux 等八股；含 face-exp 架构师真题。</p>
+        <div class="path">banks/</div>
+      </a>
+      <a class="card" href="banks/face-exp/" target="_blank">
+        <span class="tag">banks</span>
+        <h3>face-exp 真题</h3>
+        <p>架构师 / Java / 运维 / 项目经理面试真题（自 knowledge-base 迁入）。</p>
+        <div class="path">banks/face-exp/</div>
+      </a>
+      <a class="card" href="prep/index.html" target="_blank">
+        <span class="tag">prep</span>
+        <h3>面试备战</h3>
+        <p>策略手册、业务全链路、架构决策、模拟面试与演示索引。</p>
+        <div class="path">prep/index.html</div>
+      </a>
+      <a class="card" href="cases/" target="_blank">
+        <span class="tag">cases</span>
+        <h3>业务案例与投标</h3>
+        <p>客户案例、投标技术方案。</p>
+        <div class="path">cases/customer-cases · bid-proposal</div>
+      </a>
+      <a class="card" href="slides/" target="_blank">
+        <span class="tag">slides</span>
+        <h3>演示截图</h3>
+        <p>数字产业链服务平台等演示页截图。</p>
+        <div class="path">slides/</div>
+      </a>
+    </div>
+    <footer>interview-kit · :3003 · start.bat · 生成脚本见仓库 _vendor-tools/</footer>
+  </div>
+</body>
+</html>

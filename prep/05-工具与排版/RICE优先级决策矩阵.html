@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RICE 需求优先级决策矩阵 — B2B大宗交易平台</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg:         #fafaf9;
+    --card-bg:    #ffffff;
+    --text:       #1c1917;
+    --text-sub:   #78716c;
+    --text-muted: #a8a29e;
+    --border:     #e7e5e4;
+    --accent:     #2563eb;
+    --accent-soft:#eff6ff;
+    --green:      #059669;
+    --green-soft: #ecfdf5;
+    --amber:      #d97706;
+    --amber-soft: #fffbeb;
+    --red:        #dc2626;
+    --red-soft:   #fef2f2;
+    --purple:     #7c3aed;
+    --purple-soft:#f5f3ff;
+    --p0-bg:      #fef2f2;
+    --p0-border:  #fecaca;
+    --p1-bg:      #fffbeb;
+    --p1-border:  #fde68a;
+    --p2-bg:      #f5f5f4;
+    --p2-border:  #e7e5e4;
+  }
+
+  body {
+    font-family: -apple-system, "SF Pro Text", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  /* ── Header ── */
+  .header { margin-bottom: 40px; }
+  .header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+  .header .sub { font-size: 14px; color: var(--text-sub); margin-top: 6px; }
+  .header .rule { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .header .rule em { font-style: normal; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 1px 6px; border-radius: 3px; }
+
+  /* ── KPI Cards ── */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+  .kpi-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 24px;
+  }
+  .kpi-card .label { font-size: 12px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+  .kpi-card .value { font-size: 32px; font-weight: 700; margin-top: 4px; line-height: 1.1; }
+  .kpi-card .desc  { font-size: 12px; color: var(--text-sub); margin-top: 4px; }
+  .kpi-card.accent .value { color: var(--accent); }
+  .kpi-card.green  .value { color: var(--green);  }
+  .kpi-card.amber  .value { color: var(--amber);  }
+  .kpi-card.red    .value { color: var(--red);    }
+
+  /* ── Section Title ── */
+  .section-title {
+    font-size: 16px; font-weight: 600; margin-bottom: 16px;
+    padding-bottom: 8px; border-bottom: 1.5px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Scatter Plot ── */
+  .plot-wrap {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px 28px 24px; margin-bottom: 40px; position: relative;
+  }
+
+  .plot-wrap svg { display: block; width: 100%; height: auto; }
+
+  /* legend */
+  .legend-row {
+    display: flex; gap: 24px; margin-top: 16px; flex-wrap: wrap;
+    font-size: 12px; color: var(--text-sub);
+  }
+  .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; position: relative; top: -1px; }
+
+  /* ── Table ── */
+  .table-wrap {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; margin-bottom: 40px;
+  }
+  .pri-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .pri-table thead th {
+    text-align: left; padding: 12px 16px; font-size: 11px; font-weight: 600;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border); background: #fafaf9;
+  }
+  .pri-table tbody td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .pri-table tbody tr:last-child td { border-bottom: none; }
+  .pri-table tbody tr.p0 { background: var(--p0-bg); }
+  .pri-table tbody tr.p1 { background: var(--p1-bg); }
+  .pri-table tbody tr.p2 { background: var(--p2-bg); }
+  .pri-table .rank { font-weight: 700; font-size: 14px; color: var(--text-muted); width: 36px; }
+  .pri-table .name { font-weight: 600; }
+  .pri-table .score { font-weight: 700; font-size: 16px; }
+  .pri-table .score.p0-score { color: var(--red); }
+  .pri-table .score.p1-score { color: var(--amber); }
+  .pri-table .score.p2-score { color: var(--text-muted); }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+  .badge.p0 { background: #fee2e2; color: var(--red); }
+  .badge.p1 { background: #fef3c7; color: var(--amber); }
+  .badge.p2 { background: #e7e5e4; color: var(--text-muted); }
+
+  /* ── Decision Cards ── */
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+  .decision-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px;
+  }
+  .decision-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .decision-card.do   h4 { color: var(--green); }
+  .decision-card.cut  h4 { color: var(--red); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-sub); padding: 6px 0;
+    border-bottom: 1px solid var(--border); line-height: 1.5;
+  }
+  .decision-card li:last-child { border-bottom: none; }
+  .decision-card li strong { color: var(--text); font-weight: 600; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .wrap { padding: 24px 16px 48px; }
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .decision-grid { grid-template-columns: 1fr; }
+    .pri-table { font-size: 12px; }
+    .pri-table thead th, .pri-table tbody td { padding: 8px 10px; }
+  }
+
+  /* ── Tooltip (simple CSS positioning via title attr) ── */
+  .bubble { cursor: pointer; transition: opacity 0.15s; }
+  .bubble:hover { opacity: 0.75; }
+  .quad-label { font-size: 11px; fill: var(--text-muted); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ========== HEADER ========== -->
+  <div class="header">
+    <h1>📊 RICE 需求优先级决策矩阵</h1>
+    <p class="sub">B2B 大宗交易平台 · 2026 Q3 需求评审</p>
+    <p class="rule">打分规则：<em>RICE = Reach × Impact × Confidence ÷ Effort</em> &nbsp;|&nbsp; Reach=触达用户数占比 &nbsp; Impact=业务影响 1–5 &nbsp; Confidence=置信度 % &nbsp; Effort=人月</p>
+  </div>
+
+  <!-- ========== KPI CARDS ========== -->
+  <div class="kpi-row">
+    <div class="kpi-card accent">
+      <div class="label">候选需求</div>
+      <div class="value">10</div>
+      <div class="desc">覆盖交易/风控/履约/数据/生态 5 大模块</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="label">P0 必做项</div>
+      <div class="value">4</div>
+      <div class="desc">RICE 总分 &gt; 35，最高 72 分</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="label">P1 待定项</div>
+      <div class="value">3</div>
+      <div class="desc">RICE 总分 15–35，需进一步论证</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="label">P2 搁置项</div>
+      <div class="value">3</div>
+      <div class="desc">RICE 总分 &lt; 15，本轮不做</div>
+    </div>
+  </div>
+
+  <!-- ========== SCATTER MATRIX ========== -->
+  <div class="plot-wrap">
+    <div class="section-title">四象限散点矩阵 · 价值 vs 成本</div>
+    <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- quadrant fills -->
+        <linearGradient id="gradTopLeft"  x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ecfdf5" stop-opacity="0.5"/><stop offset="100%" stop-color="#ecfdf5" stop-opacity="0.05"/></linearGradient>
+        <linearGradient id="gradTopRight" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#eff6ff" stop-opacity="0.5"/><stop offset="100%" stop-color="#eff6ff" stop-opacity="0.05"/></linearGradient>
+        <linearGradient id="gradBotLeft"  x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#fffbeb" stop-opacity="0.5"/><stop offset="100%" stop-color="#fffbeb" stop-opacity="0.05"/></linearGradient>
+        <linearGradient id="gradBotRight" x1="1" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#fef2f2" stop-opacity="0.5"/><stop offset="100%" stop-color="#fef2f2" stop-opacity="0.05"/></linearGradient>
+        <filter id="shadow"><feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.12"/></filter>
+      </defs>
+
+      <!-- plot area: x:80..680, y:30..420 -->
+      <!-- X axis: Effort 0..10, Y axis: Value 0..400 -->
+      <!-- quadrant center: x=4, y=140 -->
+
+      <!-- quadrant rectangles -->
+      <rect x="80" y="30"  width="300" height="195" fill="url(#gradTopLeft)" rx="2"/>
+      <rect x="380" y="30"  width="300" height="195" fill="url(#gradTopRight)" rx="2"/>
+      <rect x="80" y="225" width="300" height="195" fill="url(#gradBotLeft)" rx="2"/>
+      <rect x="380" y="225" width="300" height="195" fill="url(#gradBotRight)" rx="2"/>
+
+      <!-- quadrant labels -->
+      <text x="230" y="112"  text-anchor="middle" class="quad-label" font-size="12" font-weight="700" fill="#059669">✓ 优先做</text>
+      <text x="230" y="128"  text-anchor="middle" class="quad-label" font-size="10" fill="#059669">高价值 · 低成本</text>
+      <text x="530" y="112"  text-anchor="middle" class="quad-label" font-size="12" font-weight="700" fill="#2563eb">📋 规划</text>
+      <text x="530" y="128"  text-anchor="middle" class="quad-label" font-size="10" fill="#2563eb">高价值 · 高成本</text>
+      <text x="230" y="312"  text-anchor="middle" class="quad-label" font-size="12" font-weight="700" fill="#d97706">⚡ 填空</text>
+      <text x="230" y="328"  text-anchor="middle" class="quad-label" font-size="10" fill="#d97706">低价值 · 低成本</text>
+      <text x="530" y="312"  text-anchor="middle" class="quad-label" font-size="12" font-weight="700" fill="#dc2626">✕ 砍掉</text>
+      <text x="530" y="328"  text-anchor="middle" class="quad-label" font-size="10" fill="#dc2626">低价值 · 高成本</text>
+
+      <!-- axes -->
+      <!-- X axis -->
+      <line x1="80" y1="420" x2="680" y2="420" stroke="#d6d3d1" stroke-width="1.5"/>
+      <!-- Y axis -->
+      <line x1="80" y1="30" x2="80" y2="420" stroke="#d6d3d1" stroke-width="1.5"/>
+
+      <!-- X axis labels -->
+      <g font-size="10" fill="#a8a29e" text-anchor="middle">
+        <text x="0" y="0" transform="translate(80,440)">0</text>
+        <text x="0" y="0" transform="translate(200,440)">2</text>
+        <text x="0" y="0" transform="translate(320,440)">4</text>
+        <text x="0" y="0" transform="translate(440,440)">6</text>
+        <text x="0" y="0" transform="translate(560,440)">8</text>
+        <text x="0" y="0" transform="translate(680,440)">10</text>
+      </g>
+      <text x="380" y="458" text-anchor="middle" font-size="11" fill="#78716c" font-weight="500">开发成本（人月）→</text>
+
+      <!-- Y axis labels -->
+      <g font-size="10" fill="#a8a29e" text-anchor="end">
+        <text x="72" y="424">0</text>
+        <text x="72" y="319">100</text>
+        <text x="72" y="214">200</text>
+        <text x="72" y="109">300</text>
+        <text x="72" y="34">400</text>
+      </g>
+      <text x="16" y="225" text-anchor="middle" font-size="11" fill="#78716c" font-weight="500" transform="rotate(-90,16,225)">← 商业价值（触达×影响）</text>
+
+      <!-- grid lines -->
+      <g stroke="#e7e5e4" stroke-width="0.5" stroke-dasharray="4,4">
+        <line x1="80" y1="319" x2="680" y2="319"/>
+        <line x1="80" y1="214" x2="680" y2="214"/>
+        <line x1="80" y1="109" x2="680" y2="109"/>
+        <line x1="200" y1="30" x2="200" y2="420"/>
+        <line x1="320" y1="30" x2="320" y2="420"/>
+        <line x1="440" y1="30" x2="440" y2="420"/>
+        <line x1="560" y1="30" x2="560" y2="420"/>
+      </g>
+
+      <!-- quadrant divider lines -->
+      <line x1="380" y1="30" x2="380" y2="420" stroke="#a8a29e" stroke-width="1.2" stroke-dasharray="6,3"/>
+      <line x1="80" y1="225" x2="680" y2="225" stroke="#a8a29e" stroke-width="1.2" stroke-dasharray="6,3"/>
+
+      <!-- bubbles -->
+      <!-- Data mapping: x = 80 + (effort/10)*600, y = 420 - (value/400)*390, r = 8 + (conf/100)*18 -->
+      <!--
+        Features:
+          1.智能合同模板引擎  (effort=3,   value=240, conf=90,  rice=72,   priority=优先做)
+          2.实时风控预警中心  (effort=6,   value=200, conf=70,  rice=23.3, priority=规划)
+          3.移动端交易下单    (effort=8,   value=340, conf=85,  rice=36.1, priority=规划)
+          4.物流轨迹可视化    (effort=4,   value=210, conf=95,  rice=49.9, priority=优先做)
+          5.发票OCR自动识别  (effort=1.5, value=100, conf=80,  rice=53.3, priority=填空)
+          6.数据大屏驾驶舱    (effort=4,   value=60,  conf=60,  rice=9,    priority=填空)
+          7.供应链金融对接    (effort=10,  value=100, conf=50,  rice=5,    priority=砍掉)
+          8.保证金动态调整    (effort=2,   value=90,  conf=75,  rice=33.8, priority=填空)
+          9.多语言国际化      (effort=7,   value=30,  conf=40,  rice=1.7,  priority=砍掉)
+         10.AI智能客服       (effort=5,   value=180, conf=65,  rice=23.4, priority=规划)
+      -->
+
+      <!-- Bubble colors by quadrant -->
+      <g filter="url(#shadow)">
+        <!-- 优先做 (green) -->
+        <circle cx="260"  cy="186" r="24.2" fill="#059669" fill-opacity="0.18" stroke="#059669" stroke-width="1.8" class="bubble">
+          <title>智能合同模板引擎 · Rice=72 · 优先做</title>
+        </circle>
+        <circle cx="320"  cy="215" r="25.1" fill="#059669" fill-opacity="0.18" stroke="#059669" stroke-width="1.8" class="bubble">
+          <title>物流轨迹可视化 · Rice=49.9 · 优先做</title>
+        </circle>
+
+        <!-- 规划 (blue) -->
+        <circle cx="440"  cy="225" r="20.6" fill="#2563eb" fill-opacity="0.18" stroke="#2563eb" stroke-width="1.8" class="bubble">
+          <title>实时风控预警中心 · Rice=23.3 · 规划</title>
+        </circle>
+        <circle cx="560"  cy="88"  r="23.3" fill="#2563eb" fill-opacity="0.18" stroke="#2563eb" stroke-width="1.8" class="bubble">
+          <title>移动端交易下单 · Rice=36.1 · 规划</title>
+        </circle>
+        <circle cx="380"  cy="245" r="19.7" fill="#2563eb" fill-opacity="0.18" stroke="#2563eb" stroke-width="1.8" class="bubble">
+          <title>AI智能客服 · Rice=23.4 · 规划</title>
+        </circle>
+
+        <!-- 填空 (amber) -->
+        <circle cx="170"  cy="323" r="22.4" fill="#d97706" fill-opacity="0.18" stroke="#d97706" stroke-width="1.8" class="bubble">
+          <title>发票OCR自动识别 · Rice=53.3 · 填空</title>
+        </circle>
+        <circle cx="320"  cy="362" r="18.8" fill="#d97706" fill-opacity="0.18" stroke="#d97706" stroke-width="1.8" class="bubble">
+          <title>数据大屏驾驶舱 · Rice=9 · 填空</title>
+        </circle>
+        <circle cx="200"  cy="332" r="21.5" fill="#d97706" fill-opacity="0.18" stroke="#d97706" stroke-width="1.8" class="bubble">
+          <title>保证金动态调整 · Rice=33.8 · 填空</title>
+        </circle>
+
+        <!-- 砍掉 (red) -->
+        <circle cx="680"  cy="323" r="17"   fill="#dc2626" fill-opacity="0.18" stroke="#dc2626" stroke-width="1.8" class="bubble">
+          <title>供应链金融对接 · Rice=5 · 砍掉</title>
+        </circle>
+        <circle cx="500"  cy="391" r="15.2" fill="#dc2626" fill-opacity="0.18" stroke="#dc2626" stroke-width="1.8" class="bubble">
+          <title>多语言国际化 · Rice=1.7 · 砍掉</title>
+        </circle>
+      </g>
+
+      <!-- Bubble labels (small text next to each) -->
+      <g font-size="9" fill="#1c1917" font-weight="500">
+        <text x="288" y="183">合同模板 72</text>
+        <text x="349" y="212">物流可视化 49.9</text>
+        <text x="465" y="222">风控预警 23.3</text>
+        <text x="588" y="85">移动端交易 36.1</text>
+        <text x="404" y="242">AI客服 23.4</text>
+        <text x="198" y="320">发票OCR 53.3</text>
+        <text x="348" y="359">数据大屏 9</text>
+        <text x="226" y="329">保证金调整 33.8</text>
+        <text x="622" y="320">供应链金融 5</text>
+        <text x="469" y="388">多语言 1.7</text>
+      </g>
+    </svg>
+
+    <div class="legend-row">
+      <div><span class="legend-dot" style="background:#059669"></span>优先做 — 高价值、低成本，立即启动</div>
+      <div><span class="legend-dot" style="background:#2563eb"></span>规划 — 高价值但成本高，资源充足时做</div>
+      <div><span class="legend-dot" style="background:#d97706"></span>填空 — 低成本低价值，空闲期消化</div>
+      <div><span class="legend-dot" style="background:#dc2626"></span>砍掉 — 高成本低价值，本轮不做</div>
+      <div style="margin-left:12px; font-size:11px; color:#a8a29e;">气泡大小 = 置信度</div>
+    </div>
+  </div>
+
+  <!-- ========== RANKING TABLE ========== -->
+  <div class="table-wrap">
+    <div style="padding:20px 24px 0;">
+      <div class="section-title">RICE 综合排序</div>
+    </div>
+    <table class="pri-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>需求名称</th>
+          <th>触达 Reach</th>
+          <th>影响 Impact</th>
+          <th>置信 Confidence</th>
+          <th>成本 Effort</th>
+          <th>RICE 总分</th>
+          <th>优先级</th>
+          <th>建议</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="p0">
+          <td class="rank">1</td>
+          <td class="name">智能合同模板引擎</td>
+          <td>60%</td>
+          <td>4</td>
+          <td>90%</td>
+          <td>3 人月</td>
+          <td class="score p0-score">72.0</td>
+          <td><span class="badge p0">P0</span></td>
+          <td style="font-size:12px;color:#78716c;">立即启动，Q3 交付</td>
+        </tr>
+        <tr class="p0">
+          <td class="rank">2</td>
+          <td class="name">发票 OCR 自动识别</td>
+          <td>50%</td>
+          <td>2</td>
+          <td>80%</td>
+          <td>1.5 人月</td>
+          <td class="score p0-score">53.3</td>
+          <td><span class="badge p0">P0</span></td>
+          <td style="font-size:12px;color:#78716c;">小成本快赢，优先插队</td>
+        </tr>
+        <tr class="p0">
+          <td class="rank">3</td>
+          <td class="name">物流轨迹可视化</td>
+          <td>70%</td>
+          <td>3</td>
+          <td>95%</td>
+          <td>4 人月</td>
+          <td class="score p0-score">49.9</td>
+          <td><span class="badge p0">P0</span></td>
+          <td style="font-size:12px;color:#78716c;">履约体验升级，高确定性</td>
+        </tr>
+        <tr class="p0">
+          <td class="rank">4</td>
+          <td class="name">移动端交易下单</td>
+          <td>85%</td>
+          <td>4</td>
+          <td>85%</td>
+          <td>8 人月</td>
+          <td class="score p0-score">36.1</td>
+          <td><span class="badge p0">P0</span></td>
+          <td style="font-size:12px;color:#78716c;">大投资大回报，需专项资源</td>
+        </tr>
+        <tr class="p1">
+          <td class="rank">5</td>
+          <td class="name">保证金动态调整</td>
+          <td>30%</td>
+          <td>3</td>
+          <td>75%</td>
+          <td>2 人月</td>
+          <td class="score p1-score">33.8</td>
+          <td><span class="badge p1">P1</span></td>
+          <td style="font-size:12px;color:#78716c;">风控收益明确，排期 Q4</td>
+        </tr>
+        <tr class="p1">
+          <td class="rank">6</td>
+          <td class="name">AI 智能客服</td>
+          <td>90%</td>
+          <td>2</td>
+          <td>65%</td>
+          <td>5 人月</td>
+          <td class="score p1-score">23.4</td>
+          <td><span class="badge p1">P1</span></td>
+          <td style="font-size:12px;color:#78716c;">触达广但置信度低，先 PoC</td>
+        </tr>
+        <tr class="p1">
+          <td class="rank">7</td>
+          <td class="name">实时风控预警中心</td>
+          <td>40%</td>
+          <td>5</td>
+          <td>70%</td>
+          <td>6 人月</td>
+          <td class="score p1-score">23.3</td>
+          <td><span class="badge p1">P1</span></td>
+          <td style="font-size:12px;color:#78716c;">影响大但成本高，需技术评审</td>
+        </tr>
+        <tr class="p2">
+          <td class="rank">8</td>
+          <td class="name">数据大屏驾驶舱</td>
+          <td>15%</td>
+          <td>4</td>
+          <td>60%</td>
+          <td>4 人月</td>
+          <td class="score p2-score">9.0</td>
+          <td><span class="badge p2">P2</span></td>
+          <td style="font-size:12px;color:#78716c;">受众窄，本轮搁置</td>
+        </tr>
+        <tr class="p2">
+          <td class="rank">9</td>
+          <td class="name">供应链金融对接</td>
+          <td>20%</td>
+          <td>5</td>
+          <td>50%</td>
+          <td>10 人月</td>
+          <td class="score p2-score">5.0</td>
+          <td><span class="badge p2">P2</span></td>
+          <td style="font-size:12px;color:#78716c;">外部依赖重，合作方未就绪</td>
+        </tr>
+        <tr class="p2">
+          <td class="rank">10</td>
+          <td class="name">多语言国际化</td>
+          <td>10%</td>
+          <td>3</td>
+          <td>40%</td>
+          <td>7 人月</td>
+          <td class="score p2-score">1.7</td>
+          <td><span class="badge p2">P2</span></td>
+          <td style="font-size:12px;color:#78716c;">海外业务未启动，时机不成熟</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ========== DECISION RATIONALE ========== -->
+  <div class="decision-grid">
+    <div class="decision-card do">
+      <h4>✅ 为什么做 — P0 决策依据</h4>
+      <ul>
+        <li><strong>合同模板引擎（72 分）</strong>：触达 60% 用户，影响法务/业务双端效率，确定性 90%，仅需 3 人月。法务审批周期从 3 天缩至 2 小时，直接减少合同流失率。</li>
+        <li><strong>发票 OCR（53 分）</strong>：1.5 人月的典型"快赢"项目。每天 200+ 张发票手工录入，OCR 准确率 95%+ 可释放 2 个财务 FTE，6 个月回本。</li>
+        <li><strong>物流可视化（50 分）</strong>：70% 用户的核心痛点——"货到哪了"。95% 置信度来自竞品标配压力 + 客服投诉数据。履约透明度提升直接降低催单率。</li>
+        <li><strong>移动端交易（36 分）</strong>：85% 触达是压倒性理由。大宗交易移动化趋势不可逆，8 人月投资大但长期护城河价值高，建议拆 M1/M2 分阶段交付。</li>
+      </ul>
+    </div>
+    <div class="decision-card cut">
+      <h4>✕ 为什么砍 — P2 搁置逻辑</h4>
+      <ul>
+        <li><strong>多语言国际化（1.7 分）</strong>：触达仅 10%（当前海外客户<5家），置信度 40%（市场策略未定），7 人月投入无确定回报。等海外业务目标明确后再评估。</li>
+        <li><strong>供应链金融（5 分）</strong>：影响 5 分最高但 10 人月 + 50% 置信度是致命组合。金融机构合作方未签约、合规方案未评审，强行启动风险极高。</li>
+        <li><strong>数据大屏（9 分）</strong>：仅 15% 管理层用户，属于"好看但不紧急"的锦上添花。4 人月可做 2 个快赢项目。等核心链路跑通后，用剩余资源填。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER NOTE ========== -->
+  <div style="border-top:1px solid var(--border); padding-top:24px; font-size:12px; color:var(--text-muted); text-align:center;">
+    RICE 评分仅作为决策参考框架，最终优先级需结合战略对齐、合规要求、组织产能等定性因素综合判断 &nbsp;|&nbsp; 更新时间：2026-07-22
+  </div>
+
+</div>
+
+</body>
+</html>
