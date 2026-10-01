@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>付款发货场景 - B2B分布式项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/common.css">
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-hand-holding-usd mr-3 text-teal-500"></i>付款发货场景
+            </h1>
+            <p class="text-gray-500 mb-6">Payment and Delivery Scenarios - 贸易付款发货典型场景</p>
+            
+            <div class="bg-teal-50 border-l-4 border-teal-500 p-4 mb-8">
+                <p class="text-teal-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心概述：</strong>实际贸易中，付款与发货的约定场景高度依赖交易双方的信任度、商品类型（如大宗商品/定制化产品/快消品）、交易规模及行业惯例，核心是平衡"<strong>买方资金安全</strong>"与"<strong>卖方货权/收款保障</strong>"。
+                </p>
+            </div>
+
+            <div class="space-y-8 mb-8">
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-money-bill-wave text-red-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">1. 预付款（款到发货）：卖方主导风险控制</h3>
+                    </div>
+                    
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <h4 class="font-semibold text-red-800 mb-2">约定逻辑</h4>
+                        <p class="text-gray-700 text-sm">
+                            买方先支付部分或全部款项，卖方收到款项后再安排生产/发货。
+                        </p>
+                    </div>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">常见细分</h4>
+                    <div class="space-y-3 mb-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-gray-800 mb-2">全额预付款</h5>
+                            <p class="text-sm text-gray-600">买方支付100%货款后，卖方发货（如小众定制产品、紧俏大宗商品，避免卖方生产后买方违约）。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-gray-800 mb-2">部分预付款（定金）</h5>
+                            <p class="text-sm text-gray-600">买方支付30%-50%定金，卖方启动生产，发货前买方付清尾款（如设备定制、批量采购，覆盖卖方原材料成本）。</p>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                        <li>卖方为小厂商/新供应商，买方对其货权履约能力信任度低；</li>
+                        <li>商品为定制化、非标准化产品（如专属规格的机械零件），卖方无法转售给其他买家；</li>
+                        <li>紧俏资源类商品（如旺季的煤炭、芯片），卖方占据谈判优势。</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-box-open text-blue-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">2. 货到付款（款到放单/收货付款）：买方主导风险控制</h3>
+                    </div>
+                    
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <h4 class="font-semibold text-blue-800 mb-2">约定逻辑</h4>
+                        <p class="text-gray-700 text-sm">
+                            卖方先发货，买方收到货物（或货物单据）后再支付款项，核心保障买方"见货付款"。
+                        </p>
+                    </div>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">常见细分</h4>
+                    <div class="space-y-3 mb-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-gray-800 mb-2">货到付款（现金/电汇）</h5>
+                            <p class="text-sm text-gray-600">卖方送货上门，买方验收无误后当场支付全款（如本地小额贸易、零售批发）。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-gray-800 mb-2">凭单付款（DP，付款交单）</h5>
+                            <p class="text-sm text-gray-600">卖方将货运单据（提单、装箱单）交给银行，买方付款给银行后才能领取单据、提取货物（多用于国际贸易，通过银行保障单据与款项对流）。</p>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                        <li>买方为大型企业/终端客户，谈判地位强（如连锁超市向供应商采购日用品）；</li>
+                        <li>商品为标准化、可快速验货的产品（如家电、快消品），买方能当场确认质量/数量；</li>
+                        <li>首次合作双方信任度低，买方不愿提前垫资。</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-amber-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-project-diagram text-amber-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">3. 分期付款（按履约节点付款）：平衡双方风险</h3>
+                    </div>
+                    
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                        <h4 class="font-semibold text-amber-800 mb-2">约定逻辑</h4>
+                        <p class="text-gray-700 text-sm">
+                            将付款拆分为多笔，与发货、验收等履约节点绑定，完成一个节点付一笔款，是贸易中最常用的"平衡方案"。
+                        </p>
+                    </div>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">典型流程（以设备采购为例）</h4>
+                    <ol class="list-decimal list-inside space-y-2 text-gray-600 text-sm mb-4">
+                        <li>合同签订后，买方向卖方支付20%预付款（卖方启动生产）；</li>
+                        <li>设备生产完成、买方到厂验收合格后，支付30%进度款（卖方安排发货）；</li>
+                        <li>设备运到买方工厂、安装调试完成后，支付40%验收款；</li>
+                        <li>质保期（如1年）结束后，支付剩余10%质保金。</li>
+                    </ol>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                        <li>交易周期长、金额大的项目（如设备采购、工程材料供应）；</li>
+                        <li>履约环节多（生产-验收-发货-安装），需分阶段确认进度；</li>
+                        <li>双方合作基础中等，需通过节点控制降低单方风险。</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-university text-purple-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">4. 信用证（L/C）：银行担保的国际贸易场景</h3>
+                    </div>
+                    
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                        <h4 class="font-semibold text-purple-800 mb-2">约定逻辑</h4>
+                        <p class="text-gray-700 text-sm">
+                            买方委托银行开立信用证，银行承诺"只要卖方提交符合信用证条款的单据（如提单、发票），就无条件付款"，本质是用银行信用替代买卖双方的商业信用。
+                        </p>
+                    </div>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">核心流程</h4>
+                    <ol class="list-decimal list-inside space-y-2 text-gray-600 text-sm mb-4">
+                        <li>买卖双方签订合同，约定以信用证结算；</li>
+                        <li>买方（开证申请人）向银行申请开立信用证，明确"发货期限、单据要求、付款金额"等条款；</li>
+                        <li>银行（开证行）将信用证发送给卖方（受益人）所在地银行（通知行）；</li>
+                        <li>卖方按约定发货，收集全套单据提交给通知行；</li>
+                        <li>银行审核单据无误后，向卖方付款（或承兑远期汇票），再向买方收取款项。</li>
+                    </ol>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                        <li>国际贸易（跨国家/地区，买卖双方互不信任，缺乏法律管辖便利）；</li>
+                        <li>高金额交易（如大宗商品进出口、大型设备跨境采购），需规避"付款不发货"或"发货不付款"的跨境风险。</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-calendar-check text-green-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">5. 账期结算（先货后款，约定周期付款）：基于长期信任的合作</h3>
+                    </div>
+                    
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                        <h4 class="font-semibold text-green-800 mb-2">约定逻辑</h4>
+                        <p class="text-gray-700 text-sm">
+                            卖方先发货，买方在约定的"账期"内（如30天/60天）支付货款，本质是卖方给买方提供短期资金支持，基于长期稳定的合作关系。
+                        </p>
+                    </div>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">常见形式</h4>
+                    <div class="space-y-3 mb-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-gray-800 mb-2">固定账期</h5>
+                            <p class="text-sm text-gray-600">每月5日结算上月1-30日的所有发货货款（如大型零售商与长期供应商的合作，如沃尔玛向食品供应商采购）。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-gray-800 mb-2">滚动账期</h5>
+                            <p class="text-sm text-gray-600">每笔发货后，买方在30天内支付该笔货款（如长期合作的工业品贸易）。</p>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                        <li>双方长期合作（如3年以上），信任度高，了解彼此的履约能力；</li>
+                        <li>买方为下游渠道商/零售商，需通过账期缓解资金周转压力（如超市先铺货、卖完再付款）。</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-teal-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-user-shield text-teal-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">6. 委托第三方担保/监管：特殊风险场景的补充</h3>
+                    </div>
+                    
+                    <div class="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-4">
+                        <h4 class="font-semibold text-teal-800 mb-2">约定逻辑</h4>
+                        <p class="text-gray-700 text-sm">
+                            引入第三方（如担保公司、仓储监管机构），对"付款"或"发货"环节进行担保，降低单方违约风险，常见于高价值、易损耗或需存储的商品。
+                        </p>
+                    </div>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">典型场景</h4>
+                    <div class="space-y-3 mb-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-gray-800 mb-2">大宗商品质押监管</h5>
+                            <p class="text-sm text-gray-600">买方支付部分货款，卖方将货物存入第三方监管仓库，买方付清尾款后，监管方才释放货物（如钢材、有色金属贸易）。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h5 class="font-semibold text-gray-800 mb-2">担保公司承保</h5>
+                            <p class="text-sm text-gray-600">卖方投保"买方付款履约险"，若买方到期不付款，担保公司向卖方赔付，再向买方追偿（如中小卖方与陌生买方的大额交易）。</p>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                        <li>商品需长期存储（如粮食、化工品），担心"货权被挪用"；</li>
+                        <li>买方信用资质一般，但交易金额大，卖方不愿承担坏账风险。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-table mr-2 text-gray-500"></i>不同场景的核心差异（总结）
+                </h3>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">场景类型</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">核心优势（对买方）</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">核心优势（对卖方）</th>
+                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">关键前提</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-4 py-3 text-sm font-medium text-gray-900">预付款</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">锁定货源，避免涨价</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">保障收款，降低生产风险</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">卖方谈判强/商品紧俏</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="px-4 py-3 text-sm font-medium text-gray-900">货到付款</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">见货付款，规避货不对板</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">快速成交，适合小额零售</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">买方谈判强/商品标准化</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 text-sm font-medium text-gray-900">分期付款</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">分阶段控制风险，资金压力小</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">逐步回款，覆盖成本</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">交易周期长/双方信任中等</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="px-4 py-3 text-sm font-medium text-gray-900">信用证</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">单据审核，保障货权</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">银行担保，确保收款</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">国际贸易/高金额</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 text-sm font-medium text-gray-900">账期结算</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">缓解资金周转压力</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">稳定长期订单</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">长期合作/高信任度</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="px-4 py-3 text-sm font-medium text-gray-900">第三方担保</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">降低付款后货权风险</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">降低发货后收款风险</td>
+                                <td class="px-4 py-3 text-sm text-gray-600">高价值/易损耗商品</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <p class="text-gray-600 mt-4 text-sm">
+                    实际贸易中，企业会根据自身谈判地位、商品特性及合作阶段，选择单一场景或组合场景（如"预付款+尾款""信用证+部分预付款"），最终目的是在"促成交易"与"控制风险"之间找到平衡。
+                </p>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,430 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支付系统 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-4xl mx-auto p-6">
+        <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">
+                <i class="fas fa-credit-card text-purple-500 mr-3"></i>支付系统
+            </h1>
+            
+            <div class="prose max-w-none">
+                <p class="text-gray-600 mb-6">
+                    支付系统是电商系统的核心模块之一，负责处理用户支付请求、与第三方支付平台交互、资金结算等关键业务。支付系统需要保证交易的安全性、可靠性和一致性，是电商系统的资金入口。
+                </p>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">支付系统功能</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-link text-blue-500 mr-2"></i>
+                            支付渠道对接
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>支付宝、微信支付等第三方支付平台</li>
+                            <li>银联、网联等银行卡支付</li>
+                            <li>Apple Pay、Google Pay等移动支付</li>
+                            <li>企业账户支付</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-exchange-alt text-blue-500 mr-2"></i>
+                            交易处理
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>支付请求处理</li>
+                            <li>支付结果通知</li>
+                            <li>交易状态查询</li>
+                            <li>退款处理</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-calculator text-blue-500 mr-2"></i>
+                            资金结算
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>交易对账</li>
+                            <li>资金分账</li>
+                            <li>手续费计算</li>
+                            <li>结算报表</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-shield-alt text-blue-500 mr-2"></i>
+                            风险控制
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>支付风控</li>
+                            <li>反欺诈检测</li>
+                            <li>交易限额</li>
+                            <li>黑名单管理</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">支付流程设计</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">支付流程</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                        <div class="bg-blue-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">1. 创建支付</div>
+                            <div class="text-xs text-gray-600">生成支付订单</div>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">2. 跳转支付</div>
+                            <div class="text-xs text-gray-600">跳转到支付页面</div>
+                        </div>
+                        <div class="bg-yellow-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">3. 用户支付</div>
+                            <div class="text-xs text-gray-600">用户完成支付</div>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">4. 结果通知</div>
+                            <div class="text-xs text-gray-600">接收支付结果</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">5. 处理结果</div>
+                            <div class="text-xs text-gray-600">更新订单状态</div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800">支付状态机</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200 text-sm">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="py-2 px-4 border-b text-left">状态</th>
+                                    <th class="py-2 px-4 border-b text-left">说明</th>
+                                    <th class="py-2 px-4 border-b text-left">可流转状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">待支付</td>
+                                    <td class="py-2 px-4 border-b">支付订单已创建</td>
+                                    <td class="py-2 px-4 border-b">支付中, 已取消</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">支付中</td>
+                                    <td class="py-2 px-4 border-b">用户正在支付</td>
+                                    <td class="py-2 px-4 border-b">支付成功, 支付失败, 已取消</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">支付成功</td>
+                                    <td class="py-2 px-4 border-b">支付完成</td>
+                                    <td class="py-2 px-4 border-b">已退款</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">支付失败</td>
+                                    <td class="py-2 px-4 border-b">支付未完成</td>
+                                    <td class="py-2 px-4 border-b">待支付</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">支付渠道对接</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fab fa-alipay text-blue-500 mr-2"></i>
+                            支付宝支付
+                        </h3>
+                        <pre class="bg-gray-800 text-white p-3 rounded text-xs overflow-x-auto">
+// 支付宝支付示例
+AlipayClient alipayClient = new DefaultAlipayClient(
+    "https://openapi.alipay.com/gateway.do",
+    appId, privateKey, "json", charset, alipayPublicKey, "RSA2");
+
+AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
+request.setBizContent("{" +
+    "\"out_trade_no\":\"20150320010101001\"," +
+    "\"total_amount\":88.88," +
+    "\"subject\":\"Iphone6 16G\"," +
+    "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+    
+String form = alipayClient.pageExecute(request).getBody();</pre>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fab fa-weixin text-green-500 mr-2"></i>
+                            微信支付
+                        </h3>
+                        <pre class="bg-gray-800 text-white p-3 rounded text-xs overflow-x-auto">
+// 微信支付示例
+WXPay wxPay = new WXPay(config);
+Map<String, String> data = new HashMap<>();
+data.put("body", "腾讯充值中心-QQ会员充值");
+data.put("out_trade_no", "2016090910595900000012");
+data.put("total_fee", "1");
+data.put("spbill_create_ip", "123.12.12.123");
+data.put("notify_url", "http://www.example.com/wxpay/notify");
+data.put("trade_type", "NATIVE");
+
+Map<String, String> resp = wxPay.unifiedOrder(data);</pre>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">数据模型设计</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">核心数据表</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="py-2 px-4 border-b text-left">表名</th>
+                                    <th class="py-2 px-4 border-b text-left">字段</th>
+                                    <th class="py-2 px-4 border-b text-left">说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">payment_orders</td>
+                                    <td class="py-2 px-4 border-b">payment_id, order_id, amount, status, channel, create_time</td>
+                                    <td class="py-2 px-4 border-b">支付订单表</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">payment_records</td>
+                                    <td class="py-2 px-4 border-b">record_id, payment_id, transaction_id, status, create_time</td>
+                                    <td class="py-2 px-4 border-b">支付记录表</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">refund_orders</td>
+                                    <td class="py-2 px-4 border-b">refund_id, payment_id, amount, status, create_time</td>
+                                    <td class="py-2 px-4 border-b">退款订单表</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">payment_channels</td>
+                                    <td class="py-2 px-4 border-b">channel_id, channel_name, config, status</td>
+                                    <td class="py-2 px-4 border-b">支付渠道配置表</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">分布式事务</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">事务处理方案</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-blue-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">TCC模式</h4>
+                            <p class="text-gray-600 text-sm">
+                                Try-Confirm-Cancel三阶段提交
+                            </p>
+                            <ul class="list-disc pl-5 text-gray-600 text-xs mt-2">
+                                <li>Try阶段：检查并预留资源</li>
+                                <li>Confirm阶段：确认执行</li>
+                                <li>Cancel阶段：回滚操作</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">Saga模式</h4>
+                            <p class="text-gray-600 text-sm">
+                                长事务解决方案
+                            </p>
+                            <ul class="list-disc pl-5 text-gray-600 text-xs mt-2">
+                                <li>正向操作序列</li>
+                                <li>补偿操作序列</li>
+                                <li>事务协调器</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800">支付事务示例</h4>
+                    <pre class="bg-gray-800 text-white p-4 rounded-lg mt-2 overflow-x-auto">
+// 基于TCC的支付处理
+@TccTransaction(confirmMethod = "confirmPayment", cancelMethod = "cancelPayment")
+public void preparePayment(PaymentRequest request) {
+    // 1. 创建支付订单
+    PaymentOrder paymentOrder = new PaymentOrder();
+    paymentOrder.setOrderId(request.getOrderId());
+    paymentOrder.setAmount(request.getAmount());
+    paymentOrder.setStatus(PaymentStatus.PREPARING);
+    paymentOrderMapper.insert(paymentOrder);
+    
+    // 2. 冻结用户账户资金
+    accountService.freezeBalance(request.getUserId(), request.getAmount());
+    
+    // 3. 预占商品库存
+    inventoryService.reserveStock(request.getProductId(), request.getQuantity());
+}
+
+public void confirmPayment(PaymentRequest request) {
+    // 1. 更新支付订单状态
+    paymentOrderMapper.updateStatus(request.getPaymentId(), PaymentStatus.SUCCESS);
+    
+    // 2. 扣减用户账户资金
+    accountService.deductBalance(request.getUserId(), request.getAmount());
+    
+    // 3. 扣减商品库存
+    inventoryService.deductStock(request.getProductId(), request.getQuantity());
+}
+
+public void cancelPayment(PaymentRequest request) {
+    // 1. 更新支付订单状态
+    paymentOrderMapper.updateStatus(request.getPaymentId(), PaymentStatus.CANCELLED);
+    
+    // 2. 解冻用户账户资金
+    accountService.unfreezeBalance(request.getUserId(), request.getAmount());
+    
+    // 3. 释放商品库存
+    inventoryService.releaseStock(request.getProductId(), request.getQuantity());
+}</pre>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">安全与风控</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-lock text-red-500 mr-2"></i>
+                            支付安全
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>数据加密传输（HTTPS）</li>
+                            <li>敏感信息加密存储</li>
+                            <li>签名验证</li>
+                            <li>防重放攻击</li>
+                            <li>防篡改校验</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-user-shield text-red-500 mr-2"></i>
+                            风控策略
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>用户行为分析</li>
+                            <li>交易频率限制</li>
+                            <li>异常IP检测</li>
+                            <li>黑名单机制</li>
+                            <li>多维度验证</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">对账与结算</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">对账流程</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                        <div class="bg-blue-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">数据准备</div>
+                            <div class="text-xs text-gray-600">获取交易数据</div>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">数据比对</div>
+                            <div class="text-xs text-gray-600">系统间数据核对</div>
+                        </div>
+                        <div class="bg-yellow-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">差异处理</div>
+                            <div class="text-xs text-gray-600">处理不一致数据</div>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">结果确认</div>
+                            <div class="text-xs text-gray-600">生成对账报告</div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800">对账示例</h4>
+                    <pre class="bg-gray-800 text-white p-4 rounded-lg mt-2 overflow-x-auto">
+// 对账任务示例
+@Component
+public class ReconciliationTask {
+    
+    @Scheduled(cron = "0 0 2 * * ?") // 每天凌晨2点执行
+    public void reconcile() {
+        // 1. 获取系统内交易数据
+        List<PaymentRecord> localRecords = paymentRecordMapper
+            .selectByDate(LocalDate.now().minusDays(1));
+        
+        // 2. 获取支付宝交易数据
+        List<AlipayRecord> alipayRecords = alipayService
+            .downloadBill(LocalDate.now().minusDays(1));
+        
+        // 3. 数据比对
+        ReconciliationResult result = reconciliationService
+            .compare(localRecords, alipayRecords);
+        
+        // 4. 处理差异
+        if (!result.isConsistent()) {
+            handleDiscrepancy(result.getDiscrepancies());
+        }
+        
+        // 5. 记录对账结果
+        reconciliationResultMapper.insert(result);
+    }
+}</pre>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">监控与运维</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-chart-bar text-yellow-500 mr-2"></i>
+                            关键指标
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>支付成功率</li>
+                            <li>支付平均耗时</li>
+                            <li>退款率</li>
+                            <li>对账一致率</li>
+                            <li>异常交易数</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-tools text-yellow-500 mr-2"></i>
+                            运维保障
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>多活部署</li>
+                            <li>灾备切换</li>
+                            <li>容量规划</li>
+                            <li>应急预案</li>
+                            <li>故障演练</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">支付系统最佳实践</h2>
+                <div class="bg-green-50 rounded-lg p-6">
+                    <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                        <li>标准化支付接口设计</li>
+                        <li>完善的异常处理机制</li>
+                        <li>健壮的分布式事务方案</li>
+                        <li>全面的安全防护措施</li>
+                        <li>精确的对账和结算流程</li>
+                        <li>详细的监控和告警体系</li>
+                        <li>充分的压力测试和容量评估</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

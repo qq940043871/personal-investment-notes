@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java进程突然消失问题排查 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-coffee mr-3 text-gray-600"></i>Java进程突然消失问题排查
+            </h1>
+            <p class="text-gray-500 mb-6">Java Process Crash Troubleshooting - 定位和解决Java进程突然消失的问题</p>
+            
+            <div class="bg-gray-50 border-l-4 border-gray-600 p-4 mb-8">
+                <p class="text-gray-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心目标：</strong>掌握Java进程突然消失的原因分析和排查方法，快速定位并解决问题。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-bug mr-2 text-gray-600"></i>问题现象
+            </h2>
+
+            <div class="bg-white border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-2">现象描述</h4>
+                        <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                            <li>Java应用程序突然停止运行</li>
+                            <li>进程从系统中消失，无任何提示</li>
+                            <li>日志文件中可能没有错误信息</li>
+                            <li>服务监控系统报警，显示服务不可用</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-2">影响范围</h4>
+                        <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                            <li>服务中断，影响用户访问</li>
+                            <li>可能导致数据丢失或不一致</li>
+                            <li>系统稳定性受到影响</li>
+                            <li>增加运维成本和压力</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-exclamation-triangle mr-2 text-gray-600"></i>可能原因
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-bolt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">OOM错误</h4>
+                    <p class="text-sm opacity-90">内存溢出导致进程崩溃</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-microchip text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">CPU问题</h4>
+                    <p class="text-sm opacity-90">CPU资源耗尽或硬件故障</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-plug text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">系统信号</h4>
+                    <p class="text-sm opacity-90">收到终止信号被强制关闭</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-code text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">代码问题</h4>
+                    <p class="text-sm opacity-90">未捕获的异常或错误</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-hdd text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">磁盘问题</h4>
+                    <p class="text-sm opacity-90">磁盘空间不足或I/O错误</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-network-wired text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">网络问题</h4>
+                    <p class="text-sm opacity-90">网络连接中断或超时</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-cogs text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">配置问题</h4>
+                    <p class="text-sm opacity-90">JVM参数或系统配置错误</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-pink-500 to-pink-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-server text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">系统问题</h4>
+                    <p class="text-sm opacity-90">系统崩溃或重启</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-search mr-2 text-gray-600"></i>排查方法
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-file-alt text-red-500 mr-2"></i>
+                        检查日志文件
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">系统日志</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># Linux系统日志</span>
+cat /var/log/syslog | grep java
+cat /var/log/messages | grep java
+
+<span class="text-gray-500"># CentOS/RHEL系统</span>
+cat /var/log/secure | grep java
+
+<span class="text-gray-500"># 查看OOM killer日志</span>
+dmesg | grep -i kill
+
+dmesg | grep -i java</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">Java应用日志</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看应用日志文件</span>
+tail -n 1000 /path/to/application.log
+
+<span class="text-gray-500"># 查找错误信息</span>
+grep -i "error\|exception\|fatal" /path/to/application.log
+
+<span class="text-gray-500"># 查看最新的日志</span>
+ls -la /path/to/logs/ | sort -k 6 -r | head -10</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-memory text-orange-500 mr-2"></i>
+                        内存问题排查
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">检查OOM日志</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看系统OOM日志</span>
+dmesg | grep -i oom
+
+dmesg | grep -i java
+
+<span class="text-gray-500"># 查看Java堆转储文件</span>
+ls -la /path/to/java/heap/
+
+<span class="text-gray-500"># 分析堆转储文件</span>
+jhat /path/to/java_pid1234.hprof
+
+<span class="text-gray-500"># 或者使用VisualVM分析</span></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">JVM内存参数检查</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看Java进程的启动参数</span>
+ps aux | grep java
+
+<span class="text-gray-500"># 示例输出</span>
+java -Xms2g -Xmx4g -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/path/to/dumps/ -jar app.jar
+
+<span class="text-gray-500"># 检查是否配置了HeapDumpOnOutOfMemoryError</span></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-terminal text-yellow-500 mr-2"></i>
+                        系统信号排查
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">检查系统信号</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看系统信号日志</span>
+cat /var/log/syslog | grep -i "signal\|kill\|terminate"
+
+<span class="text-gray-500"># 查看进程终止原因</span>
+lastcomm | grep java
+
+<span class="text-gray-500"># 检查cron任务</span>
+crontab -l
+ls -la /etc/cron.*
+
+<span class="text-gray-500"># 检查系统服务</span> 
+systemctl status | grep java</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">常见信号</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>SIGTERM (15)：</strong>正常终止信号，通常由kill命令发送</li>
+                                <li><strong>SIGKILL (9)：</strong>强制终止信号，无法被捕获</li>
+                                <li><strong>SIGINT (2)：</strong>中断信号，通常由Ctrl+C发送</li>
+                                <li><strong>SIGSEGV (11)：</strong>段错误，通常由内存访问错误引起</li>
+                                <li><strong>SIGABRT (6)：</strong>中止信号，通常由assert失败或abort()调用引起</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-hdd text-green-500 mr-2"></i>
+                        磁盘和文件系统排查
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">检查磁盘空间</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看磁盘使用率</span>
+df -h
+
+<span class="text-gray-500"># 查看inode使用情况</span>
+df -i
+
+<span class="text-gray-500"># 查看目录大小</span>
+du -sh /path/to/application/*
+
+<span class="text-gray-500"># 检查日志文件大小</span>
+ls -la /path/to/logs/ | sort -k 5 -r | head -10</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">检查文件权限</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 检查应用目录权限</span>
+ls -la /path/to/application/
+
+<span class="text-gray-500"># 检查日志目录权限</span>
+ls -la /path/to/logs/
+
+<span class="text-gray-500"># 检查配置文件权限</span>
+ls -la /path/to/config/</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-code text-blue-500 mr-2"></i>
+                        代码问题排查
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">检查未捕获的异常</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看应用日志中的异常</span>
+grep -i "exception\|error" /path/to/application.log | tail -50
+
+<span class="text-gray-500"># 查看线程转储（如果有）</span>
+ls -la /path/to/thread_dumps/
+
+<span class="text-gray-500"># 分析线程转储</span>
+jstack /path/to/thread_dump.txt</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">常见代码问题</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>无限循环：</strong>导致CPU使用率过高</li>
+                                <li><strong>死锁：</strong>导致线程阻塞</li>
+                                <li><strong>内存泄漏：</strong>导致OOM</li>
+                                <li><strong>未捕获的异常：</strong>导致线程或进程终止</li>
+                                <li><strong>Native方法错误：</strong>导致JVM崩溃</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-tools mr-2 text-gray-600"></i>
+                实用工具和命令
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">系统工具</h3>
+                    <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看系统资源使用情况</span>
+top
+vmstat 1
+iosat -x 1
+
+<span class="text-gray-500"># 查看进程状态</span>
+ps aux | grep java
+pidstat -p &lt;pid&gt; 1
+
+<span class="text-gray-500"># 查看系统日志</span>
+dmesg
+journalctl -xe
+
+<span class="text-gray-500"># 查看网络连接</span>
+netstat -tuln
+ss -tuln</pre>
+                    </div>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Java工具</h3>
+                    <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看JVM信息</span>
+jps
+jstat -gc &lt;pid&gt; 1000 10
+jmap -heap &lt;pid&gt;
+
+<span class="text-gray-500"># 生成线程转储</span>
+jstack &lt;pid&gt; > thread_dump.txt
+
+<span class="text-gray-500"># 生成堆转储</span>
+jmap -dump:format=b,file=heap.hprof &lt;pid&gt;
+
+<span class="text-gray-500"># 分析内存使用</span>
+jhat heap.hprof
+
+<span class="text-gray-500"># 监控JVM</span>
+jconsole
+jvisualvm</pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-clipboard-check mr-2 text-gray-600"></i>
+                排查流程
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="relative">
+                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+                    <div class="space-y-8">
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">1</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">确认问题</h4>
+                                <p class="text-sm text-gray-600">确认Java进程是否真的消失，检查系统监控</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">2</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">检查系统日志</h4>
+                                <p class="text-sm text-gray-600">查看syslog、dmesg等系统日志，寻找OOM或信号信息</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">3</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">检查应用日志</h4>
+                                <p class="text-sm text-gray-600">查看应用日志文件，寻找异常或错误信息</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">4</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">检查系统资源</h4>
+                                <p class="text-sm text-gray-600">检查CPU、内存、磁盘等系统资源使用情况</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">5</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">分析转储文件</h4>
+                                <p class="text-sm text-gray-600">如果有堆转储或线程转储文件，进行分析</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">6</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">定位问题根源</h4>
+                                <p class="text-sm text-gray-600">根据收集到的信息，定位问题根源</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">7</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">实施解决方案</h4>
+                                <p class="text-sm text-gray-600">根据问题根源，实施相应的解决方案</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-wrench mr-2 text-gray-600"></i>
+                解决方案
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-memory text-red-500 mr-2"></i>
+                        内存问题解决方案
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">OOM错误</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>增加JVM堆内存：<code>-Xmx8g</code></li>
+                                <li>配置堆转储：<code>-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/path/to/dumps/</code></li>
+                                <li>优化内存使用：检查代码中的内存泄漏</li>
+                                <li>使用内存分析工具：VisualVM、MAT等</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-terminal text-yellow-500 mr-2"></i>
+                        系统信号解决方案
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">避免被系统终止</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>检查cron任务，避免意外终止进程</li>
+                                <li>配置系统服务，使用systemd管理</li>
+                                <li>捕获并处理信号，优雅关闭</li>
+                                <li>监控系统资源，避免触发OOM killer</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-hdd text-green-500 mr-2"></i>
+                        磁盘问题解决方案
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">磁盘空间不足</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>清理日志文件，配置日志轮转</li>
+                                <li>增加磁盘空间或使用外部存储</li>
+                                <li>监控磁盘使用率，设置告警</li>
+                                <li>优化应用存储使用</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-code text-blue-500 mr-2"></i>
+                        代码问题解决方案
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">代码优化</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>捕获并处理所有异常</li>
+                                <li>避免无限循环和死锁</li>
+                                <li>优化内存使用，避免内存泄漏</li>
+                                <li>使用线程池管理线程</li>
+                                <li>避免使用Native方法或确保其安全性</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-shield-alt mr-2 text-gray-600"></i>
+                预防措施
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-chart-line text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">监控系统</h4>
+                    <p class="text-sm opacity-90">实时监控系统资源和应用状态</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-cogs text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">合理配置</h4>
+                    <p class="text-sm opacity-90">优化JVM参数和系统配置</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-file-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">日志管理</h4>
+                    <p class="text-sm opacity-90">配置完善的日志系统</p>
+                </div>
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-bug text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">代码质量</h4>
+                    <p class="text-sm opacity-90">定期代码审查和测试</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-undo text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">自动恢复</h4>
+                    <p class="text-sm opacity-90">配置服务自动重启</p>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-book text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">应急预案</h4>
+                    <p class="text-sm opacity-90">制定完善的故障处理流程</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-lightbulb mr-2 text-gray-600"></i>
+                案例分析
+            </h2>
+
+            <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">案例：OOM导致Java进程消失</h3>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">问题现象</h4>
+                        <p class="text-gray-600">Java应用进程突然消失，系统日志显示OOM killer终止了进程。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">排查过程</h4>
+                        <ol class="list-decimal pl-6 text-gray-600 space-y-1">
+                            <li>查看系统日志：<code>dmesg | grep -i oom</code>发现OOM killer终止了Java进程</li>
+                            <li>查看Java堆转储：分析堆转储文件，发现内存泄漏</li>
+                            <li>检查代码：发现某个集合未及时清理，导致内存泄漏</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-2">解决方案</h4>
+                        <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                            <li>修复代码中的内存泄漏问题</li>
+                            <li>增加JVM堆内存：<code>-Xmx8g</code></li>
+                            <li>配置堆转储：<code>-XX:+HeapDumpOnOutOfMemoryError</code></li>
+                            <li>设置内存使用监控告警</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

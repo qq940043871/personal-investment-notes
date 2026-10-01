@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客服系统 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-headset mr-3 text-purple-600"></i>智能客服系统
+            </h1>
+            <p class="text-gray-500 mb-6">Customer Service System - 基于SpringBoot+Netty+Redis的智能客服解决方案</p>
+            
+            <div class="bg-purple-50 border-l-4 border-purple-600 p-4 mb-8">
+                <p class="text-purple-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心能力：</strong>支持第三方认证、微信登录、WebSocket实时通信、Redis全量数据存储、智能排队、RAG智能回答、敏感数据管理。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-purple-600"></i>功能概览
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-user-shield text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">认证系统</h4>
+                    <p class="text-sm opacity-90">第三方认证对接</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fab fa-weixin text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">微信登录</h4>
+                    <p class="text-sm opacity-90">用户端微信登录</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-plug text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">实时通信</h4>
+                    <p class="text-sm opacity-90">WebSocket实时交互</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-database text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">Redis存储</h4>
+                    <p class="text-sm opacity-90">Redis全量数据结构</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-users-cog text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">客服管理</h4>
+                    <p class="text-sm opacity-90">客服服务能力</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-people-arrows text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">排队机制</h4>
+                    <p class="text-sm opacity-90">智能排队分配</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-robot text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">RAG智能</h4>
+                    <p class="text-sm opacity-90">知识库智能回答</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-eye-slash text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">敏感管理</h4>
+                    <p class="text-sm opacity-90">敏感数据管理</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-project-diagram mr-2 text-purple-600"></i>系统架构
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-center">
+                        <div class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-semibold">
+                            <i class="fab fa-weixin mr-2"></i>用户端（微信）
+                        </div>
+                        <i class="fas fa-arrow-right text-gray-400 mx-4"></i>
+                        <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-semibold">
+                            <i class="fas fa-plug mr-2"></i>WebSocket网关
+                        </div>
+                        <i class="fas fa-arrow-right text-gray-400 mx-4"></i>
+                        <div class="bg-green-100 text-green-700 px-4 py-2 rounded-lg font-semibold">
+                            <i class="fas fa-headset mr-2"></i>客服端
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-sort-down text-gray-400 text-3xl"></i>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-orange-100 text-orange-700 p-4 rounded-lg text-center">
+                            <i class="fab fa-java text-2xl mb-2"></i>
+                            <div class="font-semibold">Spring Boot</div>
+                            <div class="text-sm">业务逻辑层</div>
+                        </div>
+                        <div class="bg-amber-100 text-amber-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-project-diagram text-2xl mb-2"></i>
+                            <div class="font-semibold">Netty</div>
+                            <div class="text-sm">WebSocket服务</div>
+                        </div>
+                        <div class="bg-red-100 text-red-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-database text-2xl mb-2"></i>
+                            <div class="font-semibold">Redis</div>
+                            <div class="text-sm">数据存储层</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-sort-down text-gray-400 text-3xl"></i>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="bg-cyan-100 text-cyan-700 p-4 rounded-lg">
+                            <i class="fas fa-user-shield text-xl mb-1"></i>
+                            <div class="font-semibold">认证系统</div>
+                            <div class="text-xs">第三方认证对接</div>
+                        </div>
+                        <div class="bg-teal-100 text-teal-700 p-4 rounded-lg">
+                            <i class="fas fa-robot text-xl mb-1"></i>
+                            <div class="font-semibold">RAG知识库</div>
+                            <div class="text-xs">智能回答</div>
+                        </div>
+                        <div class="bg-green-100 text-green-700 p-4 rounded-lg">
+                            <i class="fas fa-eye-slash text-xl mb-1"></i>
+                            <div class="font-semibold">敏感管理</div>
+                            <div class="text-xs">数据脱敏</div>
+                        </div>
+                        <div class="bg-blue-100 text-blue-700 p-4 rounded-lg">
+                            <i class="fas fa-handshake text-xl mb-1"></i>
+                            <div class="font-semibold">第三方派单</div>
+                            <div class="text-xs">外部系统对接</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-purple-600"></i>核心代码示例
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>Netty WebSocket服务</span>
+                        <span class="text-xs text-gray-400">WebSocketServer.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * Netty WebSocket服务 - 处理实时通信
+ */</span>
+<span class="text-purple-400">@Component</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">WebSocketServer</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">static</span> <span class="text-pink-400">final</span> Map&lt;String, Channel&gt; CHANNELS = <span class="text-pink-400">new</span> ConcurrentHashMap&lt;&gt;();
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">onOpen</span>(Session session, String userId) {
+        CHANNELS.put(userId, session.channel());
+        redisTemplate.opsForHash().put(<span class="text-yellow-300">"online_users"</span>, userId, System.currentTimeMillis());
+        log.info(<span class="text-yellow-300">"用户上线: {}"</span>, userId);
+    }
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">onMessage</span>(String userId, String message) {
+        ChatMessage chatMessage = JSON.parseObject(message, ChatMessage.class);
+        
+        <span class="text-gray-500">// 敏感词过滤</span>
+        chatMessage.setContent(sensitiveWordService.filter(chatMessage.getContent()));
+        
+        <span class="text-gray-500">// 存储消息到Redis</span>
+        String key = <span class="text-yellow-300">"chat_messages:"</span> + chatMessage.getSessionId();
+        redisTemplate.opsForList().rightPush(key, chatMessage);
+        
+        <span class="text-gray-500">// RAG智能回答</span>
+        <span class="text-pink-400">if</span> (chatMessage.getType() == MessageType.USER) {
+            String aiAnswer = ragService.getAnswer(chatMessage.getContent());
+            <span class="text-pink-400">if</span> (aiAnswer != <span class="text-pink-400">null</span>) {
+                sendMessage(chatMessage.getFrom(), aiAnswer);
+            }
+        }
+        
+        <span class="text-gray-500">// 转发消息</span>
+        sendMessage(chatMessage.getTo(), message);
+    }
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">onClose</span>(String userId) {
+        CHANNELS.remove(userId);
+        redisTemplate.opsForHash().delete(<span class="text-yellow-300">"online_users"</span>, userId);
+        log.info(<span class="text-yellow-300">"用户下线: {}"</span>, userId);
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">void</span> <span class="text-blue-300">sendMessage</span>(String userId, String message) {
+        Channel channel = CHANNELS.get(userId);
+        <span class="text-pink-400">if</span> (channel != <span class="text-pink-400">null</span> &amp;&amp; channel.isActive()) {
+            channel.writeAndFlush(<span class="text-pink-400">new</span> TextWebSocketFrame(message));
+        }
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>Redis数据结构</span>
+                        <span class="text-xs text-gray-400">RedisConfig.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * Redis数据结构设计
+ */</span>
+<span class="text-gray-500">// 在线用户</span>
+<span class="text-yellow-300">online_users</span> (Hash)
+<span class="text-yellow-300">  key: userId</span> -&gt; <span class="text-yellow-300">timestamp</span>
+
+<span class="text-gray-500">// 客服信息</span>
+<span class="text-yellow-300">cs_info:{csId}</span> (Hash)
+<span class="text-yellow-300">  capacity:</span> capacity, status, skills, current_sessions
+
+<span class="text-gray-500">// 排队队列</span>
+<span class="text-yellow-300">queue:{skill}</span> (ZSet)
+<span class="text-yellow-300">  score:</span> priority, <span class="text-yellow-300">value:</span> userId
+
+<span class="text-gray-500">// 聊天消息</span>
+<span class="text-yellow-300">chat_messages:{sessionId}</span> (List)
+<span class="text-yellow-300">  element:</span> ChatMessage
+
+<span class="text-gray-500">// 会话记录</span>
+<span class="text-yellow-300">session_records</span> (Hash)
+<span class="text-yellow-300">  key:</span> sessionId -&gt; <span class="text-yellow-300">SessionRecord</span>
+
+<span class="text-gray-500">// 知识库</span>
+<span class="text-yellow-300">knowledge_base</span> (Hash)
+<span class="text-yellow-300">  key:</span> question -&gt; <span class="text-yellow-300">answer</span></pre>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>RAG智能回答服务</span>
+                        <span class="text-xs text-gray-400">RAGService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * RAG智能回答服务 - 对接知识库
+ */</span>
+<span class="text-purple-400">@Service</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">RAGService</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
+
+    <span class="text-pink-400">public</span> String <span class="text-blue-300">getAnswer</span>(String question) {
+        <span class="text-gray-500">// 1. 检索知识库</span>
+        String answer = (String) redisTemplate.opsForHash().get(<span class="text-yellow-300">"knowledge_base"</span>, question);
+        
+        <span class="text-gray-500">// 2. 语义匹配</span>
+        <span class="text-pink-400">if</span> (answer == <span class="text-pink-400">null</span>) {
+            answer = findSimilarQuestion(question);
+        }
+        
+        <span class="text-gray-500">// 3. 构建智能回复</span>
+        <span class="text-pink-400">if</span> (answer != <span class="text-pink-400">null</span>) {
+            <span class="text-pink-400">return</span> buildAIResponse(answer);
+        }
+        
+        <span class="text-pink-400">return</span> <span class="text-pink-400">null</span>;
+    }
+
+    <span class="text-pink-400">private</span> String <span class="text-blue-300">findSimilarQuestion</span>(String question) {
+        <span class="text-gray-500">// 简单相似度匹配，实际可使用向量数据库</span>
+        Map&lt;Object, Object&gt; allQuestions = redisTemplate.opsForHash().entries(<span class="text-yellow-300">"knowledge_base"</span>);
+        <span class="text-pink-400">for</span> (Map.Entry&lt;Object, Object&gt; entry : allQuestions.entrySet()) {
+            <span class="text-pink-400">if</span> (calculateSimilarity(question, (String) entry.getKey()) &gt; <span class="text-pink-400">0.7</span>) {
+                <span class="text-pink-400">return</span> (String) entry.getValue();
+            }
+        }
+        <span class="text-pink-400">return</span> <span class="text-pink-400">null</span>;
+    }
+
+    <span class="text-pink-400">private</span> String <span class="text-blue-300">buildAIResponse</span>(String answer) {
+        <span class="text-pink-400">return</span> String.<span class="text-blue-300">format</span>(
+            <span class="text-yellow-300">"【智能助手】%s\n\n如需人工服务，请回复\"转人工\""</span>,
+            answer
+        );
+    }
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-purple-600"></i>核心优势
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-plug text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">实时通信</h4>
+                    <p class="text-sm opacity-90">Netty WebSocket 高性能</p>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-database text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">Redis全量</h4>
+                    <p class="text-sm opacity-90">高性能数据存储</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-robot text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">RAG智能</h4>
+                    <p class="text-sm opacity-90">知识库智能回答</p>
+                </div>
+                <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-users-cog text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">智能排队</h4>
+                    <p class="text-sm opacity-90">服务能力评估</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-eye-slash text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">敏感管理</h4>
+                    <p class="text-sm opacity-90">数据脱敏过滤</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-handshake text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">第三方对接</h4>
+                    <p class="text-sm opacity-90">认证派单全支持</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

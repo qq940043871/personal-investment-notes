@@ -1,0 +1,458 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>促销系统 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-4xl mx-auto p-6">
+        <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">
+                <i class="fas fa-tags text-purple-500 mr-3"></i>促销系统
+            </h1>
+            
+            <div class="prose max-w-none">
+                <p class="text-gray-600 mb-6">
+                    促销系统是电商系统中提升用户购买转化率和客单价的重要模块，通过各种促销活动吸引用户消费。促销系统需要支持多种促销类型、复杂的计算规则、高并发处理以及灵活的配置管理。
+                </p>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">促销系统功能</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-ticket-alt text-blue-500 mr-2"></i>
+                            优惠券管理
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>优惠券创建和配置</li>
+                            <li>优惠券发放和领取</li>
+                            <li>优惠券使用规则</li>
+                            <li>优惠券统计分析</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-percent text-blue-500 mr-2"></i>
+                            活动管理
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>满减活动</li>
+                            <li>折扣活动</li>
+                            <li>秒杀活动</li>
+                            <li>拼团活动</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-calculator text-blue-500 mr-2"></i>
+                            价格计算
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>促销规则引擎</li>
+                            <li>价格计算逻辑</li>
+                            <li>优惠叠加规则</li>
+                            <li>实时价格展示</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-cog text-blue-500 mr-2"></i>
+                            配置管理
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>促销规则配置</li>
+                            <li>活动时间管理</li>
+                            <li>用户参与限制</li>
+                            <li>黑白名单控制</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">促销类型设计</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">优惠券类型</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-blue-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">满减券</h4>
+                            <p class="text-gray-600 text-sm">
+                                满足指定金额后减免部分金额
+                            </p>
+                            <p class="text-xs text-gray-500 mt-2">例如：满100减20</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">折扣券</h4>
+                            <p class="text-gray-600 text-sm">
+                                按指定比例折扣商品价格
+                            </p>
+                            <p class="text-xs text-gray-500 mt-2">例如：9折优惠</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">无门槛券</h4>
+                            <p class="text-gray-600 text-sm">
+                                无消费金额限制直接减免
+                            </p>
+                            <p class="text-xs text-gray-500 mt-2">例如：无门槛减10元</p>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">活动类型</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="bg-yellow-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">秒杀活动</h4>
+                            <p class="text-gray-600 text-sm">
+                                限时限量特价销售
+                            </p>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">拼团活动</h4>
+                            <p class="text-gray-600 text-sm">
+                                多人成团享受优惠价
+                            </p>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">预售活动</h4>
+                            <p class="text-gray-600 text-sm">
+                                提前支付定金锁定商品
+                            </p>
+                        </div>
+                        <div class="bg-pink-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">会员专享</h4>
+                            <p class="text-gray-600 text-sm">
+                                特定会员等级享受优惠
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">促销规则引擎</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">规则设计</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="py-2 px-4 border-b text-left">规则类型</th>
+                                    <th class="py-2 px-4 border-b text-left">条件</th>
+                                    <th class="py-2 px-4 border-b text-left">动作</th>
+                                    <th class="py-2 px-4 border-b text-left">优先级</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">商品范围</td>
+                                    <td class="py-2 px-4 border-b">指定商品、品类、品牌</td>
+                                    <td class="py-2 px-4 border-b">适用优惠</td>
+                                    <td class="py-2 px-4 border-b">1</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">用户条件</td>
+                                    <td class="py-2 px-4 border-b">会员等级、新老用户</td>
+                                    <td class="py-2 px-4 border-b">差异化优惠</td>
+                                    <td class="py-2 px-4 border-b">2</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">时间条件</td>
+                                    <td class="py-2 px-4 border-b">活动时间、星期几</td>
+                                    <td class="py-2 px-4 border-b">限时优惠</td>
+                                    <td class="py-2 px-4 border-b">3</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">金额条件</td>
+                                    <td class="py-2 px-4 border-b">满减、满赠</td>
+                                    <td class="py-2 px-4 border-b">阶梯优惠</td>
+                                    <td class="py-2 px-4 border-b">4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800 mt-4">规则引擎示例</h4>
+                    <pre class="bg-gray-800 text-white p-4 rounded-lg mt-2 overflow-x-auto">
+// 促销规则引擎示例
+public class PromotionEngine {
+    
+    public PromotionResult calculatePromotion(Cart cart, List<Promotion> promotions) {
+        PromotionResult result = new PromotionResult();
+        List<Promotion> applicablePromotions = new ArrayList<>();
+        
+        // 1. 筛选适用的促销活动
+        for (CartItem item : cart.getItems()) {
+            for (Promotion promotion : promotions) {
+                if (promotion.isApplicable(item)) {
+                    applicablePromotions.add(promotion);
+                }
+            }
+        }
+        
+        // 2. 按优先级排序
+        applicablePromotions.sort(Comparator.comparing(Promotion::getPriority));
+        
+        // 3. 应用促销规则
+        BigDecimal totalDiscount = BigDecimal.ZERO;
+        for (Promotion promotion : applicablePromotions) {
+            PromotionResult promotionResult = promotion.apply(cart);
+            totalDiscount = totalDiscount.add(promotionResult.getDiscount());
+        }
+        
+        result.setTotalDiscount(totalDiscount);
+        result.setApplicablePromotions(applicablePromotions);
+        return result;
+    }
+}</pre>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">数据模型设计</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">核心数据表</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="py-2 px-4 border-b text-left">表名</th>
+                                    <th class="py-2 px-4 border-b text-left">字段</th>
+                                    <th class="py-2 px-4 border-b text-left">说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">coupons</td>
+                                    <td class="py-2 px-4 border-b">coupon_id, name, type, discount, condition, start_time, end_time</td>
+                                    <td class="py-2 px-4 border-b">优惠券主表</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">user_coupons</td>
+                                    <td class="py-2 px-4 border-b">user_coupon_id, user_id, coupon_id, status, receive_time, use_time</td>
+                                    <td class="py-2 px-4 border-b">用户优惠券表</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">promotions</td>
+                                    <td class="py-2 px-4 border-b">promotion_id, name, type, rule, start_time, end_time</td>
+                                    <td class="py-2 px-4 border-b">促销活动表</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">promotion_rules</td>
+                                    <td class="py-2 px-4 border-b">rule_id, promotion_id, condition, action</td>
+                                    <td class="py-2 px-4 border-b">促销规则表</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">高并发处理</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-bolt text-green-500 mr-2"></i>
+                            秒杀场景优化
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>库存预热到缓存</li>
+                            <li>限流控制</li>
+                            <li>异步下单</li>
+                            <li>排队机制</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-shield-alt text-green-500 mr-2"></i>
+                            防刷策略
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>频率限制</li>
+                            <li>用户行为分析</li>
+                            <li>设备指纹识别</li>
+                            <li>黑名单机制</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">优惠叠加规则</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">叠加策略</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-blue-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">互斥策略</h4>
+                            <p class="text-gray-600 text-sm">
+                                优惠活动不能同时使用
+                            </p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">并行策略</h4>
+                            <p class="text-gray-600 text-sm">
+                                优惠活动可以同时享受
+                            </p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">优先级策略</h4>
+                            <p class="text-gray-600 text-sm">
+                                按优先级顺序应用优惠
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800">叠加规则示例</h4>
+                    <pre class="bg-gray-800 text-white p-4 rounded-lg mt-2 overflow-x-auto">
+// 优惠叠加处理示例
+public class PromotionStackingService {
+    
+    public List<Promotion> resolvePromotionConflicts(List<Promotion> promotions) {
+        // 1. 按优先级排序
+        promotions.sort(Comparator.comparing(Promotion::getPriority));
+        
+        // 2. 处理互斥关系
+        List<Promotion> resolvedPromotions = new ArrayList<>();
+        Set<String> appliedCategories = new HashSet<>();
+        
+        for (Promotion promotion : promotions) {
+            // 检查是否与已应用的促销互斥
+            if (!isMutuallyExclusive(promotion, resolvedPromotions)) {
+                // 检查品类冲突
+                if (!hasCategoryConflict(promotion, appliedCategories)) {
+                    resolvedPromotions.add(promotion);
+                    appliedCategories.addAll(promotion.getCategories());
+                }
+            }
+        }
+        
+        return resolvedPromotions;
+    }
+    
+    private boolean isMutuallyExclusive(Promotion newPromotion, List<Promotion> appliedPromotions) {
+        for (Promotion applied : appliedPromotions) {
+            if (newPromotion.getMutuallyExclusivePromotions().contains(applied.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+}</pre>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">实时价格计算</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">计算流程</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                        <div class="bg-blue-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">1. 获取商品</div>
+                            <div class="text-xs text-gray-600">商品信息</div>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">2. 查询促销</div>
+                            <div class="text-xs text-gray-600">适用活动</div>
+                        </div>
+                        <div class="bg-yellow-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">3. 应用规则</div>
+                            <div class="text-xs text-gray-600">计算优惠</div>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">4. 叠加处理</div>
+                            <div class="text-xs text-gray-600">优惠组合</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">5. 返回价格</div>
+                            <div class="text-xs text-gray-600">最终价格</div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800">价格计算示例</h4>
+                    <pre class="bg-gray-800 text-white p-4 rounded-lg mt-2 overflow-x-auto">
+// 实时价格计算示例
+@Service
+public class PriceCalculationService {
+    
+    public ProductPrice calculatePrice(String productId, String userId) {
+        // 1. 获取商品信息
+        Product product = productRepository.findById(productId);
+        
+        // 2. 获取用户可用优惠券
+        List<Coupon> userCoupons = couponService.getUserAvailableCoupons(userId);
+        
+        // 3. 获取当前适用的促销活动
+        List<Promotion> activePromotions = promotionService.getActivePromotions();
+        
+        // 4. 计算基础价格
+        BigDecimal basePrice = product.getPrice();
+        
+        // 5. 应用促销优惠
+        BigDecimal promotionDiscount = applyPromotions(basePrice, activePromotions, product);
+        
+        // 6. 应用优惠券
+        Coupon bestCoupon = selectBestCoupon(basePrice.subtract(promotionDiscount), userCoupons);
+        BigDecimal couponDiscount = calculateCouponDiscount(basePrice.subtract(promotionDiscount), bestCoupon);
+        
+        // 7. 计算最终价格
+        BigDecimal finalPrice = basePrice.subtract(promotionDiscount).subtract(couponDiscount);
+        
+        return ProductPrice.builder()
+            .originalPrice(basePrice)
+            .promotionDiscount(promotionDiscount)
+            .couponDiscount(couponDiscount)
+            .finalPrice(finalPrice)
+            .build();
+    }
+}</pre>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">监控与统计</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-chart-bar text-yellow-500 mr-2"></i>
+                            关键指标
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>优惠券使用率</li>
+                            <li>活动参与率</li>
+                            <li>促销转化率</li>
+                            <li>客单价提升幅度</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-tools text-yellow-500 mr-2"></i>
+                            运营分析
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>活动效果评估</li>
+                            <li>用户行为分析</li>
+                            <li>ROI计算</li>
+                            <li>趋势预测</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">促销系统最佳实践</h2>
+                <div class="bg-green-50 rounded-lg p-6">
+                    <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                        <li>灵活的促销规则引擎设计</li>
+                        <li>完善的优惠叠加处理机制</li>
+                        <li>高效的高并发处理方案</li>
+                        <li>全面的防刷和限流策略</li>
+                        <li>准确的实时价格计算</li>
+                        <li>详细的统计分析功能</li>
+                        <li>健全的监控和告警体系</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

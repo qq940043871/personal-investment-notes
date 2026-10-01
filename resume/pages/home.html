@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简历</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .resume-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .section-title {
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+        .job-item {
+            margin-bottom: 2rem;
+        }
+        .job-title {
+            font-weight: bold;
+            color: #1e40af;
+        }
+        .job-company {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        .job-period {
+            color: #9ca3af;
+            font-size: 0.85rem;
+        }
+        .skill-item {
+            background-color: #f3f4f6;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+        .education-item {
+            margin-bottom: 1.5rem;
+        }
+        .project-item {
+            margin-bottom: 2rem;
+        }
+        .project-title {
+            font-weight: bold;
+            color: #1e40af;
+        }
+        .project-description {
+            margin-top: 0.5rem;
+            color: #4b5563;
+        }
+        .certificate-item {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body class="py-8">
+    <div class="resume-container rounded-lg overflow-hidden">
+        <!-- 个人信息 -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-8">
+            <div class="flex flex-col md:flex-row items-center md:items-start justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold mb-2">haswhere</h1>
+                    <p class="text-blue-100 mb-4">全栈架构师 | 10年+经验</p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-phone-alt mr-2"></i>
+                            <span>186-****-3592</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope mr-2"></i>
+                            <span>815841365@qq.com</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>河南省郑州市</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 md:mt-0">
+                    <div class="w-24 h-24 rounded-full bg-white flex items-center justify-center">
+                        <i class="fas fa-user text-blue-600 text-3xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 主要内容 -->
+        <div class="p-8">
+            <!-- 个人简介 -->
+            <div class="mb-8">
+                <h2 class="section-title text-xl">个人简介</h2>
+                <p class="text-gray-700">
+                    拥有10年以上全栈开发经验，专注于大型分布式系统架构设计与实现。擅长Java后端开发、前端技术栈、数据库优化以及DevOps实践。
+                    具备丰富的项目管理经验，能够带领团队完成复杂项目的开发与部署。对新技术保持敏锐的洞察力，不断学习与探索前沿技术。
+                </p>
+            </div>
+            
+            <!-- 工作经历 -->
+            <div class="mb-8">
+                <h2 class="section-title text-xl">工作经历</h2>
+                
+                <div class="job-item">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="job-title text-lg">高级全栈架构师</div>
+                            <div class="job-company">某软件公司</div>
+                        </div>
+                        <div class="job-period">2015年至今</div>
+                    </div>
+                    <ul class="mt-2 list-disc pl-5 text-gray-700 space-y-1">
+                        <li>负责公司核心业务系统的架构设计与技术选型</li>
+                        <li>带领20人开发团队，完成多个大型项目的开发与部署</li>
+                        <li>优化系统架构，提升系统性能与稳定性</li>
+                        <li>制定技术规范与开发流程，提高团队开发效率</li>
+                    </ul>
+                </div>
+                
+                <div class="job-item">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="job-title text-lg">Java开发工程师</div>
+                            <div class="job-company">某软件公司</div>
+                        </div>
+                        <div class="job-period">2013年-2015年</div>
+                    </div>
+                    <ul class="mt-2 list-disc pl-5 text-gray-700 space-y-1">
+                        <li>负责Java后端系统的开发与维护</li>
+                        <li>优化数据库查询，提升系统性能</li>
+                        <li>参与产品需求分析与技术方案设计</li>
+                        <li>实现业务逻辑与数据处理</li>
+                        <li>参与系统测试与bug修复</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 项目经验 -->
+            <div class="mb-8">
+                <h2 class="section-title text-xl">项目经验</h2>
+                
+                <div class="project-item">
+                    <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/ai-project-overview.md')" class="project-title text-lg hover:text-blue-600 transition-colors duration-200">AI 智能服务平台</a>
+                    <div class="job-period mt-1">2024年至今</div>
+                    <div class="project-description">
+                        <p class="mb-2">构建集成人工客服、知识库、政策解读等功能的智能服务平台，支持对接第三方大模型和本地化大模型。</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>使用Dify平台和自研智能体实现智能服务</li>
+                            <li>支持模型微调和数据标注</li>
+                            <li>实现RAG系统，支持快速导入各种格式的文档</li>
+                            <li>构建多智能体协作系统，完成复杂任务</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="project-item">
+                    <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/overview.html')" class="project-title text-lg hover:text-blue-600 transition-colors duration-200">B2B 分布式项目</a>
+                    <div class="job-period mt-1">2020年至今</div>
+                    <div class="project-description">
+                        <p class="mb-2">大型分布式B2B项目，为企业间提供数据交换、业务协同和管理服务，采用微服务架构，实现高并发、高可用的企业级应用。</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>负责系统架构设计和技术选型，采用Spring Cloud微服务架构</li>
+                            <li>实现数据交换中心，支持企业间数据的安全、可靠交换</li>
+                            <li>构建中间件网关，实现请求路由、负载均衡、限流、熔断等功能</li>
+                            <li>开发公共服务模块，包括文件存储、消息推送、字典管理等</li>
+                            <li>实现认证模块，支持OAuth2.0、JWT等认证机制</li>
+                            <li>部署Docker/Kubernetes容器化环境，实现系统的弹性伸缩</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="project-item">
+                    <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/overview.html')" class="project-title text-lg hover:text-blue-600 transition-colors duration-200">视频监控平台</a>
+                    <div class="job-period mt-1">2019年-2021年</div>
+                    <div class="project-description">
+                        <p class="mb-2">设计与实现视频监控平台，支持实时直播、录像回放、视频下载等功能。</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>使用WebRTC技术实现实时视频流传输</li>
+                            <li>设计分布式存储方案，支持海量视频数据存储</li>
+                            <li>实现视频转码与压缩，提升视频传输效率</li>
+                            <li>开发移动端应用，支持远程监控</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="project-item">
+                    <a href="#" onclick="parent.loadPage('pages/work-experience/b2c-project/ecommerce-overview.html')" class="project-title text-lg hover:text-blue-600 transition-colors duration-200">B2C电商系统</a>
+                    <div class="job-period mt-1">2018年-2019年</div>
+                    <div class="project-description">
+                        <p class="mb-2">负责设计与实现电商系统的核心架构，包括订单系统、支付系统、库存系统等模块。</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>使用Spring Cloud微服务架构，实现系统的高可用性与可扩展性</li>
+                            <li>集成第三方支付接口，实现多种支付方式</li>
+                            <li>优化系统性能，支持日订单量超过10万笔</li>
+                            <li>实现分布式事务，确保数据一致性</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="project-item">
+                    <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/01_入门/区块链-01.概念知悉.md')" class="project-title text-lg hover:text-blue-600 transition-colors duration-200">区块链应用开发</a>
+                    <div class="job-period mt-1">2017年-2018年</div>
+                    <div class="project-description">
+                        <p class="mb-2">基于以太坊的区块链应用开发，包括智能合约开发和DApp构建。</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>使用Solidity语言开发智能合约</li>
+                            <li>构建去中心化应用（DApp）</li>
+                            <li>实现区块链数据存储和查询</li>
+                            <li>优化智能合约性能和安全性</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                 <div class="project-item">
+                    <a href="#" onclick="parent.loadPage('pages/work-experience/clearing-platform/clearing-platform-overview.md')" class="project-title text-lg hover:text-blue-600 transition-colors duration-200">清算平台项目</a>
+                    <div class="job-period mt-1">2015年-2017年</div>
+                    <div class="project-description">
+                        <p class="mb-2">本项目为大宗商品 / 金融交易清算服务平台，提供交易对账、资金清算、净额结算、风险控制、保证金管理、履约担保等核心服务，保障交易资金安全、降低信用风险，实现交易双方高效、透明、合规清算。</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>使用Spring Boot + MyBatis构建核心系统，实现高可靠性的交易清算流程</li>
+                            <li>设计分布式架构，支持高并发交易处理，日处理交易量超过10万笔</li>
+                            <li>实现实时风险监控系统，自动预警和处理异常交易</li>
+                            <li>开发保证金管理模块，支持多种保证金计算和管理策略</li>
+                            <li>构建净额结算系统，优化资金使用效率，减少资金占用</li>
+                            <li>实现履约担保机制，降低交易信用风险</li>
+                            <li>设计合规性检查模块，确保交易符合监管要求</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="project-item">
+                    <a href="#" onclick="parent.loadPage('pages/work-experience/online-complaint/online-complaint-overview.md')" class="project-title text-lg hover:text-blue-600 transition-colors duration-200">在线投诉系统</a>
+                    <div class="job-period mt-1">2015年</div>
+                    <div class="project-description">
+                        <p class="mb-2">基于Spring MVC和Maven构建的后端管理系统，用于处理用户投诉和反馈。</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>实现投诉的录入、查询、处理和统计功能</li>
+                            <li>采用可视化配置方式，无需代码开发即可快速满足客户需求</li>
+                            <li>优化数据库查询，提升系统性能</li>
+                            <li>实现用户权限管理和数据安全保护</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="project-item">
+                    <a href="#" onclick="parent.loadPage('pages/work-experience/arcgis-project/arcgis-java-overview.md')" class="project-title text-lg hover:text-blue-600 transition-colors duration-200">ArcGIS地理信息系统</a>
+                    <div class="job-period mt-1">2013年-2015年</div>
+                    <div class="project-description">
+                        <p class="mb-2">基于Esri ArcGIS开发的地理信息系统，用于地图展示、空间分析和数据管理。</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>使用ArcGIS Runtime SDK for Java开发桌面应用</li>
+                            <li>实现地图可视化、图层管理和空间分析功能</li>
+                            <li>集成GPS定位和实时数据更新</li>
+                            <li>优化地图渲染性能，支持大数据量地图展示</li>
+                        </ul>
+                    </div>
+                </div>
+               
+            </div>
+            
+            <!-- 教育背景 -->
+            <div class="mb-8">
+                <h2 class="section-title text-xl">教育背景</h2>
+                
+                <div class="education-item">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="job-title">软件工程</div>
+                            <div class="job-company">郑州大学</div>
+                        </div>
+                        <div class="job-period">2009年-2013年</div>
+                    </div>
+                    <div class="mt-1 text-gray-700">学士学位</div>
+                </div>
+            </div>
+            
+            <!-- 专业技能 -->
+            <div class="mb-8">
+                <h2 class="section-title text-xl">专业技能</h2>
+                <div class="flex flex-wrap">
+                    <span class="skill-item">Java</span>
+                    <span class="skill-item">Spring Boot</span>
+                    <span class="skill-item">Spring Cloud</span>
+                    <span class="skill-item">MySQL</span>
+                    <span class="skill-item">Redis</span>
+                    <span class="skill-item">MongoDB</span>
+                    <span class="skill-item">Elasticsearch</span>
+                    <span class="skill-item">Nginx</span>
+                    <span class="skill-item">Tomcat</span>
+                    <span class="skill-item">MQ</span>
+                    <span class="skill-item">Vue</span>
+                    <span class="skill-item">HTML/CSS</span>
+                    <span class="skill-item">JavaScript</span>
+                    <span class="skill-item">Docker</span>
+                    <span class="skill-item">Linux</span>
+                    <span class="skill-item">Git</span>
+                </div>
+            </div>
+            
+            <!-- 证书与奖项 -->
+            <div class="mb-8">
+                <h2 class="section-title text-xl">证书与奖项</h2>
+                
+                <div class="certificate-item">
+                    <div class="flex justify-between items-start">
+                        <div class="job-title">PMP认证</div>
+                    </div>
+                </div>
+                
+                <div class="certificate-item">
+                    <div class="flex justify-between items-start">
+                        <div class="job-title">公司年度优秀员工</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 自我评价 -->
+            <div class="mb-4">
+                <h2 class="section-title text-xl">自我评价</h2>
+                <p class="text-gray-700">
+                    具备扎实的技术基础和丰富的项目经验，善于解决复杂技术问题。具有良好的团队协作能力和沟通能力，能够与不同背景的人员有效地合作。
+                    对技术充满热情，不断学习新技术和方法，保持技术先进性。具有强烈的责任感和敬业精神，能够在压力下保持高效率工作。
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回放功能 - 视频监控项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-history mr-3 text-blue-500"></i>回放功能
+            </h1>
+            <p class="text-gray-500 mb-6">Playback - 历史视频检索与播放</p>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心功能：</strong>支持按时间轴检索历史录像，倍速播放、快进快退、截图、时间轴拖拽定位、告警录像标记等功能。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-blue-500"></i>功能概览
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-clock text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">时间轴检索</h4>
+                    <p class="text-sm opacity-90">按日期时间快速定位</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-forward text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">倍速播放</h4>
+                    <p class="text-sm opacity-90">0.5x/1x/2x/4x/8x</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-sky-500 to-sky-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-step-forward text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">快进快退</h4>
+                    <p class="text-sm opacity-90">拖拽时间轴定位</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-exclamation-triangle text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">告警标记</h4>
+                    <p class="text-sm opacity-90">告警录像高亮显示</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-project-diagram mr-2 text-blue-500"></i>录像存储架构
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-semibold">
+                            <i class="fas fa-video mr-2"></i>摄像头 (RTSP)
+                        </div>
+                        <i class="fas fa-arrow-right text-gray-400 mx-4"></i>
+                        <div class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-semibold">
+                            <i class="fas fa-film mr-2"></i>FFmpeg 录制
+                        </div>
+                        <i class="fas fa-arrow-right text-gray-400 mx-4"></i>
+                        <div class="bg-green-100 text-green-700 px-4 py-2 rounded-lg font-semibold">
+                            <i class="fas fa-hdd mr-2"></i>MP4 文件
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-sort-down text-gray-400 text-3xl"></i>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-orange-100 text-orange-700 p-4 rounded-lg">
+                            <i class="fas fa-database text-2xl mb-2"></i>
+                            <div class="font-semibold">MySQL</div>
+                            <div class="text-sm">录像元数据（时间、设备、路径）</div>
+                        </div>
+                        <div class="bg-amber-100 text-amber-700 p-4 rounded-lg">
+                            <i class="fas fa-folder text-2xl mb-2"></i>
+                            <div class="font-semibold">NAS / OSS</div>
+                            <div class="text-sm">MP4 视频文件存储</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-blue-500"></i>核心代码示例
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>录像检索服务</span>
+                        <span class="text-xs text-gray-400">RecordingSearchService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * 录像检索服务 - 按时间轴查询历史录像
+ */</span>
+<span class="text-purple-400">@Service</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">RecordingSearchService</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> RecordingRepository recordingRepository;
+
+    <span class="text-green-400">/**
+     * 按时间范围检索录像
+     */</span>
+    <span class="text-pink-400">public</span> Page&lt;RecordingVO&gt; <span class="text-blue-300">searchRecordings</span>(RecordingSearchRequest request) {
+        LocalDateTime startTime = request.getStartTime();
+        LocalDateTime endTime = request.getEndTime();
+        Long cameraId = request.getCameraId();
+
+        <span class="text-pink-400">return</span> recordingRepository.findByCameraIdAndStartTimeBetween(
+            cameraId, startTime, endTime,
+            PageRequest.of(request.getPage(), request.getSize())
+        ).map(<span class="text-pink-400">this</span>::toVO);
+    }
+
+    <span class="text-green-400">/**
+     * 获取录像播放地址
+     */</span>
+    <span class="text-pink-400">public</span> String <span class="text-blue-300">getPlaybackUrl</span>(Long recordingId) {
+        Recording recording = recordingRepository.findById(recordingId)
+            .orElseThrow(() -&gt; <span class="text-pink-400">new</span> NotFoundException(<span class="text-yellow-300">"录像不存在"</span>));
+
+        <span class="text-gray-500">// 检查是本地存储还是 OSS</span>
+        <span class="text-pink-400">if</span> (recording.getStorageType() == StorageType.OSS) {
+            <span class="text-gray-500">// 生成 OSS 预签名 URL</span>
+            <span class="text-pink-400">return</span> ossService.generatePresignedUrl(recording.getFilePath(), <span class="text-pink-400">3600</span>);
+        } <span class="text-pink-400">else</span> {
+            <span class="text-gray-500">// 本地文件通过 Nginx 或应用服务提供</span>
+            <span class="text-pink-400">return</span> <span class="text-yellow-300">"/api/recordings/play/"</span> + recordingId;
+        }
+    }
+
+    <span class="text-green-400">/**
+     * 获取时间轴上的录像片段
+     */</span>
+    <span class="text-pink-400">public</span> List&lt;TimelineSegment&gt; <span class="text-blue-300">getTimelineSegments</span>(
+            Long cameraId, LocalDateTime day) {
+        LocalDateTime startOfDay = day.toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(<span class="text-pink-400">1</span>);
+
+        List&lt;Recording&gt; recordings = recordingRepository
+            .findByCameraIdAndStartTimeBetweenOrderByStartTimeAsc(
+                cameraId, startOfDay, endOfDay
+            );
+
+        <span class="text-pink-400">return</span> recordings.stream().map(r -&gt; TimelineSegment.builder()
+            .recordingId(r.getId())
+            .startTime(r.getStartTime())
+            .endTime(r.getEndTime())
+            .hasAlarm(r.getHasAlarm())
+            .build()
+        ).collect(Collectors.toList());
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-js mr-2"></i>回放播放器</span>
+                        <span class="text-xs text-gray-400">PlaybackPlayer.vue</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">// 回放播放器组件 - 支持倍速、快进、截图</span>
+&lt;<span class="text-pink-400">template</span>&gt;
+  &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"playback-player"</span>&gt;
+    &lt;<span class="text-pink-400">video</span> 
+      <span class="text-green-400">ref</span>=<span class="text-yellow-300">"videoRef"</span>
+      <span class="text-green-400">:src</span>=<span class="text-yellow-300">"playbackUrl"</span>
+      <span class="text-green-400">controls</span>
+      <span class="text-green-400">class</span>=<span class="text-yellow-300">"w-full"</span>
+      @<span class="text-green-400">timeupdate</span>=<span class="text-yellow-300">"onTimeUpdate"</span>
+      @<span class="text-green-400">loadedmetadata</span>=<span class="text-yellow-300">"onLoadedMetadata"</span>
+    &gt;&lt;/<span class="text-pink-400">video</span>&gt;
+
+    &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"controls-bar"</span>&gt;
+      &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"speed-control"</span>&gt;
+        &lt;<span class="text-pink-400">button</span>
+          <span class="text-green-400">v-for</span>=<span class="text-yellow-300">"speed in playbackSpeeds"</span>
+          <span class="text-green-400">:key</span>=<span class="text-yellow-300">"speed"</span>
+          <span class="text-green-400">:class</span>=<span class="text-yellow-300">['speed-btn', { active: currentSpeed === speed }]</span>
+          @<span class="text-green-400">click</span>=<span class="text-yellow-300">"setPlaybackSpeed(speed)"</span>
+        &gt;
+          {{ speed }}x
+        &lt;/<span class="text-pink-400">button</span>&gt;
+      &lt;/<span class="text-pink-400">div</span>&gt;
+
+      &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"action-buttons"</span>&gt;
+        &lt;<span class="text-pink-400">button</span> @<span class="text-green-400">click</span>=<span class="text-yellow-300">"skip(-30)"</span>&gt;
+          &lt;<span class="text-pink-400">i</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"fas fa-backward"</span>&gt;&lt;/<span class="text-pink-400">i</span>&gt; -30s
+        &lt;/<span class="text-pink-400">button</span>&gt;
+        &lt;<span class="text-pink-400">button</span> @<span class="text-green-400">click</span>=<span class="text-yellow-300">"skip(30)"</span>&gt;
+          +30s &lt;<span class="text-pink-400">i</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"fas fa-forward"</span>&gt;&lt;/<span class="text-pink-400">i</span>&gt;
+        &lt;/<span class="text-pink-400">button</span>&gt;
+        &lt;<span class="text-pink-400">button</span> @<span class="text-green-400">click</span>=<span class="text-yellow-300">"takeScreenshot"</span>&gt;
+          &lt;<span class="text-pink-400">i</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"fas fa-camera"</span>&gt;&lt;/<span class="text-pink-400">i</span>&gt; 截图
+        &lt;/<span class="text-pink-400">button</span>&gt;
+      &lt;/<span class="text-pink-400">div</span>&gt;
+    &lt;/<span class="text-pink-400">div</span>&gt;
+
+    &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"timeline"</span>&gt;
+      &lt;<span class="text-pink-400">div</span> 
+        <span class="text-green-400">v-for</span>=<span class="text-yellow-300">"segment in timelineSegments"</span>
+        <span class="text-green-400">:key</span>=<span class="text-yellow-300">"segment.recordingId"</span>
+        <span class="text-green-400">:class</span>=<span class="text-yellow-300">['segment', { alarm: segment.hasAlarm }]</span>
+        @<span class="text-green-400">click</span>=<span class="text-yellow-300">"seekToSegment(segment)"</span>
+      &gt;&lt;/<span class="text-pink-400">div</span>&gt;
+    &lt;/<span class="text-pink-400">div</span>&gt;
+  &lt;/<span class="text-pink-400">div</span>&gt;
+&lt;/<span class="text-pink-400">template</span>&gt;
+
+&lt;<span class="text-pink-400">script</span>&gt;
+<span class="text-pink-400">import</span> { ref } <span class="text-pink-400">from</span> <span class="text-yellow-300">'vue'</span>;
+
+<span class="text-pink-400">export default</span> {
+  <span class="text-green-400">name</span>: <span class="text-yellow-300">'PlaybackPlayer'</span>,
+  <span class="text-green-400">props</span>: {
+    <span class="text-green-400">playbackUrl</span>: String,
+    <span class="text-green-400">timelineSegments</span>: Array
+  },
+  <span class="text-pink-400">setup</span>(props) {
+    <span class="text-pink-400">const</span> videoRef = ref(<span class="text-pink-400">null</span>);
+    <span class="text-pink-400">const</span> currentSpeed = ref(<span class="text-pink-400">1</span>);
+    <span class="text-pink-400">const</span> playbackSpeeds = [<span class="text-pink-400">0.5</span>, <span class="text-pink-400">1</span>, <span class="text-pink-400">2</span>, <span class="text-pink-400">4</span>, <span class="text-pink-400">8</span>];
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">setPlaybackSpeed</span> = (speed) =&gt; {
+      currentSpeed.value = speed;
+      <span class="text-pink-400">if</span> (videoRef.value) {
+        videoRef.value.playbackRate = speed;
+      }
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">skip</span> = (seconds) =&gt; {
+      <span class="text-pink-400">if</span> (videoRef.value) {
+        videoRef.value.currentTime += seconds;
+      }
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">takeScreenshot</span> = () =&gt; {
+      <span class="text-pink-400">const</span> canvas = document.createElement(<span class="text-yellow-300">'canvas'</span>);
+      canvas.width = videoRef.value.videoWidth;
+      canvas.height = videoRef.value.videoHeight;
+      canvas.getContext(<span class="text-yellow-300">'2d'</span>).drawImage(videoRef.value, <span class="text-pink-400">0</span>, <span class="text-pink-400">0</span>);
+      
+      <span class="text-pink-400">const</span> link = document.createElement(<span class="text-yellow-300">'a'</span>);
+      link.download = <span class="text-yellow-300">`screenshot-</span>${Date.now()}<span class="text-yellow-300">.png</span><span class="text-yellow-300">`</span>;
+      link.href = canvas.toDataURL(<span class="text-yellow-300">'image/png'</span>);
+      link.click();
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">seekToSegment</span> = (segment) =&gt; {
+      <span class="text-gray-500">// 跳转到指定录像片段</span>
+    };
+
+    <span class="text-pink-400">return</span> {
+      videoRef,
+      currentSpeed,
+      playbackSpeeds,
+      setPlaybackSpeed,
+      skip,
+      takeScreenshot,
+      seekToSegment
+    };
+  }
+};
+&lt;/<span class="text-pink-400">script</span>&gt;</pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-blue-500"></i>核心优势
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-search text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">快速检索</h4>
+                    <p class="text-sm opacity-90">时间轴可视化快速定位</p>
+                </div>
+                <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tachometer-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">多倍速</h4>
+                    <p class="text-sm opacity-90">0.5x - 8x 灵活切换</p>
+                </div>
+                <div class="bg-gradient-to-br from-sky-500 to-sky-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-camera text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">快捷截图</h4>
+                    <p class="text-sm opacity-90">Canvas 一键截图保存</p>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-exclamation-circle text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">告警标记</h4>
+                    <p class="text-sm opacity-90">告警录像高亮显示</p>
+                </div>
+                <div class="bg-gradient-to-br from-violet-500 to-violet-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-file-export text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">预签名URL</h4>
+                    <p class="text-sm opacity-90">OSS 安全下载</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-hdd text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">灵活存储</h4>
+                    <p class="text-sm opacity-90">本地 NAS / OSS 支持</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

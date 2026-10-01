@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天接待 - 客服系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-comments mr-3 text-blue-600"></i>聊天接待
+            </h1>
+            <p class="text-gray-500 mb-6">Chat Reception - 实时客户沟通与接待</p>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-600 p-4 mb-8">
+                <p class="text-blue-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心功能：</strong>支持微信登录、WebSocket实时通信、敏感词过滤、RAG智能回答、聊天记录保存、消息转发。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-blue-600"></i>功能概览
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fab fa-weixin text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">微信登录</h4>
+                    <p class="text-sm opacity-90">OAuth2.0微信授权</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-plug text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">实时通信</h4>
+                    <p class="text-sm opacity-90">WebSocket双向通信</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-robot text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">智能回答</h4>
+                    <p class="text-sm opacity-90">RAG知识库检索</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-history text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">记录保存</h4>
+                    <p class="text-sm opacity-90">聊天记录持久化</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-eye-slash text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">敏感过滤</h4>
+                    <p class="text-sm opacity-90">敏感词自动过滤</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-exchange-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">消息转发</h4>
+                    <p class="text-sm opacity-90">客服间消息转接</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-paperclip text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">文件发送</h4>
+                    <p class="text-sm opacity-90">图片文件支持</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-bell text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">消息提醒</h4>
+                    <p class="text-sm opacity-90">实时消息通知</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-project-diagram mr-2 text-blue-600"></i>通信流程
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="relative">
+                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+                    <div class="space-y-8">
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold">1</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">微信登录</h4>
+                                <p class="text-sm text-gray-600">用户通过微信OAuth2.0授权登录，获取用户信息</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold">2</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">建立连接</h4>
+                                <p class="text-sm text-gray-600">客户端与服务器建立WebSocket连接，进行身份认证</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold">3</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">智能分流</h4>
+                                <p class="text-sm text-gray-600">先尝试RAG智能回答，无法回答时转接人工客服</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold">4</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">实时通信</h4>
+                                <p class="text-sm text-gray-600">用户与客服进行实时消息收发，消息经过敏感词过滤</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold">5</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">记录保存</h4>
+                                <p class="text-sm text-gray-600">所有聊天消息保存到Redis，支持会话记录查询</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-blue-600"></i>核心代码示例
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>微信登录服务</span>
+                        <span class="text-xs text-gray-400">WeChatAuthService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * 微信登录服务 - OAuth2.0认证
+ */</span>
+<span class="text-purple-400">@Service</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">WeChatAuthService</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
+
+    <span class="text-pink-400">public</span> WeChatUser <span class="text-blue-300">login</span>(String code) <span class="text-pink-400">throws</span> Exception {
+        <span class="text-gray-500">// 1. 使用code换取access_token</span>
+        String accessTokenUrl = String.<span class="text-blue-300">format</span>(
+            <span class="text-yellow-300">"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code"</span>,
+            wechatConfig.getAppId(),
+            wechatConfig.getAppSecret(),
+            code
+        );
+        
+        <span class="text-pink-400">String</span> response = restTemplate.getForObject(accessTokenUrl, String.<span class="text-pink-400">class</span>);
+        JSONObject json = JSON.parseObject(response);
+        
+        <span class="text-pink-400">String</span> accessToken = json.getString(<span class="text-yellow-300">"access_token"</span>);
+        <span class="text-pink-400">String</span> openId = json.getString(<span class="text-yellow-300">"openid"</span>);
+        
+        <span class="text-gray-500">// 2. 获取用户信息</span>
+        <span class="text-pink-400">String</span> userInfoUrl = String.<span class="text-blue-300">format</span>(
+            <span class="text-yellow-300">"https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s"</span>,
+            accessToken,
+            openId
+        );
+        
+        <span class="text-pink-400">String</span> userInfoResponse = restTemplate.getForObject(userInfoUrl, String.<span class="text-pink-400">class</span>);
+        WeChatUser user = JSON.parseObject(userInfoResponse, WeChatUser.<span class="text-pink-400">class</span>);
+        
+        <span class="text-gray-500">// 3. 保存用户到Redis</span>
+        <span class="text-pink-400">String</span> userKey = <span class="text-yellow-300">"wechat_user:"</span> + openId;
+        redisTemplate.opsForValue().set(userKey, user, <span class="text-pink-400">7</span>, TimeUnit.DAYS);
+        
+        <span class="text-gray-500">// 4. 生成会话token</span>
+        <span class="text-pink-400">String</span> sessionToken = UUID.randomUUID().toString();
+        redisTemplate.opsForValue().set(<span class="text-yellow-300">"session:"</span> + sessionToken, openId, <span class="text-pink-400">24</span>, TimeUnit.HOURS);
+        
+        user.setSessionToken(sessionToken);
+        <span class="text-pink-400">return</span> user;
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-js mr-2"></i>聊天客户端</span>
+                        <span class="text-xs text-gray-400">ChatClient.vue</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">// 聊天客户端 - WebSocket实时通信</span>
+&lt;<span class="text-pink-400">template</span>&gt;
+  &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"chat-client"</span>&gt;
+    &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"chat-messages"</span>&gt;
+      &lt;<span class="text-pink-400">div</span> 
+        <span class="text-green-400">v-for</span>=<span class="text-yellow-300">"msg in messages"</span>
+        <span class="text-green-400">:key</span>=<span class="text-yellow-300">"msg.id"</span>
+        <span class="text-green-400">:class</span>=<span class="text-yellow-300">['message', msg.type]</span>
+      &gt;
+        &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"message-content"</span>&gt;
+          {{ msg.content }}
+        &lt;/<span class="text-pink-400">div</span>&gt;
+        &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"message-time"</span>&gt;
+          {{ formatTime(msg.timestamp) }}
+        &lt;/<span class="text-pink-400">div</span>&gt;
+      &lt;/<span class="text-pink-400">div</span>&gt;
+    &lt;/<span class="text-pink-400">div</span>&gt;
+    
+    &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"chat-input"</span>&gt;
+      &lt;<span class="text-pink-400">input</span>
+        <span class="text-green-400">v-model</span>=<span class="text-yellow-300">"inputMessage"</span>
+        <span class="text-green-400">@keyup.enter</span>=<span class="text-yellow-300">"sendMessage"</span>
+        <span class="text-green-400">placeholder</span>=<span class="text-yellow-300">"请输入消息..."</span>
+        <span class="text-green-400">class</span>=<span class="text-yellow-300">"flex-1"</span>
+      &gt;
+      &lt;<span class="text-pink-400">button</span> @<span class="text-green-400">click</span>=<span class="text-yellow-300">"sendMessage"</span>&gt;
+        &lt;<span class="text-pink-400">i</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"fas fa-paper-plane"</span>&gt;&lt;/<span class="text-pink-400">i</span>&gt;
+      &lt;/<span class="text-pink-400">button</span>&gt;
+    &lt;/<span class="text-pink-400">div</span>&gt;
+  &lt;/<span class="text-pink-400">div</span>&gt;
+&lt;/<span class="text-pink-400">template</span>&gt;
+
+&lt;<span class="text-pink-400">script</span>&gt;
+<span class="text-pink-400">import</span> { ref, onMounted, onUnmounted } <span class="text-pink-400">from</span> <span class="text-yellow-300">'vue'</span>;
+
+<span class="text-pink-400">export default</span> {
+  <span class="text-green-400">name</span>: <span class="text-yellow-300">'ChatClient'</span>,
+  <span class="text-pink-400">props</span>: {
+    <span class="text-green-400">sessionToken</span>: String
+  },
+  <span class="text-pink-400">setup</span>(props) {
+    <span class="text-pink-400">const</span> messages = ref([]);
+    <span class="text-pink-400">const</span> inputMessage = ref(<span class="text-yellow-300">''</span>);
+    <span class="text-pink-400">let</span> ws = <span class="text-pink-400">null</span>;
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">connect</span> = () =&gt; {
+      <span class="text-pink-400">const</span> wsUrl = <span class="text-yellow-300">`ws://localhost:8080/ws?token=</span>${props.sessionToken}<span class="text-yellow-300">`</span>;
+      ws = <span class="text-pink-400">new</span> WebSocket(wsUrl);
+      
+      ws.onopen = () =&gt; {
+        console.log(<span class="text-yellow-300">'WebSocket连接成功'</span>);
+      };
+      
+      ws.onmessage = (event) =&gt; {
+        <span class="text-pink-400">const</span> msg = JSON.parse(event.data);
+        messages.value.push(msg);
+      };
+      
+      ws.onclose = () =&gt; {
+        console.log(<span class="text-yellow-300">'WebSocket连接关闭'</span>);
+        setTimeout(connect, <span class="text-pink-400">3000</span>);
+      };
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">sendMessage</span> = () =&gt; {
+      <span class="text-pink-400">if</span> (!inputMessage.value.trim()) <span class="text-pink-400">return</span>;
+      
+      <span class="text-pink-400">const</span> msg = {
+        <span class="text-green-400">type</span>: <span class="text-yellow-300">'USER'</span>,
+        <span class="text-green-400">content</span>: inputMessage.value,
+        <span class="text-green-400">timestamp</span>: <span class="text-pink-400">new</span> Date().toISOString()
+      };
+      
+      ws.send(JSON.stringify(msg));
+      messages.value.push(msg);
+      inputMessage.value = <span class="text-yellow-300">''</span>;
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">formatTime</span> = (timestamp) =&gt; {
+      <span class="text-pink-400">return</span> <span class="text-pink-400">new</span> Date(timestamp).toLocaleTimeString();
+    };
+
+    onMounted(() =&gt; {
+      connect();
+    });
+
+    onUnmounted(() =&gt; {
+      <span class="text-pink-400">if</span> (ws) {
+        ws.close();
+      }
+    });
+
+    <span class="text-pink-400">return</span> {
+      messages,
+      inputMessage,
+      sendMessage,
+      formatTime
+    };
+  }
+};
+&lt;/<span class="text-pink-400">script</span>&gt;</pre>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>敏感词过滤服务</span>
+                        <span class="text-xs text-gray-400">SensitiveWordService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * 敏感词过滤服务 - 支持内置和第三方
+ */</span>
+<span class="text-purple-400">@Service</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">SensitiveWordService</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
+    
+    <span class="text-pink-400">private</span> TrieNode root;
+
+    <span class="text-pink-400">@PostConstruct</span>
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">init</span>() {
+        <span class="text-gray-500">// 从Redis加载敏感词库</span>
+        Set&lt;String&gt; words = (Set&lt;String&gt;) redisTemplate.opsForSet().members(<span class="text-yellow-300">"sensitive_words"</span>);
+        <span class="text-gray-500">// 构建Trie树</span>
+        buildTrie(words);
+    }
+
+    <span class="text-pink-400">public</span> String <span class="text-blue-300">filter</span>(String content) {
+        <span class="text-gray-500">// 1. 内置敏感词过滤</span>
+        <span class="text-pink-400">String</span> filtered = filterByTrie(content);
+        
+        <span class="text-gray-500">// 2. 第三方敏感词检测（可选）</span>
+        <span class="text-pink-400">if</span> (thirdPartyConfig.isEnabled()) {
+            filtered = filterByThirdParty(filtered);
+        }
+        
+        <span class="text-pink-400">return</span> filtered;
+    }
+
+    <span class="text-pink-400">private</span> String <span class="text-blue-300">filterByTrie</span>(String content) {
+        <span class="text-gray-500">// 使用Trie树进行敏感词匹配</span>
+        <span class="text-pink-400">StringBuilder</span> result = <span class="text-pink-400">new</span> <span class="text-pink-400">StringBuilder</span>();
+        <span class="text-pink-400">int</span> n = content.length();
+        <span class="text-pink-400">int</span> p = <span class="text-pink-400">0</span>;
+        
+        <span class="text-pink-400">while</span> (p &lt; n) {
+            TrieNode node = root;
+            <span class="text-pink-400">int</span> q = p;
+            <span class="text-pink-400">boolean</span> found = <span class="text-pink-400">false</span>;
+            
+            <span class="text-pink-400">while</span> (q &lt; n &amp;&amp; node.children.containsKey(content.charAt(q))) {
+                node = node.children.get(content.charAt(q));
+                <span class="text-pink-400">if</span> (node.isEnd) {
+                    found = <span class="text-pink-400">true</span>;
+                    <span class="text-gray-500">// 替换为***</span>
+                    result.append(<span class="text-yellow-300">"***"</span>);
+                    p = q + <span class="text-pink-400">1</span>;
+                    <span class="text-pink-400">break</span>;
+                }
+                q++;
+            }
+            
+            <span class="text-pink-400">if</span> (!found) {
+                result.append(content.charAt(p));
+                p++;
+            }
+        }
+        
+        <span class="text-pink-400">return</span> result.toString();
+    }
+
+    <span class="text-pink-400">private</span> String <span class="text-blue-300">filterByThirdParty</span>(String content) {
+        <span class="text-gray-500">// 调用第三方敏感词检测API</span>
+        <span class="text-gray-500">// 实际项目中对接阿里云、腾讯云等敏感词检测服务</span>
+        <span class="text-pink-400">return</span> content;
+    }
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-blue-600"></i>核心优势
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fab fa-weixin text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">微信登录</h4>
+                    <p class="text-sm opacity-90">OAuth2.0安全认证</p>
+                </div>
+                <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-plug text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">实时通信</h4>
+                    <p class="text-sm opacity-90">WebSocket低延迟</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-robot text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">智能分流</h4>
+                    <p class="text-sm opacity-90">先智能后人工</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-eye-slash text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">敏感过滤</h4>
+                    <p class="text-sm opacity-90">内置+第三方双重</p>
+                </div>
+                <div class="bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-history text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">记录持久化</h4>
+                    <p class="text-sm opacity-90">Redis全量存储</p>
+                </div>
+                <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-sync-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">断线重连</h4>
+                    <p class="text-sm opacity-90">自动重连机制</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

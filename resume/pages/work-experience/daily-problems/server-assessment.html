@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务器资源评估 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-server mr-3 text-gray-600"></i>服务器资源评估
+            </h1>
+            <p class="text-gray-500 mb-6">Server Resource Assessment - 正确评估服务器资源和支撑的最大并发与峰值</p>
+            
+            <div class="bg-gray-50 border-l-4 border-gray-600 p-4 mb-8">
+                <p class="text-gray-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心目标：</strong>掌握服务器资源评估方法，准确计算系统能支撑的最大并发和峰值，为容量规划和扩容提供科学依据。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-gray-600"></i>评估维度
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-gray-500 to-gray-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-microchip text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">CPU</h4>
+                    <p class="text-sm opacity-90">计算能力评估</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-memory text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">内存</h4>
+                    <p class="text-sm opacity-90">内存容量评估</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-hdd text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">磁盘IO</h4>
+                    <p class="text-sm opacity-90">存储性能评估</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-network-wired text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">网络</h4>
+                    <p class="text-sm opacity-90">带宽和延迟</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-clipboard-list mr-2 text-gray-600"></i>评估方法
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-microchip text-gray-500 mr-2"></i>
+                        CPU 评估
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">关键指标</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看CPU信息</span>
+cat /proc/cpuinfo
+<span class="text-gray-500"># 实时监控CPU使用率</span>
+top
+<span class="text-gray-500"># 或者使用 htop（更友好）</span>
+htop
+<span class="text-gray-500"># 查看CPU核数</span>
+nproc
+<span class="text-gray-500"># 查看负载</span>
+uptime</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">评估要点</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>CPU使用率</strong>：正常业务运行时CPU使用率应低于70%</li>
+                                <li><strong>核心数</strong>：多核心系统可以支撑更高并发</li>
+                                <li><strong>上下文切换</strong>：过多的上下文切换会影响性能</li>
+                                <li><strong>等待IO</strong>：wa过高说明磁盘成为瓶颈</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">并发估算公式</h4>
+                            <div class="bg-gray-100 p-4 rounded">
+                                <p class="text-gray-800 font-mono">
+                                    <strong>最大并发数 ≈ (CPU核心数 × (1 - 系统占用率)) / 单请求CPU耗时</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-memory text-blue-500 mr-2"></i>
+                        内存评估
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">关键指标</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看内存信息</span>
+free -h
+<span class="text-gray-500"># 实时监控内存</span>
+top
+<span class="text-gray-500"># 查看进程内存占用</span>
+ps aux --sort=-%mem | head
+<span class="text-gray-500"># 查看JVM堆内存（Java应用）</span>
+jstat -gc &lt;pid&gt;
+<span class="text-gray-500"># 或者使用 jmap</span>
+jmap -heap &lt;pid&gt;</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">评估要点</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>可用内存</strong>：至少预留20-30%的缓冲区</li>
+                                <li><strong>应用内存</strong>：监控JVM堆外内存使用</li>
+                                <li><strong>Swap使用</strong>：尽量避免使用Swap</li>
+                                <li><strong>OOM风险</strong>：关注JVM和系统OOM日志</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">内存计算公式</h4>
+                            <div class="bg-blue-100 p-4 rounded">
+                                <p class="text-gray-800 font-mono">
+                                    <strong>总内存需求 = 应用内存 + 缓存 + 系统预留</strong>
+                                </p>
+                                <p class="text-gray-600 text-sm mt-2">
+                                    单连接内存占用 × 最大连接数 + 缓存 + 预留
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-hdd text-green-500 mr-2"></i>
+                        磁盘IO评估
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">关键指标</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看磁盘使用率</span>
+df -h
+<span class="text-gray-500"># 实时监控IO</span>
+iostat -x 1
+<span class="text-gray-500"># 或者使用 vmstat</span>
+vmstat 1
+<span class="text-gray-500"># 查看磁盘类型</span>
+lsblk
+<span class="text-gray-500"># 测试磁盘性能</span>
+dd if=/dev/zero of=/tmp/test bs=1G count=1 oflag=direct</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">评估要点</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>IOPS</strong>：SSD比HDD能提供更高IOPS</li>
+                                <li><strong>磁盘使用率</strong>：建议不超过80%</li>
+                                <li><strong>wa等待</strong>：wa过高说明磁盘是瓶颈</li>
+                                <li><strong>读写比例</strong>：根据业务特点优化存储</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">磁盘性能对比</h4>
+                            <table class="w-full border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="border p-2 text-left">磁盘类型</th>
+                                        <th class="border p-2 text-left">读IOPS</th>
+                                        <th class="border p-2 text-left">写IOPS</th>
+                                        <th class="border p-2 text-left">延迟</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border p-2">HDD</td>
+                                        <td class="border p-2">100-200</td>
+                                        <td class="border p-2">100-200</td>
+                                        <td class="border p-2">5-10ms</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">SSD</td>
+                                        <td class="border p-2">10,000-30,000</td>
+                                        <td class="border p-2">5,000-10,000</td>
+                                        <td class="border p-2">0.1-0.5ms</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">NVMe</td>
+                                        <td class="border p-2">500,000+</td>
+                                        <td class="border p-2">300,000+</td>
+                                        <td class="border p-2">&lt;0.1ms</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-network-wired text-orange-500 mr-2"></i>
+                        网络评估
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">关键指标</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看网卡信息</span>
+ip addr
+<span class="text-gray-500"># 测试网络带宽</span>
+iperf3 -c &lt;server-ip&gt;
+<span class="text-gray-500"># 查看网络连接</span>
+ss -s
+<span class="text-gray-500"># 实时监控网络</span>
+iftop
+<span class="text-gray-500"># 或者使用 vnstat</span>
+vnstat</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">评估要点</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>带宽</strong>：确保带宽满足峰值流量需求</li>
+                                <li><strong>延迟</strong>：低延迟对实时业务很重要</li>
+                                <li><strong>连接数</strong>：注意文件描述符限制</li>
+                                <li><strong>丢包</strong>：丢包率过高会影响性能</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">网络带宽对比</h4>
+                            <table class="w-full border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="border p-2 text-left">网络类型</th>
+                                        <th class="border p-2 text-left">理论带宽</th>
+                                        <th class="border p-2 text-left">实际可用</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border p-2">百兆网卡</td>
+                                        <td class="border p-2">100 Mbps</td>
+                                        <td class="border p-2">10-12 MB/s</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">千兆网卡</td>
+                                        <td class="border p-2">1 Gbps</td>
+                                        <td class="border p-2">100-120 MB/s</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">万兆网卡</td>
+                                        <td class="border p-2">10 Gbps</td>
+                                        <td class="border p-2">1-1.2 GB/s</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-calculator mr-2 text-gray-600"></i>并发评估模型
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">Little's Law （利特尔定律）</h3>
+                        <div class="bg-white p-4 rounded border">
+                            <p class="text-gray-800 text-xl font-mono text-center mb-2">
+                                <strong>L = λ × W</strong>
+                            </p>
+                            <p class="text-gray-600 text-center">
+                                系统中的平均请求数 = 平均到达率 × 平均响应时间
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">并发估算公式</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded border">
+                                <h4 class="font-semibold text-gray-700 mb-2">QPS 计算</h4>
+                                <p class="text-gray-600 text-sm mb-2">每秒查询率</p>
+                                <p class="text-gray-800 font-mono">
+                                    QPS = 并发数 / 平均响应时间
+                                </p>
+                            </div>
+                            <div class="bg-white p-4 rounded border">
+                                <h4 class="font-semibold text-gray-700 mb-2">并发数计算</h4>
+                                <p class="text-gray-600 text-sm mb-2">最大并发连接</p>
+                                <p class="text-gray-800 font-mono">
+                                    并发数 = QPS × 平均响应时间
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">评估实例</h3>
+                        <div class="bg-blue-50 p-4 rounded border border-blue-200">
+                            <h4 class="font-semibold text-blue-800 mb-2">场景：电商网站首页</h4>
+                            <ul class="text-gray-700 space-y-1 list-disc pl-6">
+                                <li>平均响应时间：100ms (0.1秒)</li>
+                                <li>目标QPS：1000</li>
+                                <li>需要的并发数：1000 × 0.1 = 100 并发</li>
+                            </ul>
+                            <div class="mt-3 p-3 bg-white rounded">
+                                <p class="text-gray-800 font-mono">
+                                    <strong>结论：</strong>需要至少100个并发连接，考虑冗余建议200-300并发
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-clipboard-check mr-2 text-gray-600"></i>评估检查清单
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-gray-500 to-gray-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-microchip text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">CPU检查</h4>
+                    <p class="text-sm opacity-90">使用率、核心数、上下文切换</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-memory text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">内存检查</h4>
+                    <p class="text-sm opacity-90">可用内存、应用内存、Swap</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-hdd text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">磁盘检查</h4>
+                    <p class="text-sm opacity-90">使用率、IOPS、延迟</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-network-wired text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">网络检查</h4>
+                    <p class="text-sm opacity-90">带宽、延迟、连接数</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-chart-line text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">业务指标</h4>
+                    <p class="text-sm opacity-90">QPS、响应时间、错误率</p>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-buffer text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">冗余考虑</h4>
+                    <p class="text-sm opacity-90">预留20-30%冗余</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

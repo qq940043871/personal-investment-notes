@@ -1,0 +1,956 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公共服务模块 - B2B分布式项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-cubes mr-3 text-green-500"></i>公共服务模块
+            </h1>
+            <p class="text-gray-500 mb-6">Common Services - 通用基础服务能力</p>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-8">
+                <p class="text-green-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心定位：</strong>公共服务模块提供系统通用的基础服务能力，包括认证服务、短信服务、外联网关、支付模块、订单模块、客户模块、智能体模块等，减少重复开发，提升开发效率。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-green-500"></i>服务模块概览
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="service-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">认证服务</h4>
+                    <p class="text-sm opacity-90">统一身份认证</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-sms text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">短信服务</h4>
+                    <p class="text-sm opacity-90">短信发送与验证码</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-plug text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">外联网关</h4>
+                    <p class="text-sm opacity-90">第三方系统对接</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-credit-card text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">支付模块</h4>
+                    <p class="text-sm opacity-90">多渠道支付</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-shopping-cart text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">订单模块</h4>
+                    <p class="text-sm opacity-90">订单全生命周期</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-pink-500 to-pink-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-user-tie text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">客户模块</h4>
+                    <p class="text-sm opacity-90">客户关系管理</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-brain text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">智能体模块</h4>
+                    <p class="text-sm opacity-90">AI智能助手</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-puzzle-piece text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">业务模块</h4>
+                    <p class="text-sm opacity-90">各业务领域服务</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-cogs mr-2 text-green-500"></i>核心服务模块
+            </h2>
+            
+            <div class="space-y-8 mb-8">
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-shield-alt text-blue-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">认证服务</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        提供统一的身份认证、授权管理、Token管理等功能，支持多种认证方式。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Service
+public class AuthService {
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired
+    private JwtService jwtService;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
+    public LoginResponse login(LoginRequest request) {
+        User user = userRepository.findByUsername(request.getUsername());
+        
+        if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new BusinessException("用户名或密码错误");
+        }
+        
+        if (!user.isEnabled()) {
+            throw new BusinessException("账号已禁用");
+        }
+        
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        
+        return LoginResponse.builder()
+            .accessToken(accessToken)
+            .refreshToken(refreshToken)
+            .userInfo(convertToUserInfo(user))
+            .build();
+    }
+    
+    public RefreshTokenResponse refreshToken(String refreshToken) {
+        if (!jwtService.validateRefreshToken(refreshToken)) {
+            throw new BusinessException("RefreshToken无效");
+        }
+        
+        String userId = jwtService.getUserIdFromToken(refreshToken);
+        User user = userRepository.findById(userId).orElse(null);
+        
+        if (user == null) {
+            throw new BusinessException("用户不存在");
+        }
+        
+        String newAccessToken = jwtService.generateAccessToken(user);
+        
+        return RefreshTokenResponse.builder()
+            .accessToken(newAccessToken)
+            .build();
+    }
+    
+    public void logout(String userId) {
+        jwtService.revokeTokens(userId);
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-sms text-purple-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">短信服务</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        提供短信发送、验证码管理、模板管理等功能，支持多渠道短信服务商接入。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Service
+public class SmsService {
+    
+    @Autowired
+    private SmsProvider smsProvider;
+    
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+    
+    private static final String SMS_CODE_PREFIX = "sms:code:";
+    
+    public void sendVerificationCode(String phone, String scene) {
+        String code = generateCode(6);
+        
+        String templateCode = getTemplateCode(scene);
+        Map<String, String> params = new HashMap<>();
+        params.put("code", code);
+        
+        smsProvider.send(phone, templateCode, params);
+        
+        String redisKey = SMS_CODE_PREFIX + scene + ":" + phone;
+        redisTemplate.opsForValue().set(redisKey, code, 5, TimeUnit.MINUTES);
+    }
+    
+    public boolean verifyCode(String phone, String code, String scene) {
+        String redisKey = SMS_CODE_PREFIX + scene + ":" + phone;
+        String storedCode = redisTemplate.opsForValue().get(redisKey);
+        
+        if (storedCode == null) {
+            return false;
+        }
+        
+        boolean matched = storedCode.equals(code);
+        if (matched) {
+            redisTemplate.delete(redisKey);
+        }
+        
+        return matched;
+    }
+    
+    public void sendNotification(String phone, String templateCode, Map<String, String> params) {
+        smsProvider.send(phone, templateCode, params);
+    }
+    
+    private String generateCode(int length) {
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            sb.append(random.nextInt(10));
+        }
+        return sb.toString();
+    }
+    
+    private String getTemplateCode(String scene) {
+        Map<String, String> templateMap = new HashMap<>();
+        templateMap.put("login", "TPL_LOGIN");
+        templateMap.put("register", "TPL_REGISTER");
+        templateMap.put("reset", "TPL_RESET");
+        return templateMap.getOrDefault(scene, "TPL_DEFAULT");
+    }
+}
+
+public interface SmsProvider {
+    void send(String phone, String templateCode, Map<String, String> params);
+}
+
+@Service
+public class AliyunSmsProvider implements SmsProvider {
+    
+    @Override
+    public void send(String phone, String templateCode, Map<String, String> params) {
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-orange-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-plug text-orange-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">外联网关</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        统一对接各种第三方系统，提供适配器模式，支持协议转换、签名验签、限流熔断等功能。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Service
+public class ExternalGateway {
+    
+    private final Map<String, ExternalAdapter> adapters = new ConcurrentHashMap<>();
+    
+    @PostConstruct
+    public void init() {
+        adapters.put("alipay", new AlipayAdapter());
+        adapters.put("wechat", new WechatAdapter());
+        adapters.put("sms", new SmsAdapter());
+        adapters.put("logistics", new LogisticsAdapter());
+    }
+    
+    public ExternalResponse invoke(String system, String action, Map<String, Object> params) {
+        ExternalAdapter adapter = adapters.get(system);
+        
+        if (adapter == null) {
+            throw new BusinessException("不支持的第三方系统: " + system);
+        }
+        
+        try {
+            return adapter.execute(action, params);
+        } catch (Exception e) {
+            return ExternalResponse.error(e.getMessage());
+        }
+    }
+    
+    public void registerAdapter(String system, ExternalAdapter adapter) {
+        adapters.put(system, adapter);
+    }
+}
+
+public interface ExternalAdapter {
+    ExternalResponse execute(String action, Map<String, Object> params);
+    String getSystemName();
+}
+
+@Component
+public class AlipayAdapter implements ExternalAdapter {
+    
+    @Override
+    public ExternalResponse execute(String action, Map<String, Object> params) {
+        switch (action) {
+            case "pay":
+                return pay(params);
+            case "query":
+                return query(params);
+            case "refund":
+                return refund(params);
+            default:
+                return ExternalResponse.error("不支持的操作: " + action);
+        }
+    }
+    
+    private ExternalResponse pay(Map<String, Object> params) {
+        return ExternalResponse.success();
+    }
+    
+    private ExternalResponse query(Map<String, Object> params) {
+        return ExternalResponse.success();
+    }
+    
+    private ExternalResponse refund(Map<String, Object> params) {
+        return ExternalResponse.success();
+    }
+    
+    @Override
+    public String getSystemName() {
+        return "alipay";
+    }
+}
+
+public class ExternalResponse {
+    private boolean success;
+    private String code;
+    private String message;
+    private Object data;
+    
+    public static ExternalResponse success() {
+        return success(null);
+    }
+    
+    public static ExternalResponse success(Object data) {
+        ExternalResponse response = new ExternalResponse();
+        response.setSuccess(true);
+        response.setCode("0000");
+        response.setMessage("成功");
+        response.setData(data);
+        return response;
+    }
+    
+    public static ExternalResponse error(String message) {
+        ExternalResponse response = new ExternalResponse();
+        response.setSuccess(false);
+        response.setCode("9999");
+        response.setMessage(message);
+        return response;
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-credit-card text-green-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">支付模块</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        提供多渠道支付接入，包括支付宝、微信支付、银联等，支持支付、查询、退款、对账等功能。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Service
+public class PaymentService {
+    
+    @Autowired
+    private PaymentChannelFactory paymentChannelFactory;
+    
+    @Autowired
+    private OrderService orderService;
+    
+    @Autowired
+    private PaymentRepository paymentRepository;
+    
+    public PaymentResponse pay(PaymentRequest request) {
+        Order order = orderService.getOrder(request.getOrderId());
+        
+        if (order == null) {
+            throw new BusinessException("订单不存在");
+        }
+        
+        if (order.isPaid()) {
+            throw new BusinessException("订单已支付");
+        }
+        
+        PaymentChannel channel = paymentChannelFactory.getChannel(request.getChannel());
+        
+        Payment payment = Payment.builder()
+            .orderId(request.getOrderId())
+            .amount(order.getAmount())
+            .channel(request.getChannel())
+            .status(PaymentStatus.PENDING)
+            .createTime(new Date())
+            .build();
+        
+        paymentRepository.save(payment);
+        
+        PaymentChannelResponse channelResponse = channel.pay(
+            payment.getId(),
+            order.getAmount(),
+            request.getExtra()
+        );
+        
+        payment.setThirdPartyPaymentId(channelResponse.getThirdPartyPaymentId());
+        paymentRepository.save(payment);
+        
+        return PaymentResponse.builder()
+            .paymentId(payment.getId())
+            .paymentUrl(channelResponse.getPaymentUrl())
+            .qrCode(channelResponse.getQrCode())
+            .build();
+    }
+    
+    public boolean callback(String channel, String paymentId, Map<String, String> params) {
+        PaymentChannel paymentChannel = paymentChannelFactory.getChannel(channel);
+        
+        if (!paymentChannel.verifyCallback(params)) {
+            return false;
+        }
+        
+        Payment payment = paymentRepository.findById(paymentId).orElse(null);
+        if (payment == null) {
+            return false;
+        }
+        
+        if (payment.getStatus() == PaymentStatus.SUCCESS) {
+            return true;
+        }
+        
+        payment.setStatus(PaymentStatus.SUCCESS);
+        payment.setPayTime(new Date());
+        paymentRepository.save(payment);
+        
+        orderService.markAsPaid(payment.getOrderId());
+        
+        return true;
+    }
+    
+    public RefundResponse refund(RefundRequest request) {
+        Payment payment = paymentRepository.findById(request.getPaymentId()).orElse(null);
+        
+        if (payment == null) {
+            throw new BusinessException("支付记录不存在");
+        }
+        
+        if (payment.getStatus() != PaymentStatus.SUCCESS) {
+            throw new BusinessException("支付未成功，无法退款");
+        }
+        
+        PaymentChannel channel = paymentChannelFactory.getChannel(payment.getChannel());
+        
+        RefundChannelResponse channelResponse = channel.refund(
+            payment.getId(),
+            request.getRefundAmount(),
+            request.getReason()
+        );
+        
+        Refund refund = Refund.builder()
+            .paymentId(payment.getId())
+            .refundAmount(request.getRefundAmount())
+            .reason(request.getReason())
+            .status(RefundStatus.SUCCESS)
+            .createTime(new Date())
+            .build();
+        
+        return RefundResponse.builder()
+            .refundId(refund.getId())
+            .status(refund.getStatus())
+            .build();
+    }
+}
+
+public enum PaymentStatus {
+    PENDING,
+    SUCCESS,
+    FAILED,
+    REFUNDED
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-shopping-cart text-yellow-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">订单模块</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        提供订单全生命周期管理，包括创建、支付、发货、收货、评价、退款等功能。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Service
+public class OrderService {
+    
+    @Autowired
+    private OrderRepository orderRepository;
+    
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+    
+    @Autowired
+    private IdGenerator idGenerator;
+    
+    public Order createOrder(CreateOrderRequest request) {
+        String orderId = idGenerator.generate();
+        
+        Order order = Order.builder()
+            .orderId(orderId)
+            .userId(request.getUserId())
+            .totalAmount(request.getTotalAmount())
+            .status(OrderStatus.UNPAID)
+            .createTime(new Date())
+            .build();
+        
+        List<OrderItem> items = request.getItems().stream()
+            .map(item -> OrderItem.builder()
+                .orderId(orderId)
+                .productId(item.getProductId())
+                .productName(item.getProductName())
+                .quantity(item.getQuantity())
+                .price(item.getPrice())
+                .build())
+            .collect(Collectors.toList());
+        
+        orderRepository.save(order);
+        orderItemRepository.saveAll(items);
+        
+        return order;
+    }
+    
+    public Order getOrder(String orderId) {
+        return orderRepository.findByOrderId(orderId);
+    }
+    
+    public void markAsPaid(String orderId) {
+        Order order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            throw new BusinessException("订单不存在");
+        }
+        
+        order.setStatus(OrderStatus.PAID);
+        order.setPayTime(new Date());
+        orderRepository.save(order);
+    }
+    
+    public void ship(String orderId, ShipRequest request) {
+        Order order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            throw new BusinessException("订单不存在");
+        }
+        
+        if (order.getStatus() != OrderStatus.PAID) {
+            throw new BusinessException("订单状态不正确");
+        }
+        
+        order.setStatus(OrderStatus.SHIPPED);
+        order.setLogisticsCompany(request.getLogisticsCompany());
+        order.setLogisticsNo(request.getLogisticsNo());
+        order.setShipTime(new Date());
+        orderRepository.save(order);
+    }
+    
+    public void confirm(String orderId) {
+        Order order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            throw new BusinessException("订单不存在");
+        }
+        
+        if (order.getStatus() != OrderStatus.SHIPPED) {
+            throw new BusinessException("订单状态不正确");
+        }
+        
+        order.setStatus(OrderStatus.COMPLETED);
+        order.setConfirmTime(new Date());
+        orderRepository.save(order);
+    }
+    
+    public void cancel(String orderId, String reason) {
+        Order order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            throw new BusinessException("订单不存在");
+        }
+        
+        if (order.getStatus() != OrderStatus.UNPAID && order.getStatus() != OrderStatus.PAID) {
+            throw new BusinessException("订单状态不正确");
+        }
+        
+        order.setStatus(OrderStatus.CANCELLED);
+        order.setCancelReason(reason);
+        order.setCancelTime(new Date());
+        orderRepository.save(order);
+    }
+    
+    public List<Order> queryOrders(OrderQueryRequest request) {
+        return orderRepository.queryByCondition(request);
+    }
+}
+
+public enum OrderStatus {
+    UNPAID("待支付"),
+    PAID("已支付"),
+    SHIPPED("已发货"),
+    COMPLETED("已完成"),
+    CANCELLED("已取消"),
+    REFUNDED("已退款");
+    
+    private final String desc;
+    
+    OrderStatus(String desc) {
+        this.desc = desc;
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-pink-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-user-tie text-pink-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">客户模块</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        提供客户信息管理、客户画像、客户分级、客户标签、客户跟进等功能。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Service
+public class CustomerService {
+    
+    @Autowired
+    private CustomerRepository customerRepository;
+    
+    @Autowired
+    private CustomerTagRepository customerTagRepository;
+    
+    public Customer createCustomer(CreateCustomerRequest request) {
+        Customer customer = Customer.builder()
+            .name(request.getName())
+            .phone(request.getPhone())
+            .email(request.getEmail())
+            .company(request.getCompany())
+            .level(CustomerLevel.NORMAL)
+            .source(request.getSource())
+            .createTime(new Date())
+            .build();
+        
+        return customerRepository.save(customer);
+    }
+    
+    public Customer getCustomer(Long customerId) {
+        return customerRepository.findById(customerId).orElse(null);
+    }
+    
+    public void updateCustomer(Long customerId, UpdateCustomerRequest request) {
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        if (customer == null) {
+            throw new BusinessException("客户不存在");
+        }
+        
+        if (request.getName() != null) {
+            customer.setName(request.getName());
+        }
+        if (request.getPhone() != null) {
+            customer.setPhone(request.getPhone());
+        }
+        if (request.getEmail() != null) {
+            customer.setEmail(request.getEmail());
+        }
+        
+        customerRepository.save(customer);
+    }
+    
+    public void addTags(Long customerId, List<String> tags) {
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        if (customer == null) {
+            throw new BusinessException("客户不存在");
+        }
+        
+        List<CustomerTag> tagList = tags.stream()
+            .map(tag -> CustomerTag.builder()
+                .customerId(customerId)
+                .tag(tag)
+                .createTime(new Date())
+                .build())
+            .collect(Collectors.toList());
+        
+        customerTagRepository.saveAll(tagList);
+    }
+    
+    public void updateLevel(Long customerId, CustomerLevel level) {
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        if (customer == null) {
+            throw new BusinessException("客户不存在");
+        }
+        
+        customer.setLevel(level);
+        customerRepository.save(customer);
+    }
+    
+    public void addFollow(Long customerId, FollowRequest request) {
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        if (customer == null) {
+            throw new BusinessException("客户不存在");
+        }
+        
+        CustomerFollow follow = CustomerFollow.builder()
+            .customerId(customerId)
+            .content(request.getContent())
+            .type(request.getType())
+            .createTime(new Date())
+            .build();
+        
+        customer.setLastFollowTime(new Date());
+        customerRepository.save(customer);
+    }
+    
+    public List<Customer> queryCustomers(CustomerQueryRequest request) {
+        return customerRepository.queryByCondition(request);
+    }
+    
+    public CustomerProfile getProfile(Long customerId) {
+        Customer customer = customerRepository.findById(customerId).orElse(null);
+        if (customer == null) {
+            throw new BusinessException("客户不存在");
+        }
+        
+        List<CustomerTag> tags = customerTagRepository.findByCustomerId(customerId);
+        
+        return CustomerProfile.builder()
+            .customer(customer)
+            .tags(tags.stream().map(CustomerTag::getTag).collect(Collectors.toList()))
+            .build();
+    }
+}
+
+public enum CustomerLevel {
+    NORMAL("普通客户"),
+    SILVER("白银客户"),
+    GOLD("黄金客户"),
+    PLATINUM("铂金客户"),
+    DIAMOND("钻石客户");
+    
+    private final String desc;
+    
+    CustomerLevel(String desc) {
+        this.desc = desc;
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-brain text-indigo-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">智能体模块</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        提供AI智能助手功能，包括对话、知识库、意图识别、自动回复等功能。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Service
+public class AgentService {
+    
+    @Autowired
+    private LlmService llmService;
+    
+    @Autowired
+    private KnowledgeBaseService knowledgeBaseService;
+    
+    @Autowired
+    private ConversationRepository conversationRepository;
+    
+    @Autowired
+    private MessageRepository messageRepository;
+    
+    public ChatResponse chat(ChatRequest request) {
+        String conversationId = request.getConversationId();
+        
+        if (conversationId == null) {
+            conversationId = createConversation(request.getUserId());
+        }
+        
+        saveMessage(conversationId, MessageRole.USER, request.getContent());
+        
+        List<Message> history = messageRepository.findByConversationId(conversationId);
+        
+        String context = buildContext(history);
+        
+        List<String> knowledge = knowledgeBaseService.retrieve(request.getContent(), 3);
+        
+        String prompt = buildPrompt(request.getContent(), context, knowledge);
+        
+        String answer = llmService.generate(prompt);
+        
+        saveMessage(conversationId, MessageRole.ASSISTANT, answer);
+        
+        return ChatResponse.builder()
+            .conversationId(conversationId)
+            .content(answer)
+            .build();
+    }
+    
+    private String createConversation(Long userId) {
+        Conversation conversation = Conversation.builder()
+            .userId(userId)
+            .createTime(new Date())
+            .build();
+        
+        conversationRepository.save(conversation);
+        return conversation.getId();
+    }
+    
+    private void saveMessage(String conversationId, MessageRole role, String content) {
+        Message message = Message.builder()
+            .conversationId(conversationId)
+            .role(role)
+            .content(content)
+            .createTime(new Date())
+            .build();
+        
+        messageRepository.save(message);
+    }
+    
+    private String buildContext(List<Message> history) {
+        StringBuilder context = new StringBuilder();
+        for (Message message : history) {
+            context.append(message.getRole().name().toLowerCase())
+                   .append(": ")
+                   .append(message.getContent())
+                   .append("\n");
+        }
+        return context.toString();
+    }
+    
+    private String buildPrompt(String query, String context, List<String> knowledge) {
+        StringBuilder prompt = new StringBuilder();
+        prompt.append("你是一个智能助手，请根据以下信息回答用户问题。\n\n");
+        
+        if (!knowledge.isEmpty()) {
+            prompt.append("参考知识库:\n");
+            for (String k : knowledge) {
+                prompt.append("- ").append(k).append("\n");
+            }
+            prompt.append("\n");
+        }
+        
+        if (!context.isEmpty()) {
+            prompt.append("对话历史:\n").append(context).append("\n");
+        }
+        
+        prompt.append("用户问题: ").append(query).append("\n");
+        prompt.append("请回答:");
+        
+        return prompt.toString();
+    }
+    
+    public List<Conversation> getConversations(Long userId) {
+        return conversationRepository.findByUserId(userId);
+    }
+    
+    public List<Message> getMessages(String conversationId) {
+        return messageRepository.findByConversationId(conversationId);
+    }
+    
+    public void addToKnowledgeBase(KnowledgeRequest request) {
+        Knowledge knowledge = Knowledge.builder()
+            .title(request.getTitle())
+            .content(request.getContent())
+            .category(request.getCategory())
+            .createTime(new Date())
+            .build();
+        
+        knowledgeBaseService.add(knowledge);
+    }
+}
+
+public enum MessageRole {
+    USER,
+    ASSISTANT,
+    SYSTEM
+}
+
+@Service
+public class KnowledgeBaseService {
+    
+    @Autowired
+    private VectorDatabase vectorDatabase;
+    
+    public void add(Knowledge knowledge) {
+        String embedding = generateEmbedding(knowledge.getContent());
+        vectorDatabase.store(knowledge.getId(), embedding, knowledge);
+    }
+    
+    public List<String> retrieve(String query, int topK) {
+        String queryEmbedding = generateEmbedding(query);
+        List<Knowledge> results = vectorDatabase.search(queryEmbedding, topK);
+        return results.stream().map(Knowledge::getContent).collect(Collectors.toList());
+    }
+    
+    private String generateEmbedding(String text) {
+        return "";
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-green-500"></i>核心优势
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-cubes text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">模块化设计</h4>
+                    <p class="text-sm opacity-90">高内聚低耦合，易于扩展</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-plug text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">适配器模式</h4>
+                    <p class="text-sm opacity-90">灵活接入第三方系统</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-repeat text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">复用性强</h4>
+                    <p class="text-sm opacity-90">统一服务，减少重复开发</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">安全可靠</h4>
+                    <p class="text-sm opacity-90">完整的安全防护机制</p>
+                </div>
+                <div class="bg-gradient-to-br from-pink-500 to-pink-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tachometer-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">高性能</h4>
+                    <p class="text-sm opacity-90">缓存优化，异步处理</p>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-brain text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">智能赋能</h4>
+                    <p class="text-sm opacity-90">AI智能体提升效率</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排队机制 - 客服系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-users mr-3 text-orange-600"></i>排队机制
+            </h1>
+            <p class="text-gray-500 mb-6">Queue Mechanism - 智能排队与分配策略</p>
+            
+            <div class="bg-orange-50 border-l-4 border-orange-600 p-4 mb-8">
+                <p class="text-orange-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心功能：</strong>支持智能排队分配、手动接入排队用户、第三方系统派单、优先级队列、超时提醒、实时队列位置通知。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-orange-600"></i>功能概览
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-list-ol text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">智能排队</h4>
+                    <p class="text-sm opacity-90">FIFO优先级队列</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-user-plus text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">手动接入</h4>
+                    <p class="text-sm opacity-90">手动接入排队用户</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-handshake text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">第三方派单</h4>
+                    <p class="text-sm opacity-90">外部系统派单</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-flag text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">优先级</h4>
+                    <p class="text-sm opacity-90">VIP用户优先</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-clock text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">超时提醒</h4>
+                    <p class="text-sm opacity-90">排队超时提醒</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-location-arrow text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">位置通知</h4>
+                    <p class="text-sm opacity-90">实时队列位置</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tags text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">技能匹配</h4>
+                    <p class="text-sm opacity-90">按技能分配</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-balance-scale text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">负载均衡</h4>
+                    <p class="text-sm opacity-90">客服负载均衡</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-project-diagram mr-2 text-orange-600"></i>排队流程
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="relative">
+                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+                    <div class="space-y-8">
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-orange-100 text-orange-700 rounded-full flex items-center justify-center font-bold">1</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">用户进入队列</h4>
+                                <p class="text-sm text-gray-600">用户发起咨询请求，根据技能标签进入对应队列</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-orange-100 text-orange-700 rounded-full flex items-center justify-center font-bold">2</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">智能分配</h4>
+                                <p class="text-sm text-gray-600">系统根据客服服务能力和技能匹配，优先分配给空闲客服</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-orange-100 text-orange-700 rounded-full flex items-center justify-center font-bold">3</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">排队等待</h4>
+                                <p class="text-sm text-gray-600">无空闲客服时，用户进入排队队列，实时通知队列位置</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-orange-100 text-orange-700 rounded-full flex items-center justify-center font-bold">4</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">手动接入/派单</h4>
+                                <p class="text-sm text-gray-600">客服可手动接入排队用户，或接收第三方系统派单</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-orange-100 text-orange-700 rounded-full flex items-center justify-center font-bold">5</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">开始服务</h4>
+                                <p class="text-sm text-gray-600">用户与客服建立会话，开始服务</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-orange-600"></i>核心代码示例
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>智能排队服务</span>
+                        <span class="text-xs text-gray-400">QueueService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * 智能排队服务 - 处理用户排队和分配
+ */</span>
+<span class="text-purple-400">@Service</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">QueueService</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
+    
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> CsCapacityService csCapacityService;
+
+    <span class="text-pink-400">public</span> String <span class="text-blue-300">addToQueue</span>(String userId, String skill, <span class="text-pink-400">int</span> priority) {
+        String queueKey = <span class="text-yellow-300">"queue:"</span> + skill;
+        String queueId = UUID.randomUUID().toString();
+        
+        <span class="text-gray-500">// 加入ZSet队列，score为优先级</span>
+        <span class="text-pink-400">double</span> score = calculateScore(priority, System.currentTimeMillis());
+        redisTemplate.opsForZSet().add(queueKey, queueId, score);
+        
+        <span class="text-gray-500">// 保存排队用户信息</span>
+        String userKey = <span class="text-yellow-300">"queue_user:"</span> + queueId;
+        Map&lt;String, Object&gt; userInfo = <span class="text-pink-400">new</span> HashMap&lt;&gt;();
+        userInfo.put(<span class="text-yellow-300">"userId"</span>, userId);
+        userInfo.put(<span class="text-yellow-300">"skill"</span>, skill);
+        userInfo.put(<span class="text-yellow-300">"joinTime"</span>, System.currentTimeMillis());
+        userInfo.put(<span class="text-yellow-300">"priority"</span>, priority);
+        redisTemplate.opsForHash().putAll(userKey, userInfo);
+        redisTemplate.expire(userKey, <span class="text-pink-400">24</span>, TimeUnit.HOURS);
+        
+        <span class="text-gray-500">// 尝试自动分配</span>
+        tryAssignFromQueue(skill);
+        
+        log.info(<span class="text-yellow-300">"用户 {} 加入队列 {}"</span>, userId, skill);
+        <span class="text-pink-400">return</span> queueId;
+    }
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">tryAssignFromQueue</span>(String skill) {
+        String queueKey = <span class="text-yellow-300">"queue:"</span> + skill;
+        
+        <span class="text-gray-500">// 获取可用客服</span>
+        List&lt;CsUser&gt; availableCs = csCapacityService.getAvailableCs(skill);
+        <span class="text-pink-400">if</span> (availableCs.isEmpty()) {
+            log.info(<span class="text-yellow-300">"无可用客服，用户继续排队"</span>);
+            <span class="text-pink-400">return</span>;
+        }
+        
+        <span class="text-gray-500">// 从队列头部获取用户</span>
+        Set&lt;String&gt; queueIds = redisTemplate.opsForZSet().range(queueKey, <span class="text-pink-400">0</span>, <span class="text-pink-400">0</span>);
+        <span class="text-pink-400">if</span> (queueIds == <span class="text-pink-400">null</span> || queueIds.isEmpty()) {
+            <span class="text-pink-400">return</span>;
+        }
+        
+        String queueId = queueIds.iterator().next();
+        CsUser csUser = availableCs.get(<span class="text-pink-400">0</span>);
+        
+        <span class="text-gray-500">// 分配用户给客服</span>
+        assignUserToCs(queueId, csUser.getCsId());
+        
+        <span class="text-gray-500">// 从队列移除</span>
+        redisTemplate.opsForZSet().remove(queueKey, queueId);
+    }
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">manualAssign</span>(String queueId, String csId) {
+        String queueKey = <span class="text-yellow-300">"queue:"</span> + getQueueSkill(queueId);
+        
+        <span class="text-gray-500">// 检查客服是否有可用能力</span>
+        <span class="text-pink-400">if</span> (!csCapacityService.hasAvailableCapacity(csId)) {
+            <span class="text-pink-400">throw</span> <span class="text-pink-400">new</span> IllegalStateException(<span class="text-yellow-300">"客服服务能力已满"</span>);
+        }
+        
+        <span class="text-gray-500">// 分配用户给客服</span>
+        assignUserToCs(queueId, csId);
+        
+        <span class="text-gray-500">// 从队列移除</span>
+        redisTemplate.opsForZSet().remove(queueKey, queueId);
+        
+        log.info(<span class="text-yellow-300">"手动接入: 队列ID {} -&gt; 客服ID {}"</span>, queueId, csId);
+    }
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">thirdPartyDispatch</span>(DispatchRequest request) {
+        String userId = request.getUserId();
+        String skill = request.getSkill();
+        String csId = request.getCsId();
+        
+        <span class="text-gray-500">// 验证派单请求</span>
+        <span class="text-pink-400">if</span> (!csCapacityService.hasAvailableCapacity(csId)) {
+            <span class="text-pink-400">throw</span> <span class="text-pink-400">new</span> IllegalStateException(<span class="text-yellow-300">"客服服务能力已满"</span>);
+        }
+        
+        <span class="text-gray-500">// 直接分配</span>
+        String sessionId = createSession(userId, csId, skill);
+        
+        log.info(<span class="text-yellow-300">"第三方派单: 用户ID {} -&gt; 客服ID {}"</span>, userId, csId);
+    }
+
+    <span class="text-pink-400">public</span> QueuePosition <span class="text-blue-300">getQueuePosition</span>(String queueId) {
+        String skill = getQueueSkill(queueId);
+        String queueKey = <span class="text-yellow-300">"queue:"</span> + skill;
+        
+        <span class="text-gray-500">// 获取当前位置</span>
+        Long rank = redisTemplate.opsForZSet().rank(queueKey, queueId);
+        Long total = redisTemplate.opsForZSet().zCard(queueKey);
+        
+        <span class="text-pink-400">return</span> QueuePosition.builder()
+            .queueId(queueId)
+            .position(rank != <span class="text-pink-400">null</span> ? rank + <span class="text-pink-400">1</span> : <span class="text-pink-400">0</span>)
+            .total(total != <span class="text-pink-400">null</span> ? total : <span class="text-pink-400">0</span>)
+            .build();
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">double</span> <span class="text-blue-300">calculateScore</span>(<span class="text-pink-400">int</span> priority, <span class="text-pink-400">long</span> timestamp) {
+        <span class="text-gray-500">// 优先级越高，分数越低（ZSet按分数升序排列）</span>
+        <span class="text-gray-500">// VIP用户优先级为10，普通用户为1</span>
+        <span class="text-pink-400">return</span> (<span class="text-pink-400">100</span> - priority) * <span class="text-pink-400">1000000000000L</span> + timestamp;
+    }
+
+    <span class="text-pink-400">private</span> String <span class="text-blue-300">getQueueSkill</span>(String queueId) {
+        String userKey = <span class="text-yellow-300">"queue_user:"</span> + queueId;
+        <span class="text-pink-400">return</span> (String) redisTemplate.opsForHash().get(userKey, <span class="text-yellow-300">"skill"</span>);
+    }
+
+    <span class="text-pink-400">private</span> String <span class="text-blue-300">assignUserToCs</span>(String queueId, String csId) {
+        String userKey = <span class="text-yellow-300">"queue_user:"</span> + queueId;
+        String userId = (String) redisTemplate.opsForHash().get(userKey, <span class="text-yellow-300">"userId"</span>);
+        String skill = (String) redisTemplate.opsForHash().get(userKey, <span class="text-yellow-300">"skill"</span>);
+        
+        <span class="text-gray-500">// 创建会话</span>
+        String sessionId = createSession(userId, csId, skill);
+        
+        <span class="text-gray-500">// 增加客服会话数</span>
+        csCapacityService.incrementSession(csId);
+        
+        <span class="text-pink-400">return</span> sessionId;
+    }
+
+    <span class="text-pink-400">private</span> String <span class="text-blue-300">createSession</span>(String userId, String csId, String skill) {
+        String sessionId = UUID.randomUUID().toString();
+        
+        <span class="text-gray-500">// 保存会话信息</span>
+        String sessionKey = <span class="text-yellow-300">"session:"</span> + sessionId;
+        Map&lt;String, Object&gt; sessionInfo = <span class="text-pink-400">new</span> HashMap&lt;&gt;();
+        sessionInfo.put(<span class="text-yellow-300">"sessionId"</span>, sessionId);
+        sessionInfo.put(<span class="text-yellow-300">"userId"</span>, userId);
+        sessionInfo.put(<span class="text-yellow-300">"csId"</span>, csId);
+        sessionInfo.put(<span class="text-yellow-300">"skill"</span>, skill);
+        sessionInfo.put(<span class="text-yellow-300">"startTime"</span>, System.currentTimeMillis());
+        sessionInfo.put(<span class="text-yellow-300">"status"</span>, <span class="text-yellow-300">"ACTIVE"</span>);
+        redisTemplate.opsForHash().putAll(sessionKey, sessionInfo);
+        redisTemplate.expire(sessionKey, <span class="text-pink-400">24</span>, TimeUnit.HOURS);
+        
+        <span class="text-pink-400">return</span> sessionId;
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>超时监控服务</span>
+                        <span class="text-xs text-gray-400">QueueTimeoutService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * 超时监控服务 - 处理排队超时提醒
+ */</span>
+<span class="text-purple-400">@Service</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">QueueTimeoutService</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
+    
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> WebSocketServer webSocketServer;
+    
+    <span class="text-pink-400">private</span> <span class="text-pink-400">static</span> <span class="text-pink-400">final</span> <span class="text-pink-400">long</span> TIMEOUT_THRESHOLD = <span class="text-pink-400">5</span> * <span class="text-pink-400">60</span> * <span class="text-pink-400">1000</span>;
+
+    <span class="text-purple-400">@Scheduled</span>(fixedRate = <span class="text-pink-400">30000</span>)
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">checkTimeout</span>() {
+        log.info(<span class="text-yellow-300">"检查排队超时..."</span>);
+        
+        <span class="text-gray-500">// 遍历所有技能队列</span>
+        Set&lt;String&gt; queueKeys = redisTemplate.keys(<span class="text-yellow-300">"queue:*"</span>);
+        
+        <span class="text-pink-400">for</span> (String queueKey : queueKeys) {
+            Set&lt;String&gt; queueIds = redisTemplate.opsForZSet().range(queueKey, <span class="text-pink-400">0</span>, -<span class="text-pink-400">1</span>);
+            
+            <span class="text-pink-400">if</span> (queueIds == <span class="text-pink-400">null</span>) {
+                <span class="text-pink-400">continue</span>;
+            }
+            
+            <span class="text-pink-400">for</span> (String queueId : queueIds) {
+                checkUserTimeout(queueId);
+            }
+        }
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">void</span> <span class="text-blue-300">checkUserTimeout</span>(String queueId) {
+        String userKey = <span class="text-yellow-300">"queue_user:"</span> + queueId;
+        Long joinTime = (Long) redisTemplate.opsForHash().get(userKey, <span class="text-yellow-300">"joinTime"</span>);
+        
+        <span class="text-pink-400">if</span> (joinTime == <span class="text-pink-400">null</span>) {
+            <span class="text-pink-400">return</span>;
+        }
+        
+        <span class="text-pink-400">long</span> waitTime = System.currentTimeMillis() - joinTime;
+        
+        <span class="text-gray-500">// 超时提醒</span>
+        <span class="text-pink-400">if</span> (waitTime &gt; TIMEOUT_THRESHOLD) {
+            String userId = (String) redisTemplate.opsForHash().get(userKey, <span class="text-yellow-300">"userId"</span>);
+            
+            <span class="text-gray-500">// 发送超时提醒</span>
+            sendTimeoutNotification(userId, waitTime);
+            
+            log.warn(<span class="text-yellow-300">"用户 {} 排队超时: {}ms"</span>, userId, waitTime);
+        }
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">void</span> <span class="text-blue-300">sendTimeoutNotification</span>(String userId, <span class="text-pink-400">long</span> waitTime) {
+        String message = String.<span class="text-blue-300">format</span>(
+            <span class="text-yellow-300">"您已等待 %d 分钟，目前排队人数较多，请耐心等待..."</span>,
+            waitTime / <span class="text-pink-400">60000</span>
+        );
+        
+        <span class="text-gray-500">// 通过WebSocket发送提醒</span>
+        webSocketServer.sendMessage(userId, message);
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>第三方派单接口</span>
+                        <span class="text-xs text-gray-400">ThirdPartyDispatchController.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * 第三方派单接口 - 支持外部系统派单
+ */</span>
+<span class="text-purple-400">@RestController</span>
+<span class="text-purple-400">@RequestMapping</span>(<span class="text-yellow-300">"/api/third-party"</span>)
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">ThirdPartyDispatchController</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> QueueService queueService;
+
+    <span class="text-purple-400">@PostMapping</span>(<span class="text-yellow-300">"/dispatch"</span>)
+    <span class="text-pink-400">public</span> ResponseEntity&lt;?&gt; <span class="text-blue-300">dispatch</span>(
+            <span class="text-purple-400">@RequestBody</span> DispatchRequest request,
+            <span class="text-purple-400">@RequestHeader</span>(<span class="text-yellow-300">"X-API-Key"</span>) String apiKey) {
+        
+        <span class="text-gray-500">// 验证API Key</span>
+        <span class="text-pink-400">if</span> (!validateApiKey(apiKey)) {
+            <span class="text-pink-400">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        
+        <span class="text-gray-500">// 执行派单</span>
+        <span class="text-pink-400">try</span> {
+            queueService.thirdPartyDispatch(request);
+            <span class="text-pink-400">return</span> ResponseEntity.ok().build();
+        } <span class="text-pink-400">catch</span> (Exception e) {
+            log.error(<span class="text-yellow-300">"派单失败: {}"</span>, e.getMessage(), e);
+            <span class="text-pink-400">return</span> ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    <span class="text-purple-400">@GetMapping</span>(<span class="text-yellow-300">"/queue-status"</span>)
+    <span class="text-pink-400">public</span> ResponseEntity&lt;?&gt; <span class="text-blue-300">getQueueStatus</span>(
+            <span class="text-purple-400">@RequestParam</span> String skill,
+            <span class="text-purple-400">@RequestHeader</span>(<span class="text-yellow-300">"X-API-Key"</span>) String apiKey) {
+        
+        <span class="text-gray-500">// 验证API Key</span>
+        <span class="text-pink-400">if</span> (!validateApiKey(apiKey)) {
+            <span class="text-pink-400">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        
+        <span class="text-gray-500">// 获取队列状态</span>
+        QueueStatus status = queueService.getQueueStatus(skill);
+        <span class="text-pink-400">return</span> ResponseEntity.ok(status);
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">boolean</span> <span class="text-blue-300">validateApiKey</span>(String apiKey) {
+        <span class="text-gray-500">// 验证第三方API Key</span>
+        <span class="text-gray-500">// 实际项目中从配置或数据库读取</span>
+        <span class="text-pink-400">return</span> <span class="text-yellow-300">"valid-api-key"</span>.equals(apiKey);
+    }
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-orange-600"></i>核心优势
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-list-ol text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">智能排队</h4>
+                    <p class="text-sm opacity-90">FIFO+优先级队列</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-user-plus text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">手动接入</h4>
+                    <p class="text-sm opacity-90">灵活手动接入</p>
+                </div>
+                <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-handshake text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">第三方派单</h4>
+                    <p class="text-sm opacity-90">外部系统对接</p>
+                </div>
+                <div class="bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-flag text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">优先级</h4>
+                    <p class="text-sm opacity-90">VIP用户优先</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-clock text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">超时提醒</h4>
+                    <p class="text-sm opacity-90">智能超时处理</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-location-arrow text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">位置通知</h4>
+                    <p class="text-sm opacity-90">实时队列位置</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

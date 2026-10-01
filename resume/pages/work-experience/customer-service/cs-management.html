@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客服管理 - 客服系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-headset mr-3 text-purple-600"></i>客服管理
+            </h1>
+            <p class="text-gray-500 mb-6">CS Management - 客服人员管理与服务能力配置</p>
+            
+            <div class="bg-purple-50 border-l-4 border-purple-600 p-4 mb-8">
+                <p class="text-purple-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心功能：</strong>支持第三方认证系统对接、客服服务能力评估、会话记录保存、技能标签管理、在线状态监控。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-purple-600"></i>功能概览
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-user-shield text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">第三方认证</h4>
+                    <p class="text-sm opacity-90">多认证系统对接</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-chart-line text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">服务能力</h4>
+                    <p class="text-sm opacity-90">客服能力评估</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-history text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">会话记录</h4>
+                    <p class="text-sm opacity-90">服务记录保存</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tags text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">技能标签</h4>
+                    <p class="text-sm opacity-90">技能标签管理</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-circle text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">在线状态</h4>
+                    <p class="text-sm opacity-90">实时在线监控</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-user-plus text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">手动接入</h4>
+                    <p class="text-sm opacity-90">手动接入排队用户</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-handshake text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">第三方派单</h4>
+                    <p class="text-sm opacity-90">外部系统派单</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-chart-bar text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">数据统计</h4>
+                    <p class="text-sm opacity-90">服务数据统计</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-project-diagram mr-2 text-purple-600"></i>管理流程
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="relative">
+                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+                    <div class="space-y-8">
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">1</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">第三方认证</h4>
+                                <p class="text-sm text-gray-600">对接企业认证系统，实现客服身份统一认证</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">2</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">服务能力配置</h4>
+                                <p class="text-sm text-gray-600">设置客服最大接待数、技能标签、在线状态</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">3</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">服务监控</h4>
+                                <p class="text-sm text-gray-600">实时监控客服在线状态、会话数量、服务质量</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">4</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">记录保存</h4>
+                                <p class="text-sm text-gray-600">所有客服服务记录保存到Redis，支持查询和统计</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-purple-600"></i>核心代码示例
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>第三方认证服务</span>
+                        <span class="text-xs text-gray-400">ThirdPartyAuthService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * 第三方认证服务 - 支持多认证系统对接
+ */</span>
+<span class="text-purple-400">@Service</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">ThirdPartyAuthService</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
+    
+    <span class="text-pink-400">private</span> Map&lt;String, AuthProvider&gt; authProviders;
+
+    <span class="text-pink-400">public</span> <span class="text-blue-300">ThirdPartyAuthService</span>() {
+        authProviders = <span class="text-pink-400">new</span> HashMap&lt;&gt;();
+        authProviders.put(<span class="text-yellow-300">"ldap"</span>, <span class="text-pink-400">new</span> LdapAuthProvider());
+        authProviders.put(<span class="text-yellow-300">"oauth"</span>, <span class="text-pink-400">new</span> OAuthAuthProvider());
+        authProviders.put(<span class="text-yellow-300">"sso"</span>, <span class="text-pink-400">new</span> SsoAuthProvider());
+    }
+
+    <span class="text-pink-400">public</span> CsUser <span class="text-blue-300">authenticate</span>(String provider, String username, String password) <span class="text-pink-400">throws</span> Exception {
+        AuthProvider authProvider = authProviders.get(provider);
+        <span class="text-pink-400">if</span> (authProvider == <span class="text-pink-400">null</span>) {
+            <span class="text-pink-400">throw</span> <span class="text-pink-400">new</span> IllegalArgumentException(<span class="text-yellow-300">"不支持的认证方式: "</span> + provider);
+        }
+
+        <span class="text-gray-500">// 调用第三方认证</span>
+        AuthResult result = authProvider.authenticate(username, password);
+        <span class="text-pink-400">if</span> (!result.isSuccess()) {
+            <span class="text-pink-400">throw</span> <span class="text-pink-400">new</span> AuthenticationException(<span class="text-yellow-300">"认证失败"</span>);
+        }
+
+        <span class="text-gray-500">// 获取客服信息</span>
+        CsUser csUser = getCsUserInfo(result.getUserId());
+        
+        <span class="text-gray-500">// 保存到Redis</span>
+        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csUser.getCsId();
+        redisTemplate.opsForHash().putAll(csKey, BeanUtils.beanToMap(csUser));
+        redisTemplate.expire(csKey, <span class="text-pink-400">24</span>, TimeUnit.HOURS);
+
+        <span class="text-gray-500">// 生成会话token</span>
+        String sessionToken = UUID.randomUUID().toString();
+        redisTemplate.opsForValue().set(<span class="text-yellow-300">"cs_session:"</span> + sessionToken, csUser.getCsId(), <span class="text-pink-400">12</span>, TimeUnit.HOURS);
+        
+        csUser.setSessionToken(sessionToken);
+        <span class="text-pink-400">return</span> csUser;
+    }
+
+    <span class="text-pink-400">private</span> CsUser <span class="text-blue-300">getCsUserInfo</span>(String userId) {
+        <span class="text-gray-500">// 从企业系统获取客服详细信息</span>
+        <span class="text-pink-400">return</span> CsUser.builder()
+            .csId(userId)
+            .name(<span class="text-yellow-300">"客服"</span> + userId)
+            .capacity(<span class="text-pink-400">5</span>)
+            .skills(Arrays.asList(<span class="text-yellow-300">"通用"</span>, <span class="text-yellow-300">"技术"</span>))
+            .status(CsStatus.ONLINE)
+            .build();
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>客服服务能力管理</span>
+                        <span class="text-xs text-gray-400">CsCapacityService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * 客服服务能力管理服务
+ */</span>
+<span class="text-purple-400">@Service</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">CsCapacityService</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">updateCapacity</span>(String csId, <span class="text-pink-400">int</span> capacity) {
+        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csId;
+        redisTemplate.opsForHash().put(csKey, <span class="text-yellow-300">"capacity"</span>, capacity);
+        log.info(<span class="text-yellow-300">"客服 {} 服务能力更新为 {}"</span>, csId, capacity);
+    }
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">updateStatus</span>(String csId, CsStatus status) {
+        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csId;
+        redisTemplate.opsForHash().put(csKey, <span class="text-yellow-300">"status"</span>, status.name());
+        
+        <span class="text-gray-500">// 离线时自动将会话转接</span>
+        <span class="text-pink-400">if</span> (status == CsStatus.OFFLINE) {
+            transferSessions(csId);
+        }
+    }
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">boolean</span> <span class="text-blue-300">hasAvailableCapacity</span>(String csId) {
+        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csId;
+        Integer capacity = (Integer) redisTemplate.opsForHash().get(csKey, <span class="text-yellow-300">"capacity"</span>);
+        Integer currentSessions = (Integer) redisTemplate.opsForHash().get(csKey, <span class="text-yellow-300">"current_sessions"</span>);
+        
+        <span class="text-pink-400">return</span> currentSessions != <span class="text-pink-400">null</span> &amp;&amp; capacity != <span class="text-pink-400">null</span> &amp;&amp; currentSessions &lt; capacity;
+    }
+
+    <span class="text-pink-400">public</span> List&lt;CsUser&gt; <span class="text-blue-300">getAvailableCs</span>(String skill) {
+        <span class="text-gray-500">// 获取所有在线且有剩余能力的客服</span>
+        Set&lt;String&gt; csKeys = redisTemplate.keys(<span class="text-yellow-300">"cs_info:*"</span>);
+        List&lt;CsUser&gt; availableCs = <span class="text-pink-400">new</span> ArrayList&lt;&gt;();
+        
+        <span class="text-pink-400">for</span> (String key : csKeys) {
+            Map&lt;Object, Object&gt; csData = redisTemplate.opsForHash().entries(key);
+            CsUser csUser = BeanUtils.mapToBean(csData, CsUser.<span class="text-pink-400">class</span>);
+            
+            <span class="text-pink-400">if</span> (csUser.getStatus() == CsStatus.ONLINE 
+                &amp;&amp; hasAvailableCapacity(csUser.getCsId())
+                &amp;&amp; csUser.getSkills().contains(skill)) {
+                availableCs.add(csUser);
+            }
+        }
+        
+        <span class="text-gray-500">// 按当前会话数排序，优先分配给会话少的客服</span>
+        availableCs.sort(Comparator.comparingInt(CsUser::getCurrentSessions));
+        <span class="text-pink-400">return</span> availableCs;
+    }
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">incrementSession</span>(String csId) {
+        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csId;
+        redisTemplate.opsForHash().increment(csKey, <span class="text-yellow-300">"current_sessions"</span>, <span class="text-pink-400">1</span>);
+    }
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">decrementSession</span>(String csId) {
+        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csId;
+        redisTemplate.opsForHash().increment(csKey, <span class="text-yellow-300">"current_sessions"</span>, -<span class="text-pink-400">1</span>);
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>会话记录服务</span>
+                        <span class="text-xs text-gray-400">SessionRecordService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * 会话记录服务 - 保存客服服务记录
+ */</span>
+<span class="text-purple-400">@Service</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">SessionRecordService</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">createSessionRecord</span>(SessionRecord record) {
+        record.setSessionId(UUID.randomUUID().toString());
+        record.setStartTime(LocalDateTime.now());
+        
+        <span class="text-gray-500">// 保存到Redis Hash</span>
+        String recordKey = <span class="text-yellow-300">"session_record:"</span> + record.getSessionId();
+        redisTemplate.opsForHash().putAll(recordKey, BeanUtils.beanToMap(record));
+        redisTemplate.expire(recordKey, <span class="text-pink-400">30</span>, TimeUnit.DAYS);
+        
+        <span class="text-gray-500">// 添加到客服会话列表</span>
+        String csSessionsKey = <span class="text-yellow-300">"cs_sessions:"</span> + record.getCsId();
+        redisTemplate.opsForList().rightPush(csSessionsKey, record.getSessionId());
+        redisTemplate.expire(csSessionsKey, <span class="text-pink-400">30</span>, TimeUnit.DAYS);
+        
+        log.info(<span class="text-yellow-300">"会话记录创建: {}"</span>, record.getSessionId());
+    }
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">updateSessionRecord</span>(String sessionId, Map&lt;String, Object&gt; updates) {
+        String recordKey = <span class="text-yellow-300">"session_record:"</span> + sessionId;
+        redisTemplate.opsForHash().putAll(recordKey, updates);
+    }
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">endSession</span>(String sessionId, String satisfaction) {
+        String recordKey = <span class="text-yellow-300">"session_record:"</span> + sessionId;
+        Map&lt;String, Object&gt; updates = <span class="text-pink-400">new</span> HashMap&lt;&gt;();
+        updates.put(<span class="text-yellow-300">"endTime"</span>, LocalDateTime.now());
+        updates.put(<span class="text-yellow-300">"satisfaction"</span>, satisfaction);
+        updates.put(<span class="text-yellow-300">"status"</span>, <span class="text-yellow-300">"ENDED"</span>);
+        
+        updateSessionRecord(sessionId, updates);
+        log.info(<span class="text-yellow-300">"会话结束: {}"</span>, sessionId);
+    }
+
+    <span class="text-pink-400">public</span> List&lt;SessionRecord&gt; <span class="text-blue-300">getCsSessionRecords</span>(String csId, LocalDate date) {
+        String csSessionsKey = <span class="text-yellow-300">"cs_sessions:"</span> + csId;
+        List&lt;String&gt; sessionIds = (List&lt;String&gt;) redisTemplate.opsForList().range(csSessionsKey, <span class="text-pink-400">0</span>, -<span class="text-pink-400">1</span>);
+        
+        List&lt;SessionRecord&gt; records = <span class="text-pink-400">new</span> ArrayList&lt;&gt;();
+        <span class="text-pink-400">for</span> (String sessionId : sessionIds) {
+            String recordKey = <span class="text-yellow-300">"session_record:"</span> + sessionId;
+            Map&lt;Object, Object&gt; data = redisTemplate.opsForHash().entries(recordKey);
+            SessionRecord record = BeanUtils.mapToBean(data, SessionRecord.<span class="text-pink-400">class</span>);
+            
+            <span class="text-gray-500">// 按日期过滤</span>
+            <span class="text-pink-400">if</span> (record.getStartTime().toLocalDate().equals(date)) {
+                records.add(record);
+            }
+        }
+        
+        <span class="text-pink-400">return</span> records;
+    }
+
+    <span class="text-pink-400">public</span> SessionStats <span class="text-blue-300">getCsStats</span>(String csId, LocalDate date) {
+        List&lt;SessionRecord&gt; records = getCsSessionRecords(csId, date);
+        
+        <span class="text-pink-400">long</span> totalSessions = records.size();
+        <span class="text-pink-400">long</span> avgDuration = records.stream()
+            .filter(r -&gt; r.getEndTime() != <span class="text-pink-400">null</span>)
+            .mapToLong(r -&gt; Duration.between(r.getStartTime(), r.getEndTime()).getSeconds())
+            .average()
+            .orElse(<span class="text-pink-400">0</span>);
+        <span class="text-pink-400">double</span> avgSatisfaction = records.stream()
+            .filter(r -&gt; r.getSatisfaction() != <span class="text-pink-400">null</span>)
+            .mapToInt(r -&gt; Integer.parseInt(r.getSatisfaction()))
+            .average()
+            .orElse(<span class="text-pink-400">0</span>);
+        
+        <span class="text-pink-400">return</span> SessionStats.builder()
+            .csId(csId)
+            .date(date)
+            .totalSessions(totalSessions)
+            .avgDuration(avgDuration)
+            .avgSatisfaction(avgSatisfaction)
+            .build();
+    }
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-purple-600"></i>核心优势
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-user-shield text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">第三方认证</h4>
+                    <p class="text-sm opacity-90">多认证系统灵活对接</p>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-chart-line text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">能力评估</h4>
+                    <p class="text-sm opacity-90">智能服务能力管理</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-history text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">记录保存</h4>
+                    <p class="text-sm opacity-90">全量会话记录持久化</p>
+                </div>
+                <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tags text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">技能匹配</h4>
+                    <p class="text-sm opacity-90">技能标签智能匹配</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-handshake text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">第三方派单</h4>
+                    <p class="text-sm opacity-90">外部系统派单支持</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-chart-bar text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">数据统计</h4>
+                    <p class="text-sm opacity-90">服务数据全面统计</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

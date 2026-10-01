@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2B分布式项目 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">
+                <i class="fas fa-building mr-3 text-primary"></i>B2B分布式项目
+            </h1>
+            
+            <div class="prose max-w-none">
+                <p class="text-gray-600 mb-6">
+                    这是一个大型分布式B2B项目，为企业间提供数据交换、业务协同和管理服务。
+                </p>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+                    <p class="text-blue-700">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        该项目采用微服务架构，包含多个核心模块，实现高并发、高可用的企业级应用。
+                    </p>
+                </div>
+                
+                <!-- 系统架构图 -->
+                <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">系统架构</h2>
+                <div class="bg-gray-100 p-6 rounded-lg mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white p-4 rounded shadow text-center">
+                            <i class="fas fa-exchange-alt text-3xl text-purple-500 mb-2"></i>
+                            <h3 class="font-semibold">数据交换中心</h3>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded shadow text-center">
+                            <i class="fas fa-network-wired text-3xl text-blue-500 mb-2"></i>
+                            <h3 class="font-semibold">中间件网关</h3>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded shadow text-center">
+                            <i class="fas fa-cubes text-3xl text-green-500 mb-2"></i>
+                            <h3 class="font-semibold">公共服务模块</h3>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded shadow text-center">
+                            <i class="fas fa-shield-alt text-3xl text-red-500 mb-2"></i>
+                            <h3 class="font-semibold">认证模块</h3>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded shadow text-center">
+                            <i class="fas fa-puzzle-piece text-3xl text-yellow-500 mb-2"></i>
+                            <h3 class="font-semibold">业务模块</h3>
+                        </div>
+                        
+                        <div class="bg-white p-4 rounded shadow text-center">
+                            <i class="fas fa-plug text-3xl text-indigo-500 mb-2"></i>
+                            <h3 class="font-semibold">外联网关</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 各模块详情 -->
+                <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">核心模块</h2>
+                
+                <div class="space-y-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-exchange-alt text-purple-500 mr-3"></i>
+                            数据交换中心
+                        </h3>
+                        <p class="text-gray-600">
+                            负责企业间数据的安全、可靠交换，支持同步/异步模式，实现数据格式转换、路由、重试、幂等性等功能。
+                        </p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-network-wired text-blue-500 mr-3"></i>
+                            中间件网关
+                        </h3>
+                        <p class="text-gray-600">
+                            提供统一的服务网关，实现请求路由、负载均衡、限流、熔断、日志记录等功能。
+                        </p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-cubes text-green-500 mr-3"></i>
+                            公共服务模块
+                        </h3>
+                        <p class="text-gray-600">
+                            提供通用的公共服务，包括文件存储、消息推送、字典管理、配置中心等。
+                        </p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-shield-alt text-red-500 mr-3"></i>
+                            认证模块
+                        </h3>
+                        <p class="text-gray-600">
+                            实现OAuth2.0、JWT等认证机制，支持单点登录、权限管理、角色控制等安全功能。
+                        </p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-puzzle-piece text-yellow-500 mr-3"></i>
+                            业务模块
+                        </h3>
+                        <p class="text-gray-600">
+                            包含订单管理、供应链、财务管理、客户管理等核心业务功能的微服务。
+                        </p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-plug text-indigo-500 mr-3"></i>
+                            外联网关
+                        </h3>
+                        <p class="text-gray-600">
+                            对接第三方系统，提供API集成、数据同步、协议转换等功能。
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 技术栈 -->
+                <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">技术栈</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold mb-3 text-gray-800">后端技术</h3>
+                        <ul class="text-gray-600 space-y-1">
+                            <li>• Spring Boot / Spring Cloud</li>
+                            <li>• MySQL / PostgreSQL</li>
+                            <li>• Redis / MongoDB</li>
+                            <li>• RabbitMQ / Kafka</li>
+                            <li>• Elasticsearch</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold mb-3 text-gray-800">基础设施</h3>
+                        <ul class="text-gray-600 space-y-1">
+                            <li>• Docker / Kubernetes</li>
+                            <li>• Nginx / Kong</li>
+                            <li>• Prometheus / Grafana</li>
+                            <li>• ELK Stack</li>
+                            <li>• Jenkins / GitLab CI</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载功能 - 视频监控项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #10b981;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .task-progress {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-download mr-3 text-green-500"></i>下载功能
+            </h1>
+            <p class="text-gray-500 mb-6">Download - 视频文件导出与下载</p>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-8">
+                <p class="text-green-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心功能：</strong>支持录像文件下载、格式转换、断点续传、批量下载、下载任务管理等功能，支持 PC 和手机同时访问。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-green-500"></i>功能概览
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-file-download text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">单文件下载</h4>
+                    <p class="text-sm opacity-90">单个录像文件下载</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-boxes text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">批量下载</h4>
+                    <p class="text-sm opacity-90">多文件打包下载</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-exchange-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">格式转换</h4>
+                    <p class="text-sm opacity-90">MP4/AVI/MKV 转换</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tasks text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">任务管理</h4>
+                    <p class="text-sm opacity-90">下载任务队列管理</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-project-diagram mr-2 text-green-500"></i>下载流程
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="relative">
+                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+                    <div class="space-y-8">
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold">1</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">用户选择录像</h4>
+                                <p class="text-sm text-gray-600">按时间范围、摄像头选择需要下载的录像</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold">2</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">服务器处理</h4>
+                                <p class="text-sm text-gray-600">生成下载链接，支持格式转换、加密</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold">3</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">客户端下载</h4>
+                                <p class="text-sm text-gray-600">支持浏览器直接下载、断点续传</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold">4</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">任务完成</h4>
+                                <p class="text-sm text-gray-600">下载完成通知、任务状态更新</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-green-500"></i>核心代码示例
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>下载服务</span>
+                        <span class="text-xs text-gray-400">DownloadService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * 下载服务 - 处理录像文件下载
+ */</span>
+<span class="text-purple-400">@Service</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">DownloadService</span> {
+
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> RecordingRepository recordingRepository;
+    
+    <span class="text-purple-400">@Autowired</span>
+    <span class="text-pink-400">private</span> AsyncTaskExecutor asyncTaskExecutor;
+    
+    <span class="text-gray-500">// 存储下载任务进度</span>
+    <span class="text-pink-400">private</span> <span class="text-pink-400">final</span> Map&lt;String, DownloadProgress&gt; progressMap = <span class="text-pink-400">new</span> ConcurrentHashMap&lt;&gt;();
+
+    <span class="text-green-400">/**
+     * 单文件下载
+     */</span>
+    <span class="text-pink-400">public</span> DownloadTask <span class="text-blue-300">createDownloadTask</span>(DownloadRequest request) {
+        <span class="text-pink-400">Long</span> recordingId = request.getRecordingId();
+        <span class="text-pink-400">String</span> format = request.getFormat();
+        <span class="text-pink-400">String</span> taskId = UUID.randomUUID().toString();
+
+        <span class="text-gray-500">// 创建下载任务</span>
+        DownloadTask task = DownloadTask.builder()
+            .taskId(taskId)
+            .recordingId(recordingId)
+            .format(format)
+            .status(DownloadStatus.PENDING)
+            .build();
+
+        <span class="text-gray-500">// 初始化进度信息</span>
+        progressMap.put(taskId, <span class="text-pink-400">new</span> DownloadProgress(0, 0));
+
+        <span class="text-gray-500">// 异步处理下载</span>
+        asyncTaskExecutor.execute(() -&gt; {
+            <span class="text-pink-400">try</span> {
+                processDownloadTask(task);
+            } <span class="text-pink-400">catch</span> (Exception e) {
+                task.setStatus(DownloadStatus.FAILED);
+                task.setErrorMessage(e.getMessage());
+                log.error(<span class="text-yellow-300">"Download task failed: {}"</span>, e.getMessage(), e);
+            }
+        });
+
+        <span class="text-pink-400">return</span> task;
+    }
+
+    <span class="text-green-400">/**
+     * 批量下载
+     */</span>
+    <span class="text-pink-400">public</span> DownloadTask <span class="text-blue-300">createBatchDownloadTask</span>(BatchDownloadRequest request) {
+        <span class="text-pink-400">List</span>&lt;<span class="text-pink-400">Long</span>&gt; recordingIds = request.getRecordingIds();
+        <span class="text-pink-400">String</span> taskId = UUID.randomUUID().toString();
+
+        DownloadTask task = DownloadTask.builder()
+            .taskId(taskId)
+            .recordingIds(recordingIds)
+            .status(DownloadStatus.PENDING)
+            .isBatch(<span class="text-pink-400">true</span>)
+            .build();
+
+        <span class="text-gray-500">// 初始化进度信息</span>
+        progressMap.put(taskId, <span class="text-pink-400">new</span> DownloadProgress(0, 0));
+
+        asyncTaskExecutor.execute(() -&gt; {
+            <span class="text-pink-400">try</span> {
+                processBatchDownloadTask(task);
+            } <span class="text-pink-400">catch</span> (Exception e) {
+                task.setStatus(DownloadStatus.FAILED);
+                task.setErrorMessage(e.getMessage());
+                log.error(<span class="text-yellow-300">"Batch download task failed: {}"</span>, e.getMessage(), e);
+            }
+        });
+
+        <span class="text-pink-400">return</span> task;
+    }
+
+    <span class="text-green-400">/**
+     * 获取下载进度
+     */</span>
+    <span class="text-pink-400">public</span> DownloadProgress <span class="text-blue-300">getDownloadProgress</span>(String taskId) {
+        <span class="text-pink-400">return</span> progressMap.getOrDefault(taskId, <span class="text-pink-400">new</span> DownloadProgress(0, 0));
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">void</span> <span class="text-blue-300">processDownloadTask</span>(DownloadTask task) <span class="text-pink-400">throws</span> Exception {
+        task.setStatus(DownloadStatus.PROCESSING);
+        
+        <span class="text-gray-500">// 获取录像信息</span>
+        Recording recording = recordingRepository.findById(task.getRecordingId())
+            .orElseThrow(() -&gt; <span class="text-pink-400">new</span> NotFoundException(<span class="text-yellow-300">"录像不存在"</span>));
+
+        <span class="text-gray-500">// 处理格式转换（如果需要）</span>
+        <span class="text-pink-400">String</span> outputPath = recording.getFilePath();
+        <span class="text-pink-400">if</span> (!<span class="text-yellow-300">"mp4"</span>.equals(task.getFormat())) {
+            outputPath = convertFormat(recording.getFilePath(), task.getFormat(), task.getTaskId());
+        }
+
+        <span class="text-gray-500">// 生成下载链接</span>
+        <span class="text-pink-400">String</span> downloadUrl = generateDownloadUrl(outputPath, task.getTaskId());
+        task.setDownloadUrl(downloadUrl);
+        task.setStatus(DownloadStatus.COMPLETED);
+        
+        <span class="text-gray-500">// 更新进度为100%</span>
+        progressMap.put(task.getTaskId(), <span class="text-pink-400">new</span> DownloadProgress(100, 100));
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">void</span> <span class="text-blue-300">processBatchDownloadTask</span>(DownloadTask task) <span class="text-pink-400">throws</span> Exception {
+        task.setStatus(DownloadStatus.PROCESSING);
+        
+        <span class="text-gray-500">// 打包多个录像文件</span>
+        <span class="text-pink-400">String</span> zipPath = createZipFile(task.getRecordingIds(), task.getTaskId());
+        
+        <span class="text-gray-500">// 生成下载链接</span>
+        <span class="text-pink-400">String</span> downloadUrl = generateDownloadUrl(zipPath, task.getTaskId());
+        task.setDownloadUrl(downloadUrl);
+        task.setStatus(DownloadStatus.COMPLETED);
+        
+        <span class="text-gray-500">// 更新进度为100%</span>
+        progressMap.put(task.getTaskId(), <span class="text-pink-400">new</span> DownloadProgress(100, 100));
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">String</span> <span class="text-blue-300">convertFormat</span>(<span class="text-pink-400">String</span> inputPath, <span class="text-pink-400">String</span> format, String taskId) <span class="text-pink-400">throws</span> Exception {
+        <span class="text-pink-400">String</span> outputPath = inputPath.replace(<span class="text-yellow-300">".mp4"</span>, <span class="text-yellow-300">"."</span> + format);
+        
+        <span class="text-gray-500">// 使用 FFmpeg 进行格式转换</span>
+        <span class="text-pink-400">String</span> ffmpegCmd = String.format(
+            <span class="text-yellow-300">"ffmpeg -i %s -c copy %s"</span>,
+            inputPath, outputPath
+        );
+        
+        <span class="text-gray-500">// 执行命令并监控进度</span>
+        Process process = Runtime.getRuntime().exec(ffmpegCmd);
+        
+        <span class="text-gray-500">// 简单的进度模拟，实际项目中可以解析FFmpeg输出获取真实进度</span>
+        <span class="text-pink-400">for</span> (<span class="text-pink-400">int</span> i = 10; i &lt; 100; i += 10) {
+            Thread.sleep(500);
+            progressMap.put(taskId, <span class="text-pink-400">new</span> DownloadProgress(i, 100));
+        }
+        
+        process.waitFor();
+        <span class="text-pink-400">return</span> outputPath;
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">String</span> <span class="text-blue-300">createZipFile</span>(List&lt;Long&gt; recordingIds, String taskId) <span class="text-pink-400">throws</span> Exception {
+        <span class="text-pink-400">String</span> zipPath = <span class="text-yellow-300">"/tmp/batch_"</span> + taskId + <span class="text-yellow-300">".zip"</span>;
+        
+        <span class="text-gray-500">// 模拟打包过程，实际项目中使用ZipOutputStream</span>
+        <span class="text-pink-400">for</span> (<span class="text-pink-400">int</span> i = 0; i &lt; recordingIds.size(); i++) {
+            <span class="text-pink-400">int</span> progress = (i + 1) * 100 / recordingIds.size();
+            progressMap.put(taskId, <span class="text-pink-400">new</span> DownloadProgress(progress, 100));
+            Thread.sleep(300);
+        }
+        
+        <span class="text-pink-400">return</span> zipPath;
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">String</span> <span class="text-blue-300">generateDownloadUrl</span>(<span class="text-pink-400">String</span> filePath, <span class="text-pink-400">String</span> taskId) {
+        <span class="text-gray-500">// 生成带有签名的下载链接，有效期 24 小时</span>
+        <span class="text-pink-400">return</span> <span class="text-yellow-300">"/api/downloads/"</span> + taskId + <span class="text-yellow-300">"?token="</span> + generateToken(taskId);
+    }
+    
+    <span class="text-gray-500">/**
+     * 大文件下载支持
+     */</span>
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">downloadLargeFile</span>(String filePath, HttpServletResponse response) <span class="text-pink-400">throws</span> Exception {
+        File file = <span class="text-pink-400">new</span> File(filePath);
+        
+        <span class="text-gray-500">// 设置响应头，支持断点续传</span>
+        response.setHeader(<span class="text-yellow-300">"Content-Disposition"</span>, <span class="text-yellow-300">"attachment; filename="</span> + URLEncoder.encode(file.getName(), <span class="text-yellow-300">"UTF-8"</span>));
+        response.setHeader(<span class="text-yellow-300">"Content-Type"</span>, <span class="text-yellow-300">"application/octet-stream"</span>);
+        response.setHeader(<span class="text-yellow-300">"Content-Length"</span>, String.valueOf(file.length()));
+        response.setHeader(<span class="text-yellow-300">"Accept-Ranges"</span>, <span class="text-yellow-300">"bytes"</span>);
+        
+        <span class="text-gray-500">// 处理断点续传</span>
+        String range = response.getHeader(<span class="text-yellow-300">"Range"</span>);
+        <span class="text-pink-400">if</span> (range != <span class="text-pink-400">null</span>) {
+            <span class="text-pink-400">long</span> start = 0, end = file.length() - 1;
+            <span class="text-gray-500">// 解析Range头</span>
+            <span class="text-pink-400">if</span> (range.startsWith(<span class="text-yellow-300">"bytes="</span>)) {
+                String[] parts = range.substring(6).split(<span class="text-yellow-300">"-"</span>);
+                <span class="text-pink-400">if</span> (!parts[0].isEmpty()) {
+                    start = Long.parseLong(parts[0]);
+                }
+                <span class="text-pink-400">if</span> (parts.length &gt; 1 &amp;&amp; !parts[1].isEmpty()) {
+                    end = Long.parseLong(parts[1]);
+                }
+            }
+            
+            response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
+            response.setHeader(<span class="text-yellow-300">"Content-Range"</span>, <span class="text-yellow-300">"bytes "</span> + start + <span class="text-yellow-300">"-"</span> + end + <span class="text-yellow-300">"/"</span> + file.length());
+            
+            <span class="text-gray-500">// 分块读取文件并发送</span>
+            <span class="text-pink-400">try</span> (FileInputStream fis = <span class="text-pink-400">new</span> FileInputStream(file);
+                 BufferedInputStream bis = <span class="text-pink-400">new</span> BufferedInputStream(fis);
+                 OutputStream os = response.getOutputStream()) {
+                
+                <span class="text-gray-500">// 跳过已经下载的部分</span>
+                bis.skip(start);
+                
+                <span class="text-gray-500">// 分块传输</span>
+                <span class="text-pink-400">byte</span>[] buffer = <span class="text-pink-400">new</span> <span class="text-pink-400">byte</span>[8192];
+                <span class="text-pink-400">long</span> remaining = end - start + 1;
+                <span class="text-pink-400">int</span> bytesRead;
+                
+                <span class="text-pink-400">while</span> (remaining &gt; 0 &amp;&amp; (bytesRead = bis.read(buffer, 0, (<span class="text-pink-400">int</span>) Math.min(buffer.length, remaining))) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                    os.flush();
+                    remaining -= bytesRead;
+                }
+            }
+        } <span class="text-pink-400">else</span> {
+            <span class="text-gray-500">// 正常下载</span>
+            Files.copy(file.toPath(), response.getOutputStream());
+        }
+    }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-js mr-2"></i>下载管理组件</span>
+                        <span class="text-xs text-gray-400">DownloadManager.vue</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">// 下载管理组件 - 支持单文件和批量下载</span>
+&lt;<span class="text-pink-400">template</span>&gt;
+  &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"download-manager"</span>&gt;
+    &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"download-form"</span>&gt;
+      &lt;<span class="text-pink-400">h3</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"font-semibold mb-4"</span>&gt;创建下载任务&lt;/<span class="text-pink-400">h3</span>&gt;
+      
+      &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"form-group"</span>&gt;
+        &lt;<span class="text-pink-400">label</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"block mb-2"</span>&gt;选择录像&lt;/<span class="text-pink-400">label</span>&gt;
+        &lt;<span class="text-pink-400">select</span> 
+          <span class="text-green-400">v-model</span>=<span class="text-yellow-300">"selectedRecordingId"</span>
+          <span class="text-green-400">class</span>=<span class="text-yellow-300">"w-full p-2 border rounded"</span>
+        &gt;
+          &lt;<span class="text-pink-400">option</span> <span class="text-green-400">value</span>=<span class="text-yellow-300">""</span>&gt;请选择录像&lt;/<span class="text-pink-400">option</span>&gt;
+          &lt;<span class="text-pink-400">option</span> 
+            <span class="text-green-400">v-for</span>=<span class="text-yellow-300">"recording in recordings"</span>
+            <span class="text-green-400">:key</span>=<span class="text-yellow-300">"recording.id"</span>
+            <span class="text-green-400">:value</span>=<span class="text-yellow-300">"recording.id"</span>
+          &gt;
+            {{ recording.name }} - {{ formatTime(recording.startTime) }}
+          &lt;/<span class="text-pink-400">option</span>&gt;
+        &lt;/<span class="text-pink-400">select</span>&gt;
+      &lt;/<span class="text-pink-400">div</span>&gt;
+
+      &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"form-group"</span>&gt;
+        &lt;<span class="text-pink-400">label</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"block mb-2"</span>&gt;格式&lt;/<span class="text-pink-400">label</span>&gt;
+        &lt;<span class="text-pink-400">select</span> 
+          <span class="text-green-400">v-model</span>=<span class="text-yellow-300">"format"</span>
+          <span class="text-green-400">class</span>=<span class="text-yellow-300">"w-full p-2 border rounded"</span>
+        &gt;
+          &lt;<span class="text-pink-400">option</span> <span class="text-green-400">value</span>=<span class="text-yellow-300">"mp4"</span>&gt;MP4 (推荐)&lt;/<span class="text-pink-400">option</span>&gt;
+          &lt;<span class="text-pink-400">option</span> <span class="text-green-400">value</span>=<span class="text-yellow-300">"avi"</span>&gt;AVI&lt;/<span class="text-pink-400">option</span>&gt;
+          &lt;<span class="text-pink-400">option</span> <span class="text-green-400">value</span>=<span class="text-yellow-300">"mkv"</span>&gt;MKV&lt;/<span class="text-pink-400">option</span>&gt;
+        &lt;/<span class="text-pink-400">select</span>&gt;
+      &lt;/<span class="text-pink-400">div</span>&gt;
+
+      &lt;<span class="text-pink-400">button</span> 
+        <span class="text-green-400">class</span>=<span class="text-yellow-300">"btn-primary mt-4"</span>
+        @<span class="text-green-400">click</span>=<span class="text-yellow-300">"createDownloadTask"</span>
+      &gt;
+        开始下载
+      &lt;/<span class="text-pink-400">button</span>&gt;
+    &lt;/<span class="text-pink-400">div</span>&gt;
+
+    &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"download-tasks"</span>&gt;
+      &lt;<span class="text-pink-400">h3</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"font-semibold mb-4"</span>&gt;下载任务&lt;/<span class="text-pink-400">h3</span>&gt;
+      
+      &lt;<span class="text-pink-400">div</span> 
+        <span class="text-green-400">v-for</span>=<span class="text-yellow-300">"task in downloadTasks"</span>
+        <span class="text-green-400">:key</span>=<span class="text-yellow-300">"task.taskId"</span>
+        <span class="text-green-400">:class</span>=<span class="text-yellow-300">['task-item', task.status]</span>
+      &gt;
+        &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"task-info"</span>&gt;
+          &lt;<span class="text-pink-400">span</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"task-name"</span>&gt;{{ getTaskName(task) }}&lt;/<span class="text-pink-400">span</span&gt;
+          &lt;<span class="text-pink-400">span</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"task-status"</span>&gt;{{ getStatusText(task.status) }}&lt;/<span class="text-pink-400">span</span&gt;
+        &lt;/<span class="text-pink-400">div</span>&gt;
+        
+        &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"task-progress" v-if="task.status === 'PROCESSING'"</span>&gt;
+          &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"progress-bar"</span>&gt;
+            &lt;<span class="text-pink-400">div</span> 
+              <span class="text-green-400">class</span>=<span class="text-yellow-300">"progress-fill"</span>
+              <span class="text-green-400">:style</span>=<span class="text-yellow-300">"{ width: taskProgress[task.taskId]?.progress + '%' }"</span>
+            &gt;&lt;/<span class="text-pink-400">div</span>&gt;
+          &lt;/<span class="text-pink-400">div</span>&gt;
+          &lt;<span class="text-pink-400">span</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"progress-text"</span>&gt;
+            {{ taskProgress[task.taskId]?.progress || 0 }}%
+          &lt;/<span class="text-pink-400">span</span&gt;
+        &lt;/<span class="text-pink-400">div</span>&gt;
+        
+        &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"task-actions"</span>&gt;
+          &lt;<span class="text-pink-400">button</span> 
+            <span class="text-green-400">v-if</span>=<span class="text-yellow-300">"task.status === 'COMPLETED' && task.downloadUrl"</span>
+            @<span class="text-green-400">click</span>=<span class="text-yellow-300">"downloadFile(task.downloadUrl)"</span>
+          &gt;
+            下载文件
+          &lt;/<span class="text-pink-400">button</span>&gt;
+        &lt;/<span class="text-pink-400">div</span>&gt;
+      &lt;/<span class="text-pink-400">div</span>&gt;
+    &lt;/<span class="text-pink-400">div</span>&gt;
+  &lt;/<span class="text-pink-400">div</span>&gt;
+&lt;/<span class="text-pink-400">template</span>&gt;
+
+&lt;<span class="text-pink-400">script</span>&gt;
+<span class="text-pink-400">import</span> { ref, onMounted, onUnmounted } <span class="text-pink-400">from</span> <span class="text-yellow-300">'vue'</span>;
+
+<span class="text-pink-400">export default</span> {
+  <span class="text-green-400">name</span>: <span class="text-yellow-300">'DownloadManager'</span>,
+  <span class="text-pink-400">setup</span>() {
+    <span class="text-pink-400">const</span> selectedRecordingId = ref(<span class="text-yellow-300">''</span>);
+    <span class="text-pink-400">const</span> format = ref(<span class="text-yellow-300">'mp4'</span>);
+    <span class="text-pink-400">const</span> recordings = ref([]);
+    <span class="text-pink-400">const</span> downloadTasks = ref([]);
+    <span class="text-pink-400">const</span> taskProgress = ref({});
+    <span class="text-pink-400">let</span> progressInterval = <span class="text-pink-400">null</span>;
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">loadRecordings</span> = <span class="text-pink-400">async</span> () =&gt; {
+      <span class="text-gray-500">// 加载可下载的录像列表</span>
+      <span class="text-pink-400">const</span> response = <span class="text-pink-400">await</span> fetch(<span class="text-yellow-300">'/api/recordings'</span>);
+      recordings.value = <span class="text-pink-400">await</span> response.json();
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">loadDownloadTasks</span> = <span class="text-pink-400">async</span> () =&gt; {
+      <span class="text-gray-500">// 加载下载任务列表</span>
+      <span class="text-pink-400">const</span> response = <span class="text-pink-400">await</span> fetch(<span class="text-yellow-300">'/api/downloads'</span>);
+      downloadTasks.value = <span class="text-pink-400">await</span> response.json();
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">getTaskProgress</span> = <span class="text-pink-400">async</span> (taskId) =&gt; {
+      <span class="text-gray-500">// 获取单个任务的进度</span>
+      <span class="text-pink-400">try</span> {
+        <span class="text-pink-400">const</span> response = <span class="text-pink-400">await</span> fetch(<span class="text-yellow-300">`/api/downloads/progress/</span>${taskId}<span class="text-yellow-300">`</span>);
+        <span class="text-pink-400">const</span> progress = <span class="text-pink-400">await</span> response.json();
+        taskProgress.value[taskId] = progress;
+      } <span class="text-pink-400">catch</span> (error) {
+        console.error(<span class="text-yellow-300">'获取进度失败:'</span>, error);
+      }
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">updateAllProgress</span> = () =&gt; {
+      <span class="text-gray-500">// 更新所有处理中任务的进度</span>
+      downloadTasks.value.forEach(task =&gt; {
+        <span class="text-pink-400">if</span> (task.status === <span class="text-yellow-300">'PROCESSING'</span>) {
+          getTaskProgress(task.taskId);
+        }
+      });
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">createDownloadTask</span> = <span class="text-pink-400">async</span> () =&gt; {
+      <span class="text-pink-400">if</span> (!selectedRecordingId.value) {
+        alert(<span class="text-yellow-300">'请选择录像'</span>);
+        <span class="text-pink-400">return</span>;
+      }
+
+      <span class="text-pink-400">const</span> response = <span class="text-pink-400">await</span> fetch(<span class="text-yellow-300">'/api/downloads'</span>, {
+        <span class="text-green-400">method</span>: <span class="text-yellow-300">'POST'</span>,
+        <span class="text-green-400">headers</span>: {
+          <span class="text-yellow-300">'Content-Type'</span>: <span class="text-yellow-300">'application/json'</span>
+        },
+        <span class="text-green-400">body</span>: JSON.stringify({
+          <span class="text-green-400">recordingId</span>: selectedRecordingId.value,
+          <span class="text-green-400">format</span>: format.value
+        })
+      });
+
+      <span class="text-pink-400">const</span> task = <span class="text-pink-400">await</span> response.json();
+      downloadTasks.value.unshift(task);
+      taskProgress.value[task.taskId] = { <span class="text-green-400">progress</span>: 0, <span class="text-green-400">total</span>: 100 };
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">downloadFile</span> = (url) =&gt; {
+      <span class="text-gray-500">// 打开下载链接</span>
+      window.open(url, <span class="text-yellow-300">'_blank'</span>);
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">formatTime</span> = (time) =&gt; {
+      <span class="text-pink-400">return</span> <span class="text-pink-400">new</span> Date(time).toLocaleString();
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">getStatusText</span> = (status) =&gt; {
+      <span class="text-pink-400">const</span> statusMap = {
+        <span class="text-yellow-300">'PENDING'</span>: <span class="text-yellow-300">'等待中'</span>,
+        <span class="text-yellow-300">'PROCESSING'</span>: <span class="text-yellow-300">'处理中'</span>,
+        <span class="text-yellow-300">'COMPLETED'</span>: <span class="text-yellow-300">'已完成'</span>,
+        <span class="text-yellow-300">'FAILED'</span>: <span class="text-yellow-300">'失败'</span>
+      };
+      <span class="text-pink-400">return</span> statusMap[status] || status;
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">getTaskName</span> = (task) =&gt; {
+      <span class="text-pink-400">if</span> (task.isBatch) {
+        <span class="text-pink-400">return</span> <span class="text-yellow-300">`批量下载 (</span>${task.recordingIds.length}<span class="text-yellow-300">个文件)`</span>;
+      } <span class="text-pink-400">else</span> {
+        <span class="text-pink-400">const</span> recording = recordings.value.find(r =&gt; r.id === task.recordingId);
+        <span class="text-pink-400">return</span> recording ? recording.name : <span class="text-yellow-300">'录像文件'</span>;
+      }
+    };
+
+    onMounted(() =&gt; {
+      loadRecordings();
+      loadDownloadTasks();
+      
+      <span class="text-gray-500">// 每2秒更新一次进度</span>
+      progressInterval = setInterval(updateAllProgress, 2000);
+    });
+
+    onUnmounted(() =&gt; {
+      <span class="text-gray-500">// 清除定时器</span>
+      <span class="text-pink-400">if</span> (progressInterval) {
+        clearInterval(progressInterval);
+      }
+    });
+
+    <span class="text-pink-400">return</span> {
+      selectedRecordingId,
+      format,
+      recordings,
+      downloadTasks,
+      taskProgress,
+      createDownloadTask,
+      downloadFile,
+      formatTime,
+      getStatusText,
+      getTaskName
+    };
+  }
+};
+&lt;/<span class="text-pink-400">script</span>&gt;</pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-green-500"></i>核心优势
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-file-export text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">多格式支持</h4>
+                    <p class="text-sm opacity-90">MP4/AVI/MKV 格式转换</p>
+                </div>
+                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-file-archive text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">批量打包</h4>
+                    <p class="text-sm opacity-90">多文件 Zip 打包下载</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-redo text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">断点续传</h4>
+                    <p class="text-sm opacity-90">支持断点续传下载</p>
+                </div>
+                <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">安全下载</h4>
+                    <p class="text-sm opacity-90">签名链接，有效期控制</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tasks text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">任务管理</h4>
+                    <p class="text-sm opacity-90">下载任务队列管理</p>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-mobile-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">多端支持</h4>
+                    <p class="text-sm opacity-90">PC/手机自适应</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-chart-line text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">进度查询</h4>
+                    <p class="text-sm opacity-90">实时显示下载进度</p>
+                </div>
+                <div class="bg-gradient-to-br from-pink-500 to-pink-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-file-video text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">大文件支持</h4>
+                    <p class="text-sm opacity-90">分块传输，高效稳定</p>
+                </div>
+                <div class="bg-gradient-to-br from-rose-500 to-rose-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-bolt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">高性能</h4>
+                    <p class="text-sm opacity-90">异步处理，不阻塞主线程</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

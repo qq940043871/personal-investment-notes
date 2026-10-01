@@ -1,0 +1,617 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据交换中心 - B2B分布式项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .flow-arrow {
+            animation: flowPulse 2s infinite;
+        }
+        @keyframes flowPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        .service-node {
+            transition: all 0.3s ease;
+        }
+        .service-node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .registry-pulse {
+            animation: registryPulse 3s infinite;
+        }
+        @keyframes registryPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(147, 51, 234, 0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-exchange-alt mr-3 text-purple-500"></i>数据交换中心
+            </h1>
+            <p class="text-gray-500 mb-6">Data Exchange Center - 统一服务注册与协议标准化平台</p>
+            
+            <div class="bg-purple-50 border-l-4 border-purple-500 p-4 mb-8">
+                <p class="text-purple-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心定位：</strong>数据交换中心作为异构服务间的统一枢纽，类似注册中心，所有服务将能力注册到中心，由中心统一提供标准化协议格式对外服务，大幅降低系统对接难度。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-sitemap mr-2 text-purple-500"></i>架构设计
+            </h2>
+            
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-8 overflow-x-auto">
+                <div class="min-w-[800px]">
+                    <div class="text-center mb-6">
+                        <div class="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg registry-pulse">
+                            <i class="fas fa-database mr-2"></i>
+                            <span class="font-bold text-lg">数据交换中心</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">统一注册 | 协议转换 | 路由分发</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="text-center">
+                            <div class="bg-blue-100 p-3 rounded-lg mb-2">
+                                <i class="fas fa-server text-blue-500 text-2xl"></i>
+                            </div>
+                            <span class="text-sm font-medium">服务注册表</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-green-100 p-3 rounded-lg mb-2">
+                                <i class="fas fa-cogs text-green-500 text-2xl"></i>
+                            </div>
+                            <span class="text-sm font-medium">协议适配器</span>
+                        </div>
+                        <div class="text-center">
+                            <div class="bg-orange-100 p-3 rounded-lg mb-2">
+                                <i class="fas fa-route text-orange-500 text-2xl"></i>
+                            </div>
+                            <span class="text-sm font-medium">路由引擎</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center items-center gap-4 mb-4">
+                        <div class="flex-1 border-t-2 border-dashed border-gray-300"></div>
+                        <span class="text-gray-400 text-sm">服务注册 / 调用</span>
+                        <div class="flex-1 border-t-2 border-dashed border-gray-300"></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-5 gap-3">
+                        <div class="service-node bg-white border-2 border-blue-300 p-3 rounded-lg text-center cursor-pointer">
+                            <i class="fas fa-shopping-cart text-blue-500 text-xl mb-1"></i>
+                            <p class="text-xs font-medium">订单服务</p>
+                            <p class="text-xs text-gray-400">REST API</p>
+                        </div>
+                        <div class="service-node bg-white border-2 border-green-300 p-3 rounded-lg text-center cursor-pointer">
+                            <i class="fas fa-users text-green-500 text-xl mb-1"></i>
+                            <p class="text-xs font-medium">用户服务</p>
+                            <p class="text-xs text-gray-400">gRPC</p>
+                        </div>
+                        <div class="service-node bg-white border-2 border-yellow-300 p-3 rounded-lg text-center cursor-pointer">
+                            <i class="fas fa-warehouse text-yellow-500 text-xl mb-1"></i>
+                            <p class="text-xs font-medium">库存服务</p>
+                            <p class="text-xs text-gray-400">SOAP</p>
+                        </div>
+                        <div class="service-node bg-white border-2 border-red-300 p-3 rounded-lg text-center cursor-pointer">
+                            <i class="fas fa-credit-card text-red-500 text-xl mb-1"></i>
+                            <p class="text-xs font-medium">支付服务</p>
+                            <p class="text-xs text-gray-400">REST API</p>
+                        </div>
+                        <div class="service-node bg-white border-2 border-indigo-300 p-3 rounded-lg text-center cursor-pointer">
+                            <i class="fas fa-truck text-indigo-500 text-xl mb-1"></i>
+                            <p class="text-xs font-medium">物流服务</p>
+                            <p class="text-xs text-gray-400">MQ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-ol mr-2 text-purple-500"></i>核心功能模块
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-clipboard-list text-blue-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">服务注册中心</h3>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>服务元数据管理（名称、版本、地址）</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>服务能力描述（接口、参数、返回值）</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>健康状态检测与自动摘除</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>服务版本管理与灰度发布</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-green-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-random text-green-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">协议适配层</h3>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>多协议支持（REST/gRPC/SOAP/MQ）</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Hessian协议转换与统一</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Socket协议服务统一封装</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>统一请求/响应格式转换</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>数据格式标准化（JSON/XML/Protobuf）</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>接口版本兼容处理</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-orange-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-project-diagram text-orange-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">路由分发引擎</h3>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>智能路由策略（轮询/权重/哈希）</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>负载均衡与流量控制</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>服务降级与熔断机制</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>请求重试与超时控制</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-red-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-shield-alt text-red-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">安全与治理</h3>
+                    </div>
+                    <ul class="text-gray-600 text-sm space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>统一认证鉴权（OAuth2/JWT）</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>接口访问控制与限流</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>数据加密传输（TLS/SSL）</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>审计日志与追踪</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-sync-alt mr-2 text-purple-500"></i>服务注册流程
+            </h2>
+            
+            <div class="bg-gray-50 p-6 rounded-lg mb-8">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div class="flex flex-col items-center">
+                        <div class="bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold">1</div>
+                        <p class="text-sm mt-2 text-center">服务启动</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400 flow-arrow"></i>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold">2</div>
+                        <p class="text-sm mt-2 text-center">发送注册请求</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400 flow-arrow"></i>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-purple-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold">3</div>
+                        <p class="text-sm mt-2 text-center">元数据存储</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400 flow-arrow"></i>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-green-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold">4</div>
+                        <p class="text-sm mt-2 text-center">协议适配</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400 flow-arrow"></i>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-orange-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold">5</div>
+                        <p class="text-sm mt-2 text-center">对外发布</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-purple-500"></i>统一协议格式
+            </h2>
+            
+            <div class="bg-gray-900 text-gray-100 p-4 rounded-lg mb-4 overflow-x-auto">
+                <pre class="text-sm"><code class="language-json">{
+  "header": {
+    "requestId": "uuid-xxx-xxx",
+    "timestamp": 1699999999999,
+    "source": "order-service",
+    "target": "inventory-service",
+    "version": "1.0.0"
+  },
+  "body": {
+    "action": "queryStock",
+    "data": {
+      "skuId": "SKU001",
+      "quantity": 100
+    }
+  },
+  "signature": "sha256...",
+  "traceId": "trace-xxx-xxx"
+}</code></pre>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-blue-700 mb-2"><i class="fas fa-info-circle mr-2"></i>Header</h4>
+                    <p class="text-sm text-gray-600">请求元信息，包含请求ID、时间戳、来源服务、目标服务、版本号等</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-green-700 mb-2"><i class="fas fa-box mr-2"></i>Body</h4>
+                    <p class="text-sm text-gray-600">业务数据载体，包含操作类型和具体业务数据</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-red-700 mb-2"><i class="fas fa-key mr-2"></i>Signature</h4>
+                    <p class="text-sm text-gray-600">安全签名，确保数据完整性和来源可信</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-chart-line mr-2 text-purple-500"></i>核心优势
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-plug text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">降低对接成本</h4>
+                    <p class="text-sm opacity-90">统一协议格式，一次对接，处处可用</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-expand-arrows-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">异构系统集成</h4>
+                    <p class="text-sm opacity-90">支持多种协议，无缝对接各类系统</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tachometer-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">统一治理</h4>
+                    <p class="text-sm opacity-90">集中管理服务，统一监控与运维</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">安全可控</h4>
+                    <p class="text-sm opacity-90">统一认证鉴权，数据加密传输</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-server mr-2 text-purple-500"></i>技术实现
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div>
+                    <h3 class="font-semibold mb-3 text-gray-800 flex items-center">
+                        <i class="fas fa-database text-blue-500 mr-2"></i>注册中心选型
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>Nacos</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">推荐</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>Consul</span>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">可选</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>Zookeeper</span>
+                            <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">传统</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-3 text-gray-800 flex items-center">
+                        <i class="fas fa-network-wired text-green-500 mr-2"></i>通信框架
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>Spring Cloud Gateway</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">推荐</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>Dubbo</span>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">可选</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>gRPC</span>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">高性能</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-exclamation-triangle mr-2 text-yellow-500"></i>关键设计要点
+            </h2>
+            
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-5 mb-8">
+                <ul class="space-y-3 text-gray-700">
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-yellow-500 mt-1 mr-3"></i>
+                        <div>
+                            <strong>幂等性设计：</strong>所有接口必须支持幂等调用，通过requestId去重
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-yellow-500 mt-1 mr-3"></i>
+                        <div>
+                            <strong>超时与重试：</strong>合理设置超时时间，重试需配合幂等性设计
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-yellow-500 mt-1 mr-3"></i>
+                        <div>
+                            <strong>服务降级：</strong>核心服务优先保障，非核心服务可快速失败
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-yellow-500 mt-1 mr-3"></i>
+                        <div>
+                            <strong>链路追踪：</strong>全链路traceId透传，便于问题定位与分析
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-sync-alt mr-2 text-purple-500"></i>消息中间件与Redis集成
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-red-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-broadcast-tower text-red-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">消息中间件集成</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        数据交换中心对接了消息中间件（如RabbitMQ、Kafka），提供了统一的发布订阅功能，支持异步消息处理和系统解耦。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">// 消息发布服务
+@Service
+public class MessagePublisher {
+    
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    
+    public void publish(String exchange, String routingKey, Object message) {
+        // 统一消息格式转换
+        MessageDTO messageDTO = new MessageDTO();
+        messageDTO.setMessageId(UUID.randomUUID().toString());
+        messageDTO.setTimestamp(System.currentTimeMillis());
+        messageDTO.setData(message);
+        
+        rabbitTemplate.convertAndSend(exchange, routingKey, messageDTO);
+    }
+    
+    // 消息订阅处理
+    @RabbitListener(queues = "${rabbitmq.queue.order}")
+    public void handleOrderMessage(MessageDTO message) {
+        // 处理订单消息
+        log.info("Received order message: {}", message);
+    }
+}
+
+// 消息数据传输对象
+public class MessageDTO {
+    private String messageId;
+    private long timestamp;
+    private Object data;
+    // getters and setters
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-red-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-database text-red-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">Redis集成</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        数据交换中心集成了Redis，提供了分布式锁、缓存和发布订阅功能，支持高并发场景下的服务协调。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">// Redis分布式锁服务
+@Service
+public class RedisLockService {
+    
+    @Autowired
+    private RedisTemplate redisTemplate;
+    
+    // 获取分布式锁
+    public boolean tryLock(String key, String value, long expireTime) {
+        return redisTemplate.opsForValue().setIfAbsent(key, value, expireTime, TimeUnit.MILLISECONDS);
+    }
+    
+    // 释放分布式锁
+    public void releaseLock(String key, String value) {
+        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+        redisTemplate.execute(new DefaultRedisScript<>(script, Long.class), 
+            Collections.singletonList(key), value);
+    }
+    
+    // Redis发布订阅
+    public void publish(String channel, Object message) {
+        redisTemplate.convertAndSend(channel, message);
+    }
+    
+    // 注册订阅监听器
+    @PostConstruct
+    public void init() {
+        redisTemplate.getConnectionFactory().getConnection()
+            .subscribe((message, pattern) -> {
+                // 处理订阅消息
+                log.info("Received redis message: {}", message);
+            }, "order-channel".getBytes());
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-purple-500"></i>协议转换实现
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-exchange-alt text-blue-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">Hessian协议转换</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        实现了Hessian协议与统一协议格式之间的转换，支持高性能二进制序列化。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">// Hessian协议适配器
+@Component
+public class HessianProtocolAdapter implements ProtocolAdapter {
+    
+    @Override
+    public Object deserialize(byte[] data) throws Exception {
+        // Hessian反序列化
+        ByteArrayInputStream bis = new ByteArrayInputStream(data);
+        Hessian2Input input = new Hessian2Input(bis);
+        Object result = input.readObject();
+        input.close();
+        
+        // 转换为统一格式
+        return convertToUnifiedFormat(result);
+    }
+    
+    @Override
+    public byte[] serialize(Object data) throws Exception {
+        // 转换为Hessian格式
+        Object hessianData = convertToHessianFormat(data);
+        
+        // Hessian序列化
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        Hessian2Output output = new Hessian2Output(bos);
+        output.writeObject(hessianData);
+        output.flush();
+        output.close();
+        
+        return bos.toByteArray();
+    }
+    
+    private Object convertToUnifiedFormat(Object hessianData) {
+        // 转换逻辑
+        // ...
+        return unifiedData;
+    }
+    
+    private Object convertToHessianFormat(Object unifiedData) {
+        // 转换逻辑
+        // ...
+        return hessianData;
+    }
+}
+
+// 协议适配器接口
+public interface ProtocolAdapter {
+    Object deserialize(byte[] data) throws Exception;
+    byte[] serialize(Object data) throws Exception;
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-plug text-blue-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">Socket协议统一</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        对Socket协议进行统一封装，提供标准化的服务接口，简化Socket服务的调用。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">// Socket服务统一封装
+@Service
+public class SocketService {
+    
+    private final Map<String, SocketHandler> handlers = new ConcurrentHashMap<>();
+    
+    @PostConstruct
+    public void init() {
+        // 启动Socket服务器
+        new Thread(() -> {
+            try {
+                ServerSocket serverSocket = new ServerSocket(8888);
+                while (true) {
+                    Socket socket = serverSocket.accept();
+                    new Thread(() -> handleSocket(socket)).start();
+                }
+            } catch (Exception e) {
+                log.error("Socket server error", e);
+            }
+        }).start();
+    }
+    
+    private void handleSocket(Socket socket) {
+        try {
+            InputStream is = socket.getInputStream();
+            OutputStream os = socket.getOutputStream();
+            
+            // 读取请求
+            byte[] buffer = new byte[1024];
+            int len = is.read(buffer);
+            byte[] requestData = Arrays.copyOf(buffer, len);
+            
+            // 解析请求
+            SocketRequest request = parseRequest(requestData);
+            
+            // 处理请求
+            SocketHandler handler = handlers.get(request.getAction());
+            if (handler != null) {
+                Object response = handler.handle(request.getData());
+                
+                // 发送响应
+                byte[] responseData = serializeResponse(response);
+                os.write(responseData);
+                os.flush();
+            }
+        } catch (Exception e) {
+            log.error("Socket handling error", e);
+        } finally {
+            try { socket.close(); } catch (Exception e) {}
+        }
+    }
+    
+    // 注册Socket处理器
+    public void registerHandler(String action, SocketHandler handler) {
+        handlers.put(action, handler);
+    }
+    
+    // 其他方法...
+}
+
+// Socket处理器接口
+public interface SocketHandler {
+    Object handle(Object data);
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+

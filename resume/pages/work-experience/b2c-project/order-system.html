@@ -1,0 +1,358 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单系统 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-4xl mx-auto p-6">
+        <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">
+                <i class="fas fa-shopping-bag text-purple-500 mr-3"></i>订单系统
+            </h1>
+            
+            <div class="prose max-w-none">
+                <p class="text-gray-600 mb-6">
+                    订单系统是电商系统的核心模块之一，负责处理用户从下单到订单完成的整个流程。订单系统需要保证数据的一致性、处理高并发请求、支持复杂的业务逻辑，并提供良好的用户体验。
+                </p>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">订单系统功能</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-cart-plus text-blue-500 mr-2"></i>
+                            购物车管理
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>商品添加、删除、修改数量</li>
+                            <li>购物车商品库存检查</li>
+                            <li>购物车数据持久化</li>
+                            <li>跨设备购物车同步</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-file-invoice text-blue-500 mr-2"></i>
+                            订单生成
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>订单信息校验</li>
+                            <li>订单价格计算</li>
+                            <li>订单号生成</li>
+                            <li>订单状态初始化</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-tasks text-blue-500 mr-2"></i>
+                            订单状态管理
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>待付款、待发货、待收货、已完成等状态</li>
+                            <li>订单状态流转控制</li>
+                            <li>订单超时处理</li>
+                            <li>订单取消和退款</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-search text-blue-500 mr-2"></i>
+                            订单查询
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>订单列表查询</li>
+                            <li>订单详情查看</li>
+                            <li>订单搜索和筛选</li>
+                            <li>订单统计分析</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">订单流程设计</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">订单状态机</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                        <div class="bg-blue-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">待付款</div>
+                            <div class="text-xs text-gray-600">用户提交订单</div>
+                        </div>
+                        <div class="bg-green-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">待发货</div>
+                            <div class="text-xs text-gray-600">用户完成支付</div>
+                        </div>
+                        <div class="bg-yellow-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">待收货</div>
+                            <div class="text-xs text-gray-600">商家发货</div>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">已完成</div>
+                            <div class="text-xs text-gray-600">用户确认收货</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded text-center">
+                            <div class="font-bold text-gray-800 text-sm mb-1">已取消</div>
+                            <div class="text-xs text-gray-600">订单取消</div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800">状态流转规则</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200 text-sm">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="py-2 px-4 border-b text-left">当前状态</th>
+                                    <th class="py-2 px-4 border-b text-left">可流转状态</th>
+                                    <th class="py-2 px-4 border-b text-left">触发条件</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">待付款</td>
+                                    <td class="py-2 px-4 border-b">待发货, 已取消</td>
+                                    <td class="py-2 px-4 border-b">支付成功, 用户取消, 超时未支付</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">待发货</td>
+                                    <td class="py-2 px-4 border-b">待收货, 已取消</td>
+                                    <td class="py-2 px-4 border-b">商家发货, 用户取消, 申请退款</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">待收货</td>
+                                    <td class="py-2 px-4 border-b">已完成, 已取消</td>
+                                    <td class="py-2 px-4 border-b">用户确认收货, 用户拒收, 申请退款</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">订单数据模型</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">核心数据表</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="py-2 px-4 border-b text-left">表名</th>
+                                    <th class="py-2 px-4 border-b text-left">字段</th>
+                                    <th class="py-2 px-4 border-b text-left">说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">orders</td>
+                                    <td class="py-2 px-4 border-b">order_id, user_id, status, amount, create_time, update_time</td>
+                                    <td class="py-2 px-4 border-b">订单主表</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">order_items</td>
+                                    <td class="py-2 px-4 border-b">item_id, order_id, product_id, quantity, price</td>
+                                    <td class="py-2 px-4 border-b">订单明细表</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">shopping_cart</td>
+                                    <td class="py-2 px-4 border-b">cart_id, user_id, product_id, quantity, create_time</td>
+                                    <td class="py-2 px-4 border-b">购物车表</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">order_status_log</td>
+                                    <td class="py-2 px-4 border-b">log_id, order_id, status, operator, create_time</td>
+                                    <td class="py-2 px-4 border-b">订单状态日志表</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800 mt-4">订单号生成策略</h4>
+                    <pre class="bg-gray-800 text-white p-4 rounded-lg mt-2 overflow-x-auto">
+// 订单号生成示例
+public class OrderNoGenerator {
+    public static String generateOrderNo() {
+        // 格式：业务标识 + 时间戳 + 随机数
+        // 例如：DD202312011200010001
+        StringBuilder sb = new StringBuilder();
+        sb.append("DD"); // 业务标识
+        sb.append(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+        sb.append(String.format("%04d", new Random().nextInt(10000)));
+        return sb.toString();
+    }
+}</pre>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">高并发处理</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-bolt text-green-500 mr-2"></i>
+                            性能优化
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>订单数据分库分表</li>
+                            <li>热点数据缓存</li>
+                            <li>异步处理非核心流程</li>
+                            <li>数据库连接池优化</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-shield-alt text-green-500 mr-2"></i>
+                            限流策略
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>接口级限流</li>
+                            <li>用户级限流</li>
+                            <li>商品级限流</li>
+                            <li>降级预案</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">分布式事务</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">事务处理方案</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-blue-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">TCC模式</h4>
+                            <p class="text-gray-600 text-sm">
+                                Try-Confirm-Cancel三阶段提交
+                            </p>
+                            <ul class="list-disc pl-5 text-gray-600 text-xs mt-2">
+                                <li>Try阶段：检查并预留资源</li>
+                                <li>Confirm阶段：确认执行</li>
+                                <li>Cancel阶段：回滚操作</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">可靠消息</h4>
+                            <p class="text-gray-600 text-sm">
+                                基于消息队列的最终一致性
+                            </p>
+                            <ul class="list-disc pl-5 text-gray-600 text-xs mt-2">
+                                <li>本地事务执行</li>
+                                <li>发送消息</li>
+                                <li>消息消费</li>
+                                <li>状态确认</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800">订单创建事务示例</h4>
+                    <pre class="bg-gray-800 text-white p-4 rounded-lg mt-2 overflow-x-auto">
+// 基于可靠消息的订单创建
+@Transactional
+public Order createOrder(OrderRequest request) {
+    // 1. 创建订单记录
+    Order order = new Order();
+    order.setOrderNo(generateOrderNo());
+    order.setStatus(OrderStatus.PENDING_PAYMENT);
+    orderMapper.insert(order);
+    
+    // 2. 扣减库存（发送消息）
+    StockDeductMessage message = new StockDeductMessage();
+    message.setOrderId(order.getId());
+    message.setItems(request.getItems());
+    messageProducer.send("stock_deduct_topic", message);
+    
+    // 3. 记录积分（发送消息）
+    PointMessage pointMessage = new PointMessage();
+    pointMessage.setUserId(request.getUserId());
+    pointMessage.setOrderId(order.getId());
+    pointMessage.setPoints(calculatePoints(request.getAmount()));
+    messageProducer.send("point_topic", pointMessage);
+    
+    return order;
+}</pre>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">异常处理</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+                            常见异常场景
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>库存不足</li>
+                            <li>价格变动</li>
+                            <li>支付失败</li>
+                            <li>网络超时</li>
+                            <li>系统异常</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-redo text-red-500 mr-2"></i>
+                            补偿机制
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>定时任务检查未支付订单</li>
+                            <li>库存回滚机制</li>
+                            <li>支付状态同步</li>
+                            <li>异常订单人工处理</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">监控与运维</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">关键监控指标</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-blue-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">性能指标</h4>
+                            <ul class="list-disc pl-5 text-gray-600 text-sm">
+                                <li>订单创建平均耗时</li>
+                                <li>订单查询QPS</li>
+                                <li>数据库响应时间</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">业务指标</h4>
+                            <ul class="list-disc pl-5 text-gray-600 text-sm">
+                                <li>订单成功率</li>
+                                <li>订单取消率</li>
+                                <li>异常订单数</li>
+                            </ul>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">系统指标</h4>
+                            <ul class="list-disc pl-5 text-gray-600 text-sm">
+                                <li>缓存命中率</li>
+                                <li>消息队列积压</li>
+                                <li>线程池使用率</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">订单系统最佳实践</h2>
+                <div class="bg-green-50 rounded-lg p-6">
+                    <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                        <li>合理的数据库设计和索引优化</li>
+                        <li>完善的订单状态机设计</li>
+                        <li>健壮的分布式事务处理方案</li>
+                        <li>高效的缓存策略</li>
+                        <li>全面的异常处理和补偿机制</li>
+                        <li>详细的日志记录和监控告警</li>
+                        <li>充分的压力测试和容量规划</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

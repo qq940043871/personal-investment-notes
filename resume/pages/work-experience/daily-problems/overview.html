@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日常问题排查 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-search mr-3 text-gray-600"></i>日常问题排查
+            </h1>
+            <p class="text-gray-500 mb-6">Daily Problem Troubleshooting - 常见问题诊断与解决方案</p>
+            
+            <div class="bg-gray-50 border-l-4 border-gray-600 p-4 mb-8">
+                <p class="text-gray-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心目标：</strong>整理开发和运维中常见的问题排查方法、诊断工具、最佳实践，提高问题解决效率。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-gray-600"></i>问题分类
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-gray-500 to-gray-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-server text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">服务问题</h4>
+                    <p class="text-sm opacity-90">服务启动、连接、性能问题</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-database text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">数据库问题</h4>
+                    <p class="text-sm opacity-90">MySQL、Redis等数据库问题</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-network-wired text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">网络问题</h4>
+                    <p class="text-sm opacity-90">网络连接、超时、丢包问题</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-bug text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">代码问题</h4>
+                    <p class="text-sm opacity-90">异常、死锁、内存泄漏</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-chart-line text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">性能问题</h4>
+                    <p class="text-sm opacity-90">CPU、内存、IO性能优化</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tools text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">工具使用</h4>
+                    <p class="text-sm opacity-90">常用诊断工具使用指南</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-project-diagram mr-2 text-gray-600"></i>排查流程
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="relative">
+                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+                    <div class="space-y-8">
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">1</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">问题复现</h4>
+                                <p class="text-sm text-gray-600">复现问题，收集错误信息、日志、异常堆栈</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">2</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">信息收集</h4>
+                                <p class="text-sm text-gray-600">收集系统状态、日志、监控数据、配置信息</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">3</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">问题定位</h4>
+                                <p class="text-sm text-gray-600">分析问题，确定根本原因，缩小排查范围</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">4</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">方案验证</h4>
+                                <p class="text-sm text-gray-600">制定解决方案，在测试环境验证方案有效性</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">5</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">生产实施</h4>
+                                <p class="text-sm text-gray-600">在生产环境实施方案，监控效果，记录总结</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-toolbox mr-2 text-gray-600"></i>常用诊断工具
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-terminal text-blue-500 mr-2"></i>Linux命令行工具
+                    </h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><strong>top/htop</strong> - 系统资源监控</li>
+                        <li><strong>ps/pstree</strong> - 进程查看</li>
+                        <li><strong>netstat/ss</strong> - 网络连接</li>
+                        <li><strong>tcpdump</strong> - 网络抓包</li>
+                        <li><strong>iostat/vmstat</strong> - IO/内存统计</li>
+                        <li><strong>dmesg</strong> - 系统日志</li>
+                        <li><strong>strace</strong> - 系统调用追踪</li>
+                    </ul>
+                </div>
+                
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fab fa-java text-red-500 mr-2"></i>Java诊断工具
+                    </h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><strong>jps</strong> - Java进程查看</li>
+                        <li><strong>jstack</strong> - 线程堆栈</li>
+                        <li><strong>jmap</strong> - 内存分析</li>
+                        <li><strong>jstat</strong> - JVM统计</li>
+                        <li><strong>jinfo</strong> - JVM配置</li>
+                        <li><strong>Arthas</strong> - 阿里诊断工具</li>
+                        <li><strong>MAT</strong> - 内存分析工具</li>
+                    </ul>
+                </div>
+                
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-database text-green-500 mr-2"></i>数据库工具
+                    </h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><strong>show processlist</strong> - MySQL进程列表</li>
+                        <li><strong>explain</strong> - 执行计划分析</li>
+                        <li><strong>slow query log</strong> - 慢查询日志</li>
+                        <li><strong>redis-cli info</strong> - Redis信息</li>
+                        <li><strong>redis-cli monitor</strong> - Redis监控</li>
+                        <li><strong>pt-query-digest</strong> - 慢查询分析</li>
+                    </ul>
+                </div>
+                
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-network-wired text-orange-500 mr-2"></i>网络工具
+                    </h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><strong>ping</strong> - 连通性测试</li>
+                        <li><strong>telnet/nc</strong> - 端口测试</li>
+                        <li><strong>traceroute</strong> - 路由追踪</li>
+                        <li><strong>curl/wget</strong> - HTTP测试</li>
+                        <li><strong>Wireshark</strong> - 网络抓包</li>
+                        <li><strong>tcpdump</strong> - 命令行抓包</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-gray-600"></i>最佳实践
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-gray-500 to-gray-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-clipboard-list text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">记录完整</h4>
+                    <p class="text-sm opacity-90">详细记录问题现象、排查过程、解决方案</p>
+                </div>
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-exclamation-triangle text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">备份优先</h4>
+                    <p class="text-sm opacity-90">生产环境操作前先备份，确保可回滚</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-flask text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">测试验证</h4>
+                    <p class="text-sm opacity-90">重大变更先在测试环境充分验证</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-clock text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">监控告警</h4>
+                    <p class="text-sm opacity-90">建立完善的监控和告警机制</p>
+                </div>
+                <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-book text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">知识沉淀</h4>
+                    <p class="text-sm opacity-90">将问题解决方案整理成知识库</p>
+                </div>
+                <div class="bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-users text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">团队协作</h4>
+                    <p class="text-sm opacity-90">复杂问题及时寻求团队支持</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>电商系统 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-4xl mx-auto p-6">
+        <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">
+                <i class="fas fa-shopping-cart text-purple-500 mr-3"></i>电商系统
+            </h1>
+            
+            <div class="prose max-w-none">
+                <p class="text-gray-600 mb-6">
+                    电商系统是互联网应用中最复杂的业务系统之一，涉及用户管理、商品管理、订单处理、支付结算、库存管理、物流配送等多个核心模块。构建高可用、高性能、可扩展的电商系统是架构师面临的重要挑战。
+                </p>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">电商系统特点</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-users text-purple-500 mr-2"></i>
+                            用户规模大
+                        </h3>
+                        <p class="text-gray-600">
+                            用户数量庞大，访问量高，对系统性能要求极高。
+                        </p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-bolt text-purple-500 mr-2"></i>
+                            业务复杂度高
+                        </h3>
+                        <p class="text-gray-600">
+                            涉及多个业务模块，业务逻辑复杂，数据一致性要求高。
+                        </p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-clock text-purple-500 mr-2"></i>
+                            时效性要求高
+                        </h3>
+                        <p class="text-gray-600">
+                            特别是在大促活动期间，系统需要应对流量高峰。
+                        </p>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">核心业务模块</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-user-circle text-blue-500 mr-2"></i>
+                            用户系统
+                        </h3>
+                        <p class="text-gray-600 mb-3">
+                            负责用户注册、登录、个人信息管理、权限控制等功能。
+                        </p>
+                        <a href="user-profile.html" class="text-blue-500 font-medium flex items-center">
+                            查看详情
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-box text-blue-500 mr-2"></i>
+                            商品系统
+                        </h3>
+                        <p class="text-gray-600 mb-3">
+                            负责商品信息管理、分类管理、搜索推荐等功能。
+                        </p>
+                        <a href="#" class="text-blue-500 font-medium flex items-center">
+                            查看详情
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-shopping-bag text-blue-500 mr-2"></i>
+                            订单系统
+                        </h3>
+                        <p class="text-gray-600 mb-3">
+                            负责购物车管理、订单生成、订单状态跟踪等功能。
+                        </p>
+                        <a href="order-system.html" class="text-blue-500 font-medium flex items-center">
+                            查看详情
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-credit-card text-blue-500 mr-2"></i>
+                            支付系统
+                        </h3>
+                        <p class="text-gray-600 mb-3">
+                            负责支付渠道对接、交易处理、资金结算等功能。
+                        </p>
+                        <a href="payment-system.html" class="text-blue-500 font-medium flex items-center">
+                            查看详情
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-warehouse text-blue-500 mr-2"></i>
+                            库存系统
+                        </h3>
+                        <p class="text-gray-600 mb-3">
+                            负责商品库存管理、库存预警、库存同步等功能。
+                        </p>
+                        <a href="inventory-system.html" class="text-blue-500 font-medium flex items-center">
+                            查看详情
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-tags text-blue-500 mr-2"></i>
+                            促销系统
+                        </h3>
+                        <p class="text-gray-600 mb-3">
+                            负责优惠券、满减活动、秒杀等促销活动管理。
+                        </p>
+                        <a href="promotion-system.html" class="text-blue-500 font-medium flex items-center">
+                            查看详情
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">系统架构设计</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">分层架构</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                        <div class="bg-blue-50 p-4 rounded text-center">
+                            <div class="font-bold text-gray-800 mb-2">接入层</div>
+                            <div class="text-xs text-gray-600">API网关、负载均衡</div>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded text-center">
+                            <div class="font-bold text-gray-800 mb-2">业务层</div>
+                            <div class="text-xs text-gray-600">各业务服务模块</div>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded text-center">
+                            <div class="font-bold text-gray-800 mb-2">服务层</div>
+                            <div class="text-xs text-gray-600">基础服务、中间件</div>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded text-center">
+                            <div class="font-bold text-gray-800 mb-2">数据层</div>
+                            <div class="text-xs text-gray-600">数据库、缓存、文件存储</div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800">微服务拆分</h4>
+                    <ul class="list-disc pl-8 text-gray-600 mt-2">
+                        <li>用户服务：用户注册、登录、个人信息</li>
+                        <li>商品服务：商品管理、分类、搜索</li>
+                        <li>订单服务：购物车、订单管理</li>
+                        <li>支付服务：支付渠道对接、交易处理</li>
+                        <li>库存服务：库存管理、库存扣减</li>
+                        <li>促销服务：优惠券、活动管理</li>
+                        <li>物流服务：配送管理、物流跟踪</li>
+                    </ul>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">关键技术挑战</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+                            高并发处理
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>秒杀场景的流量削峰</li>
+                            <li>数据库读写分离</li>
+                            <li>缓存策略优化</li>
+                            <li>异步处理机制</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-sync-alt text-red-500 mr-2"></i>
+                            数据一致性
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>订单与库存的一致性</li>
+                            <li>支付与订单的一致性</li>
+                            <li>分布式事务处理</li>
+                            <li>最终一致性方案</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-shield-alt text-red-500 mr-2"></i>
+                            系统安全
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>防刷单、防恶意攻击</li>
+                            <li>支付安全</li>
+                            <li>数据加密</li>
+                            <li>权限控制</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-bug text-red-500 mr-2"></i>
+                            系统稳定性
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>容错降级机制</li>
+                            <li>限流策略</li>
+                            <li>监控告警</li>
+                            <li>故障恢复</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">性能优化策略</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">优化方向</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-blue-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">前端优化</h4>
+                            <ul class="list-disc pl-5 text-gray-600 text-sm">
+                                <li>CDN加速静态资源</li>
+                                <li>页面静态化</li>
+                                <li>资源压缩合并</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">后端优化</h4>
+                            <ul class="list-disc pl-5 text-gray-600 text-sm">
+                                <li>数据库索引优化</li>
+                                <li>缓存策略</li>
+                                <li>异步处理</li>
+                            </ul>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">架构优化</h4>
+                            <ul class="list-disc pl-5 text-gray-600 text-sm">
+                                <li>读写分离</li>
+                                <li>分库分表</li>
+                                <li>微服务拆分</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">监控与运维</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-chart-bar text-yellow-500 mr-2"></i>
+                            核心监控指标
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>系统QPS和响应时间</li>
+                            <li>数据库性能指标</li>
+                            <li>缓存命中率</li>
+                            <li>订单处理成功率</li>
+                            <li>支付成功率</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-tools text-yellow-500 mr-2"></i>
+                            运维保障
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>自动化部署</li>
+                            <li>容量规划</li>
+                            <li>故障演练</li>
+                            <li>应急预案</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">电商系统最佳实践</h2>
+                <div class="bg-green-50 rounded-lg p-6">
+                    <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                        <li>合理的微服务拆分和边界设计</li>
+                        <li>完善的分布式事务解决方案</li>
+                        <li>高效的缓存策略和数据库优化</li>
+                        <li>健全的安全防护机制</li>
+                        <li>全面的监控和告警体系</li>
+                        <li>充分的压力测试和容量评估</li>
+                        <li>详细的文档和规范流程</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

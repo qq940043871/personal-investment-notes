@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统压力测试 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-tachometer-alt mr-3 text-gray-600"></i>系统压力测试
+            </h1>
+            <p class="text-gray-500 mb-6">System Stress Testing - 正确进行压力测试并提供专业的压测报告</p>
+            
+            <div class="bg-gray-50 border-l-4 border-gray-600 p-4 mb-8">
+                <p class="text-gray-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心目标：</strong>掌握系统压力测试方法，生成专业的压测报告，为系统优化和容量规划提供依据。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-gray-600"></i>压测工具
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-gray-500 to-gray-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-terminal text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">JMeter</h4>
+                    <p class="text-sm opacity-90">Apache JMeter</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-code text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">Gatling</h4>
+                    <p class="text-sm opacity-90">基于Scala</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-server text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">Locust</h4>
+                    <p class="text-sm opacity-90">基于Python</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-sync-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">ab</h4>
+                    <p class="text-sm opacity-90">Apache Bench</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-project-diagram mr-2 text-gray-600"></i>压测流程
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="relative">
+                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+                    <div class="space-y-8">
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">1</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">需求分析</h4>
+                                <p class="text-sm text-gray-600">明确测试目标、场景、指标和预期结果</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">2</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">测试准备</h4>
+                                <p class="text-sm text-gray-600">环境准备、数据准备、工具配置</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">3</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">执行测试</h4>
+                                <p class="text-sm text-gray-600">执行不同场景的压力测试，收集数据</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">4</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">数据分析</h4>
+                                <p class="text-sm text-gray-600">分析测试数据，找出瓶颈和问题</p>
+                            </div>
+                        </div>
+                        <div class="relative pl-12">
+                            <div class="absolute left-0 top-0 w-8 h-8 bg-gray-100 text-gray-700 rounded-full flex items-center justify-center font-bold">5</div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <h4 class="font-semibold text-gray-800">报告生成</h4>
+                                <p class="text-sm text-gray-600">生成专业的压测报告，提供优化建议</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-tools mr-2 text-gray-600"></i>压测工具使用
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-terminal text-gray-500 mr-2"></i>
+                        Apache JMeter
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">基本配置</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 1. 下载JMeter</span>
+<span class="text-gray-500"># 2. 启动JMeter</span>
+./jmeter.sh
+<span class="text-gray-500"># 3. 创建测试计划</span>
+<span class="text-gray-500"># 4. 添加线程组</span>
+<span class="text-gray-500"># 5. 添加HTTP请求</span>
+<span class="text-gray-500"># 6. 添加监听器</span></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">常用命令</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 命令行模式运行</span>
+./jmeter -n -t test.jmx -l results.jtl -e -o report
+
+<span class="text-gray-500"># 配置参数</span>
+-n: 非GUI模式
+-t: 测试计划文件
+-l: 结果文件
+-e: 生成报告
+-o: 报告输出目录</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">最佳实践</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>使用非GUI模式进行大规模测试</li>
+                                <li>合理设置线程组参数</li>
+                                <li>添加适当的定时器</li>
+                                <li>使用CSV数据文件参数化</li>
+                                <li>监控服务器资源使用</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-code text-blue-500 mr-2"></i>
+                        Gatling
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">基本配置</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 1. 下载Gatling</span>
+<span class="text-gray-500"># 2. 编写测试脚本</span>
+<span class="text-gray-500"># 3. 运行测试</span>
+./bin/gatling.sh
+
+<span class="text-gray-500"># 4. 查看报告</span>
+<span class="text-gray-500"># 报告位置: results/</span></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">测试脚本示例</h4>
+                            <div class="code-block p-4 rounded">
+<pre>import io.gatling.core.Predef._
+import io.gatling.http.Predef._
+import scala.concurrent.duration._
+
+class BasicSimulation extends Simulation {
+  val httpProtocol = http
+    .baseUrl("http://localhost:8080")
+    .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+    .doNotTrackHeader("1")
+
+  val scn = scenario("Basic Scenario")
+    .exec(http("Home Page")
+      .get("/"))
+
+  setUp(
+    scn.inject(
+      rampUsers(100).during(5.seconds),
+      constantUsersPerSec(10).during(10.seconds)
+    )
+  ).protocols(httpProtocol)
+}</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">优势</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>基于Scala，性能更好</li>
+                                <li>内置监控和报告</li>
+                                <li>支持DSL编写测试</li>
+                                <li>更高的并发支持</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-server text-green-500 mr-2"></i>
+                        Locust
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">基本配置</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 1. 安装Locust</span>
+pip install locust
+
+<span class="text-gray-500"># 2. 编写测试脚本</span>
+<span class="text-gray-500"># 3. 启动Locust</span>
+locust -f locustfile.py
+
+<span class="text-gray-500"># 4. 访问Web界面</span>
+<span class="text-gray-500"># http://localhost:8089</span></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">测试脚本示例</h4>
+                            <div class="code-block p-4 rounded">
+<pre>from locust import HttpUser, task, between
+
+class WebsiteUser(HttpUser):
+    wait_time = between(1, 5)
+
+    @task
+    def index_page(self):
+        self.client.get("/")
+
+    @task(3)
+    def view_item(self):
+        for item_id in range(10):
+            self.client.get(f"/item?id={item_id}")
+            self.wait()
+
+    def on_start(self):
+        self.client.post("/login", {
+            "username": "test",
+            "password": "test"
+        })</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">优势</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>基于Python，易于编写</li>
+                                <li>Web界面实时监控</li>
+                                <li>支持分布式测试</li>
+                                <li>灵活的测试场景定义</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-sync-alt text-orange-500 mr-2"></i>
+                        Apache Bench (ab)
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">基本使用</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 安装</span>
+sudo apt install apache2-utils
+
+<span class="text-gray-500"># 基本测试</span>
+ab -n 1000 -c 100 http://localhost:8080/
+
+<span class="text-gray-500"># 参数说明</span>
+-n: 总请求数
+-c: 并发数
+-t: 测试时长
+-k: 启用Keep-Alive</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">输出示例</h4>
+                            <div class="code-block p-4 rounded">
+<pre>Server Software:        nginx/1.18.0
+Server Hostname:        localhost
+Server Port:            8080
+
+Document Path:          /
+Document Length:        123 bytes
+
+Concurrency Level:      100
+Time taken for tests:   2.345 seconds
+Complete requests:      1000
+Failed requests:        0
+Total transferred:      234567 bytes
+HTML transferred:       123000 bytes
+Requests per second:    426.47 [#/sec] (mean)
+Time per request:       234.49 [ms] (mean)
+Time per request:       2.34 [ms] (mean, across all concurrent requests)
+Transfer rate:          97.89 [Kbytes/sec] received
+
+Connection Times (ms):
+              min  mean[+/-sd] median   max
+Connect:        0    1   0.5      1       5
+Processing:     1  232  12.3    230     250
+Waiting:        1  230  12.0    228     248
+Total:          1  233  12.3    231     255
+
+Percentage of the requests served within a certain time (ms):
+  50%    231
+  66%    235
+  75%    238
+  80%    240
+  90%    245
+  95%    248
+  98%    252
+  99%    254
+ 100%    255 (longest request)</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">适用场景</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>快速测试简单接口</li>
+                                <li>验证基本性能指标</li>
+                                <li>比较不同配置的性能</li>
+                                <li>不适合复杂场景</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-file-alt mr-2 text-gray-600"></i>压测报告模板
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">1. 压测概述</h3>
+                        <div class="bg-white p-4 rounded border">
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>测试目的：</strong>验证系统在不同负载下的性能表现</li>
+                                <li><strong>测试环境：</strong>生产环境/测试环境</li>
+                                <li><strong>测试时间：</strong>YYYY-MM-DD HH:MM-HH:MM</li>
+                                <li><strong>测试工具：</strong>JMeter/Gatling/Locust</li>
+                                <li><strong>测试场景：</strong>正常流量、峰值流量、极限压力</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">2. 测试环境</h3>
+                        <div class="bg-white p-4 rounded border">
+                            <h4 class="font-semibold text-gray-700 mb-2">服务器配置</h4>
+                            <table class="w-full border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="border p-2 text-left">项目</th>
+                                        <th class="border p-2 text-left">配置</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border p-2">CPU</td>
+                                        <td class="border p-2">8核16线程</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">内存</td>
+                                        <td class="border p-2">16GB</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">磁盘</td>
+                                        <td class="border p-2">SSD 200GB</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">网络</td>
+                                        <td class="border p-2">1Gbps</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">3. 测试结果</h3>
+                        <div class="bg-white p-4 rounded border">
+                            <h4 class="font-semibold text-gray-700 mb-2">主要指标</h4>
+                            <table class="w-full border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="border p-2 text-left">场景</th>
+                                        <th class="border p-2 text-left">并发数</th>
+                                        <th class="border p-2 text-left">QPS</th>
+                                        <th class="border p-2 text-left">响应时间</th>
+                                        <th class="border p-2 text-left">错误率</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border p-2">正常流量</td>
+                                        <td class="border p-2">100</td>
+                                        <td class="border p-2">500</td>
+                                        <td class="border p-2">200ms</td>
+                                        <td class="border p-2">0%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">峰值流量</td>
+                                        <td class="border p-2">500</td>
+                                        <td class="border p-2">2000</td>
+                                        <td class="border p-2">500ms</td>
+                                        <td class="border p-2">0.5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">极限压力</td>
+                                        <td class="border p-2">1000</td>
+                                        <td class="border p-2">3000</td>
+                                        <td class="border p-2">1000ms</td>
+                                        <td class="border p-2">5%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">4. 资源使用</h3>
+                        <div class="bg-white p-4 rounded border">
+                            <h4 class="font-semibold text-gray-700 mb-2">服务器资源</h4>
+                            <table class="w-full border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="border p-2 text-left">资源</th>
+                                        <th class="border p-2 text-left">正常流量</th>
+                                        <th class="border p-2 text-left">峰值流量</th>
+                                        <th class="border p-2 text-left">极限压力</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border p-2">CPU</td>
+                                        <td class="border p-2">30%</td>
+                                        <td class="border p-2">70%</td>
+                                        <td class="border p-2">95%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">内存</td>
+                                        <td class="border p-2">40%</td>
+                                        <td class="border p-2">60%</td>
+                                        <td class="border p-2">80%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">磁盘IO</td>
+                                        <td class="border p-2">20%</td>
+                                        <td class="border p-2">40%</td>
+                                        <td class="border p-2">60%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border p-2">网络</td>
+                                        <td class="border p-2">10%</td>
+                                        <td class="border p-2">30%</td>
+                                        <td class="border p-2">50%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">5. 分析与建议</h3>
+                        <div class="bg-white p-4 rounded border">
+                            <h4 class="font-semibold text-gray-700 mb-2">问题分析</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>瓶颈识别：</strong>在并发1000时，CPU使用率达到95%，成为主要瓶颈</li>
+                                <li><strong>响应时间：</strong>超过800ms时用户体验开始下降</li>
+                                <li><strong>错误率：</strong>超过5%的错误率会影响系统稳定性</li>
+                            </ul>
+                            
+                            <h4 class="font-semibold text-gray-700 mb-2 mt-4">优化建议</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>硬件升级：</strong>增加CPU核心数，升级到16核</li>
+                                <li><strong>代码优化：</strong>优化数据库查询，减少CPU密集型操作</li>
+                                <li><strong>缓存策略：</strong>增加缓存命中率，减少数据库访问</li>
+                                <li><strong>负载均衡：</strong>增加服务器节点，实现水平扩展</li>
+                                <li><strong>限流策略：</strong>实施合理的限流机制，保护系统</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-3">6. 结论</h3>
+                        <div class="bg-white p-4 rounded border">
+                            <p class="text-gray-700">
+                                <strong>系统当前配置能够支撑的最大并发约为500，QPS约为2000，响应时间保持在500ms以内，错误率低于1%。</strong>
+                            </p>
+                            <p class="text-gray-600 mt-2">
+                                建议在生产环境部署时，配置至少8核16GB内存的服务器，并实施合理的负载均衡策略，以应对峰值流量。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-gray-600"></i>压测最佳实践
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-gray-500 to-gray-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-clipboard-list text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">测试准备</h4>
+                    <p class="text-sm opacity-90">明确目标、准备环境、数据</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-chart-line text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">渐进加压</h4>
+                    <p class="text-sm opacity-90">从低并发逐渐增加</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-server text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">监控资源</h4>
+                    <p class="text-sm opacity-90">实时监控服务器资源</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-database text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">数据准备</h4>
+                    <p class="text-sm opacity-90">使用真实数据进行测试</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-file-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">报告专业</h4>
+                    <p class="text-sm opacity-90">生成详细的压测报告</p>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tools text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">工具选择</h4>
+                    <p class="text-sm opacity-90">根据场景选择合适工具</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

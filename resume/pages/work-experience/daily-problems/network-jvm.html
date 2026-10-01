@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络带宽和JVM参数设置 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-network-wired mr-3 text-gray-600"></i>网络带宽和JVM参数设置
+            </h1>
+            <p class="text-gray-500 mb-6">Network Bandwidth and JVM Parameters - 优化网络带宽配置和JVM参数调优</p>
+            
+            <div class="bg-gray-50 border-l-4 border-gray-600 p-4 mb-8">
+                <p class="text-gray-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心目标：</strong>掌握网络带宽配置和JVM参数调优方法，优化系统性能和稳定性。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-network-wired mr-2 text-gray-600"></i>网络带宽配置
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-wifi text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">带宽评估</h4>
+                    <p class="text-sm opacity-90">评估网络带宽需求</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-sliders-h text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">带宽优化</h4>
+                    <p class="text-sm opacity-90">优化网络带宽使用</p>
+                </div>
+            </div>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-ruler-combined text-blue-500 mr-2"></i>
+                        带宽评估方法
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">带宽计算公式</h4>
+                            <div class="bg-gray-100 p-4 rounded">
+                                <p class="text-gray-800 font-mono">
+                                    <strong>带宽需求 = 并发用户数 × 平均请求大小 × 响应时间 × 冗余系数</strong>
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">带宽测试工具</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># iperf3 测试带宽</span>
+iperf3 -s <span class="text-gray-500"># 服务端</span>
+iperf3 -c &lt;server-ip&gt; <span class="text-gray-500"># 客户端</span>
+
+<span class="text-gray-500"># speedtest-cli 测试</span>
+pip install speedtest-cli
+speedtest-cli
+
+<span class="text-gray-500"># 网络连接监控</span>
+iftop -i eth0
+vnstat</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">带宽优化策略</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>CDN加速：</strong>使用CDN分发静态资源</li>
+                                <li><strong>压缩传输：</strong>启用gzip/brotli压缩</li>
+                                <li><strong>缓存策略：</strong>合理设置缓存头</li>
+                                <li><strong>资源优化：</strong>图片压缩、代码压缩</li>
+                                <li><strong>连接复用：</strong>启用HTTP/2、Keep-Alive</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-server text-blue-500 mr-2"></i>
+                        网络配置优化
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">TCP参数优化</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 编辑sysctl.conf</span>
+vi /etc/sysctl.conf
+
+<span class="text-gray-500"># 添加以下配置</span>
+net.core.somaxconn = 65535
+net.ipv4.tcp_max_syn_backlog = 65535
+net.ipv4.tcp_fin_timeout = 30
+net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.tcp_max_tw_buckets = 5000
+net.ipv4.tcp_fastopen = 3
+net.core.netdev_max_backlog = 10000
+
+<span class="text-gray-500"># 应用配置</span>
+sysctl -p</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">文件描述符限制</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看当前限制</span>
+ulimit -n
+
+<span class="text-gray-500"># 修改限制</span>
+vi /etc/security/limits.conf
+
+<span class="text-gray-500"># 添加以下配置</span>
+* soft nofile 65536
+* hard nofile 65536
+root soft nofile 65536
+root hard nofile 65536</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-cogs mr-2 text-gray-600"></i>JVM参数设置
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-memory text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">内存参数</h4>
+                    <p class="text-sm opacity-90">堆内存、非堆内存设置</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-bolt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">GC参数</h4>
+                    <p class="text-sm opacity-90">垃圾收集器配置</p>
+                </div>
+            </div>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-memory text-purple-500 mr-2"></i>
+                        内存参数设置
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">基本内存参数</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 堆内存设置</span>
+-Xms4g <span class="text-gray-500"># 初始堆大小</span>
+-Xmx4g <span class="text-gray-500"># 最大堆大小</span>
+-Xmn2g <span class="text-gray-500"># 年轻代大小</span>
+
+<span class="text-gray-500"># 非堆内存设置</span>
+-XX:MetaspaceSize=256m
+-XX:MaxMetaspaceSize=512m
+
+<span class="text-gray-500"># 线程栈大小</span>
+-Xss256k</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">内存分配建议</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>堆内存：</strong>建议为服务器内存的50-70%</li>
+                                <li><strong>年轻代：</strong>建议为堆内存的1/3-1/2</li>
+                                <li><strong>Metaspace：</strong>根据应用大小调整，一般256-512MB</li>
+                                <li><strong>线程栈：</strong>一般256-512KB，根据线程数调整</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-recycle text-orange-500 mr-2"></i>
+                        垃圾收集器配置
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">GC参数设置</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># G1垃圾收集器（推荐）</span>
+-XX:+UseG1GC
+-XX:MaxGCPauseMillis=200
+-XX:ParallelGCThreads=8
+-XX:ConcGCThreads=2
+-XX:InitiatingHeapOccupancyPercent=45
+
+<span class="text-gray-500"># CMS垃圾收集器（老版本）</span>
+-XX:+UseConcMarkSweepGC
+-XX:+CMSParallelRemarkEnabled
+-XX:+UseCMSInitiatingOccupancyOnly
+-XX:CMSInitiatingOccupancyFraction=70
+
+<span class="text-gray-500"># 垃圾收集日志</span>
+-XX:+PrintGCDetails
+-XX:+PrintGCDateStamps
+-XX:+PrintAdaptiveSizePolicy
+-Xloggc:gc.log</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">GC选择建议</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li><strong>小内存应用：</strong>Serial GC</li>
+                                <li><strong>中等内存应用：</strong>Parallel GC</li>
+                                <li><strong>大内存应用：</strong>G1 GC</li>
+                                <li><strong>低延迟要求：</strong>CMS GC或G1 GC</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-tachometer-alt text-green-500 mr-2"></i>
+                        性能调优参数
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">JIT编译优化</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># JIT编译设置</span>
+-XX:+TieredCompilation
+-XX:TieredStopAtLevel=1
+-XX:CompileThreshold=10000
+
+<span class="text-gray-500"># 字符串常量池</span>
+-XX:+UseStringDeduplication
+
+<span class="text-gray-500"># 逃逸分析</span>
+-XX:+DoEscapeAnalysis
+-XX:+EliminateLocks
+-XX:+EliminateAllocations</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">监控参数</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># JMX监控</span>
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=9999
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false
+
+<span class="text-gray-500"># 远程调试</span>
+-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-clipboard-check mr-2 text-gray-600"></i>最佳实践
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-network-wired text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">网络优化</h4>
+                    <p class="text-sm opacity-90">合理规划带宽，启用压缩和缓存</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-memory text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">内存调优</h4>
+                    <p class="text-sm opacity-90">根据应用特性调整内存参数</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-recycle text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">GC调优</h4>
+                    <p class="text-sm opacity-90">选择合适的垃圾收集器</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-chart-line text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">监控分析</h4>
+                    <p class="text-sm opacity-90">实时监控系统性能</p>
+                </div>
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-exclamation-triangle text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">避免过度调优</h4>
+                    <p class="text-sm opacity-90">根据实际情况调整参数</p>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-save text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">参数记录</h4>
+                    <p class="text-sm opacity-90">记录调优过程和结果</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

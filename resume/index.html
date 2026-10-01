@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人简历与项目经验</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#64748B',
+                        accent: '#10B981'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .portal-container {
+            height: calc(100vh - 64px);
+            overflow: hidden;
+        }
+
+        .nav-item:hover {
+            background-color: #EFF6FF;
+        }
+
+        .active-nav {
+            background-color: #DBEAFE;
+            border-left: 4px solid #3B82F6;
+        }
+
+        #mainFrame {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            overflow: auto;
+        }
+
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .submenu.expanded {
+            max-height: 2000px;
+        }
+
+        .rotate-90 {
+            transform: rotate(90deg);
+        }
+
+        /* 优化侧边栏滚动 */
+        aside {
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #CBD5E1 #F1F5F9;
+        }
+
+        /* 自定义滚动条样式 */
+        aside::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        aside::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+
+        aside::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 3px;
+        }
+
+        aside::-webkit-scrollbar-thumb:hover {
+            background-color: #94A3B8;
+        }
+
+        /* 响应式样式 */
+        @media (max-width: 768px) {
+            aside {
+                position: fixed;
+                top: 64px;
+                left: 0;
+                width: 80%;
+                max-width: 300px;
+                height: calc(100vh - 64px);
+                z-index: 1000;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+                background-color: white;
+            }
+
+            .portal-container {
+                padding: 0;
+            }
+
+            iframe {
+                border-radius: 0 !important;
+            }
+        }
+
+        /* 背景遮罩 */
+        .sidebar-overlay {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <header class="bg-white shadow-sm h-16 flex items-center px-6">
+        <button id="menu-toggle" class="md:hidden mr-4 text-gray-600 hover:text-primary">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+        <div class="flex items-center">
+            <i class="fas fa-graduation-cap text-primary text-2xl mr-3"></i>
+            <h1 class="text-xl font-bold text-gray-800">个人简历与项目经验</h1>
+        </div>
+        <div class="ml-auto flex items-center space-x-4">
+            <button class="text-gray-600 hover:text-gray-900">
+                <i class="fas fa-bell"></i>
+            </button>
+            <div class="flex items-center">
+                <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-2">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span class="text-gray-700">架构师</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-col min-h-screen">
+        <div class="flex flex-1">
+            <div id="sidebar-overlay" class="sidebar-overlay"></div>
+            <aside id="sidebar" class="w-64 bg-white shadow-md h-screen sticky top-16 overflow-y-auto md:block hidden">
+                <nav class="py-4">
+                    <div class="nav-item">
+                        <a href="#" onclick="loadPage('pages/home.html')" class="flex items-center px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-home mr-3"></i>
+                                <span>首页</span>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4">工作经历</div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('ai-project')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-robot mr-3"></i>
+                                <span>AI 开发项目</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200"
+                                id="ai-project-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="ai-project-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/ai-project/ai-project-overview.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目概述</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/ai-project/ai-customer-service.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">人工客服系统</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/ai-project/ai-knowledge-base.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">知识库管理</a>
+                            <a href="#"
+                                onclick="loadPage('pages/work-experience/ai-project/ai-policy-interpretation.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">政策解读系统</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/ai-project/ai-model-management.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">大模型管理</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/ai-project/ai-model-finetuning.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">模型微调</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/ai-project/ai-data-annotation.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">数据标注</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/ai-project/ai-rag-system.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">RAG 系统</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/ai-project/ai-agent-development.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">智能体开发</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('b2b-project')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-building mr-3"></i>
+                                <span>B2B大宗贸易</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200"
+                                id="b2b-project-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="b2b-project-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/b2b-project/overview.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目概述</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/b2b-project/data-exchange.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">数据交换中心</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/b2b-project/middleware-gateway.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">中间件网关</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/b2b-project/common-services.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">公共服务模块</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/b2b-project/auth-module.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">认证模块</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/b2b-project/business-modules.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">合同中心</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/b2b-project/external-gateway.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">外联网关</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/b2b-project/大宗贸易场景.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">大宗贸易场景</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/b2b-project/付款发货场景.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">付款发货场景</a>
+                        </div>
+                    </div>
+
+
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('video-surveillance')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-video mr-3"></i>
+                                <span>视频监控项目</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200"
+                                id="video-surveillance-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="video-surveillance-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/video-surveillance/overview.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目概述</a>
+                            <a href="#"
+                                onclick="loadPage('pages/work-experience/video-surveillance/live-streaming.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">实时直播</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/video-surveillance/playback.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">录像回放</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/video-surveillance/download.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">视频下载</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('customer-service')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-headset mr-3"></i>
+                                <span>客服聊天项目</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200"
+                                id="customer-service-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="customer-service-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/customer-service/overview.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目概述</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/customer-service/cs-management.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">客服管理</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/customer-service/chat-reception.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">接待客户</a>
+                            <a href="#"
+                                onclick="loadPage('pages/work-experience/customer-service/queue-mechanism.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">排队机制</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('ecommerce')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-shopping-cart mr-3"></i>
+                                <span>B2C电商系统</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200"
+                                id="ecommerce-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="ecommerce-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/b2c-project/order-system.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">订单系统</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/b2c-project/payment-system.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">支付系统</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/b2c-project/inventory-system.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">库存系统</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/b2c-project/promotion-system.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">促销系统</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('blockchain')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-link mr-3"></i>
+                                <span>区块链项目</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200"
+                                id="blockchain-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="blockchain-submenu">
+                            <div class="px-4 py-2 text-xs font-semibold text-gray-500">区块链入门</div>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/区块链-01.概念知悉.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">区块链概念</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/区块链-02.以太坊.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">以太坊基础</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.3系统架构.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">以太坊架构</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.5公链、私有链.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">公链与私有链</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.6私有链搭建.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">私有链搭建</a>
+                            <div class="px-4 py-2 text-xs font-semibold text-gray-500 mt-2">以太坊源码</div>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.7.1账户（源码）.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">账户源码</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.7.2交易（源码）.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">交易源码</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.7.2区块、区块链.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">区块与区块链</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.7.3网络（源码）.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">网络源码</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.7.4挖矿（源码）.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">挖矿源码</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.7.5存储（源码）.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">存储源码</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.7.6合约（源码）.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">合约源码</a>
+                            <div class="px-4 py-2 text-xs font-semibold text-gray-500 mt-2">开发与实践</div>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.4各语言钱包介绍.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">钱包介绍</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.8钱包对接交易.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">钱包对接交易</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/01_入门/以太坊-0.9项目疑问.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目疑问</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/02_develop/eth.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">以太坊开发</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/02_develop/bitcoin.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">比特币开发</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('daily-problems')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-search mr-3"></i>
+                                <span>日常问题排查</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200"
+                                id="daily-problems-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="daily-problems-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/daily-problems/overview.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">总览</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/daily-problems/common-problems.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">常见问题</a>
+                            <a href="#"
+                                onclick="loadPage('pages/work-experience/daily-problems/server-assessment.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">服务器资源评估</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/daily-problems/stress-testing.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">压力测试</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/daily-problems/network-jvm.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">JVM参数设置</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/daily-problems/client-freeze.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">BS卡顿问题排查</a>
+                            <a href="#"
+                                onclick="loadPage('pages/work-experience/daily-problems/client-freeze-case.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">卡顿问题定位案例</a>
+                            <a href="#"
+                                onclick="loadPage('pages/work-experience/daily-problems/java-process-crash.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">Java进程突然消失</a>
+                            <a href="#"
+                                onclick="loadPage('pages/work-experience/daily-problems/minio-upload-issue.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">MinIO上传问题排查</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('ai-enterprise')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-brain mr-3"></i>
+                                <span>大模型企业落地</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200" id="ai-enterprise-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="ai-enterprise-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/00_大模型企业落地总览.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">大模型企业落地总览</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/01_智能客服与商机转化.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">智能客服与商机转化</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/02_商品知识库与智能检索.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">商品知识库与智能检索</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/03_供应链智能.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">供应链智能</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/04_智能合同风控.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">智能合同风控</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/05_贸易数据分析.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">贸易数据分析</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/06_流程自动化RPA.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">流程自动化RPA</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/07_大宗商品专项场景.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">大宗商品专项场景</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/08_电商平台专项场景.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">电商平台专项场景</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/09_技术选型总览.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">技术选型总览</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_01_模型部署_vLLM学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">模型部署 vLLM学习指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_02_Embedding模型学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">Embedding模型学习指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_03_RAG框架_LangChain学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">RAG框架 LangChain学习指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_04_RAG框架_LlamaIndex学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">RAG框架 LlamaIndex学习指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_05_向量数据库_Milvus学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">向量数据库 Milvus学习指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_06_Agent框架_AutoGen学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">Agent框架 AutoGen学习指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_07_API框架_FastAPI学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">API框架 FastAPI学习指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_08_前端框架_Vue3学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">前端框架 Vue3学习指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/11_00_内网私有化部署开源软件清单.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">内网私有化部署开源软件清单</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/11_01_vLLM内网部署指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">vLLM内网部署指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/11_02_Ollama内网部署指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">Ollama内网部署指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/11_03_Qdrant内网部署指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">Qdrant内网部署指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/12_模型微调蒸馏开源工具与完整步骤.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">模型微调蒸馏开源工具与完整步骤</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('ecommerce-guide')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-shopping-cart mr-3"></i>
+                                <span>电商项目问题指南</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200" id="ecommerce-guide-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="ecommerce-guide-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/README.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">电商项目问题指南</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/01-系统架构设计.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">系统架构设计</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/02-高可用架构.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">高可用架构</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/03-可扩展性设计.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">可扩展性设计</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/04-高并发处理策略.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">高并发处理策略</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/05-缓存系统设计.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">缓存系统设计</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/06-CDN与静态资源.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">CDN与静态资源</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/07-数据库选型与分库分表.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">数据库选型与分库分表</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/08-数据一致性与分布式事务.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">数据一致性与分布式事务</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/09-数据备份与恢复.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">数据备份与恢复</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/10-库存超卖与多货.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">库存超卖与多货</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/11-订单系统设计.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">订单系统设计</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/12-支付系统设计.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">支付系统设计</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/13-会员与用户系统.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">会员与用户系统</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/14-接口性能优化.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">接口性能优化</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/15-前端性能优化.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">前端性能优化</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/16-JVM调优.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">JVM调优</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/17-安全防护体系.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">安全防护体系</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/18-合规与审计.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">合规与审计</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/19-DevOps与CI-CD.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">DevOps与CI-CD</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/20-容器化与K8S.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">容器化与K8S</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/21-监控与日志.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">监控与日志</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/22-秒杀系统设计.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">秒杀系统设计</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/23-搜索系统设计.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">搜索系统设计</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/24-客服与售后系统.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">客服与售后系统</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/25-合同管理系统设计.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">合同管理系统设计</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/26-工作流与审批流.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">工作流与审批流</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/27-表单与模板配置.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">表单与模板配置</a>
+                        </div>
+                    </div>
+
+                    <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">技术概览</div>
+
+                    </aside>
+
+            <main class="flex-1 p-6 portal-container">
+                <iframe id="mainFrame" src="pages/home.html" class="w-full h-full border-0 rounded-lg shadow"></iframe>
+            </main>
+        </div>
+
+        <footer class="bg-white border-t border-gray-200 py-4 px-6">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-600 text-sm mb-2 md:mb-0">
+                    © 2026 架构师学习笔记. 保留所有权利.
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-600 hover:text-primary text-sm">关于我们</a>
+                    <a href="#" class="text-gray-600 hover:text-primary text-sm">隐私政策</a>
+                    <a href="#" class="text-gray-600 hover:text-primary text-sm">联系方式</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleSubmenu(menuId) {
+            const submenu = document.getElementById(menuId + '-submenu');
+            const chevron = document.getElementById(menuId + '-chevron');
+
+            if (submenu && chevron) {
+                submenu.classList.toggle('expanded');
+                chevron.classList.toggle('rotate-90');
+            }
+        }
+
+        function toggleMainMenu(menuId) {
+            const submenu = document.getElementById(menuId + '-submenu');
+            const chevron = document.getElementById(menuId + '-chevron');
+
+            if (submenu && chevron) {
+                submenu.classList.toggle('expanded');
+                chevron.classList.toggle('rotate-90');
+            }
+        }
+
+        function loadPage(page) {
+            const mainFrame = document.getElementById('mainFrame');
+            if (mainFrame) {
+                // 检查是否为MD文件
+                if (page.endsWith('.md')) {
+                    // 使用md-viewer.html来渲染MD文件
+                    mainFrame.src = `md-viewer.html?file=${encodeURIComponent(page)}`;
+                } else {
+                    mainFrame.src = page;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // 汉堡菜单切换
+            const menuToggle = document.getElementById('menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+            function toggleSidebar() {
+                sidebar.classList.toggle('hidden');
+                sidebarOverlay.classList.toggle('active');
+            }
+
+            if (menuToggle && sidebar && sidebarOverlay) {
+                menuToggle.addEventListener('click', toggleSidebar);
+
+                // 点击背景遮罩关闭侧边栏
+                sidebarOverlay.addEventListener('click', function () {
+                    if (!sidebar.classList.contains('hidden')) {
+                        toggleSidebar();
+                    }
+                });
+
+                // 在小屏幕上点击菜单项后关闭菜单
+                const navLinks = document.querySelectorAll('aside a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function () {
+                        if (window.innerWidth < 768 && !sidebar.classList.contains('hidden')) {
+                            toggleSidebar();
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

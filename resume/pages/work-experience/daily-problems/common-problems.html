@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常见问题排查 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-question-circle mr-3 text-orange-600"></i>常见问题排查
+            </h1>
+            <p class="text-gray-500 mb-6">Common Problems - 常见问题诊断与解决方案</p>
+            
+            <div class="bg-orange-50 border-l-4 border-orange-600 p-4 mb-8">
+                <p class="text-orange-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>实用指南：</strong>收集开发和运维中最常见的问题，提供快速诊断步骤和解决方案。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-server mr-2 text-orange-600"></i>服务启动问题
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-exclamation-circle text-red-500 mr-2"></i>
+                        端口被占用
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">问题现象</h4>
+                            <p class="text-gray-600">服务启动失败，提示 "Address already in use" 或端口被占用</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">诊断步骤</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 查看端口占用情况</span>
+netstat -tlnp | grep 8080
+<span class="text-gray-500"># 或者使用 lsof</span>
+lsof -i :8080
+<span class="text-gray-500"># 或者使用 ss</span>
+ss -tlnp | grep 8080</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">解决方案</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 1. 杀掉占用端口的进程</span>
+kill -9 &lt;pid&gt;
+<span class="text-gray-500"># 2. 或者修改服务配置，使用其他端口</span>
+server.port=8081</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-database text-red-500 mr-2"></i>
+                        数据库连接失败
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">问题现象</h4>
+                            <p class="text-gray-600">服务启动时无法连接数据库，提示 "Communications link failure" 或 "Connection refused"</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">诊断步骤</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 1. 测试数据库端口连通性</span>
+telnet localhost 3306
+<span class="text-gray-500"># 或者使用 nc</span>
+nc -zv localhost 3306
+<span class="text-gray-500"># 2. 检查数据库服务状态</span>
+systemctl status mysql
+<span class="text-gray-500"># 3. 检查数据库日志</span>
+tail -f /var/log/mysql/error.log</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">常见原因</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>数据库服务未启动</li>
+                                <li>防火墙/安全组未开放端口</li>
+                                <li>数据库配置错误（主机、端口、用户名、密码）</li>
+                                <li>连接数超过数据库最大连接数</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-chart-line mr-2 text-orange-600"></i>性能问题
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-microchip text-orange-500 mr-2"></i>
+                        CPU使用率过高
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">诊断工具</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 1. 使用 top 查看整体情况</span>
+top
+<span class="text-gray-500"># 2. 使用 htop（更友好的界面）</span>
+htop
+<span class="text-gray-500"># 3. 查看Java进程线程</span>
+top -Hp &lt;pid&gt;
+<span class="text-gray-500"># 4. 使用 jstack 查看线程堆栈</span>
+jstack &lt;pid&gt; &gt; thread_dump.txt
+<span class="text-gray-500"># 5. 使用 Arthas</span>
+java -jar arthas-boot.jar</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">常见原因</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>死循环或无限递归</li>
+                                <li>频繁的GC（垃圾回收）</li>
+                                <li>大量线程竞争锁</li>
+                                <li>CPU密集型计算</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-memory text-orange-500 mr-2"></i>
+                        内存泄漏/溢出
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">诊断工具</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 1. 查看堆内存使用情况</span>
+jmap -heap &lt;pid&gt;
+<span class="text-gray-500"># 2. 导出堆内存dump</span>
+jmap -dump:format=b,file=heap_dump.hprof &lt;pid&gt;
+<span class="text-gray-500"># 3. 使用 jstat 监控GC</span>
+jstat -gcutil &lt;pid&gt; 1000
+<span class="text-gray-500"># 4. 使用 MAT 分析堆dump</span>
+<span class="text-gray-500"># Memory Analyzer Tool</span></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">常见原因</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>静态集合类未清理</li>
+                                <li>监听器未注销</li>
+                                <li>连接池资源未释放</li>
+                                <li>ThreadLocal变量未清理</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-network-wired mr-2 text-orange-600"></i>网络问题
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-clock text-red-500 mr-2"></i>
+                        请求超时
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">诊断步骤</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 1. 使用 curl 测试接口</span>
+curl -w "@curl-format.txt" -o /dev/null -s http://localhost:8080/api
+<span class="text-gray-500"># curl-format.txt 内容：</span>
+<span class="text-gray-500"># time_namelookup:  %{time_namelookup}\n</span>
+<span class="text-gray-500"># time_connect:  %{time_connect}\n</span>
+<span class="text-gray-500"># time_appconnect:  %{time_appconnect}\n</span>
+<span class="text-gray-500"># time_pretransfer:  %{time_pretransfer}\n</span>
+<span class="text-gray-500"># time_redirect:  %{time_redirect}\n</span>
+<span class="text-gray-500"># time_starttransfer:  %{time_starttransfer}\n</span>
+<span class="text-gray-500"># ----------\n</span>
+<span class="text-gray-500"># time_total:  %{time_total}\n</span>
+
+<span class="text-gray-500"># 2. 使用 tcpdump 抓包分析</span>
+tcpdump -i any -w network.pcap port 8080
+<span class="text-gray-500"># 然后用 Wireshark 打开分析</span></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">常见原因</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>数据库查询慢</li>
+                                <li>网络带宽不足</li>
+                                <li>下游服务响应慢</li>
+                                <li>GC STW时间过长</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-times-circle text-red-500 mr-2"></i>
+                        连接被重置 (Connection Reset)
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">诊断步骤</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 1. 检查防火墙状态</span>
+systemctl status firewalld
+iptables -L -n
+<span class="text-gray-500"># 2. 检查 TCP 参数</span>
+sysctl net.ipv4.tcp_fin_timeout
+sysctl net.ipv4.tcp_keepalive_time
+<span class="text-gray-500"># 3. 检查网络连接数</span>
+netstat -an | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">常见原因</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>防火墙主动断开连接</li>
+                                <li>服务端主动关闭连接</li>
+                                <li>网络中间设备（负载均衡）超时</li>
+                                <li>客户端异常退出</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-database mr-2 text-orange-600"></i>Redis问题
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+                        Redis连接超时
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">诊断步骤</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 1. 测试Redis连通性</span>
+redis-cli -h localhost -p 6379 ping
+<span class="text-gray-500"># 2. 查看Redis信息</span>
+redis-cli info
+<span class="text-gray-500"># 3. 查看慢查询</span>
+redis-cli slowlog get 10
+<span class="text-gray-500"># 4. 监控Redis命令</span>
+redis-cli monitor</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">常见原因</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>Redis服务CPU/内存高负载</li>
+                                <li>大key操作导致阻塞</li>
+                                <li>连接数超过maxclients</li>
+                                <li>网络延迟高</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-key text-red-500 mr-2"></i>
+                        内存溢出 (OOM)
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">诊断步骤</h4>
+                            <div class="code-block p-4 rounded">
+<pre><span class="text-gray-500"># 1. 查看内存使用</span>
+redis-cli info memory
+<span class="text-gray-500"># 2. 查找大key</span>
+redis-cli --bigkeys
+<span class="text-gray-500"># 3. 查看内存淘汰策略</span>
+redis-cli config get maxmemory-policy
+<span class="text-gray-500"># 4. 分析key分布</span>
+redis-cli --scan | head -100</pre>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-2">解决方案</h4>
+                            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+                                <li>设置合理的maxmemory和淘汰策略</li>
+                                <li>设置key过期时间</li>
+                                <li>拆分大key</li>
+                                <li>升级Redis内存或使用集群</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-orange-600"></i>排查检查清单
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-gray-500 to-gray-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-server text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">服务健康</h4>
+                    <p class="text-sm opacity-90">进程、端口、日志</p>
+                </div>
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-database text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">数据库</h4>
+                    <p class="text-sm opacity-90">连接、慢查询、锁</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-memory text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">内存</h4>
+                    <p class="text-sm opacity-90">堆内存、GC、泄漏</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-microchip text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">CPU</h4>
+                    <p class="text-sm opacity-90">使用率、线程、死锁</p>
+                </div>
+                <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-network-wired text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">网络</h4>
+                    <p class="text-sm opacity-90">连通性、延迟、丢包</p>
+                </div>
+                <div class="bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-cog text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">配置</h4>
+                    <p class="text-sm opacity-90">参数、依赖、版本</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

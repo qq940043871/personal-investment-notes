@@ -14,11 +14,12 @@
 | `cases/customer-cases/` | 客户案例 |
 | `cases/bid-proposal/` | 投标技术方案 |
 | `slides/` | 演示文稿截图 |
+| `resume/` | 简历与项目实战经验站点(浏览器打开 `resume/index.html`) |
 
 ## 边界
 
-- AI 课程 / LLM 刷题 → `ai-study/`
-- 架构知识长文 / 项目叙事 → `knowledge-base/`
+- AI 课程 / LLM 刷题 → `personal-tech-knowledge/ai-study/`
+- 架构知识长文 → `personal-tech-knowledge/knowledge-base/`;项目叙事 → 本仓库 `resume/pages/work-experience/`
 - 生成脚本 → 仓库 `_vendor-tools/`（`md2html.py` 可重建 banks 下全部 HTML）
 
 ## face-exp

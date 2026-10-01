@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>直播功能 - 视频监控项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-broadcast-tower mr-3 text-red-500"></i>直播功能
+            </h1>
+            <p class="text-gray-500 mb-6">Live Streaming - 实时视频流传输与播放</p>
+            
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-8">
+                <p class="text-red-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心功能：</strong>支持多路摄像头同时预览，多协议（WebRTC/HLS/FLV）自适应播放，PC 和手机同时访问，分屏显示、云台控制、截图等功能。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-red-500"></i>功能概览
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="feature-card bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-video text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">多路预览</h4>
+                    <p class="text-sm opacity-90">1/4/9/16 分屏显示</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-mouse-pointer text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">云台控制</h4>
+                    <p class="text-sm opacity-90">PTZ 上下左右缩放</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-camera text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">实时截图</h4>
+                    <p class="text-sm opacity-90">Canvas 截图保存</p>
+                </div>
+                <div class="feature-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-mobile-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">多端播放</h4>
+                    <p class="text-sm opacity-90">PC/手机自适应</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-project-diagram mr-2 text-red-500"></i>直播流架构
+            </h2>
+
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <div class="bg-red-100 text-red-700 px-4 py-2 rounded-lg font-semibold">
+                            <i class="fas fa-video mr-2"></i>摄像头 (RTSP)
+                        </div>
+                        <i class="fas fa-arrow-right text-gray-400 mx-4"></i>
+                        <div class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-semibold">
+                            <i class="fas fa-film mr-2"></i>FFmpeg 转码
+                        </div>
+                        <i class="fas fa-arrow-right text-gray-400 mx-4"></i>
+                        <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-semibold">
+                            <i class="fas fa-server mr-2"></i>ZLMediaKit
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <i class="fas fa-sort-down text-gray-400 text-3xl"></i>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-green-100 text-green-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-bolt text-2xl mb-2"></i>
+                            <div class="font-semibold">WebRTC</div>
+                            <div class="text-sm">&lt; 500ms 延迟</div>
+                            <div class="text-xs text-gray-600 mt-1">PC 端优先</div>
+                        </div>
+                        <div class="bg-teal-100 text-teal-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-play-circle text-2xl mb-2"></i>
+                            <div class="font-semibold">FLV.js</div>
+                            <div class="text-sm">1-2s 延迟</div>
+                            <div class="text-xs text-gray-600 mt-1">PC 端降级</div>
+                        </div>
+                        <div class="bg-cyan-100 text-cyan-700 p-4 rounded-lg text-center">
+                            <i class="fas fa-mobile text-2xl mb-2"></i>
+                            <div class="font-semibold">HLS</div>
+                            <div class="text-sm">3-5s 延迟</div>
+                            <div class="text-xs text-gray-600 mt-1">手机端优先</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-red-500"></i>核心代码示例
+            </h2>
+
+            <div class="space-y-6 mb-8">
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-js mr-2"></i>分屏播放器</span>
+                        <span class="text-xs text-gray-400">MultiScreenPlayer.vue</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">// 分屏播放器组件 - 支持 1/4/9/16 分屏</span>
+&lt;<span class="text-pink-400">template</span>&gt;
+  &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"multi-screen-player"</span>&gt;
+    &lt;<span class="text-pink-400">div</span> <span class="text-green-400">:class</span>=<span class="text-yellow-300">"screenClass"</span>&gt;
+      &lt;<span class="text-pink-400">div</span> 
+        <span class="text-green-400">v-for</span>=<span class="text-yellow-300">"(stream, index) in displayStreams"</span> 
+        <span class="text-green-400">:key</span>=<span class="text-yellow-300">"index"</span>
+        <span class="text-green-400">class</span>=<span class="text-yellow-300">"screen-item"</span>
+      &gt;
+        &lt;<span class="text-pink-400">VideoPlayer</span> 
+          <span class="text-green-400">:streamInfo</span>=<span class="text-yellow-300">"stream"</span>
+          <span class="text-green-400">@screenshot</span>=<span class="text-yellow-300">handleScreenshot"</span>
+        /&gt;
+        &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"stream-info"</span>&gt;
+          &lt;<span class="text-pink-400">span</span>&gt;{{ stream.name }}&lt;/<span class="text-pink-400">span</span>&gt;
+          &lt;<span class="text-pink-400">button</span> @<span class="text-green-400">click</span>=<span class="text-yellow-300">"toggleFullscreen(index)"</span>&gt;
+            &lt;<span class="text-pink-400">i</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"fas fa-expand"</span>&gt;&lt;/<span class="text-pink-400">i</span>&gt;
+          &lt;/<span class="text-pink-400">button</span>&gt;
+        &lt;/<span class="text-pink-400">div</span>&gt;
+      &lt;/<span class="text-pink-400">div</span>&gt;
+    &lt;/<span class="text-pink-400">div</span>&gt;
+    
+    &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"screen-controls"</span>&gt;
+      &lt;<span class="text-pink-400">button</span> 
+        <span class="text-green-400">v-for</span>=<span class="text-yellow-300">"mode in screenModes"</span>
+        <span class="text-green-400">:key</span>=<span class="text-yellow-300">"mode.count"</span>
+        <span class="text-green-400">:class</span>=<span class="text-yellow-300">['btn', { active: currentMode === mode.count }]</span>
+        @<span class="text-green-400">click</span>=<span class="text-yellow-300">"currentMode = mode.count"</span>
+      &gt;
+        {{ mode.label }}
+      &lt;/<span class="text-pink-400">button</span>&gt;
+    &lt;/<span class="text-pink-400">div</span>&gt;
+  &lt;/<span class="text-pink-400">div</span>&gt;
+&lt;/<span class="text-pink-400">template</span>&gt;
+
+&lt;<span class="text-pink-400">script</span>&gt;
+<span class="text-pink-400">import</span> { computed, ref } <span class="text-pink-400">from</span> <span class="text-yellow-300">'vue'</span>;
+<span class="text-pink-400">import</span> VideoPlayer <span class="text-pink-400">from</span> <span class="text-yellow-300">'./VideoPlayer.vue'</span>;
+
+<span class="text-pink-400">export default</span> {
+  <span class="text-green-400">name</span>: <span class="text-yellow-300">'MultiScreenPlayer'</span>,
+  <span class="text-green-400">components</span>: { VideoPlayer },
+  <span class="text-green-400">props</span>: {
+    <span class="text-green-400">streams</span>: Array
+  },
+  <span class="text-pink-400">setup</span>(props) {
+    <span class="text-pink-400">const</span> currentMode = ref(<span class="text-pink-400">4</span>);
+    <span class="text-pink-400">const</span> screenModes = [
+      { <span class="text-green-400">count</span>: <span class="text-pink-400">1</span>, <span class="text-green-400">label</span>: <span class="text-yellow-300">'1屏'</span> },
+      { <span class="text-green-400">count</span>: <span class="text-pink-400">4</span>, <span class="text-green-400">label</span>: <span class="text-yellow-300">'4屏'</span> },
+      { <span class="text-green-400">count</span>: <span class="text-pink-400">9</span>, <span class="text-green-400">label</span>: <span class="text-yellow-300">'9屏'</span> },
+      { <span class="text-green-400">count</span>: <span class="text-pink-400">16</span>, <span class="text-green-400">label</span>: <span class="text-yellow-300">'16屏'</span> }
+    ];
+
+    <span class="text-pink-400">const</span> screenClass = <span class="text-pink-400">computed</span>(() =&gt; {
+      <span class="text-pink-400">return</span> <span class="text-yellow-300">`grid grid-cols-</span>${Math.sqrt(currentMode.value)}<span class="text-yellow-300"> gap-2</span><span class="text-yellow-300">`</span>;
+    });
+
+    <span class="text-pink-400">const</span> displayStreams = <span class="text-pink-400">computed</span>(() =&gt; {
+      <span class="text-pink-400">return</span> props.streams.slice(<span class="text-pink-400">0</span>, currentMode.value);
+    });
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">handleScreenshot</span> = (stream) =&gt; {
+      <span class="text-gray-500">// 保存截图到本地</span>
+    };
+
+    <span class="text-pink-400">const</span> <span class="text-blue-300">toggleFullscreen</span> = (index) =&gt; {
+      currentMode.value = <span class="text-pink-400">1</span>;
+    };
+
+    <span class="text-pink-400">return</span> {
+      currentMode,
+      screenModes,
+      screenClass,
+      displayStreams,
+      handleScreenshot,
+      toggleFullscreen
+    };
+  }
+};
+&lt;/<span class="text-pink-400">script</span>&gt;</pre>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>云台控制服务</span>
+                        <span class="text-xs text-gray-400">PTZControlService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">/**
+ * 云台控制服务 - 通过 ONVIF 协议控制摄像头 PTZ
+ */</span>
+<span class="text-purple-400">@Service</span>
+<span class="text-purple-400">@Slf4j</span>
+<span class="text-pink-400">public class</span> <span class="text-blue-300">PTZControlService</span> {
+
+    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">controlPTZ</span>(PTZControlRequest request) {
+        String cameraIp = request.getCameraIp();
+        PTZCommand command = request.getCommand();
+        <span class="text-pink-400">float</span> speed = request.getSpeed();
+
+        <span class="text-pink-400">switch</span> (command) {
+            <span class="text-pink-400">case</span> UP:
+                moveUp(cameraIp, speed);
+                <span class="text-pink-400">break</span>;
+            <span class="text-pink-400">case</span> DOWN:
+                moveDown(cameraIp, speed);
+                <span class="text-pink-400">break</span>;
+            <span class="text-pink-400">case</span> LEFT:
+                moveLeft(cameraIp, speed);
+                <span class="text-pink-400">break</span>;
+            <span class="text-pink-400">case</span> RIGHT:
+                moveRight(cameraIp, speed);
+                <span class="text-pink-400">break</span>;
+            <span class="text-pink-400">case</span> ZOOM_IN:
+                zoomIn(cameraIp, speed);
+                <span class="text-pink-400">break</span>;
+            <span class="text-pink-400">case</span> ZOOM_OUT:
+                zoomOut(cameraIp, speed);
+                <span class="text-pink-400">break</span>;
+            <span class="text-pink-400">case</span> STOP:
+                stop(cameraIp);
+                <span class="text-pink-400">break</span>;
+        }
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">void</span> <span class="text-blue-300">moveUp</span>(String ip, <span class="text-pink-400">float</span> speed) {
+        <span class="text-gray-500">// 使用 ONVIF 协议发送向上移动指令</span>
+        sendOnvifCommand(ip, <span class="text-yellow-300">"ContinuousMove"</span>, 
+            <span class="text-yellow-300">"PanTilt"</span>, <span class="text-yellow-300">"x=0,y="</span> + speed);
+    }
+
+    <span class="text-pink-400">private</span> <span class="text-pink-400">void</span> <span class="text-blue-300">zoomIn</span>(String ip, <span class="text-pink-400">float</span> speed) {
+        <span class="text-gray-500">// 使用 ONVIF 协议发送缩放指令</span>
+        sendOnvifCommand(ip, <span class="text-yellow-300">"ContinuousMove"</span>, 
+            <span class="text-yellow-300">"Zoom"</span>, <span class="text-yellow-300">"x="</span> + speed);
+    }
+}</pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-tachometer-alt mr-2 text-red-500"></i>性能优化
+            </h2>
+            
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-cogs mr-2 text-red-500"></i>FFmpeg 转码优化
+                </h3>
+                
+                <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>FFmpeg 推流命令</span>
+                        <span class="text-xs text-gray-400">StreamService.java</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">// 构建高性能 FFmpeg 推流命令</span>
+<span class="text-pink-400">private</span> String <span class="text-blue-300">buildFFmpegCommand</span>(String rtspUrl, String rtmpUrl, String resolution, <span class="text-pink-400">int</span> bitrate) {
+    <span class="text-pink-400">return</span> String.<span class="text-blue-300">format</span>(
+        <span class="text-yellow-300">"ffmpeg -re -rtsp_transport tcp -i %s "</span> +
+        <span class="text-yellow-300">"-c:v libx264 -preset ultrafast -tune zerolatency "</span> +
+        <span class="text-yellow-300">"-s %s -b:v %dk -g 25 -sc_threshold 0 "</span> +
+        <span class="text-yellow-300">"-c:a aac -b:a 64k -ar 44100 "</span> +
+        <span class="text-yellow-300">"-f flv %s"</span>,
+        rtspUrl, resolution, bitrate, rtmpUrl
+    );
+}</pre>
+                    </div>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-server mr-2 text-red-500"></i>ZLMediaKit 配置优化
+                </h3>
+                
+                <div class="space-y-3 mb-4">
+                    <div class="flex items-center">
+                        <div class="w-48 font-medium text-gray-700">连接复用</div>
+                        <div class="flex-1">
+                            <div class="bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-red-500 h-2.5 rounded-full" style="width: 90%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">启用连接复用，减少服务器资源占用</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-48 font-medium text-gray-700">缓存优化</div>
+                        <div class="flex-1">
+                            <div class="bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-red-500 h-2.5 rounded-full" style="width: 85%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">合理设置缓存大小，平衡延迟和稳定性</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-48 font-medium text-gray-700">线程池配置</div>
+                        <div class="flex-1">
+                            <div class="bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-red-500 h-2.5 rounded-full" style="width: 80%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">根据服务器CPU核心数配置线程池</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-chart-line mr-2 text-red-500"></i>服务器性能指标
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-white border border-gray-200 rounded-lg p-4">
+                        <div class="text-2xl font-bold text-red-500 mb-2">50-100</div>
+                        <div class="text-sm text-gray-600">普通4C8G服务器支持路数</div>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-4">
+                        <div class="text-2xl font-bold text-red-500 mb-2">1-2Mbps</div>
+                        <div class="text-sm text-gray-600">单路视频推荐码率</div>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-4">
+                        <div class="text-2xl font-bold text-red-500 mb-2">720p</div>
+                        <div class="text-sm text-gray-600">推荐视频分辨率</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-mobile-alt mr-2 text-red-500"></i>多端访问实现
+            </h2>
+            
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
+                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
+                        <span class="text-sm font-semibold"><i class="fab fa-js mr-2"></i>设备检测与协议适配</span>
+                        <span class="text-xs text-gray-400">StreamPlayer.vue</span>
+                    </div>
+                    <div class="code-block p-4">
+<pre><span class="text-gray-500">// 设备检测与协议自适应</span>
+<span class="text-pink-400">const</span> <span class="text-blue-300">detectDeviceAndSelectProtocol</span> = () =&gt; {
+    <span class="text-pink-400">const</span> userAgent = navigator.userAgent;
+    <span class="text-pink-400">const</span> isMobile = /Android|iPhone|iPad|iPod/i.test(userAgent);
+    
+    <span class="text-pink-400">if</span> (!isMobile) {
+        <span class="text-pink-400">// PC 端优先使用 WebRTC</span>
+        <span class="text-pink-400">if</span> (checkWebRTCSupport()) {
+            <span class="text-pink-400">return</span> { <span class="text-green-400">protocol</span>: <span class="text-yellow-300">'webrtc'</span>, <span class="text-green-400">url</span>: streamInfo.webrtcUrl };
+        } <span class="text-pink-400">else</span> {
+            <span class="text-pink-400">// 降级使用 FLV</span>
+            <span class="text-pink-400">return</span> { <span class="text-green-400">protocol</span>: <span class="text-yellow-300">'flv'</span>, <span class="text-green-400">url</span>: streamInfo.flvUrl };
+        }
+    } <span class="text-pink-400">else</span> {
+        <span class="text-pink-400">// 手机端使用 HLS</span>
+        <span class="text-pink-400">return</span> { <span class="text-green-400">protocol</span>: <span class="text-yellow-300">'hls'</span>, <span class="text-green-400">url</span>: streamInfo.hlsUrl };
+    }
+};</pre>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">
+                            <i class="fas fa-desktop mr-2 text-red-500"></i>PC 端
+                        </h4>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>WebRTC：延迟 &lt; 500ms</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>FLV.js：延迟 1-2s（降级方案）</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>支持 16 路分屏</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>支持云台控制</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">
+                            <i class="fas fa-mobile-alt mr-2 text-red-500"></i>手机端
+                        </h4>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>HLS：延迟 3-5s（广泛兼容）</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>自适应分辨率</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>支持 4 路分屏</li>
+                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>触摸控制</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-red-500"></i>核心优势
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-bolt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">低延迟</h4>
+                    <p class="text-sm opacity-90">WebRTC 延迟 &lt; 500ms</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-th text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">多分屏</h4>
+                    <p class="text-sm opacity-90">1/4/9/16 分屏自由切换</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-mouse-pointer text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">PTZ控制</h4>
+                    <p class="text-sm opacity-90">ONVIF 标准云台控制</p>
+                </div>
+                <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-camera text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">实时截图</h4>
+                    <p class="text-sm opacity-90">Canvas 快速截图</p>
+                </div>
+                <div class="bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-mobile text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">多端兼容</h4>
+                    <p class="text-sm opacity-90">PC/手机自动适配</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-random text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">协议降级</h4>
+                    <p class="text-sm opacity-90">WebRTC → FLV → HLS</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-server text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">高性能</h4>
+                    <p class="text-sm opacity-90">普通服务器支持 50-100 路</p>
+                </div>
+                <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-cogs text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">易扩展</h4>
+                    <p class="text-sm opacity-90">支持集群部署</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">安全可靠</h4>
+                    <p class="text-sm opacity-90">RTSP 密码认证</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

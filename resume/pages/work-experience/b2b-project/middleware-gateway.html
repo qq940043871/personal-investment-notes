@@ -1,0 +1,683 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中间件网关 - B2B分布式项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .filter-step {
+            transition: all 0.3s ease;
+        }
+        .filter-step:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                <i class="fas fa-network-wired mr-3 text-blue-500"></i>中间件网关
+            </h1>
+            <p class="text-gray-500 mb-6">Middleware Gateway - 统一服务入口与流量治理</p>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-700">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>核心定位：</strong>中间件网关作为系统对外的统一入口，提供HTTP接口、认证校验、权限拦截、IP安全、敏感信息过滤、协议授权、登录级别校验、协议权限级别校验和缓存功能，保障系统安全、稳定、高效运行。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-shield-alt mr-2 text-blue-500"></i>请求处理流程
+            </h2>
+            
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-8 gap-3">
+                    <div class="filter-step bg-blue-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-arrow-right text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">请求入口</p>
+                    </div>
+                    <div class="filter-step bg-green-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-lock text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">认证校验</p>
+                    </div>
+                    <div class="filter-step bg-purple-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-user-shield text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">权限拦截</p>
+                    </div>
+                    <div class="filter-step bg-orange-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-firewall text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">IP拦截</p>
+                    </div>
+                    <div class="filter-step bg-red-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-filter text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">敏感过滤</p>
+                    </div>
+                    <div class="filter-step bg-teal-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-key text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">协议授权</p>
+                    </div>
+                    <div class="filter-step bg-indigo-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-database text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">缓存检查</p>
+                    </div>
+                    <div class="filter-step bg-gray-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-server text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">转发服务</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-cogs mr-2 text-blue-500"></i>核心功能模块
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-blue-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-globe text-blue-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">HTTP接口</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        对外提供统一的HTTP接口，支持RESTful API，接口文档自动生成。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@RestController
+@RequestMapping("/api/gateway")
+public class GatewayController {
+    
+    @Autowired
+    private GatewayService gatewayService;
+    
+    @PostMapping("/{service}/{method}")
+    public ResponseEntity&lt;?&gt; invoke(
+            @PathVariable String service,
+            @PathVariable String method,
+            @RequestBody Map&lt;String, Object&gt; params,
+            HttpServletRequest request) {
+        
+        GatewayRequest gatewayRequest = new GatewayRequest();
+        gatewayRequest.setService(service);
+        gatewayRequest.setMethod(method);
+        gatewayRequest.setParams(params);
+        gatewayRequest.setRequestId(UUID.randomUUID().toString());
+        gatewayRequest.setTimestamp(System.currentTimeMillis());
+        
+        GatewayResponse response = gatewayService.invoke(gatewayRequest, request);
+        return ResponseEntity.ok(response);
+    }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-green-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-key text-green-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">认证校验</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        支持JWT、OAuth2.0等多种认证方式，验证请求的合法性。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Component
+public class AuthFilter implements GlobalFilter {
+    
+    @Autowired
+    private JwtService jwtService;
+    
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        String token = exchange.getRequest().getHeaders().getFirst("Authorization");
+        
+        if (StringUtils.isEmpty(token)) {
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
+        }
+        
+        try {
+            Claims claims = jwtService.verifyToken(token);
+            exchange.getAttributes().put("userId", claims.getSubject());
+            exchange.getAttributes().put("roles", claims.get("roles"));
+        } catch (Exception e) {
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            return exchange.getResponse().setComplete();
+        }
+        
+        return chain.filter(exchange);
+    }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-purple-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-user-tag text-purple-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">权限拦截</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        基于RBAC模型的权限控制，检查用户是否拥有访问接口的权限。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Component
+public class PermissionFilter implements GlobalFilter {
+    
+    @Autowired
+    private PermissionService permissionService;
+    
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        String userId = exchange.getAttribute("userId");
+        String path = exchange.getRequest().getPath().value();
+        String method = exchange.getRequest().getMethod().name();
+        
+        boolean hasPermission = permissionService.checkPermission(userId, path, method);
+        
+        if (!hasPermission) {
+            exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+            return exchange.getResponse().setComplete();
+        }
+        
+        return chain.filter(exchange);
+    }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-orange-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-shield-virus text-orange-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">IP安全拦截</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        IP白名单/黑名单机制，防止恶意IP访问，保障系统安全。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Component
+public class IpFilter implements GlobalFilter {
+    
+    @Autowired
+    private IpService ipService;
+    
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        String clientIp = getClientIp(exchange.getRequest());
+        
+        if (ipService.isBlacklisted(clientIp)) {
+            exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+            return exchange.getResponse().setComplete();
+        }
+        
+        if (ipService.requiresWhitelist(exchange.getRequest().getPath().value())) {
+            if (!ipService.isWhitelisted(clientIp)) {
+                exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+                return exchange.getResponse().setComplete();
+            }
+        }
+        
+        return chain.filter(exchange);
+    }
+    
+    private String getClientIp(ServerHttpRequest request) {
+        String xForwardedFor = request.getHeaders().getFirst("X-Forwarded-For");
+        if (StringUtils.isNotEmpty(xForwardedFor)) {
+            return xForwardedFor.split(",")[0].trim();
+        }
+        return request.getRemoteAddress().getAddress().getHostAddress();
+    }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-red-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-eye-slash text-red-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">敏感信息过滤</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        对请求和响应中的敏感信息进行初步过滤和脱敏处理。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Component
+public class SensitiveFilter implements GlobalFilter {
+    
+    @Autowired
+    private SensitiveWordService sensitiveWordService;
+    
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        ServerHttpRequest request = exchange.getRequest();
+        
+        if (request.getMethod() == HttpMethod.POST || request.getMethod() == HttpMethod.PUT) {
+            return DataBufferUtils.join(request.getBody())
+                .flatMap(dataBuffer -&gt; {
+                    byte[] bytes = new byte[dataBuffer.readableByteCount()];
+                    dataBuffer.read(bytes);
+                    DataBufferUtils.release(dataBuffer);
+                    
+                    String body = new String(bytes, StandardCharsets.UTF_8);
+                    String filteredBody = sensitiveWordService.filter(body);
+                    
+                    ServerHttpRequest mutatedRequest = request.mutate()
+                        .body(BodyInserters.fromValue(filteredBody))
+                        .build();
+                    
+                    return chain.filter(exchange.mutate().request(mutatedRequest).build());
+                });
+        }
+        
+        return chain.filter(exchange);
+    }
+}
+
+@Service
+public class SensitiveWordService {
+    
+    private Set&lt;String&gt; sensitiveWords = new HashSet&lt;&gt;(Arrays.asList(
+        "密码", "身份证号", "银行卡号", "手机号"
+    ));
+    
+    public String filter(String content) {
+        for (String word : sensitiveWords) {
+            content = content.replaceAll(word, "***");
+        }
+        return content;
+    }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-teal-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-certificate text-teal-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">协议授权</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        基于协议的授权机制，控制不同协议的访问权限。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Component
+public class ProtocolAuthFilter implements GlobalFilter {
+    
+    @Autowired
+    private ProtocolAuthService protocolAuthService;
+    
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        String protocol = exchange.getRequest().getHeaders().getFirst("X-Protocol");
+        String appId = exchange.getRequest().getHeaders().getFirst("X-App-Id");
+        
+        if (StringUtils.isNotEmpty(protocol)) {
+            boolean authorized = protocolAuthService.checkProtocolAuth(appId, protocol);
+            
+            if (!authorized) {
+                exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+                return exchange.getResponse().setComplete();
+            }
+        }
+        
+        return chain.filter(exchange);
+    }
+}
+
+@Service
+public class ProtocolAuthService {
+    
+    @Autowired
+    private ProtocolAuthRepository protocolAuthRepository;
+    
+    public boolean checkProtocolAuth(String appId, String protocol) {
+        ProtocolAuth auth = protocolAuthRepository.findByAppIdAndProtocol(appId, protocol);
+        return auth != null &amp;&amp; auth.isEnabled();
+    }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-indigo-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-sign-in-alt text-indigo-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">登录级别校验</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        根据用户登录级别（如普通登录、强认证登录）控制接口访问权限。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Component
+public class LoginLevelFilter implements GlobalFilter {
+    
+    @Autowired
+    private LoginLevelService loginLevelService;
+    
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        String userId = exchange.getAttribute("userId");
+        String path = exchange.getRequest().getPath().value();
+        
+        LoginLevel requiredLevel = loginLevelService.getRequiredLevel(path);
+        LoginLevel userLevel = loginLevelService.getUserLevel(userId);
+        
+        if (userLevel.getLevel() &lt; requiredLevel.getLevel()) {
+            exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+            return exchange.getResponse().setComplete();
+        }
+        
+        return chain.filter(exchange);
+    }
+}
+
+public enum LoginLevel {
+    NORMAL(1, "普通登录"),
+    STRONG(2, "强认证登录"),
+    MFA(3, "多因素认证");
+    
+    private final int level;
+    private final String desc;
+    
+    LoginLevel(int level, String desc) {
+        this.level = level;
+        this.desc = desc;
+    }
+    
+    public int getLevel() {
+        return level;
+    }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-pink-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-layer-group text-pink-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">协议权限级别校验</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        基于协议权限级别的精细控制，支持多级权限体系。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Component
+public class ProtocolPermissionFilter implements GlobalFilter {
+    
+    @Autowired
+    private ProtocolPermissionService protocolPermissionService;
+    
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        String userId = exchange.getAttribute("userId");
+        String protocol = exchange.getRequest().getHeaders().getFirst("X-Protocol");
+        String action = exchange.getRequest().getHeaders().getFirst("X-Action");
+        
+        ProtocolPermissionLevel requiredLevel = 
+            protocolPermissionService.getRequiredLevel(protocol, action);
+        ProtocolPermissionLevel userLevel = 
+            protocolPermissionService.getUserLevel(userId, protocol);
+        
+        if (userLevel.getLevel() &lt; requiredLevel.getLevel()) {
+            exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+            return exchange.getResponse().setComplete();
+        }
+        
+        return chain.filter(exchange);
+    }
+}
+
+public enum ProtocolPermissionLevel {
+    READ(1, "只读"),
+    WRITE(2, "读写"),
+    ADMIN(3, "管理"),
+    SUPER(4, "超级");
+    
+    private final int level;
+    private final String desc;
+    
+    ProtocolPermissionLevel(int level, String desc) {
+        this.level = level;
+        this.desc = desc;
+    }
+    
+    public int getLevel() {
+        return level;
+    }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-lg transition-shadow md:col-span-2">
+                    <div class="flex items-center mb-3">
+                        <div class="bg-yellow-100 p-2 rounded-lg mr-3">
+                            <i class="fas fa-database text-yellow-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold">协议缓存功能</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        对部分协议的响应进行缓存，提升系统性能，减少后端服务压力。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Component
+public class CacheFilter implements GlobalFilter {
+    
+    @Autowired
+    private CacheService cacheService;
+    
+    @Autowired
+    private RouteLocator routeLocator;
+    
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        ServerHttpRequest request = exchange.getRequest();
+        
+        if (request.getMethod() != HttpMethod.GET) {
+            return chain.filter(exchange);
+        }
+        
+        String cacheKey = generateCacheKey(request);
+        CacheConfig cacheConfig = cacheService.getCacheConfig(request.getPath().value());
+        
+        if (cacheConfig == null || !cacheConfig.isEnabled()) {
+            return chain.filter(exchange);
+        }
+        
+        String cachedResponse = cacheService.get(cacheKey);
+        if (StringUtils.isNotEmpty(cachedResponse)) {
+            exchange.getResponse().getHeaders().add("X-Cache", "HIT");
+            exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+            return exchange.getResponse().writeWith(
+                Mono.just(exchange.getResponse().bufferFactory().wrap(
+                    cachedResponse.getBytes(StandardCharsets.UTF_8)
+                ))
+            );
+        }
+        
+        ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(exchange.getResponse()) {
+            @Override
+            public Mono&lt;Void&gt; writeWith(Publisher&lt;? extends DataBuffer&gt; body) {
+                if (body instanceof Flux) {
+                    Flux&lt;? extends DataBuffer&gt; fluxBody = (Flux&lt;? extends DataBuffer&gt;) body;
+                    return super.writeWith(fluxBody.buffer().map(dataBuffers -&gt; {
+                        DataBufferFactory dataBufferFactory = exchange.getResponse().bufferFactory();
+                        DataBuffer joined = dataBufferFactory.join(dataBuffers);
+                        byte[] content = new byte[joined.readableByteCount()];
+                        joined.read(content);
+                        DataBufferUtils.release(joined);
+                        
+                        String responseBody = new String(content, StandardCharsets.UTF_8);
+                        cacheService.put(cacheKey, responseBody, cacheConfig.getTtl());
+                        
+                        exchange.getResponse().getHeaders().add("X-Cache", "MISS");
+                        return dataBufferFactory.wrap(content);
+                    }));
+                }
+                return super.writeWith(body);
+            }
+        };
+        
+        return chain.filter(exchange.mutate().response(decoratedResponse).build());
+    }
+    
+    private String generateCacheKey(ServerHttpRequest request) {
+        StringBuilder key = new StringBuilder();
+        key.append(request.getMethod()).append(":");
+        key.append(request.getPath()).append(":");
+        key.append(request.getQueryParams().toSingleValueMap().toString());
+        return DigestUtils.md5DigestAsHex(key.toString().getBytes());
+    }
+}
+
+@Service
+public class CacheService {
+    
+    @Autowired
+    private RedisTemplate&lt;String, String&gt; redisTemplate;
+    
+    private Map&lt;String, CacheConfig&gt; cacheConfigs = new HashMap&lt;&gt;();
+    
+    @PostConstruct
+    public void init() {
+        cacheConfigs.put("/api/gateway/dict/list", 
+            new CacheConfig(true, 300, "字典列表"));
+        cacheConfigs.put("/api/gateway/config/get", 
+            new CacheConfig(true, 600, "配置获取"));
+    }
+    
+    public CacheConfig getCacheConfig(String path) {
+        return cacheConfigs.get(path);
+    }
+    
+    public String get(String key) {
+        return redisTemplate.opsForValue().get("cache:" + key);
+    }
+    
+    public void put(String key, String value, long ttl) {
+        redisTemplate.opsForValue().set("cache:" + key, value, ttl, TimeUnit.SECONDS);
+    }
+}
+
+public class CacheConfig {
+    private boolean enabled;
+    private long ttl;
+    private String description;
+    
+    public CacheConfig(boolean enabled, long ttl, String description) {
+        this.enabled = enabled;
+        this.ttl = ttl;
+        this.description = description;
+    }
+    
+    public boolean isEnabled() {
+        return enabled;
+    }
+    
+    public long getTtl() {
+        return ttl;
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-blue-500"></i>核心优势
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">安全防护</h4>
+                    <p class="text-sm opacity-90">多层安全防护，保障系统安全</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tachometer-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">性能优化</h4>
+                    <p class="text-sm opacity-90">缓存机制减少后端压力</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-sliders-h text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">灵活配置</h4>
+                    <p class="text-sm opacity-90">动态调整安全策略和缓存配置</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-binoculars text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">可观测性</h4>
+                    <p class="text-sm opacity-90">完整的请求日志和监控指标</p>
+                </div>
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-filter-circle-dollar text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">敏感过滤</h4>
+                    <p class="text-sm opacity-90">数据脱敏，保护用户隐私</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-layer-group text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">权限分级</h4>
+                    <p class="text-sm opacity-90">多级权限控制，精细管理</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-server mr-2 text-blue-500"></i>技术实现
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div>
+                    <h3 class="font-semibold mb-3 text-gray-800 flex items-center">
+                        <i class="fas fa-gateway text-blue-500 mr-2"></i>网关框架
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>Spring Cloud Gateway</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">推荐</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>Zuul</span>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">可选</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>Kong</span>
+                            <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">高性能</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-3 text-gray-800 flex items-center">
+                        <i class="fas fa-tools text-green-500 mr-2"></i>核心组件
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>GlobalFilter</span>
+                            <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">全局过滤器</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>GatewayFilterChain</span>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">过滤链</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-gray-50 p-3 rounded">
+                            <span>RouteLocator</span>
+                            <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">路由定位</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>库存系统 - 架构师学习笔记</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-4xl mx-auto p-6">
+        <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">
+                <i class="fas fa-warehouse text-purple-500 mr-3"></i>库存系统
+            </h1>
+            
+            <div class="prose max-w-none">
+                <p class="text-gray-600 mb-6">
+                    库存系统是电商系统的重要组成部分，负责管理商品的库存数量、库存状态、库存预警等核心功能。库存系统的稳定性和准确性直接影响到用户的购物体验和企业的运营效率。
+                </p>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">库存系统功能</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-boxes text-blue-500 mr-2"></i>
+                            库存管理
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>商品库存数量管理</li>
+                            <li>库存状态跟踪</li>
+                            <li>库存分类管理</li>
+                            <li>库存预警设置</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-exchange-alt text-blue-500 mr-2"></i>
+                            库存操作
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>入库操作</li>
+                            <li>出库操作</li>
+                            <li>库存调整</li>
+                            <li>库存盘点</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-bell text-blue-500 mr-2"></i>
+                            库存预警
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>低库存预警</li>
+                            <li>超卖预警</li>
+                            <li>滞销商品预警</li>
+                            <li>库存异常预警</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-sync-alt text-blue-500 mr-2"></i>
+                            库存同步
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>多仓库库存同步</li>
+                            <li>分布式库存同步</li>
+                            <li>实时库存更新</li>
+                            <li>库存数据一致性</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">库存模型设计</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">库存类型</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-blue-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">现货库存</h4>
+                            <p class="text-gray-600 text-sm">
+                                实际存储在仓库中的商品数量
+                            </p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">虚拟库存</h4>
+                            <p class="text-gray-600 text-sm">
+                                可销售的库存数量，包含预售等
+                            </p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">锁定库存</h4>
+                            <p class="text-gray-600 text-sm">
+                                已被订单占用但未支付的库存
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800">核心数据表</h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="py-2 px-4 border-b text-left">表名</th>
+                                    <th class="py-2 px-4 border-b text-left">字段</th>
+                                    <th class="py-2 px-4 border-b text-left">说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">inventory</td>
+                                    <td class="py-2 px-4 border-b">sku_id, warehouse_id, quantity, locked_quantity, available_quantity</td>
+                                    <td class="py-2 px-4 border-b">库存主表</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="py-2 px-4 border-b">inventory_log</td>
+                                    <td class="py-2 px-4 border-b">log_id, sku_id, operation_type, quantity, operator, create_time</td>
+                                    <td class="py-2 px-4 border-b">库存操作日志</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4 border-b">warehouse</td>
+                                    <td class="py-2 px-4 border-b">warehouse_id, name, address, status</td>
+                                    <td class="py-2 px-4 border-b">仓库信息表</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">库存扣减策略</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-minus-circle text-green-500 mr-2"></i>
+                            实时扣减
+                        </h3>
+                        <p class="text-gray-600 mb-3">
+                            用户下单时立即扣减库存，保证库存准确性。
+                        </p>
+                        <ul class="list-disc pl-8 text-gray-600 text-sm">
+                            <li>优点：库存准确，避免超卖</li>
+                            <li>缺点：影响下单性能，可能被恶意占用</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-clock text-green-500 mr-2"></i>
+                            延迟扣减
+                        </h3>
+                        <p class="text-gray-600 mb-3">
+                            用户支付成功后再扣减库存，提高下单成功率。
+                        </p>
+                        <ul class="list-disc pl-8 text-gray-600 text-sm">
+                            <li>优点：提高下单成功率</li>
+                            <li>缺点：可能超卖，需要补偿机制</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">高并发处理</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">并发控制方案</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div class="bg-blue-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">数据库锁</h4>
+                            <p class="text-gray-600 text-sm">
+                                使用行级锁保证数据一致性
+                            </p>
+                            <pre class="bg-gray-800 text-white p-2 rounded text-xs mt-2 overflow-x-auto">
+SELECT * FROM inventory 
+WHERE sku_id = ? 
+FOR UPDATE;</pre>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">分布式锁</h4>
+                            <p class="text-gray-600 text-sm">
+                                使用Redis等实现分布式锁
+                            </p>
+                            <pre class="bg-gray-800 text-white p-2 rounded text-xs mt-2 overflow-x-auto">
+RedisLock lock = new RedisLock("inventory:" + skuId);
+try {
+    if (lock.tryLock()) {
+        // 扣减库存
+    }
+} finally {
+    lock.unlock();
+}</pre>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">乐观锁</h4>
+                            <p class="text-gray-600 text-sm">
+                                使用版本号控制并发更新
+                            </p>
+                            <pre class="bg-gray-800 text-white p-2 rounded text-xs mt-2 overflow-x-auto">
+UPDATE inventory 
+SET quantity = quantity - ?, version = version + 1 
+WHERE sku_id = ? AND version = ?;</pre>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800">库存扣减示例</h4>
+                    <pre class="bg-gray-800 text-white p-4 rounded-lg mt-2 overflow-x-auto">
+// 基于Redis的库存扣减
+@Service
+public class InventoryService {
+    
+    public boolean deductInventory(String skuId, int quantity) {
+        String key = "inventory:" + skuId;
+        String lockKey = "inventory_lock:" + skuId;
+        
+        // 获取分布式锁
+        if (!redisTemplate.opsForValue().setIfAbsent(lockKey, "1", 10, TimeUnit.SECONDS)) {
+            throw new InventoryException("获取库存锁失败");
+        }
+        
+        try {
+            // 获取当前库存
+            Integer currentStock = (Integer) redisTemplate.opsForValue().get(key);
+            if (currentStock == null || currentStock < quantity) {
+                return false;
+            }
+            
+            // 扣减库存
+            redisTemplate.opsForValue().set(key, currentStock - quantity);
+            return true;
+        } finally {
+            // 释放锁
+            redisTemplate.delete(lockKey);
+        }
+    }
+}</pre>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">分布式库存</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-network-wired text-yellow-500 mr-2"></i>
+                            多仓库管理
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>仓库区域划分</li>
+                            <li>库存区域分配</li>
+                            <li>跨仓库调拨</li>
+                            <li>就近发货策略</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-sync text-yellow-500 mr-2"></i>
+                            数据同步
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>主从同步</li>
+                            <li>消息队列同步</li>
+                            <li>定时任务同步</li>
+                            <li>增量同步</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">库存预警机制</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">预警类型</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-red-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">低库存预警</h4>
+                            <p class="text-gray-600 text-sm">
+                                当库存低于设定阈值时触发预警
+                            </p>
+                            <ul class="list-disc pl-5 text-gray-600 text-xs mt-2">
+                                <li>邮件通知</li>
+                                <li>短信提醒</li>
+                                <li>系统消息</li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">超卖预警</h4>
+                            <p class="text-gray-600 text-sm">
+                                当库存出现负数时触发预警
+                            </p>
+                            <ul class="list-disc pl-5 text-gray-600 text-xs mt-2">
+                                <li>自动补货</li>
+                                <li>订单拦截</li>
+                                <li>人工处理</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h4 class="font-bold text-gray-800">预警配置示例</h4>
+                    <pre class="bg-gray-800 text-white p-4 rounded-lg mt-2 overflow-x-auto">
+// 库存预警配置
+@Component
+public class InventoryAlertService {
+    
+    @Scheduled(fixedRate = 300000) // 每5分钟检查一次
+    public void checkInventoryAlert() {
+        // 查询低库存商品
+        List<Inventory> lowStockItems = inventoryMapper
+            .selectLowStockItems(threshold);
+        
+        if (!lowStockItems.isEmpty()) {
+            // 发送预警通知
+            notificationService.sendLowStockAlert(lowStockItems);
+        }
+        
+        // 查询超卖商品
+        List<Inventory> oversoldItems = inventoryMapper
+            .selectOversoldItems();
+        
+        if (!oversoldItems.isEmpty()) {
+            // 发送超卖预警
+            notificationService.sendOversoldAlert(oversoldItems);
+        }
+    }
+}</pre>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">异常处理</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
+                            常见异常场景
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>库存不足</li>
+                            <li>并发超卖</li>
+                            <li>网络超时</li>
+                            <li>系统异常</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-redo text-red-500 mr-2"></i>
+                            补偿机制
+                        </h3>
+                        <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                            <li>库存回滚</li>
+                            <li>定时任务补偿</li>
+                            <li>人工干预处理</li>
+                            <li>数据一致性校验</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">监控与运维</h2>
+                
+                <div class="border border-gray-200 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">关键监控指标</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-blue-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">性能指标</h4>
+                            <ul class="list-disc pl-5 text-gray-600 text-sm">
+                                <li>库存查询响应时间</li>
+                                <li>库存扣减成功率</li>
+                                <li>并发处理能力</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">业务指标</h4>
+                            <ul class="list-disc pl-5 text-gray-600 text-sm">
+                                <li>库存准确率</li>
+                                <li>超卖发生次数</li>
+                                <li>预警触发次数</li>
+                            </ul>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded">
+                            <h4 class="font-bold text-gray-800 mb-2">系统指标</h4>
+                            <ul class="list-disc pl-5 text-gray-600 text-sm">
+                                <li>缓存命中率</li>
+                                <li>数据库连接数</li>
+                                <li>锁等待时间</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">库存系统最佳实践</h2>
+                <div class="bg-green-50 rounded-lg p-6">
+                    <ul class="list-disc pl-8 text-gray-600 space-y-2">
+                        <li>合理的库存模型设计</li>
+                        <li>高效的并发控制机制</li>
+                        <li>完善的预警和补偿机制</li>
+                        <li>准确的数据同步方案</li>
+                        <li>全面的监控和告警体系</li>
+                        <li>充分的压力测试和容量规划</li>
+                        <li>详细的日志记录和追踪</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
