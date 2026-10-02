@@ -2,7 +2,7 @@
 chcp 65001 >nul
 setlocal enabledelayedexpansion
 
-set PORT=3003
+set PORT=3001
 set SCRIPT_DIR=%~dp0
 cd /d "%SCRIPT_DIR%"
 
