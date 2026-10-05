@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- 派生件（响应式单文件版）：内容源 = 06-面试准备与模拟对练/06-面试话术与背诵手册.md
+     （原 06-面试问答与话术实战 + 09-面试背诵综合手册 合并件：四档自我介绍话术 + 背诵技巧/追问 + 六难点速查卡 + 3 道系统设计题 + 六维速记卡）。
+     2026-10-05 随源件合并重建：沿用原 09 响应式单文件版式（纯内联 CSS、无 CDN，离线可用；折叠交互 + 横向导航 + 自测模式），
+     桌面宽屏自动切换双栏。修改内容请改源件 md，本文件仅负责呈现。 -->
+<title>面试话术与背诵手册 · B2B大宗贸易</title>
+<style>
+  :root {
+    --bg: #f8f9fa;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --text2: #555;
+    --text3: #888;
+    --accent: #2563eb;
+    --accent2: #7c3aed;
+    --green: #059669;
+    --red: #dc2626;
+    --amber: #d97706;
+    --border: #e5e7eb;
+    --tag-bg: #eff6ff;
+    --tag-text: #1d4ed8;
+    --gold: #b45309;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    --radius: 12px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    padding: 0 0 40px 0;
+    font-size: 16px;
+  }
+
+  /* ---- Header ---- */
+  .header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+    color: #fff;
+    padding: 28px 20px 24px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 12px rgba(37,99,235,0.25);
+  }
+  .header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+  .header .sub { font-size: 13px; opacity: 0.75; margin-top: 4px; }
+  .header .badge-row { margin-top: 12px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .header .badge {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* ---- Quick Nav ---- */
+  .quick-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 12px 12px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 56px;
+    z-index: 9;
+  }
+  .quick-nav::-webkit-scrollbar { display: none; }
+  .quick-nav a {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text2);
+    background: #f1f5f9;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .quick-nav a:active, .quick-nav a:focus { background: var(--accent); color: #fff; outline: none; }
+
+  /* ---- Intro Flash Card ---- */
+  .flash-card {
+    margin: 16px 12px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #eff6ff 100%);
+    border: 1.5px solid #bfdbfe;
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+  }
+  .flash-card::before {
+    content: "🗣️ 30 秒自我介绍";
+    position: absolute;
+    top: 0; right: 0;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 0 0 0 8px;
+    font-weight: 600;
+  }
+  .flash-card p { font-size: 15px; color: #1e40af; line-height: 1.8; font-weight: 500; }
+  .flash-card .highlight { color: var(--accent); font-weight: 700; }
+
+  /* ---- Section ---- */
+  .section {
+    margin: 12px 12px;
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .section-header:active { background: #f8fafc; }
+  .section-header .left { display: flex; align-items: center; gap: 10px; }
+  .section-header .num {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .section-header .title { font-size: 16px; font-weight: 700; }
+  .section-header .arrow {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.25s;
+    font-size: 14px; color: var(--text3);
+  }
+  .section.open .section-header .arrow { transform: rotate(180deg); }
+
+  .section-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+  }
+  .section.open .section-body {
+    max-height: 20000px;
+    padding: 0 18px 18px;
+  }
+
+  /* Color themes per section */
+  .s1 .num { background: #2563eb; } .s1 .section-header { border-left: 4px solid #2563eb; }
+  .s2 .num { background: #7c3aed; } .s2 .section-header { border-left: 4px solid #7c3aed; }
+  .s3 .num { background: #dc2626; } .s3 .section-header { border-left: 4px solid #dc2626; }
+  .s4 .num { background: #059669; } .s4 .section-header { border-left: 4px solid #059669; }
+  .s5 .num { background: #d97706; } .s5 .section-header { border-left: 4px solid #d97706; }
+  .s6 .num { background: #9333ea; } .s6 .section-header { border-left: 4px solid #9333ea; }
+  .s7 .num { background: #0f172a; } .s7 .section-header { border-left: 4px solid #0f172a; }
+
+  /* ---- Content elements ---- */
+  .kicker {
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 4px; color: var(--accent);
+  }
+  .s2 .kicker { color: #7c3aed; }
+  .s3 .kicker { color: #dc2626; }
+  .s4 .kicker { color: #059669; }
+  .s5 .kicker { color: #d97706; }
+  .s6 .kicker { color: #9333ea; }
+
+  .subhead {
+    font-size: 14px; font-weight: 700; color: #1e293b;
+    margin: 16px 0 6px; padding-left: 9px; border-left: 3px solid #cbd5e1;
+  }
+
+  .big-quote {
+    background: #f8fafc;
+    border-left: 3px solid var(--accent);
+    padding: 12px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: #334155;
+    margin: 10px 0;
+    line-height: 1.75;
+  }
+  .big-quote b { color: var(--accent); }
+
+  .prose { font-size: 14px; color: #334155; line-height: 1.8; margin: 8px 0; text-align: justify; }
+  .prose b { color: #1e293b; }
+
+  .three-card-row { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+  .three-card { background: #f8fafc; border-radius: 10px; padding: 14px; border: 1px solid var(--border); }
+  .three-card .label { font-size: 13px; color: var(--text3); margin-bottom: 2px; }
+  .three-card .value { font-size: 15px; font-weight: 700; }
+
+  .feature-list { display: flex; flex-direction: column; gap: 10px; margin: 10px 0; }
+  .feature-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: #f8fafc; border-radius: 10px; }
+  .feature-item .icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .feature-item .info { flex: 1; }
+  .feature-item .info .ftitle { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .feature-item .info .fdesc { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+  .qa { margin: 12px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .qa-q { background: #f1f5f9; padding: 10px 14px; font-size: 14px; font-weight: 700; color: #1e293b; }
+  .qa-a { padding: 10px 14px; font-size: 13.5px; color: #334155; line-height: 1.75; }
+
+  .step-list { margin: 8px 0 8px 4px; }
+  .step-list .st { display: flex; gap: 8px; font-size: 13.5px; color: #334155; padding: 3px 0; line-height: 1.6; }
+  .step-list .st .sn { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .s4 .step-list .st .sn { background: #059669; }
+
+  .pain-card { background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 14px; margin: 10px 0; }
+  .pain-card .pain-tag { display: inline-block; background: #dc2626; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 6px; }
+  .pain-card .pain-title { font-size: 15px; font-weight: 700; color: #991b1b; margin-bottom: 6px; }
+  .pain-card .pain-before { font-size: 13px; color: var(--text2); margin-bottom: 4px; }
+  .pain-card .pain-after { font-size: 13px; color: #059669; font-weight: 600; }
+  .pain-card .pain-before::before { content: "❌ "; }
+  .pain-card .pain-after::before { content: "✅ "; }
+  .essence { font-size: 14px; font-weight: 600; color: #b91c1c; margin-top: 8px; font-style: italic; }
+
+  .value-layer { padding: 12px; border-radius: 10px; margin: 8px 0; }
+  .value-layer.l3 { background: #fef3c7; border: 1px solid #fde68a; }
+  .value-layer.l2 { background: #dbeafe; border: 1px solid #bfdbfe; }
+  .value-layer.l1 { background: #d1fae5; border: 1px solid #a7f3d0; }
+  .value-layer .vhead { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .value-layer.l3 .vhead { color: #92400e; }
+  .value-layer.l2 .vhead { color: #1e40af; }
+  .value-layer.l1 .vhead { color: #065f46; }
+  .value-layer .vbody { font-size: 14px; color: var(--text); font-weight: 500; }
+
+  .num-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+  .num-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px; text-align: center; }
+  .num-card .big { font-size: 22px; font-weight: 800; color: #059669; }
+  .num-card .small { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .barrier-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .barrier-item:last-child { border-bottom: none; }
+  .barrier-item .bnum { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; }
+  .barrier-item .binfo { font-size: 14px; }
+  .barrier-item .binfo span { font-size: 13px; color: var(--text2); display: block; }
+
+  .role-card { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px; margin: 8px 0; display: flex; gap: 10px; align-items: flex-start; }
+  .role-card .remoji { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+  .role-card .rinfo .rname { font-size: 14px; font-weight: 700; color: #92400e; }
+  .role-card .rinfo .rdesc { font-size: 13px; color: var(--text2); margin-top: 2px; line-height: 1.6; }
+
+  .contrib-card { background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 10px; padding: 14px; margin: 10px 0; }
+  .contrib-card .ctag { display: inline-block; background: #9333ea; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 6px; }
+  .contrib-card .ctitle { font-size: 15px; font-weight: 700; color: #6b21a8; margin-bottom: 6px; }
+  .contrib-card .crows { font-size: 13px; color: var(--text); }
+  .contrib-card .crows .crow { padding: 4px 0; display: flex; align-items: flex-start; gap: 6px; line-height: 1.6; }
+  .contrib-card .crows .crow .clabel { color: var(--text3); flex-shrink: 0; font-weight: 600; min-width: 28px; }
+  .golden { font-size: 13px; color: var(--text2); font-style: italic; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e9d5ff; }
+  .golden::before { content: "💡 "; }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: 12px; padding: 6px 12px; border-radius: 20px; font-weight: 600; }
+  .tag.t1 { background: #dbeafe; color: #1e40af; }
+  .tag.t2 { background: #fef3c7; color: #92400e; }
+  .tag.t3 { background: #d1fae5; color: #065f46; }
+
+  .big-nums { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+  .bn-item { background: #f8fafc; border-radius: 8px; padding: 10px 6px; text-align: center; }
+  .bn-item .bn-val { font-size: 18px; font-weight: 800; color: var(--accent); }
+  .bn-item .bn-label { font-size: 10px; color: var(--text3); margin-top: 2px; line-height: 1.3; }
+
+  .dont-do { margin-top: 8px; }
+  .dont-do .dd-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 13px; border-bottom: 1px solid #f1f5f9; }
+  .dont-do .dd-row:last-child { border-bottom: none; }
+  .dont-do .dd-bad { color: var(--red); text-decoration: line-through; flex: 1; font-size: 12px; }
+  .dont-do .dd-good { color: var(--green); flex: 1; font-size: 12px; font-weight: 600; }
+  .dont-do .dd-arrow { color: var(--text3); font-size: 12px; }
+
+  /* Mode toggle */
+  .mode-toggle {
+    position: fixed; bottom: 20px; right: 16px;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    border: none; font-size: 22px;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.4);
+    cursor: pointer; z-index: 20;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Quiz mode */
+  .quiz-hidden .answer { display: none; }
+  .quiz-hidden .show-hint { display: inline !important; }
+  .show-hint { display: none !important; color: var(--text3); font-size: 12px; }
+
+  /* ---- Responsive ---- */
+  .page { width: 100%; }
+
+  @media (min-width: 500px) {
+    body { max-width: 520px; margin: 0 auto; box-shadow: 0 0 0 1px rgba(0,0,0,0.04); }
+    .three-card-row { flex-direction: row; }
+    .three-card { flex: 1; }
+    .num-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+
+  @media (min-width: 900px) {
+    body { max-width: 1040px; font-size: 16.5px; }
+    .header { padding: 40px 32px 32px; }
+    .header h1 { font-size: 26px; }
+    .section { margin-bottom: 16px; }
+    .section-body { padding: 20px 24px; }
+    .sections-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+    .sections-wrap .section { margin-bottom: 0; }
+    .quick-nav { overflow-x: visible; flex-wrap: wrap; justify-content: center; padding: 14px 16px; }
+    .mode-toggle { bottom: 28px; right: 28px; }
+  }
+
+  @media (min-width: 1280px) { body { max-width: 1120px; } }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>面试话术与背诵手册</h1>
+  <div class="sub">B2B大宗贸易供应链平台 · 四档话术 + 六难点速查 + 系统设计题 + 六维速记卡</div>
+  <div class="badge-row">
+    <span class="badge">30秒 / 1-2分 / 3分 / 5分 话术</span>
+    <span class="badge">背诵技巧与追问</span>
+    <span class="badge">六大难点</span>
+    <span class="badge">系统设计题</span>
+    <span class="badge">六维速记卡</span>
+  </div>
+</div>
+
+<!-- Quick Nav -->
+<div class="quick-nav">
+  <a href="#s0">自我介绍</a>
+  <a href="#s1">话术四档</a>
+  <a href="#s2">技巧·追问</a>
+  <a href="#s3">六难点</a>
+  <a href="#s4">系统设计</a>
+  <a href="#s5">速记·产品客户</a>
+  <a href="#s6">速记·痛点价值</a>
+  <a href="#s7">速记·定位贡献</a>
+  <a href="#s8">速记卡</a>
+</div>
+
+<!-- ====== 30秒自我介绍 ====== -->
+<div class="flash-card" id="s0">
+  <p style="margin-bottom:8px;">"我是 <span class="highlight">XX</span>，<span class="highlight">B2B大宗贸易平台技术经理</span>，管X人Java团队，负责<span class="highlight">业务中台+DS数据中心</span>两层架构。</p>
+  <p style="margin-bottom:8px;">系统最大特点是<span class="highlight">C语言撮合引擎+Java微服务</span>的异构四层架构，我用自研的<span class="highlight">DS桥接层</span>管住了两者间的通信。</p>
+  <p>我深度参与的模块：<span class="highlight">交易模式、履约保证、数据服务、规则配置</span>。"</p>
+</div>
+
+<div class="sections-wrap">
+
+<!-- ====== 1. 自我介绍话术（四档） ====== -->
+<div class="section open s1" id="s1">
+  <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
+    <div class="left"><div class="num">1</div><div class="title">自我介绍话术 · 四档（权威版）</div></div>
+    <div class="arrow">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="subhead">一、30 秒版（初筛/HR 面用）</div>
+    <div class="big-quote"><b>版本 A · 异构系统架构叙事：</b>我目前在一家B2B大宗贸易平台担任技术经理，负责交易核心链路的架构设计与团队管理。我们的系统是一个<b>异构四层架构</b>——底层用C语言做单线程内存撮合引擎，上层是Java微服务集群承载业务中台，中间通过自研的数据服务中心做协议转换和通信桥接。我深度参与的模块包括交易模式设计、履约保证、规则引擎、以及10+外部生态系统的对接。个人技术栈是Java+Vue全栈，但我的核心价值不在于写代码，而在于<b>做正确的技术决策、管住复杂异构系统</b>。</div>
+    <div class="big-quote" style="border-left-color:#7c3aed;"><b>版本 B · 产业互联网平台叙事：</b>我参与开发了一个大宗商品 B2B 交易平台，核心是<b>银行资金存管 + 区块链仓单 + 多模式交易引擎</b>的产业互联网系统。平台对接了 5 家银行存管，支持 7 种交易模式（挂牌/竞价/点价等），覆盖了从交易撮合到仓储物流到供应链金融的全链路。我主要负责<b>交易引擎和资金一致性</b>模块，用 Saga+事件驱动架构解决了跨 8 个微服务的分布式一致性问题。</div>
+
+    <div class="subhead">二、1-2 分钟版（技术面/总监面用）</div>
+    <div class="prose"><b>版本 A · 异构架构叙事（技术面首选）：</b>我叫XXX，目前在XX公司担任技术经理，负责B2B大宗贸易线上交易平台的技术架构。我们平台的核心业务是帮助大宗商品买卖双方在线撮合交易，系统最大的技术挑战是——<b>既要保证交易撮合的极致性能，又要支撑复杂多变的业务规则</b>。为了解决这个矛盾，我们采用了一套<b>异构四层架构</b>：</div>
+    <div class="big-quote" style="border-left-color:#2563eb;">
+      <b>第一层，核心撮合引擎用C语言实现。</b>单线程、纯内存撮合、异步落库。选C是因为撮合逻辑是CPU密集型的，Java的GC停顿在这个场景不可接受；C做到纳秒级响应，保障交易公平性与确定性。<br><br>
+      <b>第二层，DS数据服务中心，我把它定位为"防腐层"。</b>用Java开发，核心是协议转换——下层用TCP+自定义二进制报文跟C引擎通信，上层通过Hessian向Java微服务暴露接口。它把异构通信的复杂性封装起来，让上层看到的都是干净的Java接口调用。<br><br>
+      <b>第三层，业务中台。</b>Java微服务集群，包括交易核心、管理中心、DS数据服务，以及12+独立业务服务；服务间用Hessian做RPC。<br><br>
+      <b>第四层，接入层加外部生态。</b>PC端、移动端、机构客户三端接入，同时对接9大外部系统——银行、短信、证书、物流、CTRM、开票、企查查、供应链金融等。
+    </div>
+    <div class="prose">我在这个体系里的核心角色是<b>管住异构系统的复杂度</b>。作为Java技术经理，我虽然不写C代码，但通过DS这层桥接，我能review和掌控异构通信的全链路——<b>你能管住的边界，就是你能负责的边界</b>。我深度参与的模块包括：交易模式设计、履约保证体系、规则配置引擎、以及外部生态系统的对接方案。技术栈是Java+Vue全栈，但主要精力在架构决策和团队管理上。</div>
+    <div class="prose"><b>版本 B · 产业互联网叙事：</b>项目目标是把线下大宗交易搬到线上，解决<b>资金安全、仓单造假、交易效率</b>三个痛点。系统拆了 8 个核心模块（会员/交易/资金/结算/风控/合同/仓储/运输），Java 微服务做业务中台、Vue3 做前端、Kafka 做事件总线、Redis 做缓存与分布式锁，撮合用 C 语言单线程内存实现、DS 数据中心桥接。我负责两块：<b>交易引擎</b>（可插拔交易模式框架，支持 7 种模式）和<b>资金一致性</b>（5 家银行存管，本地消息表+幂等+T+1 对账三层机制保证最终一致）；另参与仓单可信链设计（物联网+WMS+区块链）。</div>
+
+    <div class="subhead">三、3 分钟版（CTO/VP 面用）</div>
+    <div class="prose">我叫XXX，XX公司技术经理，B2B大宗贸易线上交易平台技术负责人。大宗贸易听起来离互联网很远，实际上它是一套完整的线上交易市场——钢铁、煤炭、化工等大宗商品，买卖双方在平台上挂单、询价、撮合、签约、结算、物流交付。这个链条比普通电商复杂得多：每笔金额大、履约周期长、涉及外部系统多。所以架构挑战是双重的：<b>交易核心要快，业务逻辑要灵活</b>。</div>
+    <div class="big-quote" style="border-left-color:#2563eb;">
+      <b>第一层，撮合引擎。</b>用C语言、单线程、纯内存撮合、异步写库。撮合逻辑是 CPU 密集型（盘口匹配、价格/时间优先排序、撮合规则计算），Java 的 GC 会产生不可预测停顿，对交易系统意味着不公平——C 的确定性执行是核心原因。<br><br>
+      <b>第二层，DS数据服务中心（我最愿意展开讲的一层）。</b>本质是防腐层（Anti-Corruption Layer）：下层解析 C 引擎的 TCP+自定义二进制协议，上层转成标准 Java 服务接口，中间处理连接管理、心跳保活、协议版本兼容。有了 DS，上层服务访问 C 引擎就像调本地方法。<b>这一层让异构系统之间的边界可控。</b><br><br>
+      <b>第三层，业务中台。</b>Java 微服务体系（交易核心/管理中心/12+ 垂直业务服务），服务间 Hessian RPC；用 Canal 监听 MySQL binlog 同步到独立缓存服务（封装 Redis）加速 Web 查询。<br><br>
+      <b>第四层，接入层加外部生态。</b>大屏/PC/移动端三端 + 9 大外部系统（银行支付、短信、电子签章、物流、CTRM、开票、企查查、供应链金融等）。
+    </div>
+    <div class="prose">我管一支XX人的 Java 团队，直接负责业务中台层和 DS 数据服务层。虽然不写 C 代码，<b>但通过 DS 这层桥接管住了异构通信全链路</b>，整个交易核心链路都在我的掌控范围内。我深度参与的四个方面：<b>①交易模式</b>（可配置化设计，规则引擎把业务差异抽象成可组合规则项）；<b>②履约保证体系</b>（保证金阶梯、信用额度动态计算、风控预警触发）；<b>③数据服务</b>（从"被动查询"到"主动分析"）；<b>④生态对接</b>（统一网关适配层与对接规范，对接周期两周→三天）。</div>
+    <div class="big-quote" style="border-left-color:#2563eb;">总结：我在技术管理上的核心能力是三个——<b>在异构系统中做正确的架构决策</b>，<b>在复杂业务中抽象出可配置的规则</b>，<b>在高风险交易场景中建立可靠的履约保障体系</b>。</div>
+
+    <div class="subhead">四、5 分钟版（深度技术面用）</div>
+    <div class="big-quote" style="border-left-color:#059669;">
+      <b>背景：</b>大宗商品行业传统交易都在线下，三大痛点——①客户不信任平台、不愿资金过夜；②仓单造假频发（同一批货多张开仓单骗贷）；③交易模式复杂（挂牌/竞价/点价/预售等七种）。<br><br>
+      <b>我的角色：</b>后端架构+核心模块开发，主要负责交易引擎、资金存管、仓单可信链。<br><br>
+      <b>技术架构：</b>微服务架构 8 个核心模块；业务中台 Java 微服务（自研网关 midservice/midmon），前端 Vue3，消息 Kafka，缓存 Redis，搜索 ES；撮合是 C 语言单线程内存引擎，DS 数据中心（Hessian + Socket）桥接；区块链 Hyperledger Fabric，物联网网关 MQTT+边缘计算。<br><br>
+      <b>核心难点一 · 资金存管一致性：</b>对接 5 家银行，资金在银行存管账户、平台只有指令权。方案——每笔资金操作先写本地消息表（与业务事务同库），异步投递银行，超时主动查询，T+1 对账兜底；幂等键=会员ID+订单号+操作类型+日期，多银行适配用适配器模式。<br><br>
+      <b>核心难点二 · 可插拔交易引擎：</b>策略模式+模板方法，模板定流程骨架（挂单→撮合→成交→结算→交收），各模式实现策略类，风控规则外部化；新模式 2 天上线。<br><br>
+      <b>核心难点三 · 仓单可信链：</b>物联网层验证货物真实存在（视频+RFID+称重交叉验证）+ WMS 层管理仓单生命周期状态机 + 区块链层不可篡改存证；跨层一致性用事件溯源+Saga。<br><br>
+      <b>成果：</b>服务数百家客户，撮合延迟 &lt;10ms，风控延迟 &lt;5ms，资金对账差异率 8%→0.1% 以下。
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 2. 背诵技巧与常见追问 ====== -->
+<div class="section s2" id="s2">
+  <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
+    <div class="left"><div class="num">2</div><div class="title">背诵技巧与常见追问</div></div>
+    <div class="arrow">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="subhead">记忆框架（自然讲"我的故事"，别像背书）</div>
+    <div class="big-quote" style="border-left-color:#7c3aed;white-space:pre-line;">[1] 我是什么角色 → 技术经理，B2B大宗贸易平台
+[2] 系统面临什么挑战 → 快 + 灵活，性能与业务复杂度双重要求
+[3] 怎么解决的 → 四层架构（C引擎 → DS桥接 → Java中台 → 接入层+生态）
+[4] 我在其中的价值 → 通过DS管住异构系统，深度参与四大模块
+[5] 核心能力总结 → 架构决策 / 规则抽象 / 履约保障</div>
+
+    <div class="subhead">关键词锚点</div>
+    <div class="feature-list">
+      <div class="feature-item"><div class="icon" style="background:#dbeafe;">1</div><div class="info"><div class="ftitle">C语言撮合引擎</div><div class="fdesc">"单线程、纯内存、异步落库、纳秒级"</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#fef3c7;">2</div><div class="info"><div class="ftitle">DS数据服务中心</div><div class="fdesc">"防腐层、TCP二进制↔Hessian、桥接"</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#d1fae5;">3</div><div class="info"><div class="ftitle">Java微服务集群</div><div class="fdesc">"12+业务服务、Hessian RPC、Canal缓存"</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#fce7f3;">4</div><div class="info"><div class="ftitle">四类外部对接</div><div class="fdesc">"银行/物流/签章/征信/金融/企查查"</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#ede9fe;">5</div><div class="info"><div class="ftitle">四大深度模块</div><div class="fdesc">"交易模式→履约保证→数据服务→生态对接"</div></div></div>
+    </div>
+
+    <div class="subhead">语气建议</div>
+    <div class="feature-list">
+      <div class="feature-item"><div class="icon" style="background:#dbeafe;">🗣️</div><div class="info"><div class="fdesc"><b>不要像背书</b>——段落间自然停顿，观察对方表情。</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#fef3c7;">🎯</div><div class="info"><div class="fdesc"><b>技术在精不在多</b>——时间有限就讲三层：C引擎 + DS桥接 + Java中台。</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#d1fae5;">🙋</div><div class="info"><div class="fdesc"><b>主动示弱加分</b>——"C引擎不是我写的，但我知道它为什么这样设计"。</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#fce7f3;">🪝</div><div class="info"><div class="fdesc"><b>留钩子</b>——"感兴趣我可以展开讲 DS 的协议设计细节"，把主动权交给面试官。</div></div></div>
+    </div>
+
+    <div class="subhead">根据面试官类型切换</div>
+    <div class="qa"><div class="qa-a" style="padding:12px 14px;">
+      <b>HR</b>：团队规模、项目价值、业务理解；删技术细节，加"多少客户、多少 GMV"。<br>
+      <b>技术经理/架构师</b>：C引擎决策、DS 防腐层设计、异构通信方案；重点展开二三层，聊选型权衡。<br>
+      <b>CTO/VP</b>：架构全景 + 为什么这样做 + 你的不可替代性；讲完整四层，强调"通过 DS 管住 C"。<br>
+      <b>业务总监</b>：交易模式、履约保证、生态对接；少技术名词，多业务价值。
+    </div></div>
+
+    <div class="subhead">常见追问及应答（技术面高频）</div>
+    <div class="qa"><div class="qa-q">Q1：为什么用 C 写撮合引擎，不用 Go/Rust？</div><div class="qa-a answer">评估过：Go 的 GC 仍是 STW；Rust 优秀但团队无储备、C 在金融交易生态成熟。权衡下来 C 最务实——且引擎只做撮合这一件事，代码量不大，维护成本可控。</div></div>
+    <div class="qa"><div class="qa-q">Q2：DS 这层不会成为性能瓶颈吗？</div><div class="qa-a answer">不会。DS 只做协议转换和连接管理，不做业务计算；TCP 二进制解析是纯 IO，Java NIO 完全胜任。真正的瓶颈在搓合引擎内部，那部分放在 C 层。DS 延迟在微秒到毫秒级。</div></div>
+    <div class="qa"><div class="qa-q">Q3：你说管 Java 团队，那 C 层代码怎么管？</div><div class="qa-a answer">不管 C 代码本身，但管接口协议。DS 是抓手——报文格式、TCP 握手保活、协议版本兼容都在 DS 层体现。能 review DS、能定义协议规范，就等于管住了异构通信全链路。<b>技术上叫防腐层，管理上叫边界治理。</b></div></div>
+    <div class="qa"><div class="qa-q">Q4：12+ 微服务，服务治理怎么做的？</div><div class="qa-a answer">用 Hessian 做 RPC；服务发现与配置管理由自研 midservice 网关层统一管理，监控用 midmon。大宗交易请求量相对稳定，没上 Spring Cloud/Dubbo 全家桶，选了更轻量的方案。</div></div>
+
+  </div>
+</div>
+
+<!-- ====== 3. 六大技术难点速查卡 ====== -->
+<div class="section s3" id="s3">
+  <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
+    <div class="left"><div class="num">3</div><div class="title">6 大技术难点速查卡（业务场景视角）</div></div>
+    <div class="arrow">▼</div>
+  </div>
+  <div class="section-body">
+    <p style="font-size:12.5px;color:var(--text3);margin-bottom:8px;">架构视角七大难点权威清单见 05，两套编号不要混着说。</p>
+
+    <div class="qa"><div class="qa-q">难点一 · 银行资金存管的资金流一致性</div><div class="qa-a">
+      <b>结论</b>：资金不过平台账户——客户在银行开存管子账户，平台只有指令权。<br>
+      <b>链路</b>：下单 → 带幂等键 reqId 发扣款指令 → 买方子账户扣款划入卖方 → 异步回调更新订单。<br>
+      <b>数字</b>：超时 3 秒带同 reqId 重试 → queryByReqId 主动查询 → 仍不确定标记"资金状态不确定"进人工对账，T+1 银行对账文件兜底（差异率行业 8%→0.1% 以下）。<br>
+      <b>追问</b>：银行超时怎么确认扣没扣？幂等键设计+银行不支持去重怎么办？5 家银行差异怎么管（适配器+配置中心）？
+    </div></div>
+
+    <div class="qa"><div class="qa-q">难点二 · 区块链 + 物联网 + WMS 三层仓单可信链</div><div class="qa-a">
+      <b>结论</b>：物联网证明"货在"、WMS 证明"仓单与货对应"、区块链证明"不可篡改"，单做任一层都不成立。<br>
+      <b>数字</b>：视频流不上云（8 路 1080P 约 2TB/天），边缘网关只传 AI 事件截图+结构化数据，带宽成本降 95%+。<br>
+      <b>一致性</b>：Saga 跨层，上链异步不阻塞 WMS；仓单设"待上链"中间态，上链失败不可交易/融资。<br>
+      <b>追问</b>：三层不一致（WMS 成功但上链失败）怎么办？仓单拆分（1000 吨→5×200 吨）链上链下怎么处理？
+    </div></div>
+
+    <div class="qa"><div class="qa-q">难点三 · 七种交易模式的可插拔引擎</div><div class="qa-a">
+      <b>结论</b>：策略模式+模板方法——模板定流程骨架（挂单→撮合→成交→结算→交收），策略类只实现差异步骤。<br>
+      <b>风控</b>：自研轻量规则 DSL（mode/rules/condition/action），规则存 DB 热加载，不用 Drools。<br>
+      <b>数字</b>：不涉及新外部对接时新增一种模式约 2 天；涉及新外部系统再加 2-3 天。<br>
+      <b>追问</b>：为什么不用 if-else？风控硬编码还是配置化？新增成本？
+    </div></div>
+
+    <div class="qa"><div class="qa-q">难点四 · 点价交易的期现实时联动</div><div class="qa-a">
+      <b>结论</b>：行情快照+版本号锁价——行情更新递增 version，摘牌请求带 version，不一致则拒绝并提示"价格已变动"。<br>
+      <b>数字</b>：期交所→行情服务商→行情网关→交易引擎，端到端 &lt;10ms；高频 tick 做背压，丢中间 tick 只留最新价。<br>
+      <b>白盘夜盘</b>：多行情源，新连接 ready 后再断旧连接（优雅切换）；切换窗口禁摘牌。<br>
+      <b>追问</b>：行情延迟多少？摘牌价格错位怎么防？夜盘切换断连怎么处理？
+    </div></div>
+
+    <div class="qa"><div class="qa-q">难点五 · 全流程 8 模块数据一致性</div><div class="qa-a">
+      <b>结论</b>：不用 Seata AT（8 服务全局事务锁资源，且管不了银行外部接口），用编排式 Saga——本地事务+逆序补偿+最终一致。<br>
+      <b>设计</b>：协调器维护执行状态，宕机可从实例表恢复继续补偿；补偿动作必须幂等。<br>
+      <b>顺序</b>：Kafka 按交易 ID 做 partition key 保单交易内有序；失败事件进死信队列不阻塞 partition。<br>
+      <b>查询</b>：CQRS——写库各服务本地库，读库聚合视图（Redis+ES），一次查询返回全链路 steps。<br>
+      <b>追问</b>：为什么不用 Seata？补偿顺序？8 服务事件顺序？全链路状态怎么查？
+    </div></div>
+
+    <div class="qa"><div class="qa-q">难点六 · 高并发撮合与流式风控</div><div class="qa-a">
+      <b>结论</b>：撮合纯内存，买卖盘红黑树（价格+时间优先）O(log N)；先写 WAL 再内存撮合，宕机可恢复；集合竞价按"最大成交量原则"批量撮合。<br>
+      <b>风控两层</b>：实时风控 &lt;5ms（规则预编译成内存决策树）+ 深度风控异步（Flink 流式检测对敲/自买自卖）；实时风控故障熔断降级为"宽松模式"，绝不中断交易。<br>
+      <b>峰值</b>：竞价截止前 5 分钟峰值可达日常 10-50 倍 → 引擎无状态 + K8s HPA 扩容 + Kafka 缓冲 + 批量撮合 + 单会员出价频控（10 次/分钟）。<br>
+      <b>追问</b>：撮合数据结构？风控凭什么 &lt;5ms？竞价峰值怎么扛？
+    </div></div>
+
+  </div>
+</div>
+
+<!-- ====== 4. 3 道系统设计题 ====== -->
+<div class="section s4" id="s4">
+  <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
+    <div class="left"><div class="num">4</div><div class="title">3 道系统设计面试题</div></div>
+    <div class="arrow">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="subhead">题一 · 设计一个对接多家银行的 B2B 资金存管系统</div>
+    <div class="prose"><b>要求</b>：客户资金存银行、平台不碰资金；支持冻结/解冻/划转/退款；保证平台状态与银行状态最终一致；支持 T+1 对账。</div>
+    <div class="step-list">
+      <div class="st"><div class="sn">1</div><div>架构分层：交易服务 → 资金服务 → 银行网关（适配器）→ 各银行接口</div></div>
+      <div class="st"><div class="sn">2</div><div>子账户设计：每个客户在每家银行有独立子账户，主账户为银行汇总账户</div></div>
+      <div class="st"><div class="sn">3</div><div>一致性：本地消息表 + 异步投递 + 超时查询 + T+1 对账</div></div>
+      <div class="st"><div class="sn">4</div><div>幂等：reqId = 会员ID + 订单号 + 操作类型 + 日期</div></div>
+      <div class="st"><div class="sn">5</div><div>对账流程：拉银行对账文件 → 逐笔比对 → 差异处理 → 报告生成</div></div>
+    </div>
+
+    <div class="subhead">题二 · 设计一个仓单可信链系统</div>
+    <div class="prose"><b>要求</b>：保证货物真实存在、仓单不可伪造不可重复质押、支持创建/拆分/合并/转让、支持基于仓单放款。</div>
+    <div class="step-list">
+      <div class="st"><div class="sn">1</div><div>三层架构：物联网（货物验证）→ WMS（仓单管理）→ 区块链（不可篡改存证）</div></div>
+      <div class="st"><div class="sn">2</div><div>仓单状态机：待注册→已注册→已上链→可交易→已质押→部分解押→已提货</div></div>
+      <div class="st"><div class="sn">3</div><div>防重复质押：质押时仓单状态锁定，链上标记，全网可查</div></div>
+      <div class="st"><div class="sn">4</div><div>拆分合并：原仓单作废+子仓单上链，链上记录溯源关系</div></div>
+      <div class="st"><div class="sn">5</div><div>跨层一致性：事件驱动 Saga，每步补偿</div></div>
+    </div>
+
+    <div class="subhead">题三 · 设计一个多模式交易撮合引擎</div>
+    <div class="prose"><b>要求</b>：挂牌/竞价/点价三模式可独立也可组合；点价需期货行情实时联动；竞价支持集合竞价；风控实时拦截 &lt;10ms。</div>
+    <div class="step-list">
+      <div class="st"><div class="sn">1</div><div>引擎设计：TradeMode 抽象接口 + 模板方法流程骨架 + 3 个策略实现类</div></div>
+      <div class="st"><div class="sn">2</div><div>行情接入：WebSocket 行情网关 + 背压控制 + 版本号锁价</div></div>
+      <div class="st"><div class="sn">3</div><div>撮合引擎：内存红黑树订单簿 + WAL 持久化 + 集合竞价算法</div></div>
+      <div class="st"><div class="sn">4</div><div>风控引擎：预编译规则决策树 + 熔断降级 + 异步深度风控</div></div>
+      <div class="st"><div class="sn">5</div><div>峰值应对：Kafka 队列缓冲 + K8s 弹性扩容 + 频率限流</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== 5. 速记卡 · 产品 + 客户 ====== -->
+<div class="section s5" id="s5">
+  <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
+    <div class="left"><div class="num">5</div><div class="title">速记卡 · 产品概述 + 目标客户</div></div>
+    <div class="arrow">▼</div>
+  </div>
+  <div class="section-body">
+    <div class="kicker">我们是什么</div>
+    <p style="font-size:14px;margin-bottom:12px;">B2B大宗商品在线交易与供应链服务平台——让钢铁、煤炭、化工等大宗贸易<b>全链路数字化</b>的产业互联网平台。</p>
+
+    <div class="kicker">核心功能 · 三位一体</div>
+    <div class="three-card-row">
+      <div class="three-card"><div class="label">电子交易</div><div class="value">撮合买卖双方</div></div>
+      <div class="three-card"><div class="label">现代物流</div><div class="value">货权清晰可控</div></div>
+      <div class="three-card"><div class="label">供应链金融</div><div class="value">交易数据→信用资产</div></div>
+    </div>
+
+    <div class="kicker">七种交易模式</div>
+    <div class="tag-row" style="margin-bottom:10px;">
+      <span class="tag t1">挂牌交易</span><span class="tag t1">双边协商</span><span class="tag t1">竞价拍卖</span>
+      <span class="tag t2">招标</span><span class="tag t2">集采拼单</span><span class="tag t3">托盘代采</span><span class="tag t3">基差点价</span>
+    </div>
+
+    <div class="kicker">三个核心特点</div>
+    <div class="feature-list">
+      <div class="feature-item"><div class="icon" style="background:#dbeafe;">🔄</div><div class="info"><div class="ftitle">全链路线上化</div><div class="fdesc">询价→合同→支付→仓储→物流→质检→结算→开票全程在线</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#fef3c7;">⚙️</div><div class="info"><div class="ftitle">多租户深度定制</div><div class="fdesc">不逼客户适应系统，用规则引擎+配置化适配每个客户的行规</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#d1fae5;">🛡️</div><div class="info"><div class="ftitle">金融级可靠性</div><div class="fdesc">三年零资金差错、可用率 99.95%、电子仓单零重复质押事故</div></div></div>
+    </div>
+
+    <div class="big-quote"><b>技术架构一句话：</b>C语言单线程内存撮合引擎（纳秒级、无GC）+ Java微服务业务中台 + Vue三端，通过自研DS数据中心做异构桥接。<b>C负责快，Java负责稳，DS负责翻译。</b></div>
+
+    <div class="kicker" style="margin-top:14px;">覆盖行业</div>
+    <div class="tag-row" style="margin-bottom:10px;">
+      <span class="tag t1">钢铁</span><span class="tag t2">煤炭</span><span class="tag t3">化工</span><span class="tag t1">农产品</span><span class="tag t2">有色金属</span>
+    </div>
+
+    <div class="kicker">客户规模分层</div>
+    <div class="feature-list">
+      <div class="feature-item"><div class="icon" style="background:#dbeafe;">🏭</div><div class="info"><div class="ftitle">大型核心企业（钢厂/上游矿企）</div><div class="fdesc">年交易额数十亿 → 扩大销售半径、供应链金融、API 对接 ERP</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#fef3c7;">🏢</div><div class="info"><div class="ftitle">中型贸易商</div><div class="fdesc">年交易额数千万至数亿，10-50 人 → 稳定货源、拓客、资金周转</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#d1fae5;">🏪</div><div class="info"><div class="ftitle">小型贸易商/加工厂</div><div class="fdesc">年交易额百万级 → 便宜货源、集采拼单、小额融资</div></div></div>
+    </div>
+
+    <div class="kicker">关键角色</div>
+    <div class="feature-list">
+      <div class="feature-item"><div class="icon" style="background:#fef2f2;">📋</div><div class="info"><div class="ftitle">采购经理</div><div class="fdesc">每天打 20 个电话比价 → 一键比价+库存实时+供应商信用档案</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#fef2f2;">💰</div><div class="info"><div class="ftitle">财务总监</div><div class="fdesc">月底对账 3 人 3 天还对不齐 → 自动对账+三流匹配+零差异</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#f5f3ff;">🛡️</div><div class="info"><div class="ftitle">风控总监</div><div class="fdesc">怕一货多押、怕坏账 → 电子仓单+区块链存证+银行实时校验</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#ecfeff;">📈</div><div class="info"><div class="ftitle">老板 / CEO</div><div class="fdesc">"投了几千万做平台值不值" → 效率+风险+增长三层量化数据</div></div></div>
+    </div>
+
+    <div style="font-size:13px;color:var(--text3);margin-top:8px;">📍 <b>当前正式客户：16 家</b>，覆盖能源化工、煤炭矿产、金属综合、农产品林产品、港务供应链五大板块。</div>
+  </div>
+</div>
+
+<!-- ====== 6. 速记卡 · 痛点 + 价值 ====== -->
+<div class="section s6" id="s6">
+  <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
+    <div class="left"><div class="num">6</div><div class="title">速记卡 · 解决的问题 + 产品价值</div></div>
+    <div class="arrow">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="kicker">四大死结</div>
+    <div class="pain-card">
+      <div class="pain-tag">痛点一</div>
+      <div class="pain-title">信任壁垒 — "跟陌生人做生意不敢"</div>
+      <div class="pain-before">交易靠熟人关系，人脉圈就是生意天花板</div>
+      <div class="pain-after">平台担保+资金监管账户：钱不过对方手</div>
+      <div class="pain-before">不了解新供应商靠不靠谱</div>
+      <div class="pain-after">履约率公开+交易历史可查（"累计成交 2.3 亿，履约率 97.8%"）</div>
+      <div class="essence">本质：把"对人的信任"变成了"对系统的信任"。</div>
+    </div>
+    <div class="pain-card" style="background:#fff7ed;border-color:#fed7aa;">
+      <div class="pain-tag" style="background:#ea580c;">痛点二</div>
+      <div class="pain-title" style="color:#9a3412;">信息不对称 — "价格不透明、货不好找"</div>
+      <div class="pain-before">打 5 个电话才能比价，问到一半价格就变了</div>
+      <div class="pain-after">实时行情+一键比价+标准化产品编码</div>
+      <div class="pain-before">供应商说"有货"，下单后发现没货</div>
+      <div class="pain-after">库存跟 WMS 实时打通，下单即校验</div>
+    </div>
+    <div class="pain-card" style="background:#fffbeb;border-color:#fde68a;">
+      <div class="pain-tag" style="background:#d97706;">痛点三</div>
+      <div class="pain-title" style="color:#92400e;">交易效率 — "一笔交易跑断腿"</div>
+      <div class="pain-before">合同来回邮寄改 4 版，签约要一周</div>
+      <div class="pain-after">电子合同+电子签章，1 周→1 天</div>
+      <div class="pain-before">跑银行柜台打款，跨行 T+1</div>
+      <div class="pain-after">银企直连，实时到账</div>
+      <div class="pain-before">月底 Excel 对账对到崩溃</div>
+      <div class="pain-after">全链路自动勾稽，3 人天→2 小时</div>
+      <div class="essence">核心数字：一笔交易 5~7 天 → 1.5 天</div>
+    </div>
+    <div class="pain-card" style="background:#f0fdf4;border-color:#bbf7d0;">
+      <div class="pain-tag" style="background:#059669;">痛点四</div>
+      <div class="pain-title" style="color:#065f46;">资金约束 — "有好机会但缺钱"</div>
+      <div class="pain-before">看到低价货但缺采购资金 → 银行贷款 2 周审批</div>
+      <div class="pain-after">预付款融资：平台垫资代采，货到仓库质押</div>
+      <div class="pain-before">货压在仓库占资金 → 库存就是死钱</div>
+      <div class="pain-after">仓单质押融资：货值 70% 变成流动资金</div>
+      <div class="pain-before">货卖了款没回，账期 30-90 天</div>
+      <div class="pain-after">应收账款融资：按 80% 提前变现</div>
+      <div class="essence">为什么我们能做、银行不能：平台有真实交易数据→银行敢放款。没数据的人做金融是在猜，我们是在算。</div>
+    </div>
+
+    <div class="kicker" style="margin-top:14px;">产品价值</div>
+    <div class="big-quote" style="border-left-color:#059669;">
+      <div class="kicker" style="margin:0 0 6px;">一句话价值主张</div>
+      把大宗贸易从<b>"靠人脉、靠电话、靠运气"</b>的生意，变成<b>"靠数据、靠系统、靠信用"</b>的生意。
+    </div>
+
+    <div class="value-layer l3"><div class="vhead">第三层 · 增长价值（壁垒）</div><div class="vbody">月交易量翻倍 / 供应链金融开展 / 数据飞轮越转越快</div></div>
+    <div class="value-layer l2"><div class="vhead">第二层 · 风险价值（B2B独有）</div><div class="vbody">零资金差错 / 零重复质押 / 合同自动校验零漏审</div></div>
+    <div class="value-layer l1"><div class="vhead">第一层 · 效率价值（最易量化）</div><div class="vbody">5 天→1.5 天 / 对账 3 人天→2 小时 / 签约 1 周→1 天</div></div>
+
+    <div class="kicker" style="margin-top:14px;">核心数字</div>
+    <div class="num-grid">
+      <div class="num-card"><div class="big">5→1.5天</div><div class="small">交易周期</div></div>
+      <div class="num-card"><div class="big">2月→1周</div><div class="small">新客户上线</div></div>
+      <div class="num-card"><div class="big">3人天→2h</div><div class="small">对账效率</div></div>
+      <div class="num-card"><div class="big">0</div><div class="small">资金差错（X 年）</div></div>
+      <div class="num-card"><div class="big">99.95%</div><div class="small">系统可用率</div></div>
+      <div class="num-card"><div class="big">45%→15%</div><div class="small">被动响应占比</div></div>
+    </div>
+
+    <div class="kicker" style="margin-top:14px;">五个竞争壁垒</div>
+    <div class="barrier-item"><div class="bnum">1</div><div class="binfo"><strong>数据飞轮</strong><span>交易越多→数据越多→风控越准→金融越便宜→客户更多</span></div></div>
+    <div class="barrier-item"><div class="bnum">2</div><div class="binfo"><strong>配置化引擎</strong><span>100 个客户喂出的抽象能力，新进入者至少需 2 年</span></div></div>
+    <div class="barrier-item"><div class="bnum">3</div><div class="binfo"><strong>外部集成深度</strong><span>已对接 5+银行、10+仓库、税务、签章等</span></div></div>
+    <div class="barrier-item"><div class="bnum">4</div><div class="binfo"><strong>行业复合人才</strong><span>既懂技术又懂大宗的人，培养周期 2-3 年</span></div></div>
+    <div class="barrier-item"><div class="bnum">5</div><div class="binfo"><strong>信任资产</strong><span>时间 × 零事故 = 不可速成的护城河</span></div></div>
+
+  </div>
+</div>
+
+<!-- ====== 7. 速记卡 · 定位 + 贡献 ====== -->
+<div class="section s7" id="s7">
+  <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
+    <div class="left"><div class="num">7</div><div class="title">速记卡 · 个人定位 + 个人贡献</div></div>
+    <div class="arrow">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="big-quote" style="border-left-color:#d97706;">
+      B2B大宗贸易平台<b>技术经理</b>，管 X 人 Java 团队，负责<b>业务中台</b>和<b>DS 数据中心</b>两层架构。
+    </div>
+    <div style="text-align:center;font-size:16px;font-weight:800;color:#b45309;padding:12px;background:#fffbeb;border-radius:10px;margin:12px 0;">
+      技术经理 = 业务翻译官 + 技术操盘手 + 流程守护者
+    </div>
+    <div class="role-card"><div class="remoji">🌐</div><div class="rinfo"><div class="rname">业务翻译官</div><div class="rdesc">把"支持分批付款"五个字拆成 14 个子需求、识别 3 个风险点；能在评审中反问"这个违约触发条件，系统哪个状态节点对应？"</div></div></div>
+    <div class="role-card"><div class="remoji">⚡</div><div class="rinfo"><div class="rname">技术操盘手</div><div class="rdesc">在 C+Java 异构架构中做技术选型、架构评审、技术债管理。不写 C 代码，但通过 DS 桥接层管住异构通信全链路。</div></div></div>
+    <div class="role-card"><div class="remoji">🛡️</div><div class="rinfo"><div class="rname">流程守护者</div><div class="rdesc">建立 On-call 轮值、技术债台账、接口契约治理三大机制，让团队从被动救火转向主动建设。</div></div></div>
+
+    <div class="kicker" style="margin-top:12px;">五大深度模块</div>
+    <div class="tag-row">
+      <span class="tag t1">交易模式</span><span class="tag t2">履约保证</span><span class="tag t3">数据服务</span><span class="tag t1">规则配置</span><span class="tag t2">生态对接</span>
+    </div>
+    <div class="big-quote" style="margin-top:12px;border-left-color:#d97706;">
+      <b>管理理念：</b>深度区直接掌控（五大模块），治理区契约管理（C 撮合引擎、财务清结算、物流执行）。我管<b>"连线"</b>不管<b>"黑盒内部"</b>，守住接口、SLA、爆炸半径。
+    </div>
+
+    <div class="kicker" style="margin-top:14px;">五大成果（挑 2-3 个讲）</div>
+
+    <div class="contrib-card">
+      <div class="ctag">成果一</div>
+      <div class="ctitle">DS 桥接层 — 驾驭 C+Java 异构架构</div>
+      <div class="crows">
+        <div class="crow"><span class="clabel">问题</span>C 撮合引擎是黑盒，只暴露 TCP 二进制协议；上层 12+ Java 微服务无法直接通信</div>
+        <div class="crow"><span class="clabel">方案</span>DS 数据中心作防腐层：下层 Java NIO 收 TCP 二进制→协议解析，上层 Hessian 暴露标准接口</div>
+        <div class="crow"><span class="clabel">结果</span>异构复杂度完全收敛在一层，C 与 Java 各自独立演进</div>
+      </div>
+      <div class="golden">"我不写 C 代码，但设计了 DS 这一层让 C 和 Java 能对话。技术经理的价值不是写了多少代码，而是在正确的边界上做了正确的架构决策。"</div>
+    </div>
+
+    <div class="contrib-card">
+      <div class="ctag">成果二</div>
+      <div class="ctitle">多租户配置化 — 打破"每客户一套代码"</div>
+      <div class="crows">
+        <div class="crow"><span class="clabel">问题</span>每接一个大客户全部流程都要改代码，100 客户=100 套大同小异的代码</div>
+        <div class="crow"><span class="clabel">方案</span>策略模式 + Drools 规则引擎 + 配置化模板：不变部分写死，可变部分配出来</div>
+        <div class="crow"><span class="clabel">结果</span>新客户上线：<b>2 个月→1 周</b></div>
+      </div>
+      <div class="golden">"大宗行业的铁律是每个大客户都有自己的玩法。正确的策略不是压住差异化，而是让引擎支持差异化。"</div>
+    </div>
+
+    <div class="contrib-card">
+      <div class="ctag">成果三</div>
+      <div class="ctitle">跨月长事务一致性 — 三年零资金差错</div>
+      <div class="crows">
+        <div class="crow"><span class="clabel">问题</span>一笔交易跨 1-3 个月、十几个状态变迁，每个状态同步 4-6 个系统</div>
+        <div class="crow"><span class="clabel">方案</span>Saga + 状态机 + 事件溯源：每个操作定义正向+补偿动作</div>
+        <div class="crow"><span class="clabel">结果</span>运行多年，<b>零资金差错</b></div>
+      </div>
+      <div class="golden">"做一个'能跑'的状态机只需 1 个月，做一个'不会出事'的状态机需要 2 年——因为你要见过所有异常场景，才知道补偿路径怎么写。"</div>
+    </div>
+
+    <div class="contrib-card">
+      <div class="ctag">成果四</div>
+      <div class="ctitle">管理三件套 — 从救火队长到技术领导者</div>
+      <div class="crows">
+        <div class="crow"><span class="clabel">①</span><b>On-call 轮值</b>：主副双岗轮换，P0-P3 四级 SLA；凌晨被叫起月均 8 次→2 次</div>
+        <div class="crow"><span class="clabel">②</span><b>技术债台账</b>：债务项/风险/成本/优先级可视化，隐性→显性→可控</div>
+        <div class="crow"><span class="clabel">③</span><b>20% 带宽原则</b>：每迭代固定产能用于还债，被动响应 <b>45%→15%</b></div>
+      </div>
+      <div class="golden">"临时方案不可怕，没有退路、没有记录、没有终点的临时方案才可怕。"</div>
+    </div>
+
+    <div class="contrib-card">
+      <div class="ctag">成果五</div>
+      <div class="ctitle">场景化工作台 — 从"功能菜单"到"任务向导"</div>
+      <div class="crows">
+        <div class="crow"><span class="clabel">问题</span>左侧导航几十个入口，客户不知道点哪里，培训要半天</div>
+        <div class="crow"><span class="clabel">方案</span>按任务组织：我要买货/我要卖货/我要发货/我要对账，一条线性引导流</div>
+        <div class="crow"><span class="clabel">结果</span>培训 <b>半天→30 分钟</b>，客服咨询量下降 60%</div>
+      </div>
+      <div class="golden">"客户来平台是带着明确任务来的，不是来'逛'的。你按功能堆菜单，等于把说明书甩给客户让他自己研究。"</div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /.sections-wrap -->
+
+<!-- ====== 附录：速记卡片（整宽） ====== -->
+<div class="section s7" id="s8">
+  <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
+    <div class="left"><div class="num">★</div><div class="title">速记卡片 · 面试当天看</div></div>
+    <div class="arrow">▼</div>
+  </div>
+  <div class="section-body">
+
+    <div class="kicker">三个杀手标签</div>
+    <div class="feature-list">
+      <div class="feature-item"><div class="icon" style="background:#dbeafe;">🏗️</div><div class="info"><div class="ftitle">异构架构</div><div class="fdesc">C+Java+Vue，市场稀缺</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#fef3c7;">📊</div><div class="info"><div class="ftitle">业务深度</div><div class="fdesc">懂大宗全链路，不只懂技术</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#d1fae5;">🔄</div><div class="info"><div class="ftitle">管理转型</div><div class="fdesc">从救火到主动，用机制替代亲力亲为</div></div></div>
+    </div>
+
+    <div class="kicker" style="margin-top:16px;">四层架构（必须脱手画）</div>
+    <div style="background:#f8fafc;border-radius:10px;padding:14px;margin:8px 0;">
+      <div style="font-size:14px;padding:6px 0;border-bottom:1px dashed #e5e7eb;">→ 接入层（大屏/PC/移动端 三端）</div>
+      <div style="font-size:14px;padding:6px 0;border-bottom:1px dashed #e5e7eb;">→ 网关层（midservice Java 自研）</div>
+      <div style="font-size:14px;padding:6px 0;border-bottom:1px dashed #e5e7eb;">→ 业务中台（Java 微服务 + DS 数据中心）</div>
+      <div style="font-size:14px;padding:6px 0;">→ 撮合层（C 语言内存撮合 + 异步落库）</div>
+    </div>
+
+    <div class="kicker" style="margin-top:16px;">最有冲击力的数字</div>
+    <div class="big-nums">
+      <div class="bn-item"><div class="bn-val">5→1.5天</div><div class="bn-label">交易周期</div></div>
+      <div class="bn-item"><div class="bn-val">2月→1周</div><div class="bn-label">客户上线</div></div>
+      <div class="bn-item"><div class="bn-val">3人天→2h</div><div class="bn-label">对账效率</div></div>
+      <div class="bn-item"><div class="bn-val">0差错</div><div class="bn-label">资金(X年)</div></div>
+      <div class="bn-item"><div class="bn-val">99.95%</div><div class="bn-label">可用率</div></div>
+      <div class="bn-item"><div class="bn-val">45%→15%</div><div class="bn-label">被动响应</div></div>
+    </div>
+
+    <div class="kicker" style="margin-top:16px;">关键数字（被追问时报数字最加分）</div>
+    <div class="big-nums" style="grid-template-columns:1fr 1fr;">
+      <div class="bn-item"><div class="bn-val">2.3亿 / 97.8%</div><div class="bn-label">供应商累计成交额 / 履约率</div></div>
+      <div class="bn-item"><div class="bn-val">70% / 80%</div><div class="bn-label">仓单质押货值 / 应收账款提前变现</div></div>
+      <div class="bn-item"><div class="bn-val">30–90天</div><div class="bn-label">B2B 典型账期</div></div>
+      <div class="bn-item"><div class="bn-val">5~7天→1.5天</div><div class="bn-label">全链路核心数字</div></div>
+      <div class="bn-item"><div class="bn-val">签约1周→1天</div><div class="bn-label">电子合同 + 签章在线协同</div></div>
+      <div class="bn-item"><div class="bn-val">80% / 8次→2次</div><div class="bn-label">团队自主处理 / 凌晨叫起</div></div>
+      <div class="bn-item"><div class="bn-val">命中率95% / 50ms</div><div class="bn-label">高峰期热数据缓存</div></div>
+      <div class="bn-item"><div class="bn-val">4-6 个系统</div><div class="bn-label">跨月长事务每状态需同步系统数</div></div>
+    </div>
+
+    <div class="kicker" style="margin-top:16px;">技术术语速记（说出来就显专业）</div>
+    <div class="feature-list">
+      <div class="feature-item"><div class="icon" style="background:#dbeafe;">🔌</div><div class="info"><div class="ftitle">DS = Anti-Corruption Layer（防腐层）</div><div class="fdesc">Java NIO 收 TCP 自定义二进制帧 → 协议解析/版本路由 → 上层 Hessian 暴露标准 DTO</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#fef3c7;">⚙️</div><div class="info"><div class="ftitle">配置化引擎 = 策略模式 + Drools 规则引擎 + 配置化模板</div><div class="fdesc">不变的部分写死，可变的部分按客户配出来</div></div></div>
+      <div class="feature-item"><div class="icon" style="background:#d1fae5;">🧾</div><div class="info"><div class="ftitle">一体化链路 = ERP + WMS + 电子签章 + 银行资金存管</div><div class="fdesc">没有交易数据的人做金融是在猜，我们是在算</div></div></div>
+    </div>
+
+    <div class="kicker" style="margin-top:16px;">禁用语录（记反面）</div>
+    <div class="dont-do">
+      <div class="dd-row"><div class="dd-bad">"我们用了 Spring Cloud"</div><div class="dd-arrow">→</div><div class="dd-good">"12+ 微服务按业务垂直拆分"</div></div>
+      <div class="dd-row"><div class="dd-bad">"我用 Redis 做缓存"</div><div class="dd-arrow">→</div><div class="dd-good">"高峰期热数据命中率 95%"</div></div>
+      <div class="dd-row"><div class="dd-bad">"我们系统挺稳定的"</div><div class="dd-arrow">→</div><div class="dd-good">"三年零资金差错，冬储零 P0"</div></div>
+      <div class="dd-row"><div class="dd-bad">"我技术挺好的"</div><div class="dd-arrow">→</div><div class="dd-good">"异构架构通信治理是我的深度领域"</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Quiz mode toggle -->
+<button class="mode-toggle" id="quizBtn" onclick="toggleQuiz()" title="自测模式：隐藏答案，点击展开">🎯</button>
+
+<script>
+document.querySelectorAll('.section').forEach(function(el, i) {
+  if (i !== 0) el.classList.remove('open');
+});
+
+let quizMode = false;
+function toggleQuiz() {
+  quizMode = !quizMode;
+  var btn = document.getElementById('quizBtn');
+  if (quizMode) {
+    document.body.classList.add('quiz-hidden');
+    btn.textContent = '👁️';
+    btn.title = '答案模式：显示所有内容';
+  } else {
+    document.body.classList.remove('quiz-hidden');
+    btn.textContent = '🎯';
+    btn.title = '自测模式：隐藏答案，点击展开';
+  }
+}
+
+document.querySelectorAll('.quick-nav a').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    var id = this.getAttribute('href').substring(1);
+    var el = document.getElementById(id);
+    if (el) {
+      if (el.classList.contains('section')) el.classList.add('open');
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(function() { window.scrollBy(0, -120); }, 300);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
