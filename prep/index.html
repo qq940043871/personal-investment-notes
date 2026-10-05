@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>面试备战资料库 — 文件索引与预览</title>
+<title>资料库 — 文件索引与预览</title>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
 :root {
@@ -652,7 +652,7 @@ body {
 <!-- ============= SIDEBAR ============= -->
 <aside class="sidebar">
   <div class="sidebar-header">
-    <h1>📚 面试备战资料库</h1>
+    <h1>📚 资料库</h1>
     <div class="subtitle">B2B大宗贸易供应链技术经理</div>
   </div>
 
@@ -660,7 +660,7 @@ body {
     <span class="stat-chip md">52 .md</span>
     <span class="stat-chip html">23 .html</span>
     <span class="stat-chip pptx">6 .pptx</span>
-    <span class="stat-chip">82 文件</span>
+    <span class="stat-chip">93 文件</span>
   </div>
 
   <div class="search-box">
@@ -692,8 +692,8 @@ body {
     <div class="content-area" id="contentArea">
       <div class="welcome">
         <div class="welcome-icon">📖</div>
-        <h2>面试备战资料库</h2>
-        <p>82 份精心整理的文档（已按主题归位并统一命名），覆盖产品定位、业务价值、架构决策与问题排查、案例与投递、职业发展、面试准备与模拟对练、八股题库、工具与速查 8 大分类。</p>
+        <h2>资料库</h2>
+        <p>93 份精心整理的文档（已按主题归位并统一命名），覆盖产品定位、业务价值、架构决策与问题排查、案例与投递、职业发展、面试准备与模拟对练、八股题库、工具与速查 8 大分类。</p>
         <p style="margin-top:8px;font-size:13px;">点击左侧文件树开始浏览 →</p>
       </div>
     </div>
@@ -704,7 +704,7 @@ body {
 // ===================== DIRECTORY TREE DATA =====================
 const TREE = [
   {
-    name: '01-产品定位', icon: '🎯', count: 5, open: true,
+    name: '01-产品定位', icon: '🎯', open: true,
     files: [
       '01-平台功能与产品设计手册.md',
       '02-平台角色与业务动作全景手册.md',
@@ -714,7 +714,7 @@ const TREE = [
     ]
   },
   {
-    name: '02-业务价值', icon: '💼', count: 8,
+    name: '02-业务价值', icon: '💼',
     files: [
       '01-业务价值与客户运营.md',
       '02-业务全链路场景手册.md',
@@ -723,11 +723,11 @@ const TREE = [
       '05-业务痛点与系统解决方案-架构详解.md',
       '06-客户案例与行业对标手册.md',
       '07-期现结合业务实现思路.md',
-      '08--供应链B2B与供应链金融方案深度分析.html'
+      '08-郑大信息-供应链B2B与供应链金融方案深度分析.html'
     ]
   },
   {
-    name: '03-架构决策与问题排查', icon: '🏗️', count: 8, open: true,
+    name: '03-架构决策与问题排查', icon: '🏗️', open: true,
     files: [
       '01-架构方法论与选型设计手册.md',
       '02-异构架构策略与真实系统叙事手册.md',
@@ -740,7 +740,7 @@ const TREE = [
     ]
   },
   {
-    name: '04-案例与投递', icon: '📊', count: 6,
+    name: '04-案例与投递', icon: '📊',
     files: [
       '01-数字产业链服务平台-全量分析.md',
       '02-数字产业链服务平台-含痛点方案.pptx',
@@ -751,7 +751,7 @@ const TREE = [
     ]
   },
   {
-    name: '05-职业发展', icon: '🚀', count: 5,
+    name: '05-职业发展', icon: '🚀',
     files: [
       '01-技术经理成长体系手册.md',
       '02-职业发展进阶路线图手册.md',
@@ -761,7 +761,7 @@ const TREE = [
     ]
   },
   {
-    name: '06-面试准备与模拟对练', icon: '🎯', count: 20, open: true,
+    name: '06-面试准备与模拟对练', icon: '🎯', open: true,
     files: [
       '01-面试核心策略手册.md',
       '02-技术栈全景与面试题库.md',
@@ -786,10 +786,10 @@ const TREE = [
     ]
   },
   {
-    name: '07-八股题库', icon: '📚', count: 33,
+    name: '07-八股题库', icon: '📚',
     children: [
       {
-        name: '01-八股文与深度整理', icon: '☕', count: 26,
+        name: '01-八股文与深度整理', icon: '☕',
         files: [
           '01-Java面试题深度整理.md',
           '01-Java面试题深度整理.html',
@@ -820,7 +820,7 @@ const TREE = [
         ]
       },
       {
-        name: '02-面试真题', icon: '📋', count: 7,
+        name: '02-面试真题', icon: '📋',
         files: [
           '01-个人技术画像与求职定位.md',
           '02-郑州25K全栈架构师综合面试题库.md',
@@ -834,13 +834,15 @@ const TREE = [
     ]
   },
   {
-    name: '08-工具与速查', icon: '🔧', count: 5,
+    name: '08-工具与速查', icon: '🔧',
     files: [
       '01-md-viewer.html',
       '02-面试背诵集合.html',
       '03-RICE优先级决策矩阵.html',
       '04-5Whys与业务技术映射速查卡.html',
-      '05-B2B微服务系统架构图-手绘版.html'
+      '05-B2B微服务系统架构图-手绘版.html',
+      '06-四类客户运营模式速查卡.html',
+      '07-四类客户运营模式深度拆解.html'
     ]
   }
 ];
@@ -953,7 +955,7 @@ function buildTree() {
   // Root files
   html += '<div class="folder open"><div class="folder-header" data-folder="root" onclick="toggleFolder(this)">';
   html += '<span class="folder-arrow">▶</span><span class="folder-icon">📁</span>';
-  html += '<span class="folder-label">根目录</span><span class="folder-count">1</span></div>';
+  html += '<span class="folder-label">根目录</span><span class="folder-count">' + ROOT_FILES.length + '</span></div>';
   html += '<div class="folder-children">';
   ROOT_FILES.forEach(f => {
     const extCls = getExtClass(f);
@@ -965,8 +967,7 @@ function buildTree() {
 
   // Subfolders (支持一级嵌套：folder.children)
   TREE.forEach(folder => {
-    const childCount = (folder.children || []).reduce((s, c) => s + (c.files || []).length, 0);
-    html += renderFolder(folder.name, folder.name, folder.icon, folder.files, folder.open, childCount);
+    html += renderFolder(folder.name, folder.name, folder.icon, folder.files, folder.open, countTreeFiles(folder));
     (folder.children || []).forEach(sub => {
       html += renderFolder(sub.name, `${folder.name}/${sub.name}`, sub.icon, sub.files, sub.open);
     });
@@ -983,6 +984,14 @@ function buildTree() {
       filename: el.dataset.filename
     });
   });
+}
+
+// 递归统计一棵子树的真实文件数（本目录文件 + 所有子目录文件）
+// 计数不再依赖数据表里的 count 字段，新增/改名文件后数字自动同步
+function countTreeFiles(folder) {
+  let n = ((folder && folder.files) || []).length;
+  ((folder && folder.children) || []).forEach(sub => { n += countTreeFiles(sub); });
+  return n;
 }
 
 function renderFolder(label, pathKey, icon, files, open, countOverride) {
