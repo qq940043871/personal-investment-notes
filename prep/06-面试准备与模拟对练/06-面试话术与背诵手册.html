@@ -38,6 +38,8 @@
     -webkit-font-smoothing: antialiased;
     padding: 0 0 40px 0;
     font-size: 16px;
+    max-width: 1000px;
+    margin: 0 auto;
   }
 
   /* ---- Header ---- */
@@ -46,9 +48,6 @@
     color: #fff;
     padding: 28px 20px 24px;
     text-align: center;
-    position: sticky;
-    top: 0;
-    z-index: 10;
     box-shadow: 0 2px 12px rgba(37,99,235,0.25);
   }
   .header h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
@@ -73,9 +72,6 @@
     scrollbar-width: none;
     background: #fff;
     border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 56px;
-    z-index: 9;
   }
   .quick-nav::-webkit-scrollbar { display: none; }
   .quick-nav a {
@@ -129,12 +125,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 16px 18px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-    transition: background 0.15s;
   }
-  .section-header:active { background: #f8fafc; }
   .section-header .left { display: flex; align-items: center; gap: 10px; }
   .section-header .num {
     width: 32px; height: 32px;
@@ -145,21 +136,9 @@
     flex-shrink: 0;
   }
   .section-header .title { font-size: 16px; font-weight: 700; }
-  .section-header .arrow {
-    width: 28px; height: 28px;
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.25s;
-    font-size: 14px; color: var(--text3);
-  }
-  .section.open .section-header .arrow { transform: rotate(180deg); }
+  .section-header .arrow { display: none; }
 
   .section-body {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.35s ease, padding 0.35s ease;
-  }
-  .section.open .section-body {
-    max-height: 20000px;
     padding: 0 18px 18px;
   }
 
@@ -286,45 +265,22 @@
   .dont-do .dd-good { color: var(--green); flex: 1; font-size: 12px; font-weight: 600; }
   .dont-do .dd-arrow { color: var(--text3); font-size: 12px; }
 
-  /* Mode toggle */
-  .mode-toggle {
-    position: fixed; bottom: 20px; right: 16px;
-    width: 48px; height: 48px; border-radius: 50%;
-    background: var(--accent); color: #fff;
-    border: none; font-size: 22px;
-    box-shadow: 0 4px 16px rgba(37,99,235,0.4);
-    cursor: pointer; z-index: 20;
-    display: flex; align-items: center; justify-content: center;
+  /* ---- Responsive ---- */
+  @media (max-width: 600px) {
+    .header { padding: 20px 14px; }
+    .header h1 { font-size: 18px; }
+    .section { margin: 10px 8px; }
+    .section-body { padding: 0 14px 14px; }
   }
 
-  /* Quiz mode */
-  .quiz-hidden .answer { display: none; }
-  .quiz-hidden .show-hint { display: inline !important; }
-  .show-hint { display: none !important; color: var(--text3); font-size: 12px; }
-
-  /* ---- Responsive ---- */
-  .page { width: 100%; }
-
-  @media (min-width: 500px) {
-    body { max-width: 520px; margin: 0 auto; box-shadow: 0 0 0 1px rgba(0,0,0,0.04); }
+  @media (min-width: 700px) {
     .three-card-row { flex-direction: row; }
     .three-card { flex: 1; }
     .num-grid { grid-template-columns: 1fr 1fr 1fr; }
-  }
-
-  @media (min-width: 900px) {
-    body { max-width: 1040px; font-size: 16.5px; }
-    .header { padding: 40px 32px 32px; }
-    .header h1 { font-size: 26px; }
-    .section { margin-bottom: 16px; }
-    .section-body { padding: 20px 24px; }
-    .sections-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
-    .sections-wrap .section { margin-bottom: 0; }
+    .header { padding: 32px 28px 26px; }
+    .header h1 { font-size: 24px; }
     .quick-nav { overflow-x: visible; flex-wrap: wrap; justify-content: center; padding: 14px 16px; }
-    .mode-toggle { bottom: 28px; right: 28px; }
   }
-
-  @media (min-width: 1280px) { body { max-width: 1120px; } }
 </style>
 </head>
 <body>
@@ -843,38 +799,14 @@
   </div>
 </div>
 
-<!-- Quiz mode toggle -->
-<button class="mode-toggle" id="quizBtn" onclick="toggleQuiz()" title="自测模式：隐藏答案，点击展开">🎯</button>
-
 <script>
-document.querySelectorAll('.section').forEach(function(el, i) {
-  if (i !== 0) el.classList.remove('open');
-});
-
-let quizMode = false;
-function toggleQuiz() {
-  quizMode = !quizMode;
-  var btn = document.getElementById('quizBtn');
-  if (quizMode) {
-    document.body.classList.add('quiz-hidden');
-    btn.textContent = '👁️';
-    btn.title = '答案模式：显示所有内容';
-  } else {
-    document.body.classList.remove('quiz-hidden');
-    btn.textContent = '🎯';
-    btn.title = '自测模式：隐藏答案，点击展开';
-  }
-}
-
 document.querySelectorAll('.quick-nav a').forEach(function(a) {
   a.addEventListener('click', function(e) {
     e.preventDefault();
     var id = this.getAttribute('href').substring(1);
     var el = document.getElementById(id);
     if (el) {
-      if (el.classList.contains('section')) el.classList.add('open');
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setTimeout(function() { window.scrollBy(0, -120); }, 300);
     }
   });
 });

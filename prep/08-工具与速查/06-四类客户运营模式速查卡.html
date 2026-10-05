@@ -2,119 +2,133 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>四类客户运营模式速查卡</title>
 <!-- 内容源：../06-面试准备与模拟对练/13-客户深度复盘与面试亮点.md（权威版本） + ../02-业务价值/06-客户案例与行业对标手册.md（第一人称案例） + ../02-业务价值/01-业务价值与客户运营.md（客户运营飞轮） -->
 <style>
-  @page { size: A4; margin: 11mm 10mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
   body {
-    font-family: "Microsoft YaHei", "PingFang SC", "Source Han Sans SC", sans-serif;
+    font-family: "Microsoft YaHei", "PingFang SC", "Source Han Sans SC", -apple-system, BlinkMacSystemFont, sans-serif;
     color: #1a1a1a;
-    font-size: 8pt;
-    line-height: 1.5;
-    background: #fff;
+    font-size: 15px;
+    line-height: 1.75;
+    background: #f5f7fa;
+    -webkit-font-smoothing: antialiased;
   }
 
-  .page { width: 100%; max-width: 190mm; margin: 0 auto; }
+  .page { max-width: 1080px; margin: 0 auto; padding: 28px 20px 60px; }
 
   /* ---- 页头 ---- */
-  .header { text-align: center; margin-bottom: 3mm; }
+  .header { text-align: center; margin-bottom: 20px; }
   .header h1 {
-    font-size: 13.5pt; font-weight: 700; color: #0b5394;
-    letter-spacing: 0.5px; margin-bottom: 0.8mm;
+    font-size: 26px; font-weight: 700; color: #0b5394;
+    letter-spacing: 0.5px; margin-bottom: 6px;
   }
-  .header .tagline { font-size: 7.5pt; color: #888; }
+  .header .tagline { font-size: 14px; color: #888; }
 
-  /* ---- 双栏 ---- */
-  .two-col { display: flex; gap: 4mm; margin-bottom: 2.5mm; }
-  .col { flex: 1; min-width: 0; }
+  /* ---- 分栏容器（正常平铺：纵向堆叠） ---- */
+  .two-col { display: block; }
+  .col { min-width: 0; }
 
   /* ---- 块 ---- */
   .box {
-    border: 1px solid #c8d6e5; border-radius: 3px;
-    padding: 2.5mm 3mm; margin-bottom: 2.5mm; background: #fafbfd;
+    border: 1px solid #dbe4ee; border-radius: 10px;
+    padding: 18px 20px; margin-bottom: 18px; background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
   .box h2 {
-    font-size: 10pt; font-weight: 700; color: #0b5394;
-    margin-bottom: 1.5mm; padding-bottom: 1mm; border-bottom: 2px solid #0b5394;
+    font-size: 18px; font-weight: 700; color: #0b5394;
+    margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #0b5394;
   }
-  .box h3 { font-size: 8.5pt; font-weight: 700; color: #333; margin: 2mm 0 1mm; }
+  .box h3 { font-size: 15px; font-weight: 700; color: #333; margin: 14px 0 8px; }
   .box h3:first-child { margin-top: 0; }
 
   /* ---- 表格 ---- */
-  table.t { width: 100%; border-collapse: collapse; font-size: 7.5pt; }
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; }
   table.t th {
-    background: #0b5394; color: #fff; padding: 1.1mm 1.6mm;
-    font-size: 7pt; text-align: center; font-weight: 700;
+    background: #0b5394; color: #fff; padding: 8px 10px;
+    font-size: 13px; text-align: center; font-weight: 700;
   }
-  table.t td { border: 1px solid #c8d6e5; padding: 1.1mm 1.6mm; vertical-align: top; line-height: 1.42; }
+  table.t td { border: 1px solid #dbe4ee; padding: 8px 10px; vertical-align: top; line-height: 1.6; }
   table.t tr:nth-child(even) td { background: #f4f8fc; }
   td.c { text-align: center; }
   .k { color: #0b5394; font-weight: 700; }
   .loss { color: #e67e22; font-weight: 700; }
 
   /* ---- 客户卡 ---- */
-  .cust { border-left: 3px solid #0b5394; padding-left: 2.5mm; margin-bottom: 2.5mm; }
+  .cust { border-left: 4px solid #0b5394; padding-left: 14px; margin-bottom: 20px; }
   .cust.hz { border-left-color: #e74c3c; }
   .cust.xm { border-left-color: #8e44ad; }
   .cust.qz { border-left-color: #16a085; }
   .cust.yl { border-left-color: #d35400; }
-  .cust .name { font-size: 8.5pt; font-weight: 700; color: #0b5394; }
+  .cust .name { font-size: 16px; font-weight: 700; color: #0b5394; }
   .cust.hz .name { color: #e74c3c; }
   .cust.xm .name { color: #8e44ad; }
   .cust.qz .name { color: #16a085; }
   .cust.yl .name { color: #d35400; }
-  .cust .mode { font-size: 7pt; color: #fff; background: #888; border-radius: 2px; padding: 0.3mm 1.2mm; margin-left: 1.5mm; }
-  .cust ul { list-style: none; margin-top: 1mm; }
-  .cust li { padding: 0.6mm 0 0.6mm 3mm; position: relative; font-size: 7.5pt; line-height: 1.45; }
+  .cust .mode { font-size: 12px; color: #fff; background: #888; border-radius: 3px; padding: 2px 8px; margin-left: 8px; white-space: nowrap; }
+  .cust ul { list-style: none; margin-top: 6px; }
+  .cust li { padding: 4px 0 4px 16px; position: relative; font-size: 14px; line-height: 1.7; }
   .cust li::before { content: "▸"; position: absolute; left: 0; color: #0b5394; }
   .cust .logic {
-    font-size: 7pt; color: #c0392b; background: #fff8e1;
-    border: 1px solid #f0d88a; border-radius: 2px;
-    padding: 1mm 1.5mm; margin-top: 1mm; line-height: 1.45;
+    font-size: 13.5px; color: #c0392b; background: #fff8e1;
+    border: 1px solid #f0d88a; border-radius: 6px;
+    padding: 8px 12px; margin-top: 8px; line-height: 1.65;
   }
-  .cust .num { font-size: 7pt; color: #16a085; margin-top: 0.8mm; font-weight: 700; }
+  .cust .num { font-size: 13px; color: #16a085; margin-top: 6px; font-weight: 700; }
 
   /* ---- 提示条 ---- */
   .note {
-    background: #fff8e1; border: 1px solid #f0d88a; border-radius: 3px;
-    padding: 2mm 3mm; font-size: 7.5pt; line-height: 1.5; margin-bottom: 2.5mm;
+    background: #fff8e1; border: 1px solid #f0d88a; border-radius: 8px;
+    padding: 12px 14px; font-size: 14px; line-height: 1.7; margin-bottom: 18px;
   }
   .note strong { color: #c0392b; }
   .note.blue { background: #eaf2fa; border-color: #b9d3ec; }
   .note.blue strong { color: #0b5394; }
 
   /* ---- 步骤链 ---- */
-  .chain { list-style: none; counter-reset: s; margin-top: 1mm; }
+  .chain { list-style: none; counter-reset: s; margin-top: 6px; }
   .chain li {
     counter-increment: s; position: relative;
-    padding: 0.9mm 0 0.9mm 6mm; font-size: 7.5pt; line-height: 1.42;
+    padding: 8px 0 8px 30px; font-size: 14px; line-height: 1.7;
     border-bottom: 1px dotted #dde;
   }
   .chain li:last-child { border-bottom: none; }
   .chain li::before {
-    content: counter(s); position: absolute; left: 0; top: 0.8mm;
-    width: 4.4mm; height: 4.4mm; line-height: 4.4mm; text-align: center;
-    background: #0b5394; color: #fff; border-radius: 50%; font-size: 6pt; font-weight: 700;
+    content: counter(s); position: absolute; left: 0; top: 9px;
+    width: 20px; height: 20px; line-height: 20px; text-align: center;
+    background: #0b5394; color: #fff; border-radius: 50%; font-size: 11px; font-weight: 700;
   }
   .chain li b { color: #0b5394; }
 
-  /* ---- 底部横栏 ---- */
+  /* ---- 底部区块（正常平铺：纵向堆叠） ---- */
   .footer-strip {
-    border-top: 2px solid #0b5394; padding-top: 2mm;
-    display: flex; gap: 3.5mm; font-size: 7pt; color: #555; line-height: 1.45;
+    border-top: 2px solid #0b5394; padding-top: 16px;
+    display: block; font-size: 14px; color: #555; line-height: 1.7;
   }
-  .footer-strip .item { flex: 1; }
-  .footer-strip .item h4 { font-size: 7.5pt; color: #0b5394; margin-bottom: 0.8mm; }
+  .footer-strip .item { margin-bottom: 16px; }
+  .footer-strip .item:last-child { margin-bottom: 0; }
+  .footer-strip .item h4 { font-size: 15px; color: #0b5394; margin-bottom: 6px; }
   .footer-strip .item b { color: #c0392b; }
 
-  .hint { font-size: 6.5pt; color: #aaa; margin-top: 1.5mm; text-align: center; }
+  .hint { font-size: 12px; color: #aaa; margin-top: 20px; text-align: center; line-height: 1.7; }
+
+  /* ---- 小屏 ---- */
+  @media (max-width: 600px) {
+    .page { padding: 16px 12px 40px; }
+    .box { padding: 14px; }
+    table.t { font-size: 13px; }
+    table.t th, table.t td { padding: 6px 7px; }
+  }
 
   @media print {
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .page { max-width: 100%; }
+    @page { size: A4; margin: 11mm 10mm; }
+    html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { background: #fff; font-size: 10pt; }
+    .page { max-width: 100%; padding: 0; }
+    .box { box-shadow: none; page-break-inside: avoid; }
+    .cust { page-break-inside: avoid; }
   }
 </style>
 </head>
@@ -125,7 +139,7 @@
   <!-- ===== 页头 ===== -->
   <div class="header">
     <h1>四类客户运营模式速查卡</h1>
-    <div class="tagline">大宗产业电商的四种玩家 · B2B 技术经理面试弹药 · A4 单页</div>
+    <div class="tagline">大宗产业电商的四种玩家 · B2B 技术经理面试弹药</div>
   </div>
 
   <!-- ===== 上半：总览 ===== -->
@@ -173,19 +187,19 @@
         <td>企业客户端（贸易商角色）+ 期货套保风控子系统</td>
       </tr>
     </table>
-    <div class="note blue" style="margin-top:2mm;margin-bottom:0;">
+    <div class="note blue" style="margin-top:14px;margin-bottom:0;">
       <strong>一句话串联（开场可直接用）：</strong>"从国企交易中心到政府资源平台，从集团产业电商到民营贸易商，大宗产业电商的四种玩家我们都服务过——这也是我们产品设计能同时覆盖四层架构的原因：不是拍脑袋画的，是被四类客户的需求喂出来的。"
     </div>
   </div>
 
-  <!-- ===== 中段双栏 ===== -->
+  <!-- ===== 中段 ===== -->
   <div class="two-col">
 
     <!-- ===== 左栏：盈利公式 + 迁移史 ===== -->
     <div class="col">
       <div class="box">
         <h2>二、盈利公式分层（贯穿四家的共同逻辑）</h2>
-        <div class="note" style="margin-bottom:1.5mm;">
+        <div class="note" style="margin-bottom:12px;">
           <strong>撮合不赚钱，履约建壁垒，金融才是利润，数据是定价权。</strong><br>
           西煤（支付+物流+金融五级火箭）、河南能源（溢价增收）、清镇（代采金融）、晔龙（期现套保）——四家全部验证这一条。
         </div>
@@ -224,14 +238,14 @@
             <td>期现风控 + 履约资金效率</td>
           </tr>
         </table>
-        <div class="note" style="margin-top:2mm;margin-bottom:0;">
+        <div class="note" style="margin-top:14px;margin-bottom:0;">
           <strong>面试金句：</strong>"给国企卖合规，给政府卖监管，给贸易商卖生存——同一个产品底座，三种销售话术，三种功能优先级。这是我从四个客户身上学到的最贵的一课。"
         </div>
       </div>
 
       <div class="box">
         <h2>四、演进终点：殊途同归</h2>
-        <p style="font-size:7.5pt;line-height:1.5;">
+        <p style="font-size:14px;line-height:1.75;">
           四家的下一步都是<b>"产业互联网综合服务平台"</b>：西煤的 <b>1+N</b> 服务体系（交易+支付+物流+金融+大数据）；
           河南能源 2026 年正在招标"电商+现代物流+供应链金融"转型项目；
           清镇的"金融多元化、平台开放化"规划；
@@ -302,10 +316,10 @@
     <div class="col">
       <div class="box">
         <h2>六、客户"每天到底怎么用"（陈总案例 · 8 亿钢铁贸易商）</h2>
-        <p style="font-size:7.5pt;margin-bottom:1mm;">
+        <p style="font-size:14px;margin-bottom:8px;">
           <b>早 8:30 第一件事不是翻微信，而是看三块看板</b>：昨日成交额 / 在途物流状态 / 保证金占用。以前要问销售总监、物流主管、财务经理三个人，等到 10 点；现在自己 <b>3 分钟看完</b>，有问题直接在群里 @ 负责人。
         </p>
-        <p style="font-size:7.5pt;margin-bottom:1mm;">
+        <p style="font-size:14px;margin-bottom:8px;">
           <b>权限按角色配好</b>：一线业务员只看自己的客户和订单，看不到公司整体采购成本和利润；销售主管看全团队漏斗与成交率；财务与风控有独立审批权限。所有报价、谈判记录、合同附件都有时间戳，<b>人走客户资料不丢</b>。
         </p>
         <h3>一笔 500 吨螺纹钢的完整链路（原3 天 → 现 1.5 工作日）</h3>
@@ -334,7 +348,7 @@
           <tr><td>年交易额（团队零增员）</td><td class="c">5 亿</td><td class="c k">8 亿</td><td class="c loss">+60%</td></tr>
           <tr><td>坏账率 / 服务费回本</td><td class="c">有 80 万赊账亏损</td><td class="c k">零坏账 / 7 个月</td><td class="c loss">机制而非运气</td></tr>
         </table>
-        <div class="note" style="margin-top:2mm;margin-bottom:0;">
+        <div class="note" style="margin-top:14px;margin-bottom:0;">
           <b>风控是最大的成本节约</b>：保证金不足<b>系统拒绝进入发货流程，人为绕不过去</b>；工商信息自动校验；信用评级动态调整——履约好的自动获更高额度、更低保证金比例，违约客户在所有卖家面前可见，<b>倒逼买方守信</b>。<br>
           <b>落地阻力（真实细节，很值钱）</b>：上线头两个月团队抵触，觉得"录系统不如微信一句话快"。总经理顶住坚持必须走系统，两个月后所有人都习惯了，现在让他们回去用 Excel 自己也干。<br>
           <b>生意人视角的三句话</b>：钱安不安全（16 个月零坏账够了）、效率提没提（5 天变 1.5 天够了）、生意能不能做大（5 亿到 8 亿、团队没加人够了）。
@@ -343,7 +357,7 @@
     </div>
   </div>
 
-  <!-- ===== 底部横栏 ===== -->
+  <!-- ===== 底部区块 ===== -->
   <div class="footer-strip">
     <div class="item">
       <h4>出场顺序（组合拳，总时长 ≤ 4 分钟）</h4>
