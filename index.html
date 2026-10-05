@@ -7,11 +7,23 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="format-detection" content="telephone=no">
-<meta name="theme-color" content="#0B1220">
+<meta name="theme-color" content="#0B1220" id="metaThemeColor">
 <title>面试工作台 · Interview Workbench</title>
+<script>
+/* ===== 主题：在样式渲染前同步应用，避免闪烁 ===== */
+(function () {
+  var saved = null;
+  try { saved = window.localStorage.getItem('wb_theme'); } catch (e) {}
+  var theme = saved === 'light' || saved === 'dark'
+    ? saved
+    : (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
 <style>
-  /* ===== ocean-dark 主题变量 ===== */
-  :root {
+  /* ===== 主题变量（默认 dark，亮色在 [data-theme="light"] 中覆盖）===== */
+  :root, [data-theme="dark"] {
+    color-scheme: dark;
     --bg: #0B1220;
     --bg-soft: #101A2C;
     --surface: rgba(255, 255, 255, 0.06);
@@ -25,6 +37,7 @@
     --primary: #22D3EE;
     --secondary: #818CF8;
     --accent: linear-gradient(135deg, #22D3EE 0%, #818CF8 100%);
+    --accent-ink: linear-gradient(135deg, #22D3EE 0%, #818CF8 100%);
     --accent-warm: linear-gradient(135deg, #FBBF24 0%, #F97316 100%);
     --accent-success: linear-gradient(135deg, #34D399 0%, #06B6D4 100%);
     --success: #34D399;
@@ -32,16 +45,100 @@
     --danger: #F87171;
     --purple: #A78BFA;
     --pink: #F472B6;
+    --on-accent: #0B1220;
     --glow: 0 0 24px rgba(34, 211, 238, 0.35);
     --glow-purple: 0 0 24px rgba(167, 139, 250, 0.35);
     --glow-warm: 0 0 24px rgba(251, 191, 36, 0.3);
     --shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
     --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.55);
+    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.2);
     --radius-s: 12px;
     --radius-m: 16px;
     --radius-l: 24px;
     --radius-xl: 32px;
     --blur: saturate(160%) blur(18px);
+    /* ---- 以下为随主题切换的补充令牌 ---- */
+    --tabbar-bg: rgba(19, 28, 46, 0.85);
+    --nav-bg: linear-gradient(180deg, rgba(19, 28, 46, 0.9) 0%, rgba(11, 18, 32, 0.95) 100%);
+    --nav-footer-bg: rgba(0, 0, 0, 0.2);
+    --scrim: rgba(0, 0, 0, 0.5);
+    --inset: rgba(11, 18, 32, 0.45);
+    --hero-pill-bg: rgba(11, 18, 32, 0.22);
+    --glass-1: rgba(255, 255, 255, 0.25);
+    --glass-2: rgba(255, 255, 255, 0.15);
+    --glass-3: rgba(255, 255, 255, 0.10);
+    --track: rgba(0, 0, 0, 0.2);
+    --md-text: #CBD5E1;
+    --md-text-2: #94A3B8;
+    --code-bg: #0f172a;
+    --code-text: #E2E8F0;
+  }
+
+  /* ===== 亮色主题 ===== */
+  [data-theme="light"] {
+    color-scheme: light;
+    --bg: #EEF2F7;
+    --bg-soft: #E2E8F0;
+    --surface: rgba(255, 255, 255, 0.78);
+    --surface-solid: #FFFFFF;
+    --surface-2: rgba(15, 23, 42, 0.05);
+    --border: rgba(15, 23, 42, 0.10);
+    --border-strong: rgba(15, 23, 42, 0.18);
+    --text: #0F172A;
+    --text-2: #475569;
+    --text-3: #8593A8;
+    --primary: #0891B2;
+    --secondary: #6366F1;
+    --accent-ink: linear-gradient(135deg, #0891B2 0%, #4F46E5 100%);
+    --success: #059669;
+    --warning: #D97706;
+    --danger: #DC2626;
+    --purple: #7C3AED;
+    --pink: #DB2777;
+    --glow: 0 4px 18px rgba(8, 145, 178, 0.22);
+    --glow-purple: 0 4px 18px rgba(99, 102, 241, 0.22);
+    --glow-warm: 0 4px 18px rgba(217, 119, 6, 0.2);
+    --shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 14px 40px rgba(15, 23, 42, 0.12);
+    --shadow-hover: 0 8px 24px rgba(15, 23, 42, 0.10);
+    --tabbar-bg: rgba(255, 255, 255, 0.82);
+    --nav-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(248, 250, 252, 0.96) 100%);
+    --nav-footer-bg: rgba(15, 23, 42, 0.04);
+    --scrim: rgba(15, 23, 42, 0.45);
+    --inset: rgba(15, 23, 42, 0.05);
+    --hero-pill-bg: rgba(15, 23, 42, 0.16);
+    --glass-1: rgba(255, 255, 255, 0.38);
+    --glass-2: rgba(255, 255, 255, 0.28);
+    --glass-3: rgba(255, 255, 255, 0.18);
+    --track: rgba(15, 23, 42, 0.08);
+    --md-text: #334155;
+    --md-text-2: #475569;
+    --code-bg: #0f172a;
+    --code-text: #E2E8F0;
+  }
+
+  /* ===== 主题切换按钮 ===== */
+  .theme-toggle {
+    width: 44px; height: 44px; flex: none;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .2s;
+    -webkit-backdrop-filter: var(--blur);
+    backdrop-filter: var(--blur);
+  }
+  .theme-toggle:hover { color: var(--primary); border-color: rgba(34, 211, 238, 0.35); }
+  .theme-toggle:active { transform: scale(0.92); }
+  .theme-toggle svg { width: 20px; height: 20px; }
+  .theme-toggle .icon-sun { display: none; }
+  .theme-toggle .icon-moon { display: block; }
+  [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+  [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+  @media (min-width: 1024px) {
+    .theme-toggle svg { width: 22px; height: 22px; }
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -50,6 +147,7 @@
     position: fixed; inset: 0;
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
     background: var(--bg); color: var(--text);
+    transition: background-color .25s ease, color .25s ease;
     font-size: 16px; touch-action: manipulation;
     -webkit-user-select: none; -webkit-touch-callout: none; user-select: none;
   }
@@ -69,6 +167,14 @@
     width: 450px; height: 450px;
     background: radial-gradient(circle, rgba(129, 140, 248, 0.10) 0%, transparent 70%);
     border-radius: 50%; pointer-events: none; z-index: 0;
+  }
+
+  /* 亮色主题下的背景光晕 */
+  [data-theme="light"] body::before {
+    background: radial-gradient(circle, rgba(8, 145, 178, 0.16) 0%, transparent 70%);
+  }
+  [data-theme="light"] body::after {
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.14) 0%, transparent 70%);
   }
 
   /* ===== 布局骨架 ===== */
@@ -99,9 +205,10 @@
     padding: 4px 20px 12px;
   }
   .header-left { display: flex; flex-direction: column; gap: 2px; }
+  .header-actions { display: flex; align-items: center; gap: 10px; }
   .header-greeting { font-size: 13px; color: var(--text-3); }
   .header-title { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
-  .header-title .accent-text { background: var(--accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .header-title .accent-text { background: var(--accent-ink); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .header-avatar {
     width: 44px; height: 44px; border-radius: 50%;
     background: var(--accent);
@@ -123,7 +230,7 @@
   .tabbar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
     display: flex; max-width: 720px; margin: 0 auto;
-    background: rgba(19, 28, 46, 0.85);
+    background: var(--tabbar-bg);
     backdrop-filter: var(--blur);
     -webkit-backdrop-filter: var(--blur);
     border-top: 1px solid var(--border);
@@ -173,21 +280,21 @@
     content: '';
     position: absolute; top: -50%; right: -20%;
     width: 180px; height: 180px;
-    background: rgba(255,255,255,0.15);
+    background: var(--glass-2);
     border-radius: 50%;
   }
   .hero-card::after {
     content: '';
     position: absolute; bottom: -30%; left: 10%;
     width: 120px; height: 120px;
-    background: rgba(255,255,255,0.1);
+    background: var(--glass-3);
     border-radius: 50%;
   }
   .hero-content { position: relative; z-index: 1; }
   .hero-badge {
     display: inline-block;
     padding: 4px 12px;
-    background: rgba(255,255,255,0.25);
+    background: var(--glass-1);
     border-radius: 999px;
     font-size: 12px; font-weight: 600;
     margin-bottom: 10px;
@@ -358,8 +465,8 @@
   .hero-pill {
     font-size: 11px; font-weight: 700;
     padding: 4px 10px; border-radius: 999px;
-    background: rgba(11, 18, 32, 0.22);
-    color: #0B1220;
+    background: var(--hero-pill-bg);
+    color: var(--on-accent);
   }
 
   /* ===== 开场三击 ===== */
@@ -394,7 +501,7 @@
     font-size: 12.5px; color: var(--text);
     line-height: 1.65; margin-top: 9px;
     padding: 9px 11px; border-radius: 10px;
-    background: rgba(11, 18, 32, 0.45);
+    background: var(--inset);
     border: 1px dashed var(--border-strong);
   }
   .strike-actions { display: flex; gap: 8px; margin-top: 9px; }
@@ -440,7 +547,7 @@
   }
   .num-val { font-size: 17px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.2; }
   .num-val .num-arrow { color: var(--text-3); font-weight: 600; margin: 0 3px; }
-  .num-val .num-to { background: var(--accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .num-val .num-to { background: var(--accent-ink); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .num-label { font-size: 11.5px; color: var(--text-2); margin-top: 5px; }
 
   /* ===== 禁用语录对照 ===== */
@@ -578,7 +685,7 @@
     content: '';
     position: absolute; top: -30%; right: -10%;
     width: 140px; height: 140px;
-    background: rgba(255,255,255,0.2);
+    background: var(--glass-1);
     border-radius: 50%;
   }
   .mock-hero-content { position: relative; z-index: 1; }
@@ -695,7 +802,7 @@
     padding: 12px 8px;
     text-align: center;
   }
-  .achievement-num { font-size: 22px; font-weight: 800; background: var(--accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .achievement-num { font-size: 22px; font-weight: 800; background: var(--accent-ink); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .achievement-label { font-size: 11px; color: var(--text-3); margin-top: 3px; }
 
   .setting-list {
@@ -746,7 +853,7 @@
 
   /* ===== 弹层 ===== */
   .sheet-mask {
-    position: fixed; inset: 0; z-index: 50; background: rgba(0, 0, 0, 0.5);
+    position: fixed; inset: 0; z-index: 50; background: var(--scrim);
     opacity: 0; pointer-events: none; transition: opacity 220ms;
   }
   .sheet-mask.open { opacity: 1; pointer-events: auto; }
@@ -771,7 +878,7 @@
   .sheet-sub { font-size: 13px; color: var(--text-2); margin-bottom: 16px; }
 
   .modal-mask {
-    position: fixed; inset: 0; z-index: 55; background: rgba(0, 0, 0, 0.5);
+    position: fixed; inset: 0; z-index: 55; background: var(--scrim);
     opacity: 0; pointer-events: none; transition: opacity 200ms;
     display: flex; align-items: center; justify-content: center;
     padding: 20px;
@@ -888,7 +995,7 @@
       position: fixed; left: 0; top: 0; bottom: 0; z-index: 30;
       width: 260px;
       flex-direction: column;
-      background: linear-gradient(180deg, rgba(19, 28, 46, 0.9) 0%, rgba(11, 18, 32, 0.95) 100%);
+      background: var(--nav-bg);
       backdrop-filter: var(--blur);
       -webkit-backdrop-filter: var(--blur);
       border-right: 1px solid var(--border);
@@ -982,7 +1089,7 @@
     .sidebar-footer {
       padding: 14px 20px 18px;
       border-top: 1px solid var(--border);
-      background: rgba(0,0,0,0.2);
+      background: var(--nav-footer-bg);
       cursor: pointer;
     }
     .sidebar-progress-head {
@@ -1123,7 +1230,7 @@
     .bank-card:hover {
       transform: translateY(-3px);
       border-color: rgba(34, 211, 238, 0.25);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      box-shadow: var(--shadow-hover);
     }
     .bank-title { font-size: 15px; }
 
@@ -1344,7 +1451,7 @@
 
   .markdown-body p {
     margin: 10px 0;
-    color: #CBD5E1;
+    color: var(--md-text);
   }
 
   .markdown-body strong {
@@ -1359,7 +1466,7 @@
   .markdown-body ul, .markdown-body ol {
     margin: 10px 0;
     padding-left: 24px;
-    color: #CBD5E1;
+    color: var(--md-text);
   }
   .markdown-body li {
     margin: 6px 0;
@@ -1374,12 +1481,12 @@
     background: rgba(34, 211, 238, 0.06);
     border-left: 4px solid var(--primary);
     border-radius: 0 var(--radius-m) var(--radius-m) 0;
-    color: #94A3B8;
+    color: var(--md-text-2);
     font-size: 14px;
   }
   .markdown-body blockquote p {
     margin: 4px 0;
-    color: #94A3B8;
+    color: var(--md-text-2);
   }
 
   .markdown-body code {
@@ -1393,7 +1500,7 @@
   }
 
   .markdown-body pre {
-    background: #0f172a;
+    background: var(--code-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-m);
     padding: 18px 20px;
@@ -1407,7 +1514,7 @@
     background: none;
     border: none;
     padding: 0;
-    color: #E2E8F0;
+    color: var(--code-text);
     font-size: inherit;
   }
 
@@ -1431,7 +1538,7 @@
   .markdown-body td {
     padding: 10px 14px;
     border-bottom: 1px solid var(--border);
-    color: #CBD5E1;
+    color: var(--md-text);
   }
   .markdown-body tr:nth-child(even) td {
     background: var(--surface);
@@ -1532,8 +1639,8 @@
       <span>技术题库</span>
     </div>
 
-    <div class="sidebar-nav-item" data-page="page-prep" onclick="switchTab('page-prep')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    <div class="sidebar-nav-item" onclick="openPrepIndex()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       <span>备战手册</span>
     </div>
 
@@ -1559,11 +1666,6 @@
       <span>面试框架</span>
     </div>
 
-    <div class="sidebar-nav-item" onclick="openPrepIndex()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      <span>资料索引</span>
-    </div>
-
     <div class="sidebar-nav-item" onclick="openBanksIndex()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       <span>全部真题</span>
@@ -1575,7 +1677,7 @@
     </div>
   </nav>
 
-  <div class="sidebar-footer tap" onclick="switchTab('page-prep')" title="查看备战进度">
+  <div class="sidebar-footer tap" onclick="openPrepIndex()" title="打开备战手册">
     <div class="sidebar-progress-head">
       <span>备战进度</span>
       <span id="sidebarProgressPct">0%</span>
@@ -1604,7 +1706,13 @@
         <span class="accent-text" id="headerTitle">面试工作台</span>
       </div>
     </div>
-    <div class="header-avatar" id="headerAvatar">面</div>
+    <div class="header-actions">
+      <button class="theme-toggle tap" id="themeToggle" type="button" aria-label="切换主题" title="切换亮色 / 暗色主题" onclick="toggleTheme()">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+      <div class="header-avatar" id="headerAvatar">面</div>
+    </div>
   </header>
 
   <!-- 主内容 -->
@@ -1735,13 +1843,13 @@
           <!-- 今日学习进度 -->
           <div class="section-header">
             <div class="section-title"><span class="section-title-bar"></span>学习进度</div>
-            <div class="section-more tap" onclick="switchTab('page-prep')">
+            <div class="section-more tap" onclick="openPrepIndex()">
               全部
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
           </div>
 
-          <div class="progress-card tap" onclick="switchTab('page-prep')">
+          <div class="progress-card tap" onclick="openPrepIndex()">
             <div class="progress-ring-wrap">
               <svg viewBox="0 0 72 72">
                 <circle class="progress-ring-bg" cx="36" cy="36" r="30"/>
@@ -1772,12 +1880,6 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
               </div>
               <span class="quick-label">面试框架</span>
-            </div>
-            <div class="quick-item tap" onclick="openPrepIndex()">
-              <div class="quick-icon" style="background:rgba(244,114,182,0.15);color:var(--pink)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              </div>
-              <span class="quick-label">资料索引</span>
             </div>
             <div class="quick-item tap" onclick="openBanksIndex()">
               <div class="quick-icon" style="background:rgba(167,139,250,0.15);color:var(--purple)">
@@ -1837,24 +1939,7 @@
       </div>
     </section>
 
-    <!-- ========== 页面3：备战 ========== -->
-    <section class="page" id="page-prep">
-      <div class="search-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" placeholder="搜索备战资料..." id="prepSearch" oninput="filterPrep()">
-      </div>
-
-      <div class="section-header" style="margin-top:0">
-        <div class="section-title"><span class="section-title-bar"></span>备战主题</div>
-        <span class="setting-value" id="prepCount">-- 个分类</span>
-      </div>
-
-      <div id="prepCategoryList">
-        <!-- 由 JS 渲染 -->
-      </div>
-    </section>
-
-    <!-- ========== 页面4：模拟面试 ========== -->
+    <!-- ========== 页面3：模拟面试 ========== -->
     <section class="page" id="page-mock">
 
       <div class="mock-hero">
@@ -2020,7 +2105,7 @@
       <div class="section-header">
         <div class="section-title"><span class="section-title-bar"></span>案例与场景资料</div>
         <div class="section-more tap" onclick="openPrepIndex()">
-          资料索引
+          备战手册
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
       </div>
@@ -2180,7 +2265,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
     <span>题库</span>
   </button>
-  <button class="tabbar-item tap" data-page="page-prep" aria-label="备战" onclick="switchTab('page-prep')">
+  <button class="tabbar-item tap" aria-label="备战手册" onclick="openPrepIndex()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
     <span>备战</span>
   </button>
@@ -2728,7 +2813,6 @@ function updateGreeting() {
 var pageTitles = {
   'page-home': '面试工作台',
   'page-bank': '技术题库',
-  'page-prep': '备战手册',
   'page-mock': '模拟面试',
   'page-cases': '案例 · 场景',
   'page-me': '我的'
@@ -2996,9 +3080,9 @@ function renderForbidden() {
   $('forbiddenList').innerHTML = html;
 }
 
-// 打开任意路径的本地资料
+// 打开任意路径的本地资料（md 走内置阅读器）
 function openFile(path) {
-  window.open(path, '_blank');
+  openFriendly(path);
 }
 
 /* ===== 渲染函数 ===== */
@@ -3054,7 +3138,7 @@ function toggleTask(taskId) {
 function openTaskPath(taskId) {
   var task = WorkbenchDB.findBy('tasks', 'id', taskId);
   if (!task || !task.path) return;
-  window.open(task.path, '_blank');
+  openFriendly(task.path);
 }
 
 // 更新首页统计
@@ -3186,41 +3270,6 @@ function filterBanks() {
   }
 }
 
-// 渲染备战分类列表
-function renderPrepCategories() {
-  var html = '';
-  for (var i = 0; i < PREP_CATEGORIES.length; i++) {
-    var cat = PREP_CATEGORIES[i];
-    var isOpen = i === 0; // 默认展开第一个
-
-    html += '<div class="prep-category">';
-    html += '<div class="prep-cat-header tap" onclick="togglePrepCategory(this)">';
-    html += '<div class="prep-cat-icon" style="background:var(--surface-2);color:var(--text-2)">' + getIcon(cat.icon) + '</div>';
-    html += '<div class="prep-cat-body">';
-    html += '<div class="prep-cat-title">' + escapeHtml(cat.title) + '</div>';
-    html += '<div class="prep-cat-meta">' + cat.files.length + ' 份资料</div>';
-    html += '</div>';
-    html += '<div class="prep-cat-arrow' + (isOpen ? ' open' : '') + '">' + getIcon('chevron-right') + '</div>';
-    html += '</div>';
-    html += '<div class="prep-cat-list' + (isOpen ? ' open' : '') + '">';
-
-    for (var j = 0; j < cat.files.length; j++) {
-      var f = cat.files[j];
-      var badgeClass = f.type === 'md' ? 'md' : f.type === 'html' ? 'html' : f.type === 'pptx' ? 'pptx' : '';
-      var badgeText = f.type ? f.type.toUpperCase() : '';
-      html += '<div class="prep-item tap" onclick="openPrepFile(\'' + f.path.replace(/'/g, "\\'") + '\')">';
-      html += '<div class="prep-item-icon">' + getIcon('file') + '</div>';
-      html += '<span class="prep-item-title">' + escapeHtml(f.name) + '</span>';
-      html += '<span class="prep-item-badge ' + badgeClass + '">' + badgeText + '</span>';
-      html += '</div>';
-    }
-
-    html += '</div></div>';
-  }
-  $('prepCategoryList').innerHTML = html;
-  $('prepCount').textContent = PREP_CATEGORIES.length + ' 个分类';
-}
-
 // 渲染「案例 · 场景」页：四类客户 + 十个场景 + 资料清单
 function renderCaseScenePage() {
   var html = '';
@@ -3291,65 +3340,40 @@ function togglePrepCategory(header) {
   }
 }
 
-// 打开备战文件
+// 打开备战文件（md 走内置阅读器，其余类型新窗口打开）
 function openPrepFile(path) {
-  window.open('prep/' + path, '_blank');
+  openFriendly('prep/' + path);
   showToast('正在打开资料...');
 }
 
-// 搜索过滤备战
-function filterPrep() {
-  var q = $('prepSearch').value.toLowerCase().trim();
-  var categories = document.querySelectorAll('#prepCategoryList .prep-category');
-
-  if (!q) {
-    categories.forEach(function (c) { c.style.display = ''; });
-    return;
+/* ===== 模拟面试页功能 ===== */
+// 统一入口：md 走内置阅读器（带大纲），其余类型新窗口打开
+function openFriendly(path) {
+  if (/\.md$/i.test(path)) {
+    openMdReader(path, path.split('/').pop());
+    return true;
   }
-
-  for (var i = 0; i < PREP_CATEGORIES.length; i++) {
-    var cat = PREP_CATEGORIES[i];
-    var catMatch = cat.title.toLowerCase().indexOf(q) !== -1;
-    var hasFileMatch = false;
-
-    for (var j = 0; j < cat.files.length; j++) {
-      if (cat.files[j].name.toLowerCase().indexOf(q) !== -1) {
-        hasFileMatch = true;
-        break;
-      }
-    }
-
-    if (categories[i]) {
-      categories[i].style.display = (catMatch || hasFileMatch) ? '' : 'none';
-      // 如果匹配则自动展开
-      if (catMatch || hasFileMatch) {
-        var list = categories[i].querySelector('.prep-cat-list');
-        var arrow = categories[i].querySelector('.prep-cat-arrow');
-        if (list) list.classList.add('open');
-        if (arrow) arrow.classList.add('open');
-      }
-    }
-  }
+  window.open(path, '_blank');
+  return false;
 }
 
-/* ===== 模拟面试页功能 ===== */
 function openInterviewFramework() {
-  window.open('prep/06-面试准备与模拟对练/06-面试问答与话术实战.md', '_blank');
+  openFriendly('prep/06-面试准备与模拟对练/06-面试问答与话术实战.md');
   showToast('打开面试叙事框架');
 }
 
 function openSelfIntro() {
-  window.open('prep/06-面试准备与模拟对练/08-简历与自我介绍脚本.md', '_blank');
+  openFriendly('prep/06-面试准备与模拟对练/08-简历与自我介绍脚本.md');
   showToast('打开自我介绍脚本');
 }
 
 function openQuickCard() {
-  window.open('prep/06-面试准备与模拟对练/09-面试背诵综合手册.md', '_blank');
+  openFriendly('prep/06-面试准备与模拟对练/09-面试背诵综合手册.md');
   showToast('打开面试速记卡');
 }
 
 function openForbiddenWords() {
-  window.open('prep/06-面试准备与模拟对练/09-面试背诵综合手册.md', '_blank');
+  openFriendly('prep/06-面试准备与模拟对练/09-面试背诵综合手册.md');
   showToast('查看禁用语录');
 }
 
@@ -3365,7 +3389,7 @@ function toggleMockDetail(el) {
 /* ===== 快捷入口 ===== */
 function openPrepIndex() {
   window.open('prep/index.html', '_blank');
-  showToast('打开资料索引');
+  showToast('打开备战手册');
 }
 
 function openBanksIndex() {
@@ -3420,7 +3444,7 @@ function closeAboutModal() {
 }
 
 /* ===== Markdown 阅读器 ===== */
-var readerLastPage = 'page-prep'; // 记录从哪个页面进入阅读器
+var readerLastPage = 'page-home'; // 记录从哪个页面进入阅读器
 var readerCurrentPath = '';
 var readerCurrentName = '';
 
@@ -3525,7 +3549,7 @@ function showReaderError(msg, path) {
 
 // 返回上一页
 function goBackFromReader() {
-  switchTab(readerLastPage || 'page-prep');
+  switchTab(readerLastPage || 'page-home');
 }
 
 // 新窗口打开原文
@@ -3544,22 +3568,7 @@ function toggleReaderToc() {
   panel.style.display = tocVisible ? '' : 'none';
 }
 
-// 修改 openPrepFile：md 文件走内置阅读器
-var originalOpenPrepFile = openPrepFile;
-function openPrepFile(path) {
-  var isMd = /\.md$/i.test(path);
-  if (isMd) {
-    var fullPath = 'prep/' + path;
-    var name = path.split('/').pop();
-    openMdReader(fullPath, name);
-  } else {
-    window.open('prep/' + path, '_blank');
-    showToast('正在打开资料...');
-  }
-}
-
 // 题库分类也支持 md 预览
-var originalOpenBankCategory = openBankCategory;
 function openBankCategory(key) {
   var cat = null;
   for (var i = 0; i < BANK_CATEGORIES.length; i++) {
@@ -3571,16 +3580,32 @@ function openBankCategory(key) {
   var firstFile = cat.files[0];
   var fullPath = cat.pathPrefix ? cat.pathPrefix + '/' + firstFile.path : firstFile.path;
   // 直接打开第一个文件
-  if (/\.md$/i.test(firstFile.name)) {
-    openMdReader(fullPath, firstFile.name);
-  } else {
-    window.open(fullPath, '_blank');
-  }
+  openFriendly(fullPath);
   showToast('正在打开 ' + cat.title);
+}
+
+/* ===== 主题切换（亮色 / 暗色）===== */
+var THEME_KEY = 'wb_theme';
+var THEME_META = { dark: '#0B1220', light: '#EEF2F7' };
+
+function getTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  var meta = document.getElementById('metaThemeColor');
+  if (meta) meta.setAttribute('content', THEME_META[theme] || THEME_META.dark);
+  try { window.localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+}
+
+function toggleTheme() {
+  applyTheme(getTheme() === 'light' ? 'dark' : 'light');
 }
 
 /* ===== 初始化 ===== */
 function init() {
+  applyTheme(getTheme());
   initDB();
   ensureTodayTasks();
   renderStrikes();
@@ -3590,7 +3615,6 @@ function init() {
   renderTodayTasks();
   renderBankGrid();
   renderFaceExpGrid();
-  renderPrepCategories();
   renderCaseScenePage();
   updateHomeStats();
   updateGreeting();
