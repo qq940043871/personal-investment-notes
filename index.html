@@ -503,6 +503,14 @@
     background: var(--surface-2);
     border-radius: 999px;
   }
+  /* 案例页：模式标签较长，允许换行并靠右对齐 */
+  .bank-count.wrap {
+    max-width: 72%;
+    white-space: normal;
+    text-align: right;
+    line-height: 1.35;
+    border-radius: 10px;
+  }
   .bank-info { margin-top: 10px; }
   .bank-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
   .bank-desc { font-size: 11px; color: var(--text-3); line-height: 1.5; }
@@ -1534,6 +1542,11 @@
       <span>模拟面试</span>
     </div>
 
+    <div class="sidebar-nav-item" data-page="page-cases" onclick="switchTab('page-cases')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      <span>案例 · 场景</span>
+    </div>
+
     <div class="sidebar-nav-item" data-page="page-me" onclick="switchTab('page-me')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       <span>我的</span>
@@ -1983,6 +1996,38 @@
 
     </section>
 
+    <!-- ========== 页面：案例 · 场景（桌面侧边栏入口） ========== -->
+    <section class="page" id="page-cases">
+
+      <div class="section-header" style="margin-top:0">
+        <div class="section-title"><span class="section-title-bar"></span>四类客户 · 四种运营模式</div>
+        <div class="section-more tap" onclick="openPrepFile('06-面试准备与模拟对练/13-客户深度复盘与面试亮点.md')">
+          深度复盘手册
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+      <div class="bank-grid" id="caseClientGrid"><!-- 由 JS 渲染 --></div>
+
+      <div class="section-header">
+        <div class="section-title"><span class="section-title-bar"></span>业务场景 · 一笔交易的十个环节</div>
+        <div class="section-more tap" onclick="openPrepFile('02-业务价值/02-业务全链路场景手册.md')">
+          全链路手册
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+      <div class="bank-grid" id="caseSceneGrid"><!-- 由 JS 渲染 --></div>
+
+      <div class="section-header">
+        <div class="section-title"><span class="section-title-bar"></span>案例与场景资料</div>
+        <div class="section-more tap" onclick="openPrepIndex()">
+          资料索引
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+      <div id="caseFileList"><!-- 由 JS 渲染 --></div>
+
+    </section>
+
     <!-- ========== 页面5：我的 ========== -->
     <section class="page" id="page-me">
 
@@ -2425,7 +2470,7 @@ var PREP_CATEGORIES = [
       { name: '05-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-业务价值/05-业务痛点与系统解决方案-架构详解.md' },
       { name: '06-客户案例与行业对标手册.md', type: 'md', path: '02-业务价值/06-客户案例与行业对标手册.md' },
       { name: '07-期现结合业务实现思路.md', type: 'md', path: '02-业务价值/07-期现结合业务实现思路.md' },
-      { name: '08-郑大信息-供应链B2B与供应链金融方案深度分析.html', type: 'html', path: '02-业务价值/08-郑大信息-供应链B2B与供应链金融方案深度分析.html' }
+      { name: '08--供应链B2B与供应链金融方案深度分析.html', type: 'html', path: '02-业务价值/08--供应链B2B与供应链金融方案深度分析.html' }
     ]
   },
   { key: 'arch', title: '03 架构决策与问题排查', icon: 'layout', color: 'warm',
@@ -2492,6 +2537,54 @@ var PREP_CATEGORIES = [
       { name: '05-B2B微服务系统架构图-手绘版.html', type: 'html', path: '08-工具与速查/05-B2B微服务系统架构图-手绘版.html' }
     ]
   }
+];
+
+/* ===== 案例 · 场景页数据（四类客户 / 十个业务场景 / 资料清单） ===== */
+var CASE_CLIENTS = [
+  { key: 'xi', title: '陕西煤炭交易中心', mode: '区域公共交易中心 · 国企', icon: 'layout', color: 'cyan',
+    desc: '交易为入口、支付为抓手、物流金融数据变现的「五级火箭」；持央行互联网支付 + 跨境人民币支付双牌照。',
+    path: '06-面试准备与模拟对练/13-客户深度复盘与面试亮点.md' },
+  { key: 'hn', title: '河南能源大宗商品交易平台', mode: '集团产业电商 · 产销一体', icon: 'trending-up', color: 'warm',
+    desc: '销售溢价增收 + 阳光采购降本。⭐ 我方实际承建的两个平台（河南能源大宗 + 中原云商）都在这条链上。',
+    path: '06-面试准备与模拟对练/13-客户深度复盘与面试亮点.md' },
+  { key: 'qz', title: '清镇「富矿精开 · 清铝集采」', mode: '政府主导区域资源平台', icon: 'target', color: 'green',
+    desc: '资源统配统销 + 税收监管 + 代采金融 + 全链数据治理；铝土矿 / 氧化铝 / 铝加工品。',
+    path: '06-面试准备与模拟对练/13-客户深度复盘与面试亮点.md' },
+  { key: 'yl', title: '广西晔龙国际贸易', mode: '贸易商期现结合经营', icon: 'layers', color: 'purple',
+    desc: '基差交易 + 期货套保锁价 + 预售 + 配套物流；豆粕 / 菜粕等粕类，期货套保子系统的最佳客户故事。',
+    path: '06-面试准备与模拟对练/13-客户深度复盘与面试亮点.md' }
+];
+
+var CASE_SCENES = [
+  { title: '① 挂牌与报价', desc: '竞价 / 挂牌 / 报价 / 招标采购，交易的第一公里', path: '02-业务价值/02-业务全链路场景手册.md' },
+  { title: '② 合同签约', desc: '从口头到法律效力，合同域与履约域解耦', path: '02-业务价值/02-业务全链路场景手册.md' },
+  { title: '③ 支付结算', desc: '资金安全是底线，支付渠道适配器 + 资金预检 2PC', path: '02-业务价值/02-业务全链路场景手册.md' },
+  { title: '④ 仓储物流', desc: '货在哪里、什么状态，在途轨迹 + 电子围栏', path: '02-业务价值/02-业务全链路场景手册.md' },
+  { title: '⑤ 质检与异议', desc: '大宗交易最头疼的事，质检单据与责任判定', path: '02-业务价值/02-业务全链路场景手册.md' },
+  { title: '⑥ 风控系统', desc: '每笔交易背后的「安检」，规则引擎 + 授信额度', path: '02-业务价值/02-业务全链路场景手册.md' },
+  { title: '⑦ 发票与税务', desc: 'B2B 逃不掉的合规，发票与税务链路衔接', path: '02-业务价值/02-业务全链路场景手册.md' },
+  { title: '⑧ 供应链金融', desc: '从贸易服务到金融服务，应收 / 存货 / 仓单融资', path: '02-业务价值/02-业务全链路场景手册.md' },
+  { title: '⑨ 客户运营', desc: '买了产品之后：实施交付、活跃与续费', path: '02-业务价值/02-业务全链路场景手册.md' },
+  { title: '⑩ 多角色权限体系', desc: '一个客户账户 N 类人在用，权限与数据隔离', path: '02-业务价值/02-业务全链路场景手册.md' }
+];
+
+var CASE_GROUPS = [
+  { key: 'cases', title: '01 客户案例材料', files: [
+    { name: '13-客户深度复盘与面试亮点.md', type: 'md', path: '06-面试准备与模拟对练/13-客户深度复盘与面试亮点.md' },
+    { name: '13-客户深度复盘与面试亮点.visual.html', type: 'html', path: '06-面试准备与模拟对练/13-客户深度复盘与面试亮点.visual.html' },
+    { name: '06-客户案例与行业对标手册.md', type: 'md', path: '02-业务价值/06-客户案例与行业对标手册.md' },
+    { name: '05-B2B产品服务客户案例.slides.pptx', type: 'pptx', path: '04-案例与投递/05-B2B产品服务客户案例.slides.pptx' },
+    { name: '05-B2B产品服务客户案例.pdf', type: 'pdf', path: '04-案例与投递/05-B2B产品服务客户案例.pdf' },
+    { name: '08-郑大信息-供应链B2B与供应链金融方案深度分析.html', type: 'html', path: '02-业务价值/08-郑大信息-供应链B2B与供应链金融方案深度分析.html' }
+  ] },
+  { key: 'scenes', title: '02 业务场景材料', files: [
+    { name: '02-业务全链路场景手册.md', type: 'md', path: '02-业务价值/02-业务全链路场景手册.md' },
+    { name: '03-业务场景与痛点全景手册.md', type: 'md', path: '02-业务价值/03-业务场景与痛点全景手册.md' },
+    { name: '02-平台角色与业务动作全景手册.md', type: 'md', path: '01-产品定位/02-平台角色与业务动作全景手册.md' },
+    { name: '04-产品全业务链条与运营思路.mobile.html', type: 'html', path: '01-产品定位/04-产品全业务链条与运营思路.mobile.html' },
+    { name: '05-产品全业务链条与运营思路.slides.pptx', type: 'pptx', path: '01-产品定位/05-产品全业务链条与运营思路.slides.pptx' },
+    { name: '15-快速通览一页纸简报.html', type: 'html', path: '06-面试准备与模拟对练/15-快速通览一页纸简报.html' }
+  ] }
 ];
 
 /* ===== 首页内容素材（来源 prep/01-面试备战 与 prep/面试框架）===== */
@@ -2637,6 +2730,7 @@ var pageTitles = {
   'page-bank': '技术题库',
   'page-prep': '备战手册',
   'page-mock': '模拟面试',
+  'page-cases': '案例 · 场景',
   'page-me': '我的'
 };
 
@@ -3127,6 +3221,66 @@ function renderPrepCategories() {
   $('prepCount').textContent = PREP_CATEGORIES.length + ' 个分类';
 }
 
+// 渲染「案例 · 场景」页：四类客户 + 十个场景 + 资料清单
+function renderCaseScenePage() {
+  var html = '';
+  for (var i = 0; i < CASE_CLIENTS.length; i++) {
+    var c = CASE_CLIENTS[i];
+    html += '<div class="bank-card ' + c.color + ' tap" onclick="openPrepFile(\'' + c.path.replace(/'/g, "\\'") + '\')">';
+    html += '<div class="bank-top">';
+    html += '<div class="bank-icon ' + c.color + '">' + getIcon(c.icon) + '</div>';
+    html += '<span class="bank-count wrap">' + escapeHtml(c.mode) + '</span>';
+    html += '</div>';
+    html += '<div class="bank-info">';
+    html += '<div class="bank-title">' + escapeHtml(c.title) + '</div>';
+    html += '<div class="bank-desc">' + escapeHtml(c.desc) + '</div>';
+    html += '</div></div>';
+  }
+  $('caseClientGrid').innerHTML = html;
+
+  var sHtml = '';
+  for (var j = 0; j < CASE_SCENES.length; j++) {
+    var s = CASE_SCENES[j];
+    sHtml += '<div class="bank-card cyan tap" onclick="openPrepFile(\'' + s.path.replace(/'/g, "\\'") + '\')">';
+    sHtml += '<div class="bank-top">';
+    sHtml += '<div class="bank-icon cyan">' + getIcon('layers') + '</div>';
+    sHtml += '<span class="bank-count">场景</span>';
+    sHtml += '</div>';
+    sHtml += '<div class="bank-info">';
+    sHtml += '<div class="bank-title">' + escapeHtml(s.title) + '</div>';
+    sHtml += '<div class="bank-desc">' + escapeHtml(s.desc) + '</div>';
+    sHtml += '</div></div>';
+  }
+  $('caseSceneGrid').innerHTML = sHtml;
+
+  var fHtml = '';
+  for (var k = 0; k < CASE_GROUPS.length; k++) {
+    var g = CASE_GROUPS[k];
+    var open = k === 0;
+    fHtml += '<div class="prep-category">';
+    fHtml += '<div class="prep-cat-header tap" onclick="togglePrepCategory(this)">';
+    fHtml += '<div class="prep-cat-icon" style="background:var(--surface-2);color:var(--text-2)">' + getIcon(k === 0 ? 'users' : 'layers') + '</div>';
+    fHtml += '<div class="prep-cat-body">';
+    fHtml += '<div class="prep-cat-title">' + escapeHtml(g.title) + '</div>';
+    fHtml += '<div class="prep-cat-meta">' + g.files.length + ' 份资料</div>';
+    fHtml += '</div>';
+    fHtml += '<div class="prep-cat-arrow' + (open ? ' open' : '') + '">' + getIcon('chevron-right') + '</div>';
+    fHtml += '</div>';
+    fHtml += '<div class="prep-cat-list' + (open ? ' open' : '') + '">';
+    for (var m = 0; m < g.files.length; m++) {
+      var f = g.files[m];
+      var badgeClass = f.type === 'md' ? 'md' : f.type === 'html' ? 'html' : f.type === 'pptx' ? 'pptx' : '';
+      fHtml += '<div class="prep-item tap" onclick="openPrepFile(\'' + f.path.replace(/'/g, "\\'") + '\')">';
+      fHtml += '<div class="prep-item-icon">' + getIcon('file') + '</div>';
+      fHtml += '<span class="prep-item-title">' + escapeHtml(f.name) + '</span>';
+      fHtml += '<span class="prep-item-badge ' + badgeClass + '">' + escapeHtml(f.type.toUpperCase()) + '</span>';
+      fHtml += '</div>';
+    }
+    fHtml += '</div></div>';
+  }
+  $('caseFileList').innerHTML = fHtml;
+}
+
 // 切换备战分类展开
 function togglePrepCategory(header) {
   var list = header.nextElementSibling;
@@ -3437,6 +3591,7 @@ function init() {
   renderBankGrid();
   renderFaceExpGrid();
   renderPrepCategories();
+  renderCaseScenePage();
   updateHomeStats();
   updateGreeting();
   updateStatusTime();
