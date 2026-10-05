@@ -2829,9 +2829,10 @@ function switchTab(pageId) {
     item.classList.toggle('active', item.dataset.page === pageId);
   });
 
-  // 更新标题
+  // 更新标题（当前页头为问候语布局，无 headerTitle 节点时跳过）
   var title = pageTitles[pageId] || '面试工作台';
-  $('headerTitle').textContent = title;
+  var titleEl = $('headerTitle');
+  if (titleEl) titleEl.textContent = title;
 
   // 滚动到顶部
   var main = document.querySelector('.app-main');
