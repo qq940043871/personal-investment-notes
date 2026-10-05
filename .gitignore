@@ -1,0 +1,10 @@
+# 临时调试脚本（构建流程中产生的空文件）
+prep/_build/debug_one.py
+
+# Python
+__pycache__/
+*.pyc
+
+# 系统文件
+Thumbs.db
+.DS_Store
