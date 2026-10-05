@@ -2,8 +2,11 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<!-- 派生件（手机版）：内容源 = 06-面试准备与模拟对练/09-面试背诵综合手册.md。修改内容请改源件 md，本文件仅负责移动端排版输出。 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- 派生件（响应式单文件版）：内容源 = 06-面试准备与模拟对练/09-面试背诵综合手册.md（六章 + 附录）。
+     由原 .mobile.html（折叠卡片 + 横向导航，纯 CSS 离线可用）与 .visual.html（深色可视化桌面版）合并而来：
+     保留 mobile 版的离线可读性与折叠交互，桌面宽屏自动切换为双栏排版，两者内容同源、无删减。
+     修改内容请改源件 md，本文件仅负责呈现。内容以源件 md 为准。 -->
 <title>B2B大宗贸易 — 面试背诵手册</title>
 <style>
   :root {
@@ -370,13 +373,39 @@
   .quiz-hidden .show-hint { display: inline !important; }
   .show-hint { display: none !important; color: var(--text3); font-size: 12px; }
 
-  /* Responsive */
+  /* ---- Responsive ---- */
+  /* 手机竖屏：单列全宽（默认） */
+  .page { width: 100%; }
+
+  /* 小屏横屏 / 小平板：收窄居中，模拟阅读宽度 */
   @media (min-width: 500px) {
-    body { max-width: 480px; margin: 0 auto; }
+    body { max-width: 520px; margin: 0 auto; box-shadow: 0 0 0 1px rgba(0,0,0,0.04); }
     .three-card-row { flex-direction: row; }
     .three-card { flex: 1; }
     .num-grid { grid-template-columns: 1fr 1fr 1fr; }
     .big-nums { grid-template-columns: 1fr 1fr 1fr; }
+  }
+
+  /* 桌面：放宽版心，卡片双栏，导航改为静态横向铺开 */
+  @media (min-width: 900px) {
+    body { max-width: 1040px; font-size: 16.5px; }
+    .header { padding: 40px 32px 32px; }
+    .header h1 { font-size: 26px; }
+    .section { margin-bottom: 16px; }
+    .section-body { padding: 20px 24px; }
+    /* 双栏：相邻两个 section 并排，减少长页滚动 */
+    .sections-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+    .sections-wrap .section { margin-bottom: 0; }
+    /* 顶部导航不再横向滚动 */
+    .quick-nav { overflow-x: visible; flex-wrap: wrap; justify-content: center; padding: 14px 16px; }
+    .quick-nav::-webkit-scrollbar { display: none; }
+    /* 桌面端悬浮按钮回到右下角，不遮挡内容 */
+    .mode-toggle { bottom: 28px; right: 28px; }
+  }
+
+  /* 超宽屏：保持版心，不让行长过长 */
+  @media (min-width: 1280px) {
+    body { max-width: 1120px; }
   }
 </style>
 </head>
@@ -416,6 +445,7 @@
 </div>
 
 <!-- ====== 一、产品概述 ====== -->
+<div class="sections-wrap">
 <div class="section open s1" id="s1">
   <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
     <div class="left">
@@ -549,6 +579,20 @@
           <div class="fdesc">月底对账3人3天还对不齐 → 自动对账+三流匹配+零差异</div>
         </div>
       </div>
+      <div class="feature-item">
+        <div class="icon" style="background:#f5f3ff;">🛡️</div>
+        <div class="info">
+          <div class="ftitle">风控总监</div>
+          <div class="fdesc">怕一货多押、怕坏账 → 电子仓单+区块链存证+银行实时校验</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="icon" style="background:#ecfeff;">📈</div>
+        <div class="info">
+          <div class="ftitle">老板 / CEO</div>
+          <div class="fdesc">"投了几千万做平台，到底值不值" → 效率+风险+增长三层量化数据</div>
+        </div>
+      </div>
     </div>
 
     <div style="font-size:13px;color:var(--text3);margin-top:8px;">
@@ -586,6 +630,8 @@
       <div class="pain-after">实时行情+一键比价+标准化产品编码</div>
       <div class="pain-before">供应商说"有货"，下单后发现没货</div>
       <div class="pain-after">库存跟WMS实时打通，下单即校验</div>
+      <div class="pain-before">不知道该卖多少钱、该花多少钱买</div>
+      <div class="pain-after">行情中心+历史成交价参考</div>
     </div>
 
     <div class="pain-card" style="background:#fffbeb;border-color:#fde68a;">
@@ -629,6 +675,7 @@
   <div class="section-body">
 
     <div class="big-quote" style="border-left-color:#059669;">
+      <div class="kicker" style="margin:0 0 6px;">一句话价值主张</div>
       把大宗贸易从<b>"靠人脉、靠电话、靠运气"</b>的生意，变成<b>"靠数据、靠系统、靠信用"</b>的生意。
     </div>
 
@@ -832,7 +879,9 @@
   </div>
 </div>
 
-<!-- ====== 附录：速记卡片 ====== -->
+</div><!-- /.sections-wrap -->
+
+<!-- ====== 附录：速记卡片（整宽，不参与双栏） ====== -->
 <div class="section s7" id="s7">
   <div class="section-header" onclick="this.parentElement.classList.toggle('open')">
     <div class="left">
@@ -884,6 +933,43 @@
       <div class="bn-item"><div class="bn-val">0差错</div><div class="bn-label">资金(X年)</div></div>
       <div class="bn-item"><div class="bn-val">99.95%</div><div class="bn-label">可用率</div></div>
       <div class="bn-item"><div class="bn-val">45%→15%</div><div class="bn-label">被动响应</div></div>
+    </div>
+
+    <div class="kicker" style="margin-top:16px;">关键数字（被追问时报数字最加分）</div>
+    <div class="big-nums" style="grid-template-columns:1fr 1fr;">
+      <div class="bn-item"><div class="bn-val">2.3亿 / 97.8%</div><div class="bn-label">供应商累计成交额 / 履约率</div></div>
+      <div class="bn-item"><div class="bn-val">70% / 80%</div><div class="bn-label">仓单质押货值 / 应收账款提前变现</div></div>
+      <div class="bn-item"><div class="bn-val">30–90天</div><div class="bn-label">B2B 典型账期（资金被拖垮的根因）</div></div>
+      <div class="bn-item"><div class="bn-val">5~7天→1.5天</div><div class="bn-label">全链路核心数字（一笔交易）</div></div>
+      <div class="bn-item"><div class="bn-val">签约1周→1天</div><div class="bn-label">电子合同 + 签章在线协同</div></div>
+      <div class="bn-item"><div class="bn-val">80% / 8次→2次</div><div class="bn-label">团队自主处理线上问题 / 凌晨叫起</div></div>
+      <div class="bn-item"><div class="bn-val">命中率95% / 50ms</div><div class="bn-label">高峰期热数据缓存（禁用语录的反面）</div></div>
+      <div class="bn-item"><div class="bn-val">4-6 个系统</div><div class="bn-label">跨月长事务每个状态需同步的系统数</div></div>
+    </div>
+
+    <div class="kicker" style="margin-top:16px;">技术术语速记（说出来就显专业）</div>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="icon" style="background:#dbeafe;">🔌</div>
+        <div class="info">
+          <div class="ftitle">DS = Anti-Corruption Layer（防腐层）</div>
+          <div class="fdesc">Java NIO 收 TCP 自定义二进制帧 → 协议解析/版本路由 → 上层 Hessian 暴露标准 DTO</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="icon" style="background:#fef3c7;">⚙️</div>
+        <div class="info">
+          <div class="ftitle">配置化引擎 = 策略模式 + Drools 规则引擎 + 配置化模板</div>
+          <div class="fdesc">不变的部分写死，可变的部分（报价方式/结算节奏/审批层级/合同格式）按客户配出来</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="icon" style="background:#d1fae5;">🧾</div>
+        <div class="info">
+          <div class="ftitle">一体化链路 = ERP + WMS + 电子签章 + 银行资金存管</div>
+          <div class="fdesc">没有交易数据的人做金融是在猜，我们是在算（平台能给银行提供风控依据）</div>
+        </div>
+      </div>
     </div>
 
     <div class="kicker" style="margin-top:16px;">禁用语录（记反面）</div>
