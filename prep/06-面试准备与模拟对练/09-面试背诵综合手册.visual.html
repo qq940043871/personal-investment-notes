@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 派生件（可视化版）：内容源 = 06-面试准备与模拟对练/09-面试背诵综合手册.md（七段式：产品/客户/特点/购买理由/角色/成果/速记卡）。
+     本文件仅负责表格化与卡片化呈现，修改内容请改源件 md。全库文件索引由 ../index.html 统一提供。 -->
+<title>面试背诵手册 · 可视化版</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body { font-family: "PingFang SC","Microsoft YaHei",system-ui,sans-serif; }
+  .card { transition: transform .15s ease, box-shadow .15s ease; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,.10); }
+  .sec-num { font-variant-numeric: tabular-nums; }
+  blockquote.golden { border-left: 4px solid #f59e0b; background:#fffbeb; }
+  table { border-collapse: collapse; }
+  th, td { border: 1px solid #e2e8f0; padding: .5rem .75rem; text-align: left; vertical-align: top; }
+  th { background: #f8fafc; font-weight: 600; white-space: nowrap; }
+  @media print { .no-print { display:none; } body { background:#fff; } }
+</style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+<!-- 顶部导航 -->
+<header class="fixed top-0 inset-x-0 z-50 bg-slate-900/95 text-white backdrop-blur no-print">
+  <div class="max-w-6xl mx-auto px-4 h-14 flex items-center gap-6 text-sm overflow-x-auto">
+    <span class="font-bold whitespace-nowrap"><i class="fa-solid fa-comments mr-1 text-amber-400"></i>面试框架</span>
+    <nav class="flex gap-4 whitespace-nowrap text-slate-300">
+      <a href="#s1" class="hover:text-amber-400">1 产品</a>
+      <a href="#s2" class="hover:text-amber-400">2 客户</a>
+      <a href="#s3" class="hover:text-amber-400">3 特点</a>
+      <a href="#s4" class="hover:text-amber-400">4 为何购买</a>
+      <a href="#s5" class="hover:text-amber-400">5 我的角色</a>
+      <a href="#s6" class="hover:text-amber-400">6 问题与结果</a>
+      <a href="#s7" class="hover:text-amber-400">7 速记卡</a>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 pt-20 pb-16 space-y-10">
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-r from-slate-900 to-slate-700 rounded-2xl text-white p-8">
+    <h1 class="text-2xl md:text-3xl font-bold mb-3">面试叙事框架 <span class="text-amber-400">·</span> B2B 大宗贸易平台技术经理</h1>
+    <p class="text-slate-300 leading-relaxed max-w-3xl">主线逻辑：我们做什么 → 卖给谁 → 凭什么卖 → 客户为什么买单 → 我在其中管什么 → 我解决了什么 → 拿到了什么结果。七个问题一条线讲完，每段配金句与数字。</p>
+    <div class="mt-5 flex flex-wrap gap-2 text-xs">
+      <span class="bg-white/10 rounded-full px-3 py-1"><i class="fa-solid fa-tag mr-1 text-amber-400"></i>异构架构：C + Java + Vue</span>
+      <span class="bg-white/10 rounded-full px-3 py-1"><i class="fa-solid fa-tag mr-1 text-amber-400"></i>业务深度：大宗贸易全链路</span>
+      <span class="bg-white/10 rounded-full px-3 py-1"><i class="fa-solid fa-tag mr-1 text-amber-400"></i>管理转型：救火 → 机制</span>
+    </div>
+  </section>
+
+  <!-- 1 产品 -->
+  <section id="s1" class="card bg-white rounded-2xl p-8 shadow-sm">
+    <h2 class="text-xl font-bold mb-5 flex items-center"><span class="sec-num w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-sm mr-3">1</span>我们的产品是做什么的</h2>
+    <p class="mb-5 leading-relaxed">我们是 <b>B2B 大宗商品在线交易与供应链服务平台</b>——一个让钢铁、煤炭、化工等大宗贸易全链路数字化的产业互联网平台。</p>
+
+    <h3 class="font-semibold mb-3 text-blue-700"><i class="fa-solid fa-cubes mr-1"></i>核心功能：三位一体</h3>
+    <div class="grid md:grid-cols-3 gap-4 mb-6">
+      <div class="rounded-xl bg-blue-50 p-4">
+        <div class="font-bold text-blue-800 mb-1">电子交易（基础）</div>
+        <p class="text-sm text-slate-600">撮合买卖双方，7 种交易模式</p>
+      </div>
+      <div class="rounded-xl bg-emerald-50 p-4">
+        <div class="font-bold text-emerald-800 mb-1">现代物流（保障）</div>
+        <p class="text-sm text-slate-600">仓储 + 物流全程可控，货权清晰</p>
+      </div>
+      <div class="rounded-xl bg-amber-50 p-4">
+        <div class="font-bold text-amber-800 mb-1">供应链金融（增值）</div>
+        <p class="text-sm text-slate-600">交易数据变信用资产，解决资金约束</p>
+      </div>
+    </div>
+
+    <h3 class="font-semibold mb-3 text-blue-700"><i class="fa-solid fa-arrows-left-right mr-1"></i>七种交易模式</h3>
+    <div class="flex flex-wrap gap-2 mb-6">
+      <span class="bg-slate-100 rounded-lg px-3 py-1.5 text-sm">挂牌交易</span>
+      <span class="bg-slate-100 rounded-lg px-3 py-1.5 text-sm">双边协商</span>
+      <span class="bg-slate-100 rounded-lg px-3 py-1.5 text-sm">竞价拍卖</span>
+      <span class="bg-slate-100 rounded-lg px-3 py-1.5 text-sm">招标</span>
+      <span class="bg-slate-100 rounded-lg px-3 py-1.5 text-sm">集采拼单</span>
+      <span class="bg-slate-100 rounded-lg px-3 py-1.5 text-sm">托盘代采</span>
+      <span class="bg-slate-100 rounded-lg px-3 py-1.5 text-sm">基差点价</span>
+    </div>
+
+    <h3 class="font-semibold mb-3 text-blue-700"><i class="fa-solid fa-server mr-1"></i>技术架构一句话</h3>
+    <div class="bg-slate-900 text-slate-100 rounded-xl p-4 text-sm leading-relaxed">
+      C 语言单线程内存撮合引擎（纳秒级、无 GC）+ Java 微服务业务中台 + Vue 三端，通过自研 DS 数据中心做异构桥接。<b class="text-amber-400">C 负责快，Java 负责稳，DS 负责翻译。</b>
+    </div>
+  </section>
+
+  <!-- 2 客户 -->
+  <section id="s2" class="card bg-white rounded-2xl p-8 shadow-sm">
+    <h2 class="text-xl font-bold mb-5 flex items-center"><span class="sec-num w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-sm mr-3">2</span>目标客户是谁</h2>
+    <p class="mb-5 leading-relaxed">行业：钢铁、煤炭、化工、农产品、有色金属等大宗商品领域。当前正式客户 <b class="text-blue-700">16 家</b>，覆盖能源化工、煤炭矿产、金属综合、农产品林产品、港务供应链五大板块。</p>
+
+    <h3 class="font-semibold mb-3 text-blue-700"><i class="fa-solid fa-layer-group mr-1"></i>客户规模分层</h3>
+    <div class="overflow-x-auto mb-6">
+      <table class="w-full text-sm">
+        <thead><tr><th>类型</th><th>画像</th><th>核心诉求</th></tr></thead>
+        <tbody>
+          <tr><td class="font-semibold">大型核心企业<br><span class="font-normal text-slate-500">（钢厂 / 上游矿企）</span></td><td>年交易额数十亿，有稳定下游渠道</td><td>扩大销售半径、供应链金融、API 对接 ERP</td></tr>
+          <tr><td class="font-semibold">中型贸易商</td><td>年交易额数千万至数亿，10–50 人团队</td><td>稳定货源、拓展新客户、资金周转</td></tr>
+          <tr><td class="font-semibold">小型贸易商 / 加工厂</td><td>年交易额百万级，现金流紧张</td><td>便宜货源、集采拼单、小额融资</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="font-semibold mb-3 text-blue-700"><i class="fa-solid fa-user-tie mr-1"></i>客户组织内的关键角色</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead><tr><th>角色</th><th>典型痛点</th><th>平台给什么</th></tr></thead>
+        <tbody>
+          <tr><td class="font-semibold">采购经理</td><td>每天打 20 个电话比价找货</td><td>一键比价 + 库存实时 + 供应商信用档案</td></tr>
+          <tr><td class="font-semibold">财务总监</td><td>月底对账 3 人 3 天还对不齐</td><td>自动对账 + 三流匹配 + 零差异</td></tr>
+          <tr><td class="font-semibold">风控总监</td><td>怕一货多押、怕坏账</td><td>电子仓单 + 区块链存证 + 银行实时校验</td></tr>
+          <tr><td class="font-semibold">老板 / CEO</td><td>"投了几千万做平台，到底值不值"</td><td>效率 + 风险 + 增长三层量化数据</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3 特点 -->
+  <section id="s3" class="card bg-white rounded-2xl p-8 shadow-sm">
+    <h2 class="text-xl font-bold mb-5 flex items-center"><span class="sec-num w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-sm mr-3">3</span>产品有什么特点</h2>
+    <div class="grid md:grid-cols-3 gap-4 mb-6">
+      <div class="rounded-xl border border-slate-200 p-5">
+        <i class="fa-solid fa-link text-blue-600 text-xl mb-2"></i>
+        <div class="font-bold mb-1">全链路线上化</div>
+        <p class="text-sm text-slate-600">询价→合同→支付→仓储→物流→质检→结算→开票，全程在线。客户不出门，能购天下物。</p>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-5">
+        <i class="fa-solid fa-sliders text-emerald-600 text-xl mb-2"></i>
+        <div class="font-bold mb-1">多租户深度定制</div>
+        <p class="text-sm text-slate-600">每个大客户的行规不同。我们不逼客户适应系统，用规则引擎 + 配置化适配每个客户。</p>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-5">
+        <i class="fa-solid fa-shield-halved text-amber-600 text-xl mb-2"></i>
+        <div class="font-bold mb-1">金融级可靠性</div>
+        <p class="text-sm text-slate-600">多年零资金差错、系统可用率 99.95%、电子仓单零重复质押事故。</p>
+      </div>
+    </div>
+    <blockquote class="golden rounded-r-lg px-5 py-3 text-sm leading-relaxed">
+      <b>价值主张（一句话）：</b>把大宗贸易从"靠人脉、靠电话、靠运气"的生意，变成"靠数据、靠系统、靠信用"的生意。
+    </blockquote>
+  </section>
+
+  <!-- 4 为何购买 -->
+  <section id="s4" class="card bg-white rounded-2xl p-8 shadow-sm">
+    <h2 class="text-xl font-bold mb-5 flex items-center"><span class="sec-num w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-sm mr-3">4</span>客户为什么要购买</h2>
+    <p class="mb-5 text-slate-600 leading-relaxed">大宗贸易线下有四个"怎么都搞不定"的死结——每一个痛点对应一个买单理由。</p>
+
+    <div class="space-y-5">
+      <div class="rounded-xl border-l-4 border-red-500 bg-red-50 p-5">
+        <div class="font-bold text-red-700 mb-2">痛点一 · 信任壁垒 —"跟陌生人做生意不敢"</div>
+        <ul class="text-sm space-y-1 text-slate-700 list-disc pl-5">
+          <li>交易靠熟人关系，人脉圈就是生意天花板 → <b>平台担保 + 资金监管账户</b>，钱不过对方手</li>
+          <li>不了解新供应商靠不靠谱 → <b>履约率公开 + 交易历史可查</b>："累计成交 2.3 亿，履约率 97.8%"</li>
+          <li>先款怕不发货，先货怕收不到钱 → <b>保证金 + 信用评级 + 争议仲裁</b></li>
+        </ul>
+        <p class="text-sm mt-2 text-red-700 font-semibold">本质：把"对人的信任"变成"对系统的信任"。</p>
+      </div>
+
+      <div class="rounded-xl border-l-4 border-orange-500 bg-orange-50 p-5">
+        <div class="font-bold text-orange-700 mb-2">痛点二 · 信息不对称 —"价格不透明、货不好找"</div>
+        <ul class="text-sm space-y-1 text-slate-700 list-disc pl-5">
+          <li>打 5 个电话才能比价，问到一半价格就变了 → <b>实时行情 + 一键比价 + 标准化产品编码</b></li>
+          <li>供应商说"有货"，下单后发现没货 → <b>库存与 WMS 实时打通</b>，下单即校验</li>
+          <li>不知道该卖多少钱 / 该花多少钱买 → <b>行情中心 + 历史成交价参考</b></li>
+        </ul>
+      </div>
+
+      <div class="rounded-xl border-l-4 border-blue-500 bg-blue-50 p-5">
+        <div class="font-bold text-blue-700 mb-2">痛点三 · 交易效率 —"一笔交易跑断腿"</div>
+        <ul class="text-sm space-y-1 text-slate-700 list-disc pl-5">
+          <li>合同来回邮寄改 4 版，签约要一周 → 电子合同 + 电子签章：<b>1 周 → 1 天</b></li>
+          <li>跑银行柜台打款，跨行 T+1 → 银企直连实时到账：<b>即时</b></li>
+          <li>每天电话催"货到哪了" → 物流轨迹实时追踪，<b>像查快递一样</b></li>
+          <li>月底 Excel 对账对到崩溃 → 全链路自动勾稽 + 差异高亮：<b>3 人天 → 2 小时</b></li>
+        </ul>
+        <p class="text-sm mt-2 text-blue-700 font-semibold">全链路核心数字：一笔交易 5~7 天 → 1.5 天。</p>
+      </div>
+
+      <div class="rounded-xl border-l-4 border-emerald-500 bg-emerald-50 p-5">
+        <div class="font-bold text-emerald-700 mb-2">痛点四 · 资金约束 —"有好机会但缺钱"</div>
+        <ul class="text-sm space-y-1 text-slate-700 list-disc pl-5">
+          <li>看到低价货但缺采购资金（银行贷款 2 周审批，机会早没了）→ <b>预付款融资</b>：平台垫资代采，货到仓库质押</li>
+          <li>货压在仓库，库存就是死钱 → <b>仓单质押融资</b>：货值 70% 变成流动资金</li>
+          <li>货卖了款没回，账期 30–90 天 → <b>应收账款融资</b>：按 80% 提前变现</li>
+        </ul>
+        <p class="text-sm mt-2 text-emerald-700 font-semibold">为什么银行做不了、平台能做：平台有真实交易数据 → 银行敢放款。"没有交易数据的人做金融是在猜，我们是在算。"</p>
+      </div>
+    </div>
+
+    <h3 class="font-semibold mt-6 mb-3 text-blue-700"><i class="fa-solid fa-chart-simple mr-1"></i>三层价值结构（从下往上讲，层层递进）</h3>
+    <div class="space-y-2">
+      <div class="rounded-lg bg-slate-800 text-white px-4 py-2 text-sm"><b class="text-amber-400">第三层 · 增长价值（壁垒）</b> — 月交易量翻倍 / 供应链金融开展 / 数据飞轮</div>
+      <div class="rounded-lg bg-slate-600 text-white px-4 py-2 text-sm ml-6"><b class="text-amber-400">第二层 · 风险价值（B2B 独有）</b> — 零资金差错 / 零重复质押 / 合同自动校验</div>
+      <div class="rounded-lg bg-slate-400 text-white px-4 py-2 text-sm ml-12"><b class="text-white">第一层 · 效率价值（最易量化）</b> — 5天→1.5天 / 对账3人天→2小时 / 签约1周→1天</div>
+    </div>
+
+    <h3 class="font-semibold mt-6 mb-3 text-blue-700"><i class="fa-solid fa-chess-rook mr-1"></i>竞争壁垒：五个不可复制</h3>
+    <ol class="text-sm space-y-1.5 text-slate-700 list-decimal pl-5">
+      <li><b>数据飞轮</b>：交易越多 → 数据越多 → 风控越准 → 金融越便宜 → 更多客户来</li>
+      <li><b>配置化引擎</b>：100 个客户喂出来的抽象能力，新进入者至少需要 2 年</li>
+      <li><b>外部集成深度</b>：已对接 5+ 银行、10+ 仓库、税务、签章等，追赶成本极高</li>
+      <li><b>行业复合人才</b>：既懂技术又懂大宗的人，培养周期 2–3 年，市场极度稀缺</li>
+      <li><b>信任资产</b>：时间 × 零事故 = 不可速成的护城河</li>
+    </ol>
+  </section>
+
+  <!-- 5 我的角色 -->
+  <section id="s5" class="card bg-white rounded-2xl p-8 shadow-sm">
+    <h2 class="text-xl font-bold mb-5 flex items-center"><span class="sec-num w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-sm mr-3">5</span>我在其中扮演什么角色</h2>
+    <p class="mb-5 leading-relaxed">B2B 大宗贸易平台 <b>技术经理</b>，管 <span class="bg-amber-100 rounded px-1">X</span> 人 Java 团队，负责 <b>业务中台</b> 和 <b>DS 数据中心</b> 两层架构。</p>
+
+    <div class="bg-slate-900 text-white rounded-xl p-4 text-center text-lg font-bold mb-6">
+      技术经理 <span class="text-amber-400">=</span> 业务翻译官 <span class="text-amber-400">+</span> 技术操盘手 <span class="text-amber-400">+</span> 流程守护者
+    </div>
+
+    <div class="overflow-x-auto mb-6">
+      <table class="w-full text-sm">
+        <thead><tr><th>维度</th><th>我做什么</th></tr></thead>
+        <tbody>
+          <tr><td class="font-semibold">业务翻译官</td><td>把"支持分批付款"五个字拆成 14 个子需求、识别 3 个风险点；能在评审中反问"这个合同条款的违约触发条件，系统哪个状态节点对应？"</td></tr>
+          <tr><td class="font-semibold">技术操盘手</td><td>在 C + Java 异构架构中做技术选型、架构评审、技术债管理。不写 C 代码，但通过 DS 桥接层管住异构通信全链路</td></tr>
+          <tr><td class="font-semibold">流程守护者</td><td>建立 On-call 轮值、技术债台账、接口契约治理三大机制，让团队从被动救火转向主动建设</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4 text-sm">
+      <div class="rounded-xl bg-emerald-50 p-4">
+        <div class="font-bold text-emerald-800 mb-1">我的五大深度模块</div>
+        <p class="text-slate-700">交易模式 / 履约保证 / 数据服务 / 规则配置 / 生态对接</p>
+      </div>
+      <div class="rounded-xl bg-emerald-50 p-4">
+        <div class="font-bold text-emerald-800 mb-1">管理理念</div>
+        <p class="text-slate-700">深度区直接掌控（五大模块），治理区契约管理（C 撮合引擎、财务清结算、物流执行）。管"连线"不管"黑盒内部"，守住接口、SLA、爆炸半径。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 问题与结果 -->
+  <section id="s6" class="card bg-white rounded-2xl p-8 shadow-sm">
+    <h2 class="text-xl font-bold mb-5 flex items-center"><span class="sec-num w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-sm mr-3">6</span>我解决了什么问题，得到了什么结果</h2>
+    <p class="mb-6 text-slate-600 text-sm"><i class="fa-solid fa-lightbulb text-amber-500 mr-1"></i>面试策略：五个成果挑 2–3 个讲，按"问题 → 方案 → 结果"三段式，配金句收尾。</p>
+
+    <!-- 成果一 -->
+    <div class="rounded-xl border border-slate-200 mb-5 overflow-hidden">
+      <div class="bg-slate-800 text-white px-5 py-3 font-bold">成果一 · DS 桥接层 — 驾驭 C + Java 异构架构</div>
+      <div class="p-5 space-y-3 text-sm">
+        <div class="grid md:grid-cols-3 gap-4">
+          <div><span class="text-red-600 font-semibold">问题</span><p class="mt-1 text-slate-700">C 撮合引擎是黑盒，只暴露 TCP 二进制协议；上层 12+ Java 微服务无法直接通信</p></div>
+          <div><span class="text-blue-600 font-semibold">方案</span><p class="mt-1 text-slate-700">设计 DS 数据中心作为防腐层（Anti-Corruption Layer）：下层 Java NIO 收 TCP 二进制 → 协议解析；上层 Hessian 暴露标准接口</p></div>
+          <div><span class="text-emerald-600 font-semibold">结果</span><p class="mt-1 text-slate-700">异构复杂度完全收敛在一层，C 团队与 Java 团队各自独立演进，互不阻塞</p></div>
+        </div>
+        <blockquote class="golden rounded-r-lg px-4 py-2.5 leading-relaxed">"我不写 C 代码，但设计了 DS 这一层让 C 和 Java 能对话。技术经理的价值不是写了多少代码，而是在正确的边界上做了正确的架构决策。"</blockquote>
+      </div>
+    </div>
+
+    <!-- 成果二 -->
+    <div class="rounded-xl border border-slate-200 mb-5 overflow-hidden">
+      <div class="bg-slate-800 text-white px-5 py-3 font-bold">成果二 · 多租户配置化 — 打破"每客户一套代码"的死循环</div>
+      <div class="p-5 space-y-3 text-sm">
+        <div class="grid md:grid-cols-3 gap-4">
+          <div><span class="text-red-600 font-semibold">问题</span><p class="mt-1 text-slate-700">每接一个大客户，开户/挂牌/合同交收全流程都要改代码。100 个客户 = 100 套大同小异的代码</p></div>
+          <div><span class="text-blue-600 font-semibold">方案</span><p class="mt-1 text-slate-700">策略模式 + Drools 规则引擎 + 配置化模板。不变的部分做成统一引擎，可变的部分（报价方式/结算节奏/审批层级/合同格式）做成按客户配置</p></div>
+          <div><span class="text-emerald-600 font-semibold">结果</span><p class="mt-1 text-slate-700">新客户上线：<b class="text-emerald-700">2 个月 → 1 周</b>，代码不再膨胀</p></div>
+        </div>
+        <blockquote class="golden rounded-r-lg px-4 py-2.5 leading-relaxed">"大宗行业的铁律是每个大客户都有自己的玩法。正确的策略不是压住差异化，而是让引擎支持差异化——不变的部分写死，可变的部分配出来。"</blockquote>
+      </div>
+    </div>
+
+    <!-- 成果三 -->
+    <div class="rounded-xl border border-slate-200 mb-5 overflow-hidden">
+      <div class="bg-slate-800 text-white px-5 py-3 font-bold">成果三 · 跨月长事务一致性 — 多年零资金差错</div>
+      <div class="p-5 space-y-3 text-sm">
+        <div class="grid md:grid-cols-3 gap-4">
+          <div><span class="text-red-600 font-semibold">问题</span><p class="mt-1 text-slate-700">一笔交易跨 1–3 个月，十几个状态变迁（签约→保证金→备货→发货→质检→结算→开票），每个状态要同步 4–6 个系统。电商的秒级事务方案完全不适用</p></div>
+          <div><span class="text-blue-600 font-semibold">方案</span><p class="mt-1 text-slate-700">Saga + 状态机 + 事件溯源。每个操作定义正向 + 补偿动作；每个状态定义前置条件 / 触发事件 / 副作用 / 补偿 / 超时处理</p></div>
+          <div><span class="text-emerald-600 font-semibold">结果</span><p class="mt-1 text-slate-700">运行多年，<b class="text-emerald-700">零资金差错</b></p></div>
+        </div>
+        <blockquote class="golden rounded-r-lg px-4 py-2.5 leading-relaxed">"做一个'能跑'的状态机只需 1 个月，做一个'不会出事'的状态机需要 2 年——因为你要见过所有异常场景，才知道补偿路径怎么写。"</blockquote>
+      </div>
+    </div>
+
+    <!-- 成果四 -->
+    <div class="rounded-xl border border-slate-200 mb-5 overflow-hidden">
+      <div class="bg-slate-800 text-white px-5 py-3 font-bold">成果四 · 管理三件套 — 从救火队长到技术领导者</div>
+      <div class="p-5 space-y-3 text-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead><tr><th>机制</th><th>做什么</th><th>效果</th></tr></thead>
+            <tbody>
+              <tr><td class="font-semibold">On-call 轮值</td><td>主副双岗按周轮换，P0–P3 四级 SLA</td><td>团队独立处理 80% 线上问题，凌晨叫起从月均 8 次 → 2 次</td></tr>
+              <tr><td class="font-semibold">技术债台账</td><td>债务项 / 风险 / 成本 / 优先级可视化管理</td><td>隐性债务 → 显性 → 可控</td></tr>
+              <tr><td class="font-semibold">20% 带宽原则</td><td>每迭代固定 20% 产能用于技术债偿还</td><td>被动响应占比从 <b class="text-emerald-700">45% → 15%</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <blockquote class="golden rounded-r-lg px-4 py-2.5 leading-relaxed">"临时方案不可怕，没有退路、没有记录、没有终点的临时方案才可怕。"</blockquote>
+      </div>
+    </div>
+
+    <!-- 成果五 -->
+    <div class="rounded-xl border border-slate-200 overflow-hidden">
+      <div class="bg-slate-800 text-white px-5 py-3 font-bold">成果五 · 场景化工作台 — 从"功能菜单"到"任务向导"</div>
+      <div class="p-5 space-y-3 text-sm">
+        <div class="grid md:grid-cols-3 gap-4">
+          <div><span class="text-red-600 font-semibold">问题</span><p class="mt-1 text-slate-700">左侧导航几十个入口，客户不知道点哪里，新客户培训要半天</p></div>
+          <div><span class="text-blue-600 font-semibold">方案</span><p class="mt-1 text-slate-700">按客户任务组织界面：我要买货 / 我要卖货 / 我要发货 / 我要对账。一个任务一条线性引导流 + 角色视图自动过滤</p></div>
+          <div><span class="text-emerald-600 font-semibold">结果</span><p class="mt-1 text-slate-700">新客户培训：<b class="text-emerald-700">半天 → 30 分钟</b>，客服咨询量下降 60%</p></div>
+        </div>
+        <blockquote class="golden rounded-r-lg px-4 py-2.5 leading-relaxed">"客户来平台是带着明确任务来的，不是来'逛'的。你按功能堆菜单，等于把说明书甩给客户让他自己研究。"</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 速记卡 -->
+  <section id="s7" class="card bg-white rounded-2xl p-8 shadow-sm">
+    <h2 class="text-xl font-bold mb-5 flex items-center"><span class="sec-num w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center text-sm mr-3">7</span>面试速记卡</h2>
+
+    <h3 class="font-semibold mb-3 text-amber-700"><i class="fa-solid fa-stopwatch mr-1"></i>30 秒自我介绍</h3>
+    <div class="bg-slate-900 text-slate-100 rounded-xl p-5 text-sm leading-relaxed mb-6">
+      "我是 XX，B2B 大宗贸易平台技术经理，管 X 人团队，负责 Java 业务中台 + DS 数据中心。我们系统最大的特点是 C 语言撮合引擎 + Java 微服务的异构四层架构，我用自研的 DS 桥接层管住了两者间的通信。我深度参与的模块是交易模式、履约保证、数据服务和规则配置。"
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <h3 class="font-semibold mb-3 text-amber-700"><i class="fa-solid fa-bolt mr-1"></i>四层架构（必须能脱手画）</h3>
+        <div class="space-y-1.5 text-sm">
+          <div class="rounded-lg bg-blue-50 border border-blue-200 px-4 py-2">接入层（大屏 / PC / 移动）</div>
+          <div class="text-center text-slate-400">↓</div>
+          <div class="rounded-lg bg-blue-50 border border-blue-200 px-4 py-2">网关层（midservice Java 自研）</div>
+          <div class="text-center text-slate-400">↓</div>
+          <div class="rounded-lg bg-blue-50 border border-blue-200 px-4 py-2">业务中台（Java 微服务 + DS 数据中心）</div>
+          <div class="text-center text-slate-400">↓</div>
+          <div class="rounded-lg bg-blue-50 border border-blue-200 px-4 py-2">撮合层（C 语言内存撮合 + 异步落库）</div>
+        </div>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-3 text-amber-700"><i class="fa-solid fa-hashtag mr-1"></i>最有冲击力的数字</h3>
+        <div class="grid grid-cols-2 gap-2 text-sm">
+          <div class="rounded-lg bg-amber-50 px-3 py-2">交易周期 <b class="text-amber-700">5 天 → 1.5 天</b></div>
+          <div class="rounded-lg bg-amber-50 px-3 py-2">新客户上线 <b class="text-amber-700">2 月 → 1 周</b></div>
+          <div class="rounded-lg bg-amber-50 px-3 py-2">对账 <b class="text-amber-700">3 人天 → 2 小时</b></div>
+          <div class="rounded-lg bg-amber-50 px-3 py-2">零资金差错 <b class="text-amber-700">（多年）</b></div>
+          <div class="rounded-lg bg-amber-50 px-3 py-2">系统可用率 <b class="text-amber-700">99.95%</b></div>
+          <div class="rounded-lg bg-amber-50 px-3 py-2">被动响应 <b class="text-amber-700">45% → 15%</b></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="font-semibold mt-6 mb-3 text-red-700"><i class="fa-solid fa-ban mr-1"></i>禁用语录</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead><tr><th>不要说</th><th>应该说</th></tr></thead>
+        <tbody>
+          <tr><td class="text-red-600">"我们用了 Spring Cloud"</td><td class="text-emerald-700">"12+ 微服务按业务垂直拆分，交易是核心域"</td></tr>
+          <tr><td class="text-red-600">"我用 Redis 做缓存"</td><td class="text-emerald-700">"高峰期热数据命中率 95%，响应降到 50ms"</td></tr>
+          <tr><td class="text-red-600">"我们系统挺稳定的"</td><td class="text-emerald-700">"多年零资金差错，冬储高峰期零 P0 事故"</td></tr>
+          <tr><td class="text-red-600">"我技术挺好的"</td><td class="text-emerald-700">"异构架构下的通信治理是我的深度领域"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="text-center text-xs text-slate-400 pt-4">
+    面试框架 · B2B 大宗贸易平台技术经理 · 生成于 2026-09-26 · 内容母本：<span class="font-mono">06-面试准备与模拟对练/09-面试背诵综合手册.md</span>
+  </footer>
+</main>
+
+</body>
+</html>

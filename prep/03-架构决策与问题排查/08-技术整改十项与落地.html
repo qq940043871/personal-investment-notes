@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术整改七项 · 深度参与与落地</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { primary: '#3B82F6', secondary: '#64748B', accent: '#10B981' } } }
+        }
+    </script>
+    <style>
+        .doc-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+        .doc-table th { background: #F1F5F9; text-align: left; padding: 9px 12px; border: 1px solid #E2E8F0; font-weight: 600; color: #334155; }
+        .doc-table td { padding: 9px 12px; border: 1px solid #E2E8F0; color: #475569; vertical-align: top; }
+        .doc-table tr:nth-child(even) td { background: #F8FAFC; }
+        .quote-card { background: linear-gradient(135deg, #EFF6FF, #DBEAFE); border-left: 4px solid #3B82F6; border-radius: 8px; padding: 12px 16px; font-size: 13.5px; color: #1E40AF; }
+        p, li { font-size: 13.5px; color: #475569; line-height: 1.75; }
+        ul { list-style: disc; padding-left: 20px; margin: 5px 0; }
+        ol { list-style: decimal; padding-left: 20px; margin: 5px 0; }
+        strong { color: #1E293B; }
+        .section-divider { height: 1px; background: linear-gradient(to right, transparent, #CBD5E1, transparent); }
+        .rect-card { background: #fff; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 22px 24px; margin-bottom: 18px; position: relative; overflow: hidden; }
+        .rect-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; }
+        .rect-1::before{background:#3B82F6}.rect-2::before{background:#8B5CF6}.rect-3::before{background:#F59E0B}.rect-4::before{background:#10B981}.rect-5::before{background:#EC4899}.rect-6::before{background:#EF4444}.rect-7::before{background:#06B6D4}.rect-8::before{background:#14B8A6}.rect-9::before{background:#84CC16}.rect-10::before{background:#4F46E5}
+        .rect-num { width: 34px; height: 34px; border-radius: 10px; color: #fff; font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .rn-1{background:#3B82F6}.rn-2{background:#8B5CF6}.rn-3{background:#F59E0B}.rn-4{background:#10B981}.rn-5{background:#EC4899}.rn-6{background:#EF4444}.rn-7{background:#06B6D4}.rn-8{background:#14B8A6}.rn-9{background:#65A30D}.rn-10{background:#4F46E5}
+        .block-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+        .before-after { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+        code { background: #F1F5F9; border-radius: 4px; padding: 1px 5px; font-size: 12px; color: #475569; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans" style="background: #f8fafc;">
+    <div class="max-w-6xl mx-auto px-6 py-8">
+        <!-- 页头 -->
+        <div class="mb-6">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-200">
+                    <i class="fas fa-screwdriver-wrench text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">技术整改十项 · 深度参与与落地</h1>
+                    <p class="text-sm text-gray-500 mt-0.5">我作为技术经理主导的十个专项整改 —— 每项按「背景问题 → 方案设计 → 落地效果」三段式呈现</p>
+                </div>
+            </div>
+            <div class="section-divider mt-4"></div>
+        </div>
+
+        <!-- 总览导航 -->
+        <div class="mb-8 flex flex-wrap gap-2">
+            <a href="#r1" class="px-3.5 py-1.5 bg-white rounded-full text-xs text-gray-600 shadow-sm border border-gray-100 hover:border-blue-300 hover:text-blue-600 transition"><i class="fas fa-globe mr-1 text-blue-500"></i>国际化配置</a>
+            <a href="#r2" class="px-3.5 py-1.5 bg-white rounded-full text-xs text-gray-600 shadow-sm border border-gray-100 hover:border-purple-300 hover:text-purple-600 transition"><i class="fas fa-key mr-1 text-purple-500"></i>功能授权码</a>
+            <a href="#r3" class="px-3.5 py-1.5 bg-white rounded-full text-xs text-gray-600 shadow-sm border border-gray-100 hover:border-amber-300 hover:text-amber-600 transition"><i class="fas fa-boxes-stacked mr-1 text-amber-500"></i>交收场景三元组</a>
+            <a href="#r4" class="px-3.5 py-1.5 bg-white rounded-full text-xs text-gray-600 shadow-sm border border-gray-100 hover:border-emerald-300 hover:text-emerald-600 transition"><i class="fas fa-money-bill-transfer mr-1 text-emerald-500"></i>统一支付中心</a>
+            <a href="#r5" class="px-3.5 py-1.5 bg-white rounded-full text-xs text-gray-600 shadow-sm border border-gray-100 hover:border-pink-300 hover:text-pink-600 transition"><i class="fas fa-diagram-project mr-1 text-pink-500"></i>DS+MID 网关</a>
+            <a href="#r6" class="px-3.5 py-1.5 bg-white rounded-full text-xs text-gray-600 shadow-sm border border-gray-100 hover:border-red-300 hover:text-red-600 transition"><i class="fas fa-shield-halved mr-1 text-red-500"></i>等保+信创</a>
+            <a href="#r7" class="px-3.5 py-1.5 bg-white rounded-full text-xs text-gray-600 shadow-sm border border-gray-100 hover:border-cyan-300 hover:text-cyan-600 transition"><i class="fas fa-plug mr-1 text-cyan-500"></i>统一开放网关</a>
+            <a href="#r8" class="px-3.5 py-1.5 bg-white rounded-full text-xs text-gray-600 shadow-sm border border-gray-100 hover:border-teal-300 hover:text-teal-600 transition"><i class="fas fa-user-shield mr-1 text-teal-500"></i>数据安全脱敏</a>
+            <a href="#r9" class="px-3.5 py-1.5 bg-white rounded-full text-xs text-gray-600 shadow-sm border border-gray-100 hover:border-lime-300 hover:text-lime-600 transition"><i class="fas fa-toolbox mr-1 text-lime-600"></i>统一基础模块工具</a>
+            <a href="#r10" class="px-3.5 py-1.5 bg-white rounded-full text-xs text-gray-600 shadow-sm border border-gray-100 hover:border-indigo-300 hover:text-indigo-600 transition"><i class="fas fa-robot mr-1 text-indigo-500"></i>规范脚手架+AI提效</a>
+        </div>
+
+        <!-- 1 国际化 -->
+        <div id="r1" class="rect-card rect-1">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="rect-num rn-1">1</div>
+                <h2 class="text-lg font-bold text-gray-800">国际化配置体系：行业自定义名词 + 多国语言</h2>
+            </div>
+            <div class="block-label text-red-500">背景与问题</div>
+            <ul>
+                <li>不同行业客户对同一概念的叫法不同：贸易商叫"仓单"、钢铁行业叫"品种"、煤炭行业叫"矿种"——界面术语与客户语言不一致，培训成本高、客户觉得"系统不是我的"</li>
+                <li>多语种客户（出海贸易、涉外业务）要求界面中英/多语言切换，硬编码中文文案无法复用</li>
+            </ul>
+            <div class="block-label text-blue-500 mt-4">方案设计</div>
+            <ul>
+                <li><strong>两层词典体系</strong>：底层是<b>平台通用词库</b>（key-value 文案资源包），上层是<b>租户级行业词库</b>覆盖层——客户按行业特点自定义名词（仓单→矿种），渲染时先查覆盖层、再回退通用层</li>
+                <li><strong>统一取词服务</strong>：前后端所有文案出口收敛到取词接口（前端 i18n 资源包按租户+语言动态加载，后端枚举/状态/单据名走术语解析服务），禁止硬编码文案</li>
+                <li><strong>术语表进领域模型</strong>：行业黑话与领域对象一一对应，翻译的同时保证代码语义一致（仓单就是仓单，不是 inventory_doc）</li>
+            </ul>
+            <div class="block-label text-emerald-600 mt-4">落地效果</div>
+            <div class="quote-card">新客户名词定制从"改代码发版"变成"改配置即时生效"（天级 → 小时级）；同一套系统服务煤炭/钢铁/粕类等不同行业客户，多语言扩展只需新增语言包，业务代码零改动。</div>
+        </div>
+
+        <!-- 2 授权码 -->
+        <div id="r2" class="rect-card rect-2">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="rect-num rn-2">2</div>
+                <h2 class="text-lg font-bold text-gray-800">功能授权码体系：一套代码，按客户付费开capability</h2>
+            </div>
+            <div class="block-label text-red-500">背景与问题</div>
+            <ul>
+                <li>不同客户购买的功能模块、数量配额、使用期限各不相同——版本碎片化，靠"删代码出分支"交付，维护成本失控</li>
+                <li>商务上需要按模块订阅计费，技术上却没有可控的"开关 + 计量"机制</li>
+            </ul>
+            <div class="block-label text-blue-500 mt-4">方案设计</div>
+            <ul>
+                <li><strong>授权码 = 签名的能力清单</strong>：非对称签名（防篡改、防伪造）编码「租户 × 模块清单 × 数量配额 × 有效期」，签发与校验分离</li>
+                <li><strong>双层校验</strong>：启动时校验授权合法性；运行期由<b>能力网关</b>按授权清单拦截功能入口（菜单裁剪 + 接口级鉴权双保险），杜绝"藏菜单不藏接口"的伪授权</li>
+                <li><strong>到期平滑降级</strong>：授权过期转只读模式并保留数据，续费即恢复——兼顾商务催收与客户数据安全</li>
+            </ul>
+            <div class="block-label text-emerald-600 mt-4">落地效果</div>
+            <div class="quote-card">一套代码交付所有版本，商务按模块组合报价成为可能；授权码体系同时成为 SaaS 订阅计费的计量底座——"功能可授权"直接支撑了"产品可售卖"。</div>
+        </div>
+
+        <!-- 3 交收场景三元组 -->
+        <div id="r3" class="rect-card rect-3">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="rect-num rn-3">3</div>
+                <h2 class="text-lg font-bold text-gray-800">交收场景三元组：交收顺序 × 付款规则 × 保证金规则</h2>
+            </div>
+            <div class="block-label text-red-500">背景与问题</div>
+            <ul>
+                <li>客户定制需求以"散点参数"形式涌入：交收顺序、付款节点、保证金比例各自独立可配——组合呈<strong>指数爆炸</strong>（参数组合爆炸陷阱）</li>
+                <li>测试永远无法覆盖全组合：配置出的"合法但从未测过"的组合在线上暴雷，问题定位极其困难</li>
+            </ul>
+            <div class="block-label text-blue-500 mt-4">方案设计</div>
+            <ul>
+                <li><strong>三元组原子化</strong>：把散点参数收敛为不可拆分的场景模板——每种交收场景（款到发货 / 货到付款 / 定金+尾款 / 分期付款 / 信用证）绑定一组：<b>交收顺序</b>（状态机轨 or 事件轨的节点序列）+ <b>付款规则</b>（节点/比例/触发条件）+ <b>保证金规则</b>（比例/追保阈值/释放时点），三元组整体启用、整体校验、整体升级</li>
+                <li><strong>配置期拦截非法组合</strong>：合法性校验矩阵在保存配置时即拒绝矛盾组合（如"货到付款 + 先货后款保证金 0%"），把问题挡在运行期之前</li>
+                <li><strong>模板 + 覆盖项</strong>：客户个性化只允许在模板安全范围内做"覆盖项"微调，且覆盖项自动生成增量测试用例</li>
+            </ul>
+            <div class="block-label text-emerald-600 mt-4">落地效果</div>
+            <div class="quote-card">配置空间从 N³ 指数组合收敛为「5 类模板 × 少量安全覆盖项」；测试策略从"不可能的全组合"变为"模板级用例 + 覆盖项增量用例"，测试可覆盖性重新变成一个可解的问题；新增交收场景 = 新增模板，不动存量。</div>
+        </div>
+
+        <!-- 4 统一支付中心 -->
+        <div id="r4" class="rect-card rect-4">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="rect-num rn-4">4</div>
+                <h2 class="text-lg font-bold text-gray-800">统一支付中心：业务与支付解耦</h2>
+            </div>
+            <div class="block-label text-red-500">背景与问题</div>
+            <ul>
+                <li>交易、结算、融资、仓单各业务模块各自对接银行/第三方支付渠道——重复开发、报文标准不一、对账口径混乱</li>
+                <li>支付逻辑与业务深度绑定：换一个支付渠道 = 全业务线改造；且平台直碰资金流存在"二清"合规风险</li>
+            </ul>
+            <div class="block-label text-blue-500 mt-4">方案设计</div>
+            <ul>
+                <li><strong>职责切分</strong>：业务系统只做两件事——发起支付指令、接收结果事件；收付款单管理、资金池预付/已结核销记账、渠道路由、对账全部下沉到统一支付中心</li>
+                <li><strong>渠道插件化</strong>：统一适配器接口 + 渠道插件（银行直连 / 银企直联 / 第三方持牌机构），到账时效、回单格式等渠道差异在适配层抹平；平台不碰资金池（二清红线）</li>
+                <li><strong>资金预检 2PC</strong>：跨域一致性靠事件+每日对账兜底，唯独资金预检这一跳用两阶段提交——钱的事不能有中间态</li>
+            </ul>
+            <div class="block-label text-emerald-600 mt-4">落地效果</div>
+            <div class="quote-card">新业务模块接入支付能力从"周级开发+联调"降到"天级声明式接入"；换支付渠道只动适配层插件，业务系统零感知——支付从"每个项目的成本项"变成"平台级资产"。</div>
+        </div>
+
+        <!-- 5 DS+MID -->
+        <div id="r5" class="rect-card rect-5">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="rect-num rn-5">5</div>
+                <h2 class="text-lg font-bold text-gray-800">DS + MID 网关体系：破解异构语言通信</h2>
+            </div>
+            <div class="block-label text-red-500">背景与问题</div>
+            <ul>
+                <li>集成环境高度异构：Java 业务中台、.NET 存量系统、Python 数据服务、嵌入式/设备端（地磅、刷卡终端）并存，协议、报文格式、字符集、加密方式各不相同</li>
+                <li>点对点集成呈网状耦合：每接入一个新系统要改 N 个老系统，报文解析逻辑散落各处无法复用</li>
+            </ul>
+            <div class="block-label text-blue-500 mt-4">方案设计</div>
+            <ul>
+                <li><strong>MID 中间服务层（协议适配）</strong>：屏蔽通信差异——报文解析/组装、编码转换（GBK/UTF-8）、加解密、重试与幂等，异构端各自用母语对接 MID，MID 对内只说"普通话"</li>
+                <li><strong>DS 数据服务层（数据契约）</strong>：对内提供统一数据契约（JSON Schema 契约先行、统一应答结构、版本化），服务发现与路由集中管理</li>
+                <li><strong>接入规范化</strong>：报文模板注册制——新报文格式注册解析模板即可，不改网关代码</li>
+            </ul>
+            <div class="block-label text-emerald-600 mt-4">落地效果</div>
+            <div class="quote-card">新系统接入从"改 N 个老系统"变成"注册 1 份契约 + 1 份报文模板"；异构解析问题收敛到 MID 一层，网状耦合变星型拓扑——集成的边际成本从线性降到常数。</div>
+        </div>
+
+        <!-- 6 等保+信创 -->
+        <div id="r6" class="rect-card rect-6">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="rect-num rn-6">6</div>
+                <h2 class="text-lg font-bold text-gray-800">等保规范 + 信创规范：安全合规与国产化双达标</h2>
+            </div>
+            <div class="block-label text-red-500">背景与问题</div>
+            <ul>
+                <li>国企/政府类客户把<strong>等级保护测评</strong>和<strong>信创国产化</strong>写进招标硬性条款——不达标直接废标</li>
+                <li>业务代码与 MySQL/Tomcat/CentOS 等深度耦合，国产化替换牵一发动全身</li>
+            </ul>
+            <div class="block-label text-blue-500 mt-4">方案设计</div>
+            <ul>
+                <li><strong>等保体系</strong>：分区分域网络架构、最小权限与双因子认证、全链路操作审计留痕（与业务留痕复用同一套日志体系）、传输/存储加密、安全开发生命周期（代码扫描+上线安全评审）纳入研发流程</li>
+                <li><strong>信创适配层</strong>：抽象数据访问层与中间件层——MySQL↔GaussDB、Tomcat↔TongWeb、CentOS↔openEuler 通过适配层切换；信创组件纳入 CI 双栈回归验证</li>
+                <li><strong>分级实施</strong>：L2 基础版（通用组件替换）与 L3 增强版（全栈信创+密码改造）分级报价分级实施，改造成本可控（L2 约 90 万量级评估）</li>
+            </ul>
+            <div class="block-label text-emerald-600 mt-4">落地效果</div>
+            <div class="quote-card">通过等保测评且安全能力沉淀为研发流程的一部分（而不是测评前突击）；信创环境可一键部署，双栈 CI 保证"国产化不降级"——国企/政府客户投标的硬门槛变成我们的差异化卖点。</div>
+        </div>
+
+        <!-- 7 统一开放网关 -->
+        <div id="r7" class="rect-card rect-7">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="rect-num rn-7">7</div>
+                <h2 class="text-lg font-bold text-gray-800">统一开放网关：第三方对接流程与规范</h2>
+            </div>
+            <div class="block-label text-red-500">背景与问题</div>
+            <ul>
+                <li>银行、仓储、物流、税务、行情源等第三方对接各自为政：鉴权方式五花八门、应答结构不统一、错误码无字典、超时重试无规范</li>
+                <li>对接文档漂移、联调扯皮成为常态，每接一个第三方都是一次"项目"</li>
+            </ul>
+            <div class="block-label text-blue-500 mt-4">方案设计</div>
+            <ul>
+                <li><strong>统一鉴权</strong>：应用注册制 + AppKey/Secret + 签名校验 + 时间戳防重放，按应用分配接口权限与限流配额</li>
+                <li><strong>统一应答格式</strong>：code / message / data / timestamp 标准信封 + 平台级<b>统一错误码字典</b>（分段编址：系统段-模块段-错误段），调用方排错不再猜</li>
+                <li><strong>可靠性规范</strong>：幂等键强制、超时与重试策略标准化、状态变更走<b>回调事件订阅</b>（而不是轮询），回调失败进入重试队列可追补</li>
+                <li><strong>契约先行</strong>：OpenAPI 文档即契约，变更走版本号，沙箱环境自助联调</li>
+            </ul>
+            <div class="block-label text-emerald-600 mt-4">落地效果</div>
+            <div class="quote-card">第三方对接从"每家一个项目"变成"按规范自助接入"；联调问题收敛到网关统一排查（一个地方看日志、一个字典查错误码）——对接周期显著缩短，生态伙伴扩展速度成为平台竞争力和授权码付费的新入口。</div>
+        </div>
+
+        <!-- 8 数据安全脱敏 -->
+        <div id="r8" class="rect-card rect-8">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="rect-num rn-8">8</div>
+                <h2 class="text-lg font-bold text-gray-800">数据安全治理：客户信息与敏感数据脱敏</h2>
+            </div>
+            <div class="block-label text-red-500">背景与问题</div>
+            <ul>
+                <li>平台沉淀大量敏感数据：客户主体信息（统一社会信用代码/法人/联系方式）、银行账户、合同金额、结算流水、员工手机号——《数据安全法》《个人信息保护法》与国企客户审计均为硬性要求</li>
+                <li>泄露面分散在多处：前端页面展示、接口返回、日志打印、开发测试环境使用生产真实数据，任何一处失控都是事故</li>
+                <li>早期脱敏靠"各模块自己写掩码函数"——规则不一、覆盖不全、新增字段必漏</li>
+            </ul>
+            <div class="block-label text-blue-500 mt-4">方案设计</div>
+            <ul>
+                <li><strong>数据分级分类先行</strong>：敏感字段在元数据层统一登记打标（公开/内部/敏感/机密四级），形成敏感数据台账——脱敏范围有据可依，等保/审计检查直接引用</li>
+                <li><strong>统一脱敏引擎</strong>：规则插件化（掩码 138****5678 / 哈希 / 截断 / 替换 / 可逆加密），业务代码用注解声明式标记（如 <code>@Sensitive(type=BANK_CARD)</code>）+ 序列化器统一挂钩，新增字段只需一个注解</li>
+                <li><strong>四类场景分治</strong>：① 展示脱敏——前端按字段级别掩码；② 接口脱敏——按角色权限决定脱敏粒度（风控/财务可见明文，其他角色强制掩码），<b>明文查看全程留痕审计</b>（谁、何时、看了哪条）；③ 日志脱敏——日志切面统一过滤，杜绝"日志即泄露源"；④ 测试脱敏——生产数据导出必经脱敏引擎（可逆加密用于联调回溯，不可逆掩码用于常规测试）</li>
+                <li><strong>数据库层兜底</strong>：核心敏感表提供动态脱敏视图，即使应用层漏网，直连查询也拿不到明文</li>
+            </ul>
+            <div class="block-label text-emerald-600 mt-4">落地效果</div>
+            <div class="quote-card">敏感数据从"各模块各写各的"变成"一处声明、处处生效"；开发/测试环境用脱敏数据不再担心泄露；等保与客户安全审计的检查项直接引用分级台账与明文访问审计——数据安全从"合规负担"变成可向客户展示的信任能力。</div>
+        </div>
+
+        <!-- 9 统一基础模块工具 -->
+        <div id="r9" class="rect-card rect-9">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="rect-num rn-9">9</div>
+                <h2 class="text-lg font-bold text-gray-800">统一基础模块工具集：文档转换 · 翻译 · 视频 · 审批流 · OCR</h2>
+            </div>
+            <div class="block-label text-red-500">背景与问题</div>
+            <ul>
+                <li>各业务项目反复"重复造轮子"：文档转换预览、翻译、视频直播回放、审批流、OCR 识别——每个项目组自行选型对接，质量参差、重复采购、运维分散</li>
+                <li>具体痛点：Word 转 PDF 还原度低（格式漂移/表格错位/字体缺失），商用预览组件按年付费；翻译调外部 API 存在数据出境与按次计费问题；视频直播/回放各项目对接不同流媒体方案；审批流硬编码在业务代码里无法复用</li>
+            </ul>
+            <div class="block-label text-blue-500 mt-4">方案设计</div>
+            <p class="mb-2">统一收敛为<strong>公共能力中台</strong>——每个能力做成独立微服务，业务方只调 API：</p>
+            <div class="overflow-x-auto"><table class="doc-table"><thead><tr><th>能力</th><th>技术选型</th><th>设计要点</th></tr></thead><tbody>
+                <tr><td><strong>文档转换与预览</strong></td><td>LibreOffice（headless 无头模式）+ Umo Editor</td><td>Word→PDF 高还原度转换（表格/字体/版式保真）；Umo Editor 前端在线预览与编辑；转换任务走异步队列，结果缓存——同一文档不重复转换；模板填充（合同套打）复用同一转换管线</td></tr>
+                <tr><td><strong>自动翻译</strong></td><td>LibreTranslate（私有化部署）</td><td>开源离线部署，<b>数据不出内网</b>（规避出境合规与按次付费）；统一 REST 封装；与国际化词库（专项①）打通——行业术语表作为翻译记忆，保证术语一致性</td></tr>
+                <tr><td><strong>视频网关</strong></td><td>统一流媒体服务（GB28181/RTSP/RTMP 接入）</td><td>直播推拉流、云端录制、回放点播、实时截图统一封装；业务系统只拿<b>播放地址 + 事件回调</b>；监控/仓正确认/物流在途/庭审式见证等场景统一接入</td></tr>
+                <tr><td><strong>统一审批流</strong></td><td>流程引擎与业务解耦（模板化配置）</td><td>流程模板/节点/审批人解析规则（角色/上级/指定人）、加签转办、超时催办、委托代理全部平台化；业务系统只做"提交单据 + 接收审批事件"两个动作；可视化流程配置，超金额自动加签等规则化</td></tr>
+                <tr><td><strong>OCR 识别</strong></td><td>PaddleOCR（私有化部署，GPU/CPU 弹性）</td><td>营业执照/身份证/银行卡/银行回单/合同关键字段结构化识别模板；统一 OCR API + 识别置信度分级——高置信自动填充、低置信人工复核兜底；识别记录可回溯</td></tr>
+            </tbody></table></div>
+            <div class="block-label text-emerald-600 mt-4">落地效果</div>
+            <div class="quote-card">新项目从"重复选型、重复对接、重复运维"变成"开箱即用调 API"；私有化部署让翻译/OCR 数据不出内网、零按次付费；文档转换还原度与审批流体验全平台一致；能力升级一次、全业务线受益——公共能力中台成为研发效率的"基础设施红利"。</div>
+        </div>
+
+        <!-- 10 开发规范脚手架 + AI 提效 -->
+        <div id="r10" class="rect-card rect-10">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="rect-num rn-10">10</div>
+                <h2 class="text-lg font-bold text-gray-800">开发规范与脚手架 + AI 工程化提效（Skill 封装）</h2>
+            </div>
+            <div class="block-label text-red-500">背景与问题</div>
+            <ul>
+                <li>1300+ 页静态原型多人协作：无规范则风格漂移（图表库混用、组件复制粘贴、色板随意），review 成本高、新人上手慢</li>
+                <li>AI 编码助手"裸用"效果不稳定：每人 prompt 各写各的、生成代码风格不一致、业务上下文每次重复解释——AI 能力强，但<strong>没有工程化的用法就发挥不出来</strong></li>
+                <li>原型页面高度模式化（面包屑+筛选区+表格+抽屉+表单），天然适合模板化与 AI 批量生成</li>
+            </ul>
+            <div class="block-label text-blue-500 mt-4">方案设计</div>
+            <ul>
+                <li><strong>规范文档化进仓库</strong>：技术栈约定（纯静态 HTML+Tailwind CDN+FontAwesome）、目录结构、页面骨架、命名与色板、统一图表库、DDL 归属提示等写成 CLAUDE.md / 项目规范——<b>规范即 AI 的系统提示词</b>，人和 AI 读同一份规则</li>
+                <li><strong>脚手架</strong>：标准页面骨架模板（面包屑/筛选/表格/抽屉一键生成）、新子系统目录模板（index 框架+菜单配置+全景入口注册），杜绝从零手写</li>
+                <li><strong>AI Skill 封装</strong>（核心动作）：把重复动作沉淀为可复用的 AI 技能，已落地<strong>两套 Skill 库共 12 个</strong>——
+                    <table class="doc-table mt-2">
+                        <thead><tr><th style="width:150px">原型 Skill 库<span class="block-label text-gray-400 mt-1">p000_person_skills/.trae/skills</span></th><th>职责与触发场景</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>00-html-prototype-base</code></td><td>通用基座：底层框架/用途选择器（管理后台·门户·会员中心·客户端·手机端·大屏）+ 菜单布局选择器 + 通用页面模式，其余 skill 均为它的特化</td></tr>
+                            <tr><td><code>01-architecture-design</code></td><td>架构/设计文档页：系统设计文档、架构图、场景分析、领域建模</td></tr>
+                            <tr><td><code>02-manage-pages</code></td><td>管理后台页：CRUD、系统配置、合同/履约管理、报表</td></tr>
+                            <tr><td><code>03-client-pages</code></td><td>门户会员中心页：工作台看板、合同管理、履约中心、单据中心、结算中心、待办</td></tr>
+                            <tr><td><code>04-mobile-pages</code></td><td>手机端页：触控友好、底部 Tab、移动适配预览</td></tr>
+                            <tr><td><code>b2b-portal-design</code></td><td>B2B 门户/产业互联网平台：12 个垂直行业，行情组件、3D/视差动效、响应式 HTML 原型</td></tr>
+                        </tbody>
+                    </table>
+                    <table class="doc-table mt-3">
+                        <thead><tr><th style="width:150px">开发 Skill 库<span class="block-label text-gray-400 mt-1">p002_portal/.codebuddy/skills</span></th><th>职责与触发场景</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>boot-admin-dev</code></td><td>boot 管理端开发工作流：需求澄清→原型→评审→落地→联调（Vue2+ElementUI+Avue2，管理端 JSON 经网关透传）</td></tr>
+                            <tr><td><code>boot-client-dev</code></td><td>boot 客户端开发工作流（Vue3+ElementPlus+Pinia，ds 协议/directives 短路、WebSocket 推送）</td></tr>
+                            <tr><td><code>iface-backend-dev</code></td><td>iface 旧工程后端工作流：接口设计→handler→协议调用→SQL→测试（SpringBoot+hessian/dataShare）</td></tr>
+                            <tr><td><code>third-party-dev</code></td><td>第三方对接工作流：入站（验签解密→DS 协议落库）与出站（RSA 加签加密），政务/视频云/资金渠道</td></tr>
+                            <tr><td><code>proto-check</code></td><td>原型还原度源码级核对：以 requirement.md（原型还原/业务规则/字段清单）为主清单逐项 ✅/❌ 出报告</td></tr>
+                            <tr><td><code>fidelity-check</code></td><td>运行时还原度对照：真实浏览器实测（截图+DOM 探针+控制台门禁），左参考右实测差异报告</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="text-xs text-gray-400 mt-2">两套 Skill 库跨项目复用：原型库管"页面怎么长"（风格即规范），开发库管"功能怎么落地"（工作流即规范），check 类 skill 负责交付前自动验收——需求从描述到可验收实现的链路全部 Skill 化。</p>
+                </li>
+                <li><strong>度量闭环</strong>：以"产出一页标准管理页"为基准对比效率，人工只做业务语义校对与取舍</li>
+            </ul>
+            <div class="block-label text-emerald-600 mt-4">落地效果</div>
+            <div class="quote-card">一页标准管理页从"1-2 小时手写"到"几分钟 AI 出稿 + 人工校对"；生成物自带规范（色板/组件/命名/导航注册），风格不再漂移、review 成本下降；新人当天即可产出合格页面——<b>规范+脚手架+Skill 沉淀为团队资产，提效不依赖任何个人</b>。这正是本项目 1300+ 页原型能够持续快速扩张的工程底座。</div>
+        </div>
+
+        <!-- 底部串联 -->
+        <div class="mt-8 rounded-2xl p-5 text-white" style="background: linear-gradient(135deg, #0F766E, #0891B2);">
+            <div class="text-sm opacity-80 mb-1"><i class="fas fa-quote-left mr-1.5"></i>十项整改的底层逻辑</div>
+            <p class="text-base leading-relaxed">这十项不是十个孤立的技术点，而是同一条主线：<strong>把"每次定制都要改代码"变成"配置与契约"</strong>——国际化、授权码、交收三元组管"对内多变"（客户差异），支付中心、DS+MID、开放网关管"对外集成"（生态差异），等保信创与数据脱敏管"底线信任"（合规与数据安全），统一基础工具与规范脚手架管"能力复用与效率复利"（基础能力+AI 工程化）。技术经理的价值就是把不变的核心收敛到底座里，让变化发生在配置层、把重复交给 AI。</p>
+        </div>
+
+        <div class="mt-10 text-center">
+            <div class="section-divider mb-4"></div>
+            <p class="text-xs text-gray-400">技术整改七项 · 深度参与与落地 · 00_tech_leader</p>
+        </div>
+    </div>
+</body>
+</html>

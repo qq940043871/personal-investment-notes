@@ -160,6 +160,22 @@ body {
   transform: rotate(90deg);
 }
 
+/* 嵌套子分组（prep/07-八股题库 等一级子目录）*/
+.folder.nested > .folder-header {
+  padding-left: 32px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.folder.nested > .folder-header .folder-label::before {
+  content: '└ ';
+  color: var(--text-secondary);
+}
+
+.folder.nested > .folder-children .file-item {
+  padding-left: 64px;
+}
+
 .folder-icon {
   font-size: 14px;
   flex-shrink: 0;
@@ -556,11 +572,10 @@ body {
   </div>
 
   <div class="sidebar-stats">
-    <span class="stat-chip md">27 .md</span>
-    <span class="stat-chip html">7 .html</span>
-    <span class="stat-chip pptx">5 .pptx</span>
-    <span class="stat-chip">2 .js</span>
-    <span class="stat-chip">41 文件</span>
+    <span class="stat-chip md">52 .md</span>
+    <span class="stat-chip html">23 .html</span>
+    <span class="stat-chip pptx">6 .pptx</span>
+    <span class="stat-chip">82 文件</span>
   </div>
 
   <div class="search-box">
@@ -586,7 +601,7 @@ body {
     <div class="welcome">
       <div class="welcome-icon">📖</div>
       <h2>面试备战资料库</h2>
-      <p>41 份精心整理的面试备战文档（已按主题整合），覆盖面试话术、技术架构、B2B业务、职业发展、模拟面试等 8 大主题。</p>
+      <p>82 份精心整理的文档（已按主题归位并统一命名），覆盖产品定位、业务价值、架构决策与问题排查、案例与投递、职业发展、面试准备与模拟对练、八股题库、工具与速查 8 大分类。</p>
       <p style="margin-top:8px;font-size:13px;">点击左侧文件树开始浏览 →</p>
     </div>
   </div>
@@ -596,89 +611,149 @@ body {
 // ===================== DIRECTORY TREE DATA =====================
 const TREE = [
   {
-    name: '01-面试备战', icon: '🎯', count: 12, open: true,
+    name: '01-产品定位', icon: '🎯', count: 5, open: true,
+    files: [
+      '01-平台功能与产品设计手册.md',
+      '02-平台角色与业务动作全景手册.md',
+      '03-平台设计规范与审查方法论手册.md',
+      '04-产品全业务链条与运营思路.mobile.html',
+      '05-产品全业务链条与运营思路.slides.pptx'
+    ]
+  },
+  {
+    name: '02-业务价值', icon: '💼', count: 8,
+    files: [
+      '01-业务价值与客户运营.md',
+      '02-业务全链路场景手册.md',
+      '03-业务场景与痛点全景手册.md',
+      '04-现货交易供应链-难点与解决方案速查手册.md',
+      '05-业务痛点与系统解决方案-架构详解.md',
+      '06-客户案例与行业对标手册.md',
+      '07-期现结合业务实现思路.md',
+      '08-郑大信息-供应链B2B与供应链金融方案深度分析.html'
+    ]
+  },
+  {
+    name: '03-架构决策与问题排查', icon: '🏗️', count: 8, open: true,
+    files: [
+      '01-架构方法论与选型设计手册.md',
+      '02-异构架构策略与真实系统叙事手册.md',
+      '03-平台化治理与多租户架构手册.md',
+      '04-B2B系统技术难点与痛点解决.md',
+      '05-Saga编排器详细介绍.md',
+      '06-Cookie认证失败-5Why根因分析.md',
+      '07-Cookie认证失败-5Why根因分析.slides.pptx',
+      '08-技术整改十项与落地.html'
+    ]
+  },
+  {
+    name: '04-案例与投递', icon: '📊', count: 6,
+    files: [
+      '01-数字产业链服务平台-全量分析.md',
+      '02-数字产业链服务平台-含痛点方案.pptx',
+      '03-B2B技术经理简历PPT.pptx',
+      '04-B2B技术经理-能力全景介绍.pptx',
+      '05-B2B产品服务客户案例.slides.pptx',
+      '05-B2B产品服务客户案例.pdf'
+    ]
+  },
+  {
+    name: '05-职业发展', icon: '🚀', count: 5,
+    files: [
+      '01-技术经理成长体系手册.md',
+      '02-职业发展进阶路线图手册.md',
+      '03-技术情报收集与跨部门沟通手册.md',
+      '04-L2到L4晋级路线图.print.html',
+      '05-技术经理提升计划-A4.print.html'
+    ]
+  },
+  {
+    name: '06-面试准备与模拟对练', icon: '🎯', count: 20, open: true,
     files: [
       '01-面试核心策略手册.md',
-      '02-业务价值与客户运营.md',
-      '03-业务全链路场景手册.md',
-      '04-技术栈全景与面试题库.md',
-      '05-中间件与基础补课.md',
-      '06-角色定位与技术竞争力.md',
-      '07-面试问答与话术实战.md',
-      '08-国企面试焦点分析.md',
-      '09-简历与自我介绍脚本.md',
-      '10-背诵版-产品与个人综合手册.md',
-      '背诵版-手机版.html',
-      'B2B技术经理简历PPT.pptx'
+      '02-技术栈全景与面试题库.md',
+      '03-中间件深度与基础补课.md',
+      '04-技术复习综合手册.md',
+      '05-角色定位与技术竞争力.md',
+      '06-面试问答与话术实战.md',
+      '07-国企面试焦点分析.md',
+      '08-简历与自我介绍脚本.md',
+      '09-面试背诵综合手册.md',
+      '09-面试背诵综合手册.mobile.html',
+      '09-面试背诵综合手册.visual.html',
+      '10-模拟面试方案合集(01-04).md',
+      '11-模拟面试流程与提示词手册.md',
+      '12-技术经理双能力体系.md',
+      '12-技术经理双能力体系.visual.html',
+      '13-客户深度复盘与面试亮点.md',
+      '13-客户深度复盘与面试亮点.visual.html',
+      '14-面试训练框架与计划.md',
+      '14-面试训练框架与计划.visual.html',
+      '15-快速通览一页纸简报.html'
     ]
   },
   {
-    name: '02-技术成长', icon: '📈', count: 4,
-    files: [
-      '面试技术复习综合手册.md',
-      '技术经理成长体系手册.md',
-      'SAGA编排器详细介绍.md',
-      '技术经理提升计划A4打印版.html'
+    name: '07-八股题库', icon: '📚', count: 33,
+    children: [
+      {
+        name: '01-八股文与深度整理', icon: '☕', count: 26,
+        files: [
+          '01-Java面试题深度整理.md',
+          '01-Java面试题深度整理.html',
+          '02-Java深度八股文.md',
+          '02-Java深度八股文.html',
+          '03-MySQL面试题深度整理.md',
+          '03-MySQL面试题深度整理.html',
+          '04-MySQL八股文追问链.md',
+          '04-MySQL八股文追问链.html',
+          '05-Redis面试题深度整理.md',
+          '05-Redis面试题深度整理.html',
+          '06-Redis八股文追问链.md',
+          '06-Redis八股文追问链.html',
+          '07-Nginx面试题深度整理.md',
+          '07-Nginx面试题深度整理.html',
+          '08-Nginx深度八股文.md',
+          '08-Nginx深度八股文.html',
+          '09-KafkaZookeeper深度八股文.md',
+          '09-KafkaZookeeper深度八股文.html',
+          '10-Linux面试题深度整理.md',
+          '10-Linux面试题深度整理.html',
+          '11-Tomcat面试题深度整理.md',
+          '11-Tomcat面试题深度整理.html',
+          '12-网络连接类型面试题深度整理.md',
+          '12-网络连接类型面试题深度整理.html',
+          '13-网络连接类型八股文.md',
+          '13-网络连接类型八股文.html'
+        ]
+      },
+      {
+        name: '02-面试真题', icon: '📋', count: 7,
+        files: [
+          '01-个人技术画像与求职定位.md',
+          '02-郑州25K全栈架构师综合面试题库.md',
+          '03-架构师面试真题.md',
+          '04-高级Java开发全栈面试真题.md',
+          '05-高级运维面试真题.md',
+          '06-项目经理面试真题.md',
+          '07-高级应用工程师面试题真题.md'
+        ]
+      }
     ]
   },
   {
-    name: '03-架构决策', icon: '🏗️', count: 4,
+    name: '08-工具与速查', icon: '🔧', count: 5,
     files: [
-      '架构方法论与选型设计手册.md',
-      '异构架构策略与真实系统叙事手册.md',
-      '平台化治理与多租户架构手册.md',
-      '郑大信息B2B系统技术难点与痛点解决手册.md'
-    ]
-  },
-  {
-    name: '04-B2B业务分析', icon: '💼', count: 4,
-    files: [
-      'B2B业务场景与痛点全景手册.md',
-      'B2B平台功能与产品设计手册.md',
-      'B2B客户案例与行业对标手册.md',
-      'B2B平台设计规范与审查方法论手册.md'
-    ]
-  },
-  {
-    name: '05-工具与排版', icon: '🔧', count: 5,
-    files: [
-      'A4排版提升指南.html',
-      'L2到L4晋级路线图-A4一页纸.html',
-      'microservices-architecture-handdrawn.html',
-      'RICE优先级决策矩阵.html',
-      '方法速查卡-5Whys与业务技术映射.html'
-    ]
-  },
-  {
-    name: '06-演示材料', icon: '📊', count: 7,
-    files: [
-      'B2B技术经理-能力全景介绍.pptx',
-      'Cookie认证失败-5Why根因分析.pptx',
-      'Cookie认证失败-5Why根因分析报告.md',
-      '产品全业务链条与运营思路.pptx',
-      '产品全业务链条与运营思路-手机电子书.html',
-      '数字产业链服务平台_再现版_含痛点方案.pptx',
-      '数字产业链服务平台PPT全量分析.md'
-    ]
-  },
-  {
-    name: '07-职业发展', icon: '🚀', count: 2,
-    files: [
-      '职业发展进阶路线图手册.md',
-      '技术情报收集与跨部门沟通手册.md'
-    ]
-  },
-  {
-    name: '08-模拟面试', icon: '🎤', count: 2,
-    files: [
-      '模拟面试方案合集(01-04).md',
-      '模拟面试流程与提示词手册.md'
+      '01-md-viewer.html',
+      '02-面试背诵集合.html',
+      '03-RICE优先级决策矩阵.html',
+      '04-5Whys与业务技术映射速查卡.html',
+      '05-B2B微服务系统架构图-手绘版.html'
     ]
   }
 ];
 
 // Root-level files
-const ROOT_FILES = ['00-全目录概览.md'];
+const ROOT_FILES = ['00-资料库总览.md'];
 
 // ===================== STATE =====================
 let currentFilePath = '';
@@ -709,23 +784,13 @@ function buildTree() {
   });
   html += '</div></div>';
 
-  // Subfolders
+  // Subfolders (支持一级嵌套：folder.children)
   TREE.forEach(folder => {
-    const isOpen = folder.open ? ' open' : '';
-    html += `<div class="folder${isOpen}">`;
-    html += `<div class="folder-header" data-folder="${folder.name}" onclick="toggleFolder(this)">`;
-    html += '<span class="folder-arrow">▶</span>';
-    html += `<span class="folder-icon">${folder.icon}</span>`;
-    html += `<span class="folder-label">${folder.name}</span>`;
-    html += `<span class="folder-count">${folder.count}</span></div>`;
-    html += '<div class="folder-children">';
-    folder.files.forEach(f => {
-      const extCls = getExtClass(f);
-      html += `<div class="file-item" data-filename="${f}" data-folder="${folder.name}" onclick="openFile('${folder.name}', '${f}')">`;
-      html += `<span class="file-type-badge ${extCls}">${f.split('.').pop()}</span>`;
-      html += `<span class="file-name">${f}</span></div>`;
+    const childCount = (folder.children || []).reduce((s, c) => s + (c.files || []).length, 0);
+    html += renderFolder(folder.name, folder.name, folder.icon, folder.files, folder.open, childCount);
+    (folder.children || []).forEach(sub => {
+      html += renderFolder(sub.name, `${folder.name}/${sub.name}`, sub.icon, sub.files, sub.open);
     });
-    html += '</div></div>';
   });
 
   container.innerHTML = html;
@@ -739,6 +804,26 @@ function buildTree() {
       filename: el.dataset.filename
     });
   });
+}
+
+function renderFolder(label, pathKey, icon, files, open, countOverride) {
+  const list = files || [];
+  const total = countOverride !== undefined ? countOverride : list.length;
+  let html = `<div class="folder${open ? ' open' : ''}${pathKey.includes('/') ? ' nested' : ''}">`;
+  html += `<div class="folder-header" data-folder="${pathKey}" onclick="toggleFolder(this)">`;
+  html += '<span class="folder-arrow">▶</span>';
+  html += `<span class="folder-icon">${icon || '📁'}</span>`;
+  html += `<span class="folder-label">${label}</span>`;
+  html += `<span class="folder-count">${total}</span></div>`;
+  html += '<div class="folder-children">';
+  list.forEach(f => {
+    const extCls = getExtClass(f);
+    html += `<div class="file-item" data-filename="${f}" data-folder="${pathKey}" onclick="openFile('${pathKey}', '${f}')">`;
+    html += `<span class="file-type-badge ${extCls}">${f.split('.').pop()}</span>`;
+    html += `<span class="file-name">${f}</span></div>`;
+  });
+  html += '</div></div>';
+  return html;
 }
 
 // ===================== ACTIONS =====================

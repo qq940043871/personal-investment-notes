@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 派生件（打印版）：内容源 = 05-职业发展/01-技术经理成长体系手册.md（L2→L4 突破成长策略部分）。修改内容请改源件 md，本文件仅负责 A4 排版输出。 -->
+<title>L2→L4 晋级路线图 · A4</title>
+<style>
+  @page { size: A4; margin: 14mm 15mm 12mm 15mm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
+    color: #1a1a2e; font-size: 9pt; line-height: 1.58;
+    background: #fff;
+  }
+  .page { width: 100%; max-width: 180mm; margin: 0 auto; }
+
+  /* ── Header ── */
+  .hdr { text-align: center; margin-bottom: 4mm; }
+  .hdr h1 { font-size: 17pt; font-weight: 900; color: #0d3b66; letter-spacing: 2px; }
+  .hdr .tagline {
+    font-size: 8pt; color: #888; margin-top: 0.5mm;
+    display: flex; justify-content: center; gap: 5mm;
+  }
+  .hdr .tagline span { display: inline-block; }
+
+  /* ── Core insight box ── */
+  .insight {
+    background: linear-gradient(135deg, #0d3b66 0%, #1a5c8a 100%);
+    color: #fff; padding: 3mm 4mm; border-radius: 2mm; margin-bottom: 3.5mm;
+    font-size: 8.5pt; line-height: 1.5; text-align: center;
+  }
+  .insight strong { color: #f0c75e; font-size: 9.5pt; }
+
+  /* ── Two-column layout ── */
+  .row { display: flex; gap: 3.5mm; margin-bottom: 3mm; }
+  .col { flex: 1; min-width: 0; }
+
+  /* ── Section titles ── */
+  .sec-title {
+    font-size: 10.5pt; font-weight: 800; color: #0d3b66;
+    padding-left: 2.5mm; border-left: 3px solid #0d3b66; margin-bottom: 2mm;
+  }
+
+  /* ── Level comparison table ── */
+  .lv-table { width: 100%; border-collapse: collapse; margin: 0 0 2mm; font-size: 8pt; line-height: 1.45; }
+  .lv-table th { background: #0d3b66; color: #fff; padding: 1.2mm 1.5mm; font-weight: 700; text-align: center; font-size: 7.5pt; }
+  .lv-table td { border: 1px solid #d5dde5; padding: 1mm 1.5mm; vertical-align: top; }
+  .lv-table tr:nth-child(even) td { background: #f4f7fb; }
+  .lv-table .now { background: #fff3cd !important; font-weight: 700; }
+  .lv-table .target { background: #d4edda !important; font-weight: 700; }
+
+  /* ── Cycle diagram ── */
+  .cycle {
+    border: 1.5px solid #cc3333; border-radius: 2mm; padding: 2mm 3mm;
+    margin-bottom: 2.5mm; font-size: 7.8pt; background: #fef6f6;
+  }
+  .cycle .flow { display: flex; align-items: center; justify-content: center; gap: 0.8mm; flex-wrap: wrap; margin-bottom: 1.2mm; }
+  .cycle .step {
+    background: #cc3333; color: #fff; padding: 0.8mm 2mm; border-radius: 1mm;
+    font-weight: 700; font-size: 7pt; white-space: nowrap;
+  }
+  .cycle .arrow { color: #cc3333; font-weight: 900; font-size: 10pt; }
+  .cycle .break {
+    background: #2d9c4e; color: #fff; padding: 1.2mm 4mm; border-radius: 1.5mm;
+    font-weight: 800; font-size: 7.5pt; text-align: center;
+  }
+
+  /* ── Action cards ── */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; margin-bottom: 2.5mm; }
+  .card {
+    border: 1px solid #e0e6ed; border-radius: 1.5mm; padding: 2mm 2.5mm; position: relative;
+  }
+  .card .num {
+    position: absolute; top: -0.5mm; left: -0.5mm;
+    width: 4.5mm; height: 4.5mm; border-radius: 50%;
+    font-size: 6pt; font-weight: 900; display: flex; align-items: center; justify-content: center;
+  }
+  .card .c1 .num, .card.act1 .num { background: #0d3b66; color: #fff; }
+  .card .c2 .num, .card.act2 .num { background: #1a8a5a; color: #fff; }
+  .card .c3 .num, .card.act3 .num { background: #d4940b; color: #fff; }
+  .card .c4 .num, .card.act4 .num { background: #6b3fa0; color: #fff; }
+  .card h4 { font-size: 8.5pt; font-weight: 700; margin-bottom: 1mm; }
+  .card p { font-size: 7.5pt; line-height: 1.45; color: #444; }
+
+  /* ── 90-day roadmap ── */
+  .roadmap { display: flex; gap: 1.5mm; margin-bottom: 2.5mm; }
+  .road-phase {
+    flex: 1; border-top: 3px solid #0d3b66; padding-top: 1.5mm;
+    text-align: center; font-size: 7.5pt; line-height: 1.4;
+  }
+  .road-phase:nth-child(2) { border-top-color: #1a8a5a; }
+  .road-phase:nth-child(3) { border-top-color: #d4940b; }
+  .road-phase:nth-child(4) { border-top-color: #6b3fa0; }
+  .road-phase .week { font-size: 6.5pt; color: #999; margin-bottom: 0.5mm; }
+  .road-phase .goal { font-weight: 700; font-size: 8pt; margin-bottom: 0.5mm; }
+  .road-phase .acts { font-size: 7pt; color: #555; }
+
+  /* ── Bottom checklist ── */
+  .checklist {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5mm;
+    font-size: 7pt; background: #f8f9fb; border-radius: 1.5mm; padding: 2mm 3mm;
+  }
+  .checklist .chk-item { display: flex; align-items: flex-start; gap: 1mm; }
+  .checklist .chk-box {
+    width: 3mm; height: 3mm; border: 1.5px solid #0d3b66; border-radius: 0.5mm;
+    flex-shrink: 0; margin-top: 0.3mm;
+  }
+
+  /* ── Divider ── */
+  .divider { height: 1px; background: #e0e6ed; margin: 2.5mm 0; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="hdr">
+    <h1>L2 → L4 晋级路线图</h1>
+    <div class="tagline">
+      <span>从"救火队长"到"技术操盘手"</span>
+      <span>·</span>
+      <span>90 天可落地</span>
+      <span>·</span>
+      <span>零预算启动</span>
+    </div>
+  </div>
+
+  <!-- Core Insight -->
+  <div class="insight">
+    <strong>核心洞察：</strong>L2→L4 的差距不是技术能力差距，是<strong>"信息位置"</strong>的差距 ——
+    L2 站在需求下游被动接单，L4 站在业务上游预判方向。<strong>改变的关键是换站位，不是加技能。</strong>
+  </div>
+
+  <!-- Two columns: Level table + Cycle -->
+  <div class="row">
+    <div class="col" style="flex: 1.15;">
+      <div class="sec-title">层级跃迁对照</div>
+      <table class="lv-table">
+        <tr><th>层级</th><th>业务理解深度</th><th>典型状态</th><th>信息位置</th></tr>
+        <tr><td>L1</td><td>能听懂需求文字</td><td>"PM让做什么就做什么"</td><td>需求最下游</td></tr>
+        <tr class="now"><td><strong>L2 ▸</strong></td><td>理解需求的功能逻辑</td><td>"我知道怎么实现，也大概知道为什么"</td><td>需求下游，被动接单</td></tr>
+        <tr><td><strong>L3</strong></td><td>预判需求的业务影响，主动提案</td><td>"这么做有隐患，建议改成…"</td><td>进入业务讨论，反向影响需求</td></tr>
+        <tr class="target"><td><strong>L4</strong></td><td>引导业务方向，技术创造业务机会</td><td>"基于我们的能力，可以开新业务模式"</td><td>业务上游，参与战略</td></tr>
+      </table>
+      <div style="font-size:7pt; color:#d4940b; margin-top:0.5mm; font-weight:700;">
+        ★ L2→L3 分水岭 = 你出现在"需求被决定之前"还是"之后"
+      </div>
+    </div>
+    <div class="col" style="flex: 0.85;">
+      <div class="sec-title">恶性循环 &amp; 破局点</div>
+      <div class="cycle">
+        <div class="flow">
+          <span class="step">资源不足</span>
+          <span class="arrow">→</span>
+          <span class="step">打补丁</span>
+          <span class="arrow">→</span>
+          <span class="step">技术债累积</span>
+          <span class="arrow">→</span>
+          <span class="step">频繁救火</span>
+          <span class="arrow">→</span>
+          <span class="step">没时间建设</span>
+        </div>
+        <div style="text-align:center; margin-bottom:1mm; font-size:7pt; color:#cc3333;">
+          ↻ 循环回到起点（恶性循环）
+        </div>
+        <div class="break">
+          ⚡ 破局点：让临时方案变得"可治理" → 省出救火时间 → 换成建设时间（复利）
+        </div>
+        <div style="font-size:6.8pt; color:#666; margin-top:1mm; line-height:1.4;">
+          关键杠杆：① 建技术债台账（隐性→显性） ② 临时方案三军规（必留退路/必进台账/必设触发线） ③ 标准件复用（救火时间递减）
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Four Core Actions -->
+  <div class="sec-title">四大核心动作（零预算启动）</div>
+  <div class="cards">
+    <div class="card act1">
+      <h4>① 建立"技术债台账"</h4>
+      <p>花 2 小时把脑子里的技术债全倒出来，排优先级。临时方案从"隐性"变"显性"= 可控。这是向上要资源的弹药——老板对<strong>风险</strong>买单，不对架构美学买单。</p>
+    </div>
+    <div class="card act2">
+      <h4>② 每季度"业务预判对齐"</h4>
+      <p>约业务负责人 30 分钟，问三句话：下季度打什么？最卡的痛点？如果技术不是瓶颈你最想要什么？提前 1-2 季度知道方向 = L3 的预判能力。</p>
+    </div>
+    <div class="card act3">
+      <h4>③ 需求评审加一句"为什么"</h4>
+      <p>每次收到需求先问：为什么要做？解决什么业务问题？成功指标是什么？从"功能思维"切换到"业务思维"——这是 L3 的核心肌肉。</p>
+    </div>
+    <div class="card act4">
+      <h4>④ "绞杀者模式"渐进重构</h4>
+      <p>新功能走新方案，老流量逐步迁移，老方案自然下线。不停机、不影响业务、随时可回滚——资源受限团队<strong>唯一现实的重构方式</strong>。</p>
+    </div>
+  </div>
+
+  <!-- 90-Day Roadmap -->
+  <div class="sec-title">90 天晋级路线</div>
+  <div class="roadmap">
+    <div class="road-phase">
+      <div class="week">第 1-2 周</div>
+      <div class="goal">止血期</div>
+      <div class="acts">建台账<br>定三军规<br>让债显性化</div>
+    </div>
+    <div class="road-phase">
+      <div class="week">第 3-6 周</div>
+      <div class="goal">换站位期</div>
+      <div class="acts">约业务对齐<br>需求评审问"为什么"<br>摸 L3 门槛</div>
+    </div>
+    <div class="road-phase">
+      <div class="week">第 7-10 周</div>
+      <div class="goal">建机制期</div>
+      <div class="acts">沉淀 2-3 标准件<br>建救火 SOP<br>on-call 轮值</div>
+    </div>
+    <div class="road-phase">
+      <div class="week">第 11-13 周</div>
+      <div class="goal">撬资源期</div>
+      <div class="acts">向上提案<br>首次健康度汇报<br>拿治理预算</div>
+    </div>
+  </div>
+
+  <!-- Bottom: Checklist + Key Formula -->
+  <div class="divider"></div>
+
+  <div style="display:flex; gap:3mm;">
+    <div style="flex:1;">
+      <div style="font-size:8pt; font-weight:700; color:#0d3b66; margin-bottom:1.5mm;">本周行动清单</div>
+      <div class="checklist">
+        <div class="chk-item"><span class="chk-box"></span>倒出全部技术债，排优先级</div>
+        <div class="chk-item"><span class="chk-box"></span>定临时方案三军规并宣贯</div>
+        <div class="chk-item"><span class="chk-box"></span>约业务负责人季度对齐</div>
+        <div class="chk-item"><span class="chk-box"></span>需求评审加"为什么"环节</div>
+        <div class="chk-item"><span class="chk-box"></span>画业务-技术映射地图</div>
+        <div class="chk-item"><span class="chk-box"></span>沉淀第一个标准件</div>
+        <div class="chk-item"><span class="chk-box"></span>用公式做向上要资源提案</div>
+        <div class="chk-item"><span class="chk-box"></span>输出首份季度健康度汇报</div>
+      </div>
+    </div>
+    <div style="flex:0.85; background:#f0f6fc; border-radius:1.5mm; padding:2mm 3mm; font-size:7pt; line-height:1.55;">
+      <div style="font-weight:700; margin-bottom:1mm; font-size:8pt;">⬆ 向上沟通黄金公式</div>
+      <strong>现状风险</strong>（量化：Q4大促可能资损XX万）<br>
+      + <strong>解决方案</strong>（低成本：5人日自动化）<br>
+      + <strong>业务收益</strong>（老板关心的：杜绝风险）<br>
+      <span style="color:#0d3b66; font-weight:700;">= 要资源成功率翻倍</span>
+      <div style="margin-top:1.5mm; padding-top:1.2mm; border-top:1px solid #d5dde5;">
+        <span style="font-weight:700;">💡 12 周后你会发现：</span><br>
+        救火时间 ↓ · 业务方主动找你聊方向 · 老板信你的判断<br>
+        <span style="color:#1a8a5a; font-weight:700;">从 L2"接单工"→ L3"业务技术操盘手"</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
