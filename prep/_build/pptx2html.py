@@ -26,12 +26,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 需转换的源件（相对 prep/）
 TARGETS = [
-    "01-产品定位/05-产品全业务链条与运营思路.slides.pptx",
-    "03-架构决策与问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx",
-    "04-案例与投递/02-数字产业链服务平台-含痛点方案.pptx",
-    "04-案例与投递/03-B2B技术经理简历PPT.pptx",
-    "04-案例与投递/04-B2B技术经理-能力全景介绍.pptx",
-    "04-案例与投递/05-B2B产品服务客户案例.slides.pptx",
+    "03-客户案例/02-数字产业链服务平台-含痛点方案.pptx",
+    "03-客户案例/04-B2B技术经理-能力全景介绍.pptx",
+    "03-客户案例/05-B2B产品服务客户案例.slides.pptx",
+    "04-架构决策/生产问题/07-Cookie认证失败-5Why根因分析.slides.pptx",
 ]
 
 PAGENUM_RE = re.compile(r"^\s*\d+\s*/\s*\d+\s*$")

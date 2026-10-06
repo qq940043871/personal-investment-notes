@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>五类客户运营模式深度拆解（十层框架对照）</title>
+<!--
+  标注约定：〔披露〕= 客户公开披露的事实；〔推断〕= 依据框架做的合理推断，面试须说"我的理解是"而非"客户就是这样"。
+-->
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Source Han Sans SC", sans-serif;
+    color: #1a1a1a; font-size: 14px; line-height: 1.7; background: #f5f7fa;
+    padding: 24px 16px 60px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  header {
+    background: linear-gradient(135deg, #0b5394, #1478c4);
+    color: #fff; border-radius: 10px; padding: 26px 30px; margin-bottom: 20px;
+  }
+  header h1 { font-size: 24px; font-weight: 700; letter-spacing: .5px; }
+  header .sub { font-size: 13px; opacity: .92; margin-top: 6px; }
+  header .tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+  header .tags span {
+    background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
+    border-radius: 4px; padding: 2px 9px; font-size: 12px;
+  }
+
+  section {
+    background: #fff; border: 1px solid #dde5ee; border-radius: 10px;
+    padding: 22px 26px; margin-bottom: 18px;
+  }
+  h2 {
+    font-size: 18px; color: #0b5394; font-weight: 700;
+    padding-bottom: 8px; border-bottom: 2px solid #0b5394; margin-bottom: 14px;
+  }
+  h2 .num {
+    display: inline-block; background: #0b5394; color: #fff; width: 26px; height: 26px;
+    line-height: 26px; text-align: center; border-radius: 50%; font-size: 13px; margin-right: 9px;
+  }
+  h3 { font-size: 15px; color: #1478c4; margin: 16px 0 8px; }
+  p { margin-bottom: 9px; }
+  .lead { background: #eaf2fa; border-left: 4px solid #0b5394; padding: 12px 16px; border-radius: 0 6px 6px 0; margin-bottom: 14px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 10px 0; }
+  th { background: #0b5394; color: #fff; padding: 9px 10px; font-weight: 700; text-align: left; font-size: 12px; }
+  td { border: 1px solid #dde5ee; padding: 8px 10px; vertical-align: top; line-height: 1.6; }
+  tbody tr:nth-child(even) td { background: #f7fafd; }
+  td.dim { width: 132px; background: #eef4fa !important; font-weight: 700; color: #0b5394; }
+  .t-wide td:first-child { width: 118px; }
+
+  .tag {
+    display: inline-block; font-size: 10.5px; padding: 1px 6px; border-radius: 3px;
+    font-weight: 700; margin-right: 3px; vertical-align: 1px;
+  }
+  .t-dis { background: #d4edda; color: #155724; }
+  .t-inf { background: #fff3cd; color: #856404; }
+  .t-key { background: #f8d7da; color: #721c24; }
+
+  .cust { border: 1px solid #dde5ee; border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+  .cust > .hd { padding: 12px 18px; color: #fff; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .cust > .hd .nm { font-size: 16px; font-weight: 700; }
+  .cust > .hd .badge { font-size: 11px; background: rgba(255,255,255,.22); border: 1px solid rgba(255,255,255,.35); border-radius: 3px; padding: 1px 8px; }
+  .cust > .hd .quad { margin-left: auto; font-size: 12px; background: rgba(0,0,0,.18); border-radius: 4px; padding: 2px 10px; }
+  .hd.hz { background: linear-gradient(90deg,#c0392b,#e74c3c); }
+  .hd.xm { background: linear-gradient(90deg,#7d3c98,#8e44ad); }
+  .hd.qz { background: linear-gradient(90deg,#117a65,#16a085); }
+  .hd.yl { background: linear-gradient(90deg,#a04000,#d35400); }
+  .hd.lk { background: linear-gradient(90deg,#115e59,#0f766e); }
+  .cust .bd { padding: 14px 18px; background: #fff; }
+
+  .ins { background: #fff8e1; border: 1px solid #f0d88a; border-radius: 6px; padding: 12px 16px; margin-bottom: 10px; }
+  .ins .h { font-weight: 700; color: #b8860b; margin-bottom: 5px; font-size: 14px; }
+  .ins p { margin-bottom: 4px; font-size: 13px; }
+  .ins p:last-child { margin-bottom: 0; }
+  .quote { background: #0b5394; color: #fff; border-radius: 6px; padding: 14px 18px; margin: 14px 0; font-size: 14px; }
+  .quote b { color: #ffd97a; }
+  .foot { text-align: center; color: #8a94a6; font-size: 12px; margin-top: 22px; line-height: 1.8; }
+  @media print { body { background: #fff; padding: 0; } .wrap { max-width: 100%; } section { break-inside: avoid; page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>五类客户运营模式深度拆解</h1>
+  <div class="sub">用《B2B 大宗贸易平台的运营模式》十层框架，量一遍陕西煤炭交易中心 · 河南能源 · 清镇富矿精开 · 广西晔龙 · 中国-东盟林业资源全要素交易平台（广西林控）</div>
+  <div class="tags">
+    <span>十层框架</span><span>五象限定位</span><span>会计口径镜像</span><span>五种死法对照</span>
+    <span class="t-dis">〔披露〕客户公开事实</span><span class="t-inf">〔推断〕框架推导</span>
+  </div>
+</header>
+
+<!-- ========== 0 核心结论 ========== -->
+<section>
+  <h2><span class="num">0</span>核心结论：五个客户恰好落在交易模式的五个不同象限</h2>
+  <div class="lead">
+    <p style="margin:0">只讲"我们服务过五类客户"，面试官听到的是五个 logo；<b>讲"五个客户恰好覆盖了交易模式的五种形态"</b>，听到的是一套产品能力被五种商业逻辑验证过。</p>
+    <p style="margin:6px 0 0">这是本页存在的唯一理由：<b>产品四层架构不是设计出来的，是被五种交易模式逼出来的。</b></p>
+  </div>
+
+  <table class="t-wide">
+    <thead>
+      <tr><th style="width:118px">形态</th><th style="width:150px">客户</th><th>为什么归到这一象限</th><th style="width:140px">货权/价格风险</th><th style="width:160px">平台自己的赚钱方式</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="dim">产业方主导<br>资源型平台</td>
+        <td><b>河南能源</b>大宗平台<br>+ 中原云商</td>
+        <td>不为赚价差而做，为集团<b>产销协同 + 采购合规</b>而做；销售端四模式（竞价/挂牌/长协/邀约专场）本质是"把集团内部定价权用市场机制发现出来"，采购端是国资委指定的阳光采购工具。<span class="tag t-dis">披露</span></td>
+        <td>基本不承担<br>（不持库存、不买断）</td>
+        <td><b>集团内部效率收益 + 外部服务费</b><span class="tag t-inf">推断</span></td>
+      </tr>
+      <tr>
+        <td class="dim">纯撮合<br>+ 类金融基础设施</td>
+        <td><b>陕西煤炭交易中心</b></td>
+        <td>撮合本身不赚钱也不持货，但用<b>支付牌照做资金抓手</b>、用物流做证据链、用金融和数据变现——五个环节里只有第一个是"撮合"。<span class="tag t-dis">披露</span></td>
+        <td>不承担<br>（但持牌资金过手）</td>
+        <td><b>交易服务费 + 支付手续费 + 物流服务费 + 金融分润 + 数据订阅</b><span class="tag t-inf">推断</span></td>
+      </tr>
+      <tr>
+        <td class="dim">政府主导<br>准调控型平台</td>
+        <td><b>清镇</b>富矿精开·清铝集采</td>
+        <td>交易服从产业政策（资源优先向重点企业倾斜），平台同时是<b>税收监管工具</b>；真正的商业动作是<b>集采 + 代采垫资</b>——最接近自营、最吃风险的一种。代采 4.03 亿。<span class="tag t-dis">披露</span></td>
+        <td><b>承担</b><br>（代采垫资 + 货权管控）<span class="tag t-inf">推断</span></td>
+        <td><b>代采服务费 + 金融分润 + 监管政绩</b>（前两项商业，第三项是买单理由）<span class="tag t-inf">推断</span></td>
+      </tr>
+      <tr>
+        <td class="dim">自营<br>套保型贸易</td>
+        <td><b>广西晔龙</b></td>
+        <td>贸易商本体，一手货源买断、基差报价、下游点价，<b>完全承担货权与价格风险</b>；但它用期货套保把敞口锁住——<b>"套保型自营"与"赌行情型自营"是两种生意</b>。<span class="tag t-dis">披露</span></td>
+        <td><b>全额承担</b><br>靠套保对冲</td>
+        <td><b>进销价差</b>（自营，无服务费）<span class="tag t-dis">披露</span></td>
+      </tr>
+      <tr>
+        <td class="dim">政府授权设立的<br>要素交易场所</td>
+        <td><b>中国-东盟林业资源<br>全要素交易平台</b>（广西林控）<br><span class="tag t-key">我方承建</span></td>
+        <td>不是自由买卖，而是把国有林场的林木资产、林地经营权<b>推上公开市场竞价</b>，用价格发现证明"国有资产没贱卖"。建制完整：交易规则 + 交易商管理办法 + 竞价/挂牌/林权流转三类细则（现行 6 件 + 废止 21 条）。标的高度非标（活立木"包青山"按林班/小班整片打包），<b>靠规则而不是标准化商品完成线上化</b>。<span class="tag t-dis">披露</span></td>
+        <td>不承担货值风险；<br>承担<b>"规则与流程"责任</b>（流拍、争议、审计都要说得清）<span class="tag t-inf">推断</span></td>
+        <td><b>挂摘手续费</b>（按成交价比例，如 0.3%）+ <b>履约/挂摘保证金</b> + 会员服务费；费率还能当冷启动杠杆（"限时免收挂牌/专区服务费"）<span class="tag t-dis">披露</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="quote">
+    <b>面试可用的一句话：</b>"我们服务过的五个客户，正好把产业电商与要素交易走个遍——集团自用型、持牌撮合型、政府准调控型、套保自营型，再到要素交易场所型。风险敞口从'完全不承担'一路到'全额承担'。所以我们的产品里，撮合能力是基础，敞口管理、代采风控、规则与留痕才是真门槛。<b>这不是产品经理拍脑袋排的优先级，是五类客户逼出来的。</b>"
+  </div>
+</section>
+
+<!-- ========== 1 逐客户十层拆解 ========== -->
+<section>
+  <h2><span class="num">1</span>逐客户拆解：按框架十层对照</h2>
+
+  <div class="cust">
+    <div class="hd hz"><span class="nm">河南能源大宗商品交易平台 + 中原云商</span><span class="badge">我方承建两套系统</span><span class="quad">象限：产业方主导 · 零货权风险</span></div>
+    <div class="bd">
+      <table>
+        <tr><td class="dim">交易模式</td><td>销售端<b>竞价 / 挂牌 / 长协 / 邀约专场</b>四种；采购端<b>电子招投标 + 阳光采购</b>。不持有库存、不买断、不赌行情——平台的价值是"发现价格 + 合规免责"，不是赚价差。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">谁承担风险</td><td>销售端几乎零风险（背靠集团库存）；采购端的风险是<b>合规与审计风险</b>，不是货损风险。所以它最怕的不是亏钱，是留痕缺失被审计追责。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">履约与物流</td><td>典型<b>重资产 / 半重资产</b>：依托集团自有铁路专用线、港口堆场、仓库。煤化工品类对<b>质检与磅差</b>极度敏感（甲醇、1,4-丁二醇的杂质与水分争议直接改盈亏）。平台做的是<b>物流管理 + 仓单管理</b>，不是调度优化。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">资金与金融</td><td>当前以<b>结算 + 电子签约</b>为主；供应链金融是<b>转型方向</b>（2026 年官方招标公告可查）。所以它的风控优先级是：先合规留痕，再资金安全，最后才是金融。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">盈利模式</td><td>平台侧不应赚自营价差——那 8 亿溢价是<b>集团收入，不是平台收入</b>（最容易讲错的一点）；合理结构是<b>交易服务费 + SaaS/系统费 + 金融分润（转型后）</b>。<span class="tag t-inf">推断（务必讲清）</span></td></tr>
+        <tr><td class="dim">会计口径</td><td>应为<b>净额法</b>（不控制货权、控制权未实质转移，只收服务费）→ 营收规模小、毛利率高。若误按总额法并表，规模会虚增百倍且引审计问询。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">组织机制</td><td><b>品类经理制</b>的典型样本：煤/甲醇/乙二醇各自有懂行的品类经理负责授标、定价、磅差争议；系统管确定性流程，人管例外。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">核心指标</td><td>客户侧看<b>溢价增收额</b>（累计 8 亿，2024 当年破 1 亿）+ <b>采购周期</b>（20 天→7 天）；平台侧应看<b>交易吨数、活跃供方数、采购合规率、招投标争议率</b>。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">避开的死法</td><td>避开"只做信息黄页"——它有竞价、长协、招投标三套真实交易规则；也避开"撮合与自营边界模糊"——它<b>根本不碰自营</b>，边界天生干净。</td></tr>
+        <tr><td class="dim">最可能的坑</td><td><b>规模不经济</b>：只服务集团内部，成交量天然封顶，平台永远长不大。2026 年转型"电商+物流+供应链金融"正是为了破这个天花板——<b>说明它自己也清楚这个风险</b>。<span class="tag t-inf">推断</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="hd xm"><span class="nm">陕西煤炭交易中心（西煤交易）</span><span class="badge">持央行双支付牌照</span><span class="quad">象限：纯撮合 + 持牌资金通道</span></div>
+    <div class="bd">
+      <table>
+        <tr><td class="dim">交易模式</td><td>竞价、挂牌、报价、招标采购、定量交易多种；但真正的差异点不在交易形式，而在<b>"1+N"</b>——用支付把交易、物流、金融、数据串成一条链。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">履约与物流</td><td><b>轻资产第四方物流</b>：不自建车队，整合 <b>203 家承运商、19.98 万笔运单</b>，做电子围栏 + 在途可视化。<b>物流在这里的真实作用不是省运费，是生成"货真"证据链</b>——有了它金融才敢放款。运力 587 万吨为电厂降本 1800 万。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">资金与金融</td><td>五家里<b>唯一能合规"过手资金"</b>的一类：西煤支付做统一收款 + 智能分账，规避平台"二清"风险；金融层做应收账款融资、票付通（一手交货一手交票）。<span class="tag t-dis">披露</span>→ 这正是框架里"平台尽量做助贷而非放贷主体"的<b>持牌版本</b>：资金是银行的，风险是平台的，牌照是自己的。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">盈利模式</td><td>五级火箭：交易服务费（引流）→ <b>支付手续费</b>（现金流抓手）→ 物流服务费（粘性）→ 金融分润（利润）→ 数据与指数（定价权）。<b>这是六层盈利清单里唯一集齐 5 项的</b>。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">会计口径</td><td>净额法：营收是服务费与手续费，<b>不并表货值</b>。煤炭 6.01 亿吨 / 2846 亿元是客户成交规模，绝不能当成平台营收。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">组织机制</td><td>国有平台公司形态，风控、法务、结算中台化天然成立；获客靠行政力量（省属国企强制/引导上线、签框架协议）——<b>地推成本极低，但增长受行政边界限制</b>。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">核心指标</td><td>支付金额（累计 2350 亿）、交易吨数、承运商数量与活跃度、<b>煤炭价格指数影响力</b>、融资笔数（大唐电厂 39 笔 2 亿）。</td></tr>
+        <tr><td class="dim">避开的死法</td><td>避开"只做信息黄页"——靠支付 + 物流 + 数据把"认识之后还要用"的环节全部锁住；也避开"涉融资性贸易"——<b>有真实货物流转 + 有支付牌照 + 有物流证据链</b>，是合规融资的完整形态。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">最可能的坑</td><td><b>行政依赖</b>：省属国企强制上线带来存量，但增量必须靠外部客户与金融/数据服务。<b>转型公告就是它对天花板的回应</b>。<span class="tag t-inf">推断</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="hd qz"><span class="nm">清镇"富矿精开·清铝集采"平台</span><span class="badge">政府平台公司运营</span><span class="quad">象限：政府准调控 + 代采垫资</span></div>
+    <div class="bd">
+      <table>
+        <tr><td class="dim">交易模式</td><td><b>不是纯商业撮合，是行政化统配统销</b>：原矿/粗矿"高效统配统销、分级分类使用"，<b>矿产资源优先向重点企业倾斜</b>——平台是产业政策工具。同时叠加<b>集采 + 代采</b>（真商业动作）。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">履约与物流</td><td>整合<b>采矿/配矿/用矿/物流/信息/刷卡六大系统</b>；<b>140 台物流车 GPS 全覆盖</b>，21 家核心用矿企业月度 355 万吨用矿量实时统计。<b>铝土矿物流成本占比极高 + 品质争议多 → 必须重仓物流与检验，平台绑定运力</b>。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">资金与金融</td><td><b>五家里最大的一笔风险敞口</b>：2025 年代采 4.03 亿元，典型案例柯印数码代采 1.2 亿铝卷省 50 万。<b>代采本质是平台垫资 / 受托支付</b>，对应框架里"代理采购垫付"——风控核心是<b>货权管控</b>：货在监管仓、仓单电子化，才能把钱借出去。银行基于平台交易数据放贷（工行、贵阳银行线上结算接入）。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">盈利模式</td><td>代采服务费 + 金融分润 + 集采通道服务费。<b>但真正的买单动机是财政与产业政绩</b>——税收流失堵住、资源流向可管、龙头企业能贷到款。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">会计口径</td><td>集采/代采若涉及控制权转移，可能落到<b>总额法</b>（营收大、毛利极薄）；平台服务部分是净额法。<b>混用是最高审计风险点</b>。<span class="tag t-inf">推断（重点风险）</span></td></tr>
+        <tr><td class="dim">组织机制</td><td>政府平台公司，KPI 不是成交额而是<b>可管、可查、可贷</b>；风控与监管优先级高于交易体验。数据上报（资源税刷卡实时上传）是刚性要求。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">核心指标</td><td>代采金额与节约额、监管用矿量（628 万吨/年）、企业获贷笔数与额度、资源税入库额、平台接入车辆数。<b>客户侧核心 KPI 是税收与产业，不成交量</b>。</td></tr>
+        <tr><td class="dim">避开的死法</td><td>必须避开"<b>涉融资性贸易 / 重复质押</b>"——这是政府平台最大的雷。做法是<i>货在监管仓、仓单电子化、税卡直连</i>三条线同时成立。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">最可能的坑</td><td><b>规模不经济 + 垫资压顶</b>：代采规模取决于财政与银行授信，不是市场需求；一旦上游铝价下行或用矿企业资金链断裂，<b>平台自己承担坏账</b>。所以它的扩量必须等金融配套跟上。<span class="tag t-inf">推断</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="hd yl"><span class="nm">广西晔龙国际贸易</span><span class="badge">郑商所产融基地 · 进口菜粕全国第一</span><span class="quad">象限：套保型自营</span></div>
+    <div class="bd">
+      <table>
+        <tr><td class="dim">交易模式</td><td><b>完全自营</b>：一手货源买断，报价"期货价 + 基差"，下游点价成交。不做撮合、不收服务费，赚<b>进销价差</b>。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">履约与物流</td><td>轻资产：自有防城港鼎龙物流 + 广西/广东/福建/江苏港口采购团队，港口集散地"贸易+物流"一体。<b>粕类季节性强、损耗、非标 → 产地端整合与分级标准是胜负手</b>。<span class="tag t-dis">披露 + 推断</span></td></tr>
+        <tr><td class="dim">资金与金融</td><td>不碰金融，但做了<b>比金融更狠的两件事</b>：①<b>套保</b>——2012 年菜粕期货上市起做套期保值、期现套利、跨期套利、豆菜粕跨品种套利；②<b>预售</b>——先锁下游需求再组织货源，以销定采。<b>结果：贸易量从 3-5 万吨干到 50 万吨</b>。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">盈利模式</td><td>纯自营价差。<b>这是六层盈利清单里最危险的一项：规模最大、毛利最薄、且吃行情</b>。它之所以能活，是因为用套保把价格风险转移成了基差风险。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">会计口径</td><td><b>总额法的教科书样本</b>：自营买断、货权完整转移 → 营收巨大、毛利率极薄。50 万吨 × 价格是营收，不是利润。<b>面试时若把贸易额说成营收，就是完全不懂会计</b>。<span class="tag t-inf">推断（高危）</span></td></tr>
+        <tr><td class="dim">组织机制</td><td>品类经营 + 采购/销售对锁 + 期货操作三类岗协同；3000 家下游客户与上游央企/外企直连；已办产融赋能会议（300+ 决策者），<b>"它已经是半个平台"</b>。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">核心指标</td><td>贸易量、<b>套保比率</b>（套保敞口 / 总敞口）、基差敞口、点价转化率、下游客户数与复购率、价差与库存周转。</td></tr>
+        <tr><td class="dim">避开的死法</td><td>避开"行情赌注"——2012 年之前就是一口价裸奔，价格一波动就死；套保 + 基差交易是它的<b>商业模式级进化</b>，不是风控补丁。</td></tr>
+        <tr><td class="dim">最可能的坑</td><td><b>套保了但基差没管住</b>：套保能锁价格，锁不住"期货涨了但货没到"的基差风险；敞口实时计算是刚需——<b>这正是期货套保风控子系统存在的理由</b>。另一死法是"规模不经济"：每吨毛利过薄时，货量涨了反而亏更多。<span class="tag t-inf">推断</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="cust">
+    <div class="hd lk"><span class="nm">中国-东盟林业资源全要素交易平台（广西林控）</span><span class="badge">★ 我方承建</span><span class="badge">自治区林业局批准设立的国有全资平台公司</span><span class="quad">象限：政府授权要素交易场所 · 不持货值风险</span></div>
+    <div class="bd">
+      <table>
+        <tr><td class="dim">交易模式</td><td><b>竞价</b>（正向竞价=销售 / 反向竞价=采购，双向都有）、<b>挂牌</b>（寄货代售 + 批量摘牌）、<b>产能预售</b>、<b>专场</b>（公开/定向/客户）。标的：<b>活立木"包青山"（按林班/小班整片打包）</b>、林地林木流转、原木、人造板、木业原料、林木种苗、林业物资、林下经济产品。它做的不是"撮合标准品"，而是<b>把非标要素推上公开市场——规则本身就是产品</b>。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">谁承担风险</td><td>平台不持货、不买断，货值风险归交易双方（保证金只是履约约束手段）；平台真正的风险是<b>"程序风险"</b>——规则不清、留痕不全、流拍或交割争议处置不当，会被审计与纪检追问。所以它的第一优先级不是体验，是<b>可追溯</b>。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">履约与物流</td><td>交收方式以 <b>"自主交收 + 场外结算、场外交收"</b> 为主（平台提供多种交收模式可选）；活立木还依赖采伐、运输与营林物资供应，所以平台另设<b>云仓物流</b>（货源信息 / 车源）承接物流侧，登录入口也单独给了<b>仓管员</b>角色。<span class="tag t-dis">披露</span> + <span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">资金与金融</td><td>结算 + 保证金 + <b>融资中心</b>（合同融资 / 订单融资 / 预付款 / <b>仓单质押</b> / 赎回 / 融资费）+ <b>发票税务</b>（税收管理 / 购销信息 / 退税）。关键差别：它<b>不做清镇那种"垫资代采"的重敞口</b>，金融走"助贷 + 数据"路线，资金风险量级小得多。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">盈利模式</td><td><b>挂摘手续费</b>（按成交价比例，如 0.3%）+ <b>履约保证金</b>（示例：定额 81,000）+ <b>挂摘保证金</b>（示例：固定 76,000）+ 会员/交易商服务费。费率被主动当作运营杠杆：免收挂牌模式与林下经济专区服务费、正向竞价费率优惠（公告多次续期）。<b>这是五家里唯一"费率本身就是产品策略"的一家。</b><span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">会计口径</td><td>交易所口径天然是<b>净额法</b>：只确认手续费与服务费，<b>不并表标的货值</b>。中林国控那个 2385 万元的项目，平台侧收入是那 0.3% 的手续费与相关服务费，<b>不是 2385 万</b>——这是讲这个案例时最容易被问穿的一点。<span class="tag t-inf">推断（高危）</span></td></tr>
+        <tr><td class="dim">组织机制</td><td>国有全资平台公司 + 一整套交易场所治理：交易规则、交易商管理办法、竞价/挂牌/林权流转细则、风险告知书、注册协议书。<b>所以"规则修订"是常态动作，规则版本本身必须可追溯</b>——现行 6 件 + 废止 21 条。<span class="tag t-dis">披露</span></td></tr>
+        <tr><td class="dim">核心指标</td><td>成交金额与<b>溢价率</b>（中林国控项目：2385 万元 / 溢价 171 万 / 7.72%；单标的 170 万 → 201 万，32 轮竞价、溢价 18.2%）、挂牌标的成交转化率（19 → 11）、活跃交易商数、流拍率、在挂标的数（229 条）。</td></tr>
+        <tr><td class="dim">避开的死法</td><td>避开"只做信息黄页"——它有竞价、挂牌、产能预售三套真实规则 + 保证金约束；也避开"涉融资性贸易"——<b>不做垫资代采</b>，金融只做助贷与数据（与清镇形成鲜明对照）。<span class="tag t-inf">推断</span></td></tr>
+        <tr><td class="dim">最可能的坑</td><td><b>区域与品种双重天花板</b>：标的以广西区直国有林场为主，品类又高度非标，交易频次天然低于煤炭化工。它正在做的两件事就是破局——<b>专区化</b>（林下经济绿色产业专区扩品类、按林果/林茶单建类目）与<b>服务化</b>（融资/发票/物流提客单价）。<span class="tag t-inf">推断</span></td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 2 横向对照 ========== -->
+<section>
+  <h2><span class="num">2</span>五家横向对照：12 个维度一眼看完</h2>
+  <div style="overflow-x:auto">
+  <table>
+    <thead>
+      <tr>
+        <th style="width:96px">维度</th>
+        <th>河南能源<br><span style="font-weight:400">（我方承建）</span></th>
+        <th>陕西煤炭交易中心</th>
+        <th>清镇富矿精开</th>
+        <th>中国-东盟林业（林控）<br><span style="font-weight:400">（我方承建）</span></th>
+        <th>广西晔龙</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="dim">交易模式</td><td>产业方主导<br>产销一体</td><td>纯撮合 + 持牌通道</td><td>政府准调控<br>统配统销 + 代采</td><td>要素交易场所<br>竞价/挂牌/产能预售</td><td>自营基差<br>套保型</td></tr>
+      <tr><td class="dim">货权/价格风险</td><td>几乎不承担</td><td>不承担（资金过手）</td><td><span class="t-key">承担（代采垫资）</span></td><td>不承担货值<br>承担<b>"程序责任"</b></td><td><span class="t-key">全额承担</span><br>靠套保对冲</td></tr>
+      <tr><td class="dim">履约路线</td><td>重资产<br>自有铁路/港口</td><td>轻资产<br>整合 203 家承运商</td><td>重监管<br>140 台车 GPS</td><td>场外交收为主<br>+ 云仓物流</td><td>轻资产<br>自有港口物流</td></tr>
+      <tr><td class="dim">资金角色</td><td>结算为主<br>金融在转型</td><td><span class="t-dis">持牌代收代付</span><br>+ 助贷</td><td><span class="t-key">垫资代采</span><br>最大敞口</td><td>保证金 + 助贷<br><b>不做垫资代采</b></td><td>不做金融<br>做资金效率</td></tr>
+      <tr><td class="dim">盈利来源</td><td>服务费 + 集团效率</td><td>五级火箭<br>支付/物流/金融/数据</td><td>代采费 + 金融<br>+ 财政买单</td><td>挂摘手续费 + 保证金<br>+ 会员服务费</td><td>纯进销价差</td></tr>
+      <tr><td class="dim">会计口径</td><td>净额法</td><td>净额法</td><td><span class="t-key">可能总额法</span><br>（高审计风险）</td><td>净额法<br>（只认手续费）</td><td><span class="t-key">总额法</span></td></tr>
+      <tr><td class="dim">第一优先级</td><td>合规留痕<br>审计可追责</td><td>资金安全<br>牌照合规</td><td>税收可查<br>资源可管</td><td>规则可配<br>过程可追溯</td><td>敞口可控<br>不许裸泳</td></tr>
+      <tr><td class="dim">获客方式</td><td>集团内部<br>+ 上下游锁定</td><td>行政力量<br>（省属国企强制）</td><td>政策 + 牌照<br>（重点企业倾斜）</td><td>行政授权<br>（国有林场资产入市）</td><td>口碑 + 关系<br>（3000 家下游）</td></tr>
+      <tr><td class="dim">核心指标</td><td>溢价增收 8 亿<br>采购周期 -65%</td><td>支付 2350 亿<br>交易 6.01 亿吨</td><td>代采 4.03 亿<br>监管 628 万吨</td><td>溢价率 7.72%<br>单标的 32 轮 / +18.2%</td><td>贸易量 50 万吨<br>套保比率</td></tr>
+      <tr><td class="dim">品类特征</td><td>煤化工：物流重<br>质检争议大</td><td>煤炭：物流成本<br>占比极高</td><td>铝土矿：矿石类<br>重仓物流检验</td><td><b>林业要素：极度非标</b><br>看山踏勘、百万级标的</td><td>粕类农产品：<br>季节强、损耗、非标</td></tr>
+      <tr><td class="dim">逃过的死法</td><td>边界模糊<br>（不碰自营）</td><td>信息黄页<br>融资性贸易</td><td>重复质押<br>（三线控货）</td><td>信息黄页<br>（三套真实规则）</td><td>行情赌注<br>（套保进化）</td></tr>
+      <tr><td class="dim">天花板</td><td>受制于集团内部<br>需求，须外部化</td><td>受制于行政边界<br>须靠金融/数据</td><td>受制于财政授信<br>须金融配套跟上</td><td>受区域 + 品种双重限制<br>须专区化 + 服务化</td><td>受制于毛利过薄<br>须扩品类</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="lead" style="margin-top:14px">
+    <b>品类建议与五家的意外吻合</b>：框架里"煤炭/矿石必须重仓物流与检验、绑定运力"——西煤整合 203 家承运商、清镇 140 台车 GPS 全覆盖；"农产品季节性强、非标、适合产地端整合"——晔龙自有防城港物流 + 港口采购团队；"极端非标、无法标准化的品类，就把力气花在<b>规则与流程标准化</b>上"——林控用 6 件现行规则 + 21 条废止规则 + 交易商管理制度，把"一片山"变成了可交易的标的。<b>五家的资源投入方向与品类特征一一对上，说明它们的运营模式不是拍脑袋的。</b><span class="tag t-inf">推断</span>
+  </div>
+</section>
+
+<!-- ========== 3 五条新洞察 ========== -->
+<section>
+  <h2><span class="num">3</span>框架照出来的五条新洞察（可复用到下一个客户）</h2>
+
+  <div class="ins">
+    <div class="h">洞察 1｜客户收益 ≠ 平台收入：这是最容易讲错、也最致命的一处</div>
+    <p>河南能源"溢价增收累计 8 亿"是<b>集团收入</b>（国企里溢价几乎直接等于净利润），<b>不是平台收入</b>；西煤"支付 2350 亿"是客户成交与资金规模，平台赚的是手续费；晔龙"50 万吨贸易量"是营收，总额法下毛利率可能不到 1%；林控"成交 2385 万元"是标的成交额，<b>平台赚的是那 0.3% 的挂摘手续费与保证金对应的服务费</b>。</p>
+    <p><b>正确说法：</b>"我建设的平台为客户创造了这些数据与收益，平台自身通过交易服务费、供应链服务费、金融分润与数据服务实现商业化。"——这句话说出口，专业度立刻拉开差距。<span class="tag t-key">必背</span></p>
+  </div>
+
+  <div class="ins">
+    <div class="h">洞察 2｜会计口径是运营模式的照妖镜：规模可差百倍，真实盈利能力可能接近</div>
+    <p>晔龙（自营买断）走总额法，营收几十亿、毛利极薄；西煤/河南能源（服务）走净额法，营收小、毛利好看。<b>但两者真实盈利能力可能接近——因为自营赚薄利差，撮合赚高费率。</b></p>
+    <p><b>所以谈"服务过多大规模"时必须主动区分交易规模与平台营收</b>，否则会被懂财务的面试官当场问穿。国联股份曾因"同一客户不同订单分别用总额法/净额法"被监管问询，是现成的行业案例，可在追问时引用。<span class="tag t-dis">行业公开案例</span></p>
+  </div>
+
+  <div class="ins">
+    <div class="h">洞察 3｜风控能力必须跑在金融业务前面——清镇的 4.03 亿就是活证据</div>
+    <p>框架第三条铁律"控货能力必须跑在金融业务前面"在清镇被验证：<b>敢代采 4.03 亿，前提是货在监管仓、仓单电子化、资源税刷卡直连、银行在线结算接入</b>——三条线同时成立才敢垫资。</p>
+    <p>反过来说：<b>我们产品里的仓单与风控中心不是"合规功能"，它是金融业务的前置条件</b>。讲架构时把仓单/风控讲在金融之前，逻辑才自洽。</p>
+  </div>
+
+  <div class="ins">
+    <div class="h">洞察 4｜五种客户 = 五种"KPI 语言"，同一句功能描述要换五种说法</div>
+    <p>同一套仓单系统：国企说"<b>盘亏要能追责</b>"，政府说"<b>货权要能核验</b>"，要素交易场所说"<b>规则要能改、历史版本要能查</b>"，贸易商说"<b>套保敞口要能算清</b>"，资金方说"<b>质押率要能自动盯</b>"。</p>
+    <p>能力完全相同，<b>优先级与验收标准完全不同</b>。这就是为什么同一底座必须分端设计：管理端给政府/平台方，客户端给企业，风控中心给资金方。<span class="tag t-inf">架构原则的直接来源</span></p>
+  </div>
+
+  <div class="ins">
+    <div class="h">洞察 5｜所有客户的终点都是"卖服务"，不是"卖交易"——交易本身越来越薄</div>
+    <p>西煤的 1+N（支付/物流/金融/数据）、河南能源的"电商+物流+供应链金融"转型公告、清镇的"平台开放化 + 金融多元化"、晔龙从贸易商走向产融基地、林控从"卖活立木"扩到融资中心 + 发票税务 + 云仓物流 + 林下经济专区——<b>五条路径都是从"做交易"走向"做基础设施"</b>。</p>
+    <p><b>对应到产品演进：</b>交易层（门户撮合）→ 管理层（运营风控）→ 服务层（物流/金融/云仓）→ 数据层（指数/订阅/SaaS）。<b>我们的四层架构，就是这条路线的预演。</b></p>
+  </div>
+</section>
+
+<!-- ========== 4 回到产品 ========== -->
+<section>
+  <h2><span class="num">4</span>收尾：五种模式如何反推我们的产品四层架构</h2>
+  <table>
+    <thead><tr><th style="width:150px">产品层</th><th style="width:230px">被哪种客户逼出来</th><th>对应能力（讲到什么程度算够）</th></tr></thead>
+    <tbody>
+      <tr><td><b>门户与交易层</b></td><td>河南能源（多模式规则）、西煤（撮合入口）、<b>林控（延时竞价 + 保留价 + 专场）</b></td><td>竞价/挂牌/长协/招投标/产能预售多模式并存、交易规则可配置、行情与挂牌联动、<b>倒计时与出价队列的并发公平性</b>（出价以服务器时间为准）、专场权限（公开/定向/客户）</td></tr>
+      <tr><td><b>管理与运营层</b></td><td>清镇（监管视角）、河南能源（合规留痕）、<b>林控（规则版本链 + 费率策略配置）</b></td><td>审批流、操作日志与版本链全链路留痕（含历史规则库）、多层级监管报表、上帝视角、<b>机构协同与主数据 MDM</b>、费率/类目可配置</td></tr>
+      <tr><td><b>物流·金融·云仓层</b></td><td>西煤（轻资产物流）、清镇（代采垫资）、晔龙（港口物流）、<b>林控（场外交收 + 仓单质押助贷）</b></td><td>智慧物流（调度/轨迹/电子围栏）、<b>电子仓单与货权核验</b>、代采与受托支付、应收/存货融资、仓单质押、期现套保风控</td></tr>
+      <tr><td><b>数据与风控层</b></td><td>五家共同刚需</td><td>敞口实时计算、风险限额分级预警、风控中心、<b>价格指数与数据服务</b>（西煤已验证的数据变现路径）、交易看板/经营信息公示（林控已验证的"对外可查"路径）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="quote">
+    <b>收尾话术（可直接背）：</b>"这五个客户的货权风险跨度很大——从完全不承担，到代采垫资，到全额自营；标的形态跨度更大——从煤炭甲醇这种标准大宗，到活立木'一片山'这种极端非标。但<b>越承担风险、标的越非标，就越依赖同一套基础设施：规则、仓单、履约、敞口与风控</b>。所以我们的产品看起来模块很多，本质是把'风险从不可见到可见、规则从说不清到可追溯'这件事，做到了五类客户都能接受的程度。这也解释了为什么架构从撮合一直做到仓单和风控——不是功能堆得多，是客户的货权风险链条和规则复杂度就这么长。"
+  </div>
+</section>
+
+<!-- ========== 5 口径提醒 ========== -->
+<section>
+  <h2><span class="num">5</span>口径提醒（讲之前必须记住三条）</h2>
+  <div class="ins" style="background:#fdecea;border-color:#f5c2c0">
+    <div class="h" style="color:#c0392b">① 客户收益 ≠ 平台收入</div>
+    <p>溢价增收、支付金额、贸易吨数、代采金额，全部是<b>客户侧的经营成果</b>。平台自身收入靠服务费、金融分润、数据订阅。混着讲是最大扣分点。</p>
+  </div>
+  <div class="ins" style="background:#fdecea;border-color:#f5c2c0">
+    <div class="h" style="color:#c0392b">② 披露事实与框架推断要分开</div>
+    <p>标〔披露〕的可以当事实讲；标〔推断〕的必须说"<b>我的理解是</b>"、"<b>按行业惯例推测</b>"。面试官追问时，能区分"客户公开的"和"我判断的"，反而加分。</p>
+  </div>
+  <div class="ins" style="background:#fdecea;border-color:#f5c2c0">
+    <div class="h" style="color:#c0392b">③ 我方承建范围 = 河南能源 + 中国-东盟林业资源全要素交易平台</div>
+    <p>河南能源（大宗平台 + 中原云商两套系统）与<b>中国-东盟林业资源全要素交易平台（广西林控，zgdmly.com）</b>均为我方承建（对外未署名），可讲"我们做的"；<b>西煤、清镇、晔龙三家只能讲"我们平台的设计来自这类客户的共性需求"</b>。技术细节只讲自己实际负责的部分。</p>
+  </div>
+</section>
+
+<div class="foot">
+  单页速记版见 <b>06-五类客户运营模式速查卡.html</b>
+</div>
+
+</div>
+</body>
+</html>

@@ -165,7 +165,7 @@ body {
   transform: rotate(90deg);
 }
 
-/* 嵌套子分组（prep/07-八股题库 等一级子目录）*/
+/* 嵌套子分组（prep/05-八股题库、prep/04-架构决策/生产问题 等一级子目录）*/
 .folder.nested > .folder-header {
   padding-left: 32px;
   font-weight: 500;
@@ -241,6 +241,7 @@ body {
 .file-type-badge.md { background: #dbeafe; color: #1d4ed8; }
 .file-type-badge.html { background: #ffedd5; color: #c2410c; }
 .file-type-badge.pptx { background: #fecaca; color: #b91c1c; }
+.file-type-badge.pdf { background: #fee2e2; color: #991b1b; }
 .file-type-badge.js { background: #fef9c3; color: #a16207; }
 
 .file-name {
@@ -659,10 +660,11 @@ body {
   </div>
 
   <div class="sidebar-stats">
-    <span class="stat-chip md">55 .md</span>
-    <span class="stat-chip html">37 .html</span>
-    <span class="stat-chip pptx">6 .pptx</span>
-    <span class="stat-chip">100 文件</span>
+    <span class="stat-chip md">52 .md</span>
+    <span class="stat-chip html">27 .html</span>
+    <span class="stat-chip pptx">4 .pptx</span>
+    <span class="stat-chip">1 .pdf</span>
+    <span class="stat-chip">84 文件</span>
   </div>
 
   <div class="search-box">
@@ -695,7 +697,7 @@ body {
       <div class="welcome">
         <div class="welcome-icon">📖</div>
         <h2>资料库</h2>
-        <p>93 份精心整理的文档（已按主题归位并统一命名），覆盖产品定位、业务价值、架构决策与问题排查、案例与投递、职业发展、面试准备与模拟对练、八股题库、工具与速查 8 大分类。</p>
+        <p>82 份精心整理的文档（已按主题归位并统一命名），覆盖产品定位、业务价值、客户案例、架构决策、八股题库、面试准备、个人简历 7 大分类。</p>
         <p style="margin-top:8px;font-size:13px;">点击左侧文件树开始浏览 →</p>
       </div>
     </div>
@@ -708,11 +710,16 @@ const TREE = [
   {
     name: '01-产品定位', icon: '🎯', open: true,
     files: [
-      '01-平台功能与产品设计手册.md',
-      '02-平台角色与业务动作全景手册.md',
-      '03-平台设计规范与审查方法论手册.md',
-      '04-产品全业务链条与运营思路.mobile.html',
-      '05-产品全业务链条与运营思路.slides.pptx',
+      '01-B2B平台功能全景分析.md',
+      '02-平台定位与客户分析.html',
+      '03-平台角色与业务动作全景手册.md',
+      '04-B2B大宗贸易平台-产品三维度分析.md',
+      '05-建设背景与必要性分析.html',
+      '06-平台设计规范手册.md',
+      '07-原型与事故审查方法论手册.md',
+      '08-B2B客户价值分析.md',
+      '09-期现结合业务实现思路.md',
+      '10-供应链B2B与供应链金融方案深度分析.html'
     ]
   },
   {
@@ -720,70 +727,46 @@ const TREE = [
     files: [
       '01-业务价值与客户运营.md',
       '02-业务全链路场景手册.md',
-      '04-现货交易供应链-难点与解决方案速查手册.md',
       '05-业务痛点与系统解决方案-架构详解.md',
       '06-客户案例与行业对标手册.md',
-      '07-期现结合业务实现思路.md',
-      '08-供应链B2B与供应链金融方案深度分析.html',
       '09-业务-技术映射地图.md'
     ]
   },
   {
-    name: '03-架构决策与问题排查', icon: '🏗️', open: true,
+    name: '03-客户案例', icon: '📊', open: true,
+    files: [
+      '01-数字产业链服务平台-全量分析.md',
+      '02-数字产业链服务平台-含痛点方案.pptx',
+      '04-B2B技术经理-能力全景介绍.pptx',
+      '05-B2B产品服务客户案例.slides.pptx',
+      '05-B2B产品服务客户案例.pdf',
+      '13-客户深度复盘与面试亮点.md',
+      '13-客户深度复盘与面试亮点.visual.html'
+    ]
+  },
+  {
+    name: '04-架构决策', icon: '🏗️', open: true,
     files: [
       '01-架构方法论与选型设计手册.md',
       '02-异构架构策略与真实系统叙事手册.md',
       '03-平台化治理与多租户架构手册.md',
-      '04-B2B系统技术难点与痛点解决.md',
+      '04-现货交易供应链-难点与解决方案速查手册.md',
       '05-Saga编排器详细介绍.md',
-      '06-Cookie认证失败-5Why根因分析.md',
-      '07-Cookie认证失败-5Why根因分析.slides.pptx',
+      '07-B2B合同中心vsB2C订单中心-区别分析.md',
       '08-技术整改十项与落地.html'
+    ],
+    children: [
+      {
+        name: '生产问题', icon: '🐞',
+        files: [
+          '06-Cookie认证失败-5Why根因分析.md',
+          '07-Cookie认证失败-5Why根因分析.slides.pptx'
+        ]
+      }
     ]
   },
   {
-    name: '04-案例与投递', icon: '📊',
-    files: [
-      '01-数字产业链服务平台-全量分析.md',
-      '02-数字产业链服务平台-含痛点方案.pptx',
-      '03-B2B技术经理简历PPT.pptx',
-      '04-B2B技术经理-能力全景介绍.pptx',
-      '05-B2B产品服务客户案例.slides.pptx',
-      '05-B2B产品服务客户案例.pdf'
-    ]
-  },
-  {
-    name: '05-职业发展', icon: '🚀',
-    files: [
-      '01-技术经理成长体系手册.md',
-      '02-职业发展进阶路线图手册.md',
-      '03-技术情报收集与跨部门沟通手册.md',
-      '04-L2到L4晋级路线图.print.html'
-    ]
-  },
-  {
-    name: '06-面试准备与模拟对练', icon: '🎯', open: true,
-    files: [
-      '01-面试核心策略手册.md',
-      '02-技术栈全景与面试题库.md',
-      '03-中间件深度与基础补课.md',
-      '04-技术复习综合手册.md',
-      '05-角色定位与技术竞争力.md',
-      '06-面试话术与背诵手册.md',
-      '06-面试话术与背诵手册.html',
-      '07-国企面试焦点分析.md',
-      '08-简历与自我介绍脚本.md',
-      '10-模拟面试方案合集(01-04).md',
-      '11-模拟面试流程与提示词手册.md',
-      '12-面试自证与训练手册.md',
-      '12-面试自证与训练手册.visual.html',
-      '13-客户深度复盘与面试亮点.md',
-      '13-客户深度复盘与面试亮点.visual.html',
-      '15-快速通览一页纸简报.html'
-    ]
-  },
-  {
-    name: '07-八股题库', icon: '📚',
+    name: '05-八股题库', icon: '📚',
     children: [
       {
         name: '01-八股文与深度整理', icon: '☕',
@@ -819,8 +802,6 @@ const TREE = [
       {
         name: '02-面试真题', icon: '📋',
         files: [
-          '01-个人技术画像与求职定位.md',
-          '02-郑州25K全栈架构师综合面试题库.md',
           '03-架构师面试真题.md',
           '04-高级Java开发全栈面试真题.md',
           '05-高级运维面试真题.md',
@@ -831,15 +812,41 @@ const TREE = [
     ]
   },
   {
-    name: '08-工具与速查', icon: '🔧',
+    name: '06-面试准备', icon: '🎯', open: true,
     files: [
-      '01-md-viewer.html',
-      '02-面试背诵集合.html',
-      '03-RICE优先级决策矩阵.html',
-      '04-5Whys与业务技术映射速查卡.html',
-      '05-B2B微服务系统架构图-手绘版.html',
-      '06-四类客户运营模式速查卡.html',
-      '07-四类客户运营模式深度拆解.html'
+      '01-面试核心策略手册.md',
+      '02-技术栈全景与面试题库.md',
+      '03-中间件深度与基础补课.md',
+      '04-技术复习综合手册.md',
+      '05-角色定位与技术竞争力.md',
+      '06-面试话术与背诵手册.md',
+      '06-面试话术与背诵手册.html',
+      '07-国企面试焦点分析.md',
+      '12-面试自证与训练手册.md',
+      '12-面试自证与训练手册.visual.html'
+    ]
+  },
+  {
+    name: '09-个人简历', icon: '📄',
+    files: [
+      '02-职业发展进阶路线图手册.md',
+      '03-技术情报收集与跨部门沟通手册.md',
+      '04-L2到L4晋级路线图.print.html',
+      '08-简历与自我介绍脚本.md',
+      '15-快速通览一页纸简报.html'
+    ],
+    children: [
+      {
+        name: '01-工具与速查', icon: '🔧',
+        files: [
+          '02-面试背诵集合.html',
+          '03-RICE优先级决策矩阵.html',
+          '04-5Whys与业务技术映射速查卡.html',
+          '05-B2B微服务系统架构图-手绘版.html',
+          '06-五类客户运营模式速查卡.html',
+          '07-五类客户运营模式深度拆解.html'
+        ]
+      }
     ]
   }
 ];
@@ -1044,7 +1051,7 @@ function openFile(folder, filename) {
     hideToc();
     document.getElementById('tocBtn').style.display = 'none';
     contentArea.innerHTML = `<iframe class="html-preview-frame" src="${currentFilePath}"></iframe>`;
-  } else if (currentFileType === 'pptx' || currentFileType === 'js') {
+  } else if (currentFileType === 'pptx' || currentFileType === 'js' || currentFileType === 'pdf') {
     hideToc();
     document.getElementById('tocBtn').style.display = 'none';
     showBinaryPlaceholder(filename, currentFileType);
@@ -1090,8 +1097,8 @@ function loadMarkdown(path) {
 }
 
 function showBinaryPlaceholder(filename, type) {
-  const icons = { pptx: '📊', js: '💻' };
-  const labels = { pptx: 'PowerPoint 演示文稿', js: 'JavaScript 脚本' };
+  const icons = { pptx: '📊', js: '💻', pdf: '📕' };
+  const labels = { pptx: 'PowerPoint 演示文稿', js: 'JavaScript 脚本', pdf: 'PDF 文档' };
   const contentArea = document.getElementById('contentArea');
   const path = currentFilePath;
   contentArea.innerHTML = `<div class="binary-placeholder">

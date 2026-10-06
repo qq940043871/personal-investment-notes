@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平台定位与目标人群分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: '#3B82F6', secondary: '#64748B', accent: '#10B981' } } } };
+    </script>
+    <style>
+        body { background: #f8fafc; }
+        .card-hover { transition: all .2s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,.08); }
+        table th { background: #f1f5f9; font-weight: 600; text-align: left; }
+        table td { border-bottom: 1px solid #f1f5f9; }
+        table tr:hover td { background: #f8fafc; }
+        .persona-card { border-left: 4px solid; transition: all .2s ease; }
+        .persona-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,.08); }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    </style>
+</head>
+<body class="text-gray-700">
+<div class="max-w-6xl mx-auto p-6 space-y-6">
+
+<div>
+    <h1 class="text-2xl font-bold text-gray-800">平台定位与目标人群分析</h1>
+    <p class="text-sm text-gray-500 mt-1">明确平台"卖给谁、解决什么问题、他们各自要什么"——从人群需求倒推系统设计</p>
+</div>
+
+<!-- 一、平台定位总览 -->
+<section>
+    <h2 class="text-lg font-semibold text-gray-800 mb-3"><i class="fas fa-bullseye text-blue-500 mr-2"></i>一、平台定位总览</h2>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 space-y-3">
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-5 border border-blue-100">
+            <div class="text-sm font-bold text-blue-800 mb-2">一句话定位</div>
+            <p class="text-base text-gray-700 leading-relaxed">面向大宗商品产业链的<strong class="text-blue-700">全链路数字化交易与合同履约平台</strong>，覆盖钢铁、矿石、化工、农产品、能源等品类，打通"线上交易 → 电子签约 → 物理交割 → 资金结算 → 金融增信"完整闭环。</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="bg-blue-50 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-blue-700">7类</div>
+                <div class="text-xs text-gray-500 mt-1">核心服务人群</div>
+            </div>
+            <div class="bg-green-50 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-green-700">8大</div>
+                <div class="text-xs text-gray-500 mt-1">行业核心痛点</div>
+            </div>
+            <div class="bg-orange-50 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-orange-700">10+</div>
+                <div class="text-xs text-gray-500 mt-1">覆盖商品品类</div>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-purple-700">6阶段</div>
+                <div class="text-xs text-gray-500 mt-1">全链路闭环</div>
+            </div>
+        </div>
+        <div class="text-xs text-gray-500 leading-relaxed">
+            <strong>核心价值主张：</strong>每一类人群在平台上都能找到自己的"专属入口"——上游卖得出去、下游买得放心、中间商赚得透明、仓储物流提效增收、金融机构敢放款、质检机构有标准、运营方有抓手。
+        </div>
+    </div>
+</section>
+
+<!-- 二、目标人群详细分析 -->
+<section>
+    <h2 class="text-lg font-semibold text-gray-800 mb-3"><i class="fas fa-users text-green-500 mr-2"></i>二、目标人群详细分析</h2>
+
+    <!-- 人群1：上游资源方 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #3B82F6;">
+        <div class="flex items-center gap-2 mb-3">
+            <div class="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center"><i class="fas fa-mountain text-blue-600"></i></div>
+            <h3 class="text-sm font-bold text-blue-700">人群一：上游资源方（矿山 / 钢厂 / 炼厂 / 大型种植户）</h3>
+            <span class="tag bg-blue-100 text-blue-700">核心供给端</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-bullseye text-blue-500 mr-1"></i>典型画像</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• 铁矿石矿山 / 焦煤洗煤厂</li>
+                    <li>• 钢厂 / 电解铝厂 / 铜冶炼厂</li>
+                    <li>• 石化炼厂 / 化工厂</li>
+                    <li>• 大型农产品种植/养殖基地</li>
+                    <li>• 年产量10万-1000万吨</li>
+                    <li>• 销售团队5-50人</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>平台解决的痛点</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>找买家难：</strong>依赖老客户和贸易商，新客获取渠道有限</li>
+                    <li>• <strong>价格不透明：</strong>信息不对称导致定价被动，利润被中间商压缩</li>
+                    <li>• <strong>回款风险：</strong>赊销模式下下游拖欠货款，坏账率高</li>
+                    <li>• <strong>品质争议：</strong>发货品质与合同约定偏差，纠纷不断</li>
+                    <li>• <strong>库存积压：</strong>产能过剩时找不到销路，资金占用严重</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-cogs text-purple-500 mr-1"></i>对系统的要求</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>挂牌交易：</strong>自主定价、一口价/竞价多种模式</li>
+                    <li>• <strong>保证金机制：</strong>买方保证金锁定，防违约跑单</li>
+                    <li>• <strong>品质标准化：</strong>录入10+项品质指标，合同自动带入</li>
+                    <li>• <strong>银行存管：</strong>资金100%银行托管，杜绝平台挪用</li>
+                    <li>• <strong>销售看板：</strong>实时库存与在售商品可视化管理</li>
+                    <li>• <strong>长协管理：</strong>支持年度框架合同+分批提货</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 落地场景与模块使用 -->
+        <div class="bg-blue-50 rounded-lg p-4 border border-blue-100 mt-3">
+            <div class="text-xs font-bold text-blue-800 mb-2"><i class="fas fa-rocket mr-1"></i>落地场景与模块使用</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">实际落地场景</div>
+                    <ul class="text-xs text-gray-600 space-y-1">
+                        <li>• 销售员在系统上<strong>挂牌商品</strong>（录入品种/品质/数量/基价），设置一口价或竞价模式</li>
+                        <li>• 平台内贸易商/下游看到挂牌后<strong>出价或下单</strong>，系统自动匹配最优报价</li>
+                        <li>• 成交后系统<strong>自动生成销售合同</strong>，品质指标从商品模板自动带入</li>
+                        <li>• 买方保证金到账后<strong>安排发货</strong>，物流轨迹实时同步给买方</li>
+                        <li>• 收货验收通过后<strong>货款自动解付</strong>到企业银行存管账户</li>
+                        <li>• 销售总监通过<strong>销售看板</strong>实时查看挂牌量/成交价/回款进度</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">使用的模块 & 功能</div>
+                    <table class="w-full text-xs">
+                        <tr><td class="py-1 pr-3 font-semibold text-blue-700">商品模块</td><td class="py-1 text-gray-600">商品品类管理、品质模板（10+指标）、库存维护</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-blue-700">交易模块</td><td class="py-1 text-gray-600">一口价挂牌、竞价挂牌、成交确认、基差点价</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-blue-700">合同模块</td><td class="py-1 text-gray-600">销售合同自动生成、电子签章、履约节点跟踪</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-blue-700">财务模块</td><td class="py-1 text-gray-600">保证金管理、货款回款、自动对账、发票开具</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-blue-700">物流模块</td><td class="py-1 text-gray-600">发货通知、物流轨迹共享（可选）</td></tr>
+                    </table>
+                    <div class="text-xs text-gray-500 mt-2 pt-2 border-t border-blue-200">
+                        <strong>内部角色分工：</strong>销售员 → 挂牌/跟单；销售总监 → 看板/定价；财务 → 回款/对账
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群2：贸易商/中间商 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #F59E0B;">
+        <div class="flex items-center gap-2 mb-3">
+            <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center"><i class="fas fa-balance-scale text-amber-600"></i></div>
+            <h3 class="text-sm font-bold text-amber-700">人群二：贸易商 / 中间商</h3>
+            <span class="tag bg-amber-100 text-amber-700">流通核心</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-bullseye text-amber-500 mr-1"></i>典型画像</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• 钢材/矿石/化工品贸易公司</li>
+                    <li>• 年交易额5000万-50亿</li>
+                    <li>• 团队10-200人</li>
+                    <li>• 通常代理多个品牌/产地</li>
+                    <li>• 兼有自营和代理业务</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>平台解决的痛点</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>合同管理混乱：</strong>同时管理数百份合同，履约状态看不清</li>
+                    <li>• <strong>资金占用大：</strong>垫资采购+囤货+赊销，资金链极度紧张</li>
+                    <li>• <strong>对手方风险：</strong>上游断供或下游违约，损失惨重</li>
+                    <li>• <strong>多品种管理：</strong>钢材/矿石/化工不同品种，规则各异</li>
+                    <li>• <strong>利润核算滞后：</strong>合同盈亏需等结算完才知道</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-cogs text-purple-500 mr-1"></i>对系统的要求</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>合同全生命周期：</strong>起草→签约→变更→履约→结算一目了然</li>
+                    <li>• <strong>多交易模式：</strong>一口价、竞价、基差点价、含权贸易全覆盖</li>
+                    <li>• <strong>履约看板：</strong>每份合同进度可视化，节点驱动自动流转</li>
+                    <li>• <strong>资金管理：</strong>保证金/货款/费用分账清晰，实时对账</li>
+                    <li>• <strong>供应链金融：</strong>仓单质押、应收账款保理、托盘融资接入</li>
+                    <li>• <strong>利润核算：</strong>合同维度实时盈亏，多维报表</li>
+                    <li>• <strong>权限分级：</strong>业务员/经理/总监看不同范围的数据</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 落地场景与模块使用 -->
+        <div class="bg-amber-50 rounded-lg p-4 border border-amber-100 mt-3">
+            <div class="text-xs font-bold text-amber-800 mb-2"><i class="fas fa-rocket mr-1"></i>落地场景与模块使用</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">实际落地场景</div>
+                    <ul class="text-xs text-gray-600 space-y-1">
+                        <li>• <strong>采购端：</strong>向上游供应商发起询价/竞价，成交后自动生成采购合同，跟踪上游发货</li>
+                        <li>• <strong>销售端：</strong>向下游客户挂牌销售，支持一口价/基差点价/含权贸易多种模式</li>
+                        <li>• <strong>合同看板：</strong>首页统一展示全部合同（采购+销售），按履约阶段分组：待签约→履约中→待结算→已完成</li>
+                        <li>• <strong>履约监控：</strong>每份合同按节点驱动自动流转（签约→打保证金→发货→收货→质检→结算），逾期标红预警</li>
+                        <li>• <strong>资金管理：</strong>采购付款和销售回款双向管理，保证金/货款/费用分账清晰，月底一键对账</li>
+                        <li>• <strong>利润核算：</strong>每份合同实时显示预计盈亏，采购成本+物流费+资金成本 vs 销售收入一目了然</li>
+                        <li>• <strong>模板复用：</strong>不同商品品种使用不同合同模板（钢材/矿石/化工），字段联动自动校验</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">使用的模块 & 功能</div>
+                    <table class="w-full text-xs">
+                        <tr><td class="py-1 pr-3 font-semibold text-amber-700">交易模块</td><td class="py-1 text-gray-600">采购询价、销售挂牌、竞价/基差/含权多模式撮合</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-amber-700">合同模块</td><td class="py-1 text-gray-600"><strong>核心模块：</strong>合同全生命周期、履约看板、节点引擎、变更管理</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-amber-700">商品模块</td><td class="py-1 text-gray-600">多品类管理、品质模板、库存可视</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-amber-700">财务模块</td><td class="py-1 text-gray-600">收付款管理、保证金子账户、自动对账、发票管理、利润核算</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-amber-700">模板模块</td><td class="py-1 text-gray-600">合同模板库、动态字段、字段联动校验（多品种必备）</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-amber-700">物流模块</td><td class="py-1 text-gray-600">采购/销售双线物流追踪、运输费用结算</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-amber-700">融资模块</td><td class="py-1 text-gray-600">仓单质押、应收保理、托盘融资（按需开启）</td></tr>
+                    </table>
+                    <div class="text-xs text-gray-500 mt-2 pt-2 border-t border-amber-200">
+                        <strong>内部角色分工：</strong>业务员 → 挂牌/跟单/合同执行；业务经理 → 审批定价/审核合同；老板 → 合同看板/利润总览；财务 → 收付款/对账/发票
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群3：下游终端用户 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #10B981;">
+        <div class="flex items-center gap-2 mb-3">
+            <div class="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center"><i class="fas fa-industry text-green-600"></i></div>
+            <h3 class="text-sm font-bold text-green-700">人群三：下游终端用户（加工厂 / 建筑企业 / 制造企业）</h3>
+            <span class="tag bg-green-100 text-green-700">需求端</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-bullseye text-green-500 mr-1"></i>典型画像</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• 建筑公司 / 基建承包商</li>
+                    <li>• 金属加工厂 / 零部件制造商</li>
+                    <li>• 食品加工厂 / 饲料厂</li>
+                    <li>• 化工下游制品企业</li>
+                    <li>• 年采购额1000万-10亿</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>平台解决的痛点</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>供应不稳定：</strong>原材料断供导致停产，损失巨大</li>
+                    <li>• <strong>品质无保障：</strong>到货品质与样品不符，影响产品质量</li>
+                    <li>• <strong>价格波动风险：</strong>大宗商品价格剧烈波动，成本不可控</li>
+                    <li>• <strong>物流不可控：</strong>不知道货到哪了，交期一拖再拖</li>
+                    <li>• <strong>预付风险：</strong>款打过去了，货不发或发不够</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-cogs text-purple-500 mr-1"></i>对系统的要求</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>多供应商比价：</strong>一屏看清多家报价，择优采购</li>
+                    <li>• <strong>品质担保：</strong>第三方质检报告在线可查，到货复检比对</li>
+                    <li>• <strong>物流追踪：</strong>实时查看货物位置、预计到货时间</li>
+                    <li>• <strong>款到发货保障：</strong>资金托管，收货确认后再解付</li>
+                    <li>• <strong>锁价/基差：</strong>锁定价格或基差，规避价格波动风险</li>
+                    <li>• <strong>采购计划管理：</strong>支持定期采购计划，自动提醒补库</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 落地场景与模块使用 -->
+        <div class="bg-green-50 rounded-lg p-4 border border-green-100 mt-3">
+            <div class="text-xs font-bold text-green-800 mb-2"><i class="fas fa-rocket mr-1"></i>落地场景与模块使用</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">实际落地场景</div>
+                    <ul class="text-xs text-gray-600 space-y-1">
+                        <li>• <strong>浏览比价：</strong>在平台上搜索所需商品（如"HRB400螺纹钢 Φ20"），一屏查看多家贸易商报价，按价格/交期/品质排序</li>
+                        <li>• <strong>下单锁价：</strong>选定最优报价后直接下单，系统锁定价格，不再担心市场波动</li>
+                        <li>• <strong>货款托管：</strong>货款转入银行存管账户（非贸易商账户），资金100%安全</li>
+                        <li>• <strong>物流追踪：</strong>订单确认后实时查看货物运输轨迹（装车→在途→到站→入库），自动预估到达时间</li>
+                        <li>• <strong>验收入库：</strong>到货后对照合同品质条款+质检报告逐项验收，确认后系统自动解付货款</li>
+                        <li>• <strong>采购计划：</strong>设置月度/季度采购计划，系统根据库存消耗自动提醒补库</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">使用的模块 & 功能</div>
+                    <table class="w-full text-xs">
+                        <tr><td class="py-1 pr-3 font-semibold text-green-700">交易模块</td><td class="py-1 text-gray-600">多供应商比价、锁价下单、基差点价</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-green-700">合同模块</td><td class="py-1 text-gray-600">采购合同查看、履约进度跟踪、品质条款对照</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-green-700">财务模块</td><td class="py-1 text-gray-600">货款银行存管支付、收货确认解付、发票接收</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-green-700">物流模块</td><td class="py-1 text-gray-600">运输轨迹实时追踪、到货时间预估</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-green-700">商品模块</td><td class="py-1 text-gray-600">品质模板查看、第三方质检报告在线查阅</td></tr>
+                    </table>
+                    <div class="text-xs text-gray-500 mt-2 pt-2 border-t border-green-200">
+                        <strong>内部角色分工：</strong>采购员 → 比价/下单；采购经理 → 审批/定标；仓库管理员 → 验收入库确认；财务 → 付款/发票
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群4：仓储物流服务商 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #8B5CF6;">
+        <div class="flex items-center gap-2 mb-3">
+            <div class="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center"><i class="fas fa-warehouse text-purple-600"></i></div>
+            <h3 class="text-sm font-bold text-purple-700">人群四：仓储物流服务商</h3>
+            <span class="tag bg-purple-100 text-purple-700">履约底座</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-bullseye text-purple-500 mr-1"></i>典型画像</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• 港口码头仓库 / 交割仓库</li>
+                    <li>• 第三方仓储企业</li>
+                    <li>• 公路/铁路/海运物流公司</li>
+                    <li>• 货运代理 / 报关行</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>平台解决的痛点</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>订单碎片化：</strong>各客户独立对接，效率低、易出错</li>
+                    <li>• <strong>仓单造假风险：</strong>纸质仓单易伪造，重复质押难发现</li>
+                    <li>• <strong>人工操作繁重：</strong>出入库/过户靠手工记录和电话确认</li>
+                    <li>• <strong>责任界定难：</strong>货损货差时责任不清，赔付纠纷多</li>
+                    <li>• <strong>获客成本高：</strong>缺乏线上获客渠道，依赖线下关系</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-cogs text-purple-500 mr-1"></i>对系统的要求</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>WMS系统对接：</strong>库存数据实时同步，出入库线上化</li>
+                    <li>• <strong>电子仓单：</strong>区块链存证仓单，防伪造、防重复质押</li>
+                    <li>• <strong>过户线上化：</strong>仓单过户无需纸质流转，秒级完成</li>
+                    <li>• <strong>物流轨迹：</strong>GPS/北斗实时追踪，异常自动预警</li>
+                    <li>• <strong>费用自动结算：</strong>仓储费/装卸费/运输费系统自动计算</li>
+                    <li>• <strong>入驻入口：</strong>标准化入驻流程，接入即获客</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 落地场景与模块使用 -->
+        <div class="bg-purple-50 rounded-lg p-4 border border-purple-100 mt-3">
+            <div class="text-xs font-bold text-purple-800 mb-2"><i class="fas fa-rocket mr-1"></i>落地场景与模块使用</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">实际落地场景</div>
+                    <ul class="text-xs text-gray-600 space-y-1">
+                        <li>• <strong>WMS对接：</strong>自有WMS系统通过标准适配器与平台对接，库存数据实时双向同步</li>
+                        <li>• <strong>出入库线上化：</strong>平台交易生成的出入库指令自动推送到WMS，仓库操作员扫码确认，无需等待纸质单据</li>
+                        <li>• <strong>电子仓单生成：</strong>货物入库后系统自动生成区块链存证电子仓单，平台内交易方实时可见</li>
+                        <li>• <strong>仓单过户：</strong>交易双方在线完成仓单过户，从3天纸质流转缩至秒级，区块链记录全链路</li>
+                        <li>• <strong>物流状态上报：</strong>运输过程中通过GPS/北斗上报位置，平台所有相关方实时查看轨迹</li>
+                        <li>• <strong>费用自动结算：</strong>仓储费/装卸费/运输费按合同规则自动计算，月底生成结算单</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">使用的模块 & 功能</div>
+                    <table class="w-full text-xs">
+                        <tr><td class="py-1 pr-3 font-semibold text-purple-700">仓单模块</td><td class="py-1 text-gray-600"><strong>核心模块：</strong>电子仓单注册/转让/注销、WMS数据同步、区块链存证</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-purple-700">物流模块</td><td class="py-1 text-gray-600">运输状态上报、GPS/北斗轨迹同步、异常预警</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-purple-700">财务模块</td><td class="py-1 text-gray-600">仓储费/装卸费/运输费自动计算与结算</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-purple-700">商品模块</td><td class="py-1 text-gray-600">库存查询（只读）、商品信息对照</td></tr>
+                    </table>
+                    <div class="text-xs text-gray-500 mt-2 pt-2 border-t border-purple-200">
+                        <strong>内部角色分工：</strong>仓库操作员 → 出入库确认/扫码；仓库经理 → 库存报表/仓单管理；物流调度 → 运输状态更新；财务 → 费用结算
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群5：金融机构 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #EF4444;">
+        <div class="flex items-center gap-2 mb-3">
+            <div class="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center"><i class="fas fa-landmark text-red-600"></i></div>
+            <h3 class="text-sm font-bold text-red-700">人群五：金融机构（银行 / 保理公司 / 供应链金融平台）</h3>
+            <span class="tag bg-red-100 text-red-700">资金方</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-bullseye text-red-500 mr-1"></i>典型画像</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• 商业银行对公部 / 交易银行部</li>
+                    <li>• 商业保理公司</li>
+                    <li>• 供应链金融科技平台</li>
+                    <li>• 融资租赁公司</li>
+                    <li>• 单笔授信100万-10亿</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>平台解决的痛点</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>贸易真实性难验证：</strong>合同/发票/仓单可能造假，不敢放款</li>
+                    <li>• <strong>仓单风险：</strong>一货多押、重复质押问题层出不穷</li>
+                    <li>• <strong>贷后监控难：</strong>放款后无法追踪货物状态和企业经营</li>
+                    <li>• <strong>中小企业评估难：</strong>缺乏可信的经营数据支撑授信决策</li>
+                    <li>• <strong>处置变现难：</strong>违约后货物处置渠道有限，变现周期长</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-cogs text-purple-500 mr-1"></i>对系统的要求</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>四流合一验证：</strong>合同流、资金流、物流、票据流交叉核验</li>
+                    <li>• <strong>区块链仓单：</strong>不可篡改的电子仓单，杜绝重复质押</li>
+                    <li>• <strong>动态质押：</strong>质押物价值随市价实时变动，自动预警补仓</li>
+                    <li>• <strong>企业画像：</strong>基于交易历史的企业信用评分和风险评估</li>
+                    <li>• <strong>贷后监控面板：</strong>质押物状态、企业经营异动实时推送</li>
+                    <li>• <strong>资产处置通道：</strong>违约货物平台内快速挂牌处置</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 落地场景与模块使用 -->
+        <div class="bg-red-50 rounded-lg p-4 border border-red-100 mt-3">
+            <div class="text-xs font-bold text-red-800 mb-2"><i class="fas fa-rocket mr-1"></i>落地场景与模块使用</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">实际落地场景</div>
+                    <ul class="text-xs text-gray-600 space-y-1">
+                        <li>• <strong>授信审批：</strong>信贷经理在系统内查看融资申请企业的交易历史、履约记录、平台信用评分，辅助授信决策</li>
+                        <li>• <strong>贸易真实性验证：</strong>系统自动交叉核验合同流（电子合同）+资金流（银行存管流水）+物流（轨迹）+票据流（电子发票），杜绝虚假贸易</li>
+                        <li>• <strong>仓单质押放款：</strong>企业将区块链电子仓单质押给银行，银行验真后放款。仓单不可篡改、不可重复质押</li>
+                        <li>• <strong>动态质押监控：</strong>质押物价值随市价实时波动，系统自动计算质押率，触及预警线自动通知补仓</li>
+                        <li>• <strong>贷后管理：</strong>放款后持续监控企业交易异动、质押物状态、经营数据，异常自动推送告警</li>
+                        <li>• <strong>不良处置：</strong>出现违约后，质押货物通过平台交易模块快速挂牌变现</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">使用的模块 & 功能</div>
+                    <table class="w-full text-xs">
+                        <tr><td class="py-1 pr-3 font-semibold text-red-700">融资模块</td><td class="py-1 text-gray-600"><strong>核心模块：</strong>仓单质押、应收保理、动态质押监控、企业信用画像</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-red-700">合同模块</td><td class="py-1 text-gray-600">贸易合同真实性验证（只读）、合同历史查询</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-red-700">财务模块</td><td class="py-1 text-gray-600">资金流水核验（只读）、银行存管对账</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-red-700">仓单模块</td><td class="py-1 text-gray-600">区块链仓单验真、质押登记、解押管理</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-red-700">商品模块</td><td class="py-1 text-gray-600">质押物市价监控（只读）、价格波动预警</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-red-700">物流模块</td><td class="py-1 text-gray-600">货物位置确认（只读）、物流轨迹核查</td></tr>
+                    </table>
+                    <div class="text-xs text-gray-500 mt-2 pt-2 border-t border-red-200">
+                        <strong>内部角色分工：</strong>信贷经理 → 授信审批/贸易验证；风控经理 → 质押率监控/预警处置；贷后管理 → 企业异动监控；资产保全 → 不良处置
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群6：质检机构 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #06B6D4;">
+        <div class="flex items-center gap-2 mb-3">
+            <div class="w-9 h-9 rounded-lg bg-cyan-100 flex items-center justify-center"><i class="fas fa-flask text-cyan-600"></i></div>
+            <h3 class="text-sm font-bold text-cyan-700">人群六：质检机构（SGS / CCIC / 第三方检测）</h3>
+            <span class="tag bg-cyan-100 text-cyan-700">增信方</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-bullseye text-cyan-500 mr-1"></i>典型画像</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• SGS / 中国检验认证(CCIC)</li>
+                    <li>• 各地质检院 / 专业检测机构</li>
+                    <li>• 钢厂自有实验室</li>
+                    <li>• 年出具报告万份以上</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>平台解决的痛点</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>报告流转慢：</strong>纸质报告邮寄3-5天，影响交易进度</li>
+                    <li>• <strong>报告易篡改：</strong>PDF报告可PS修改，商业欺诈风险</li>
+                    <li>• <strong>对接成本高：</strong>每家客户独立对接，流程不统一</li>
+                    <li>• <strong>数据价值浪费：</strong>大量检测数据沉淀，未能变现</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-cogs text-purple-500 mr-1"></i>对系统的要求</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>电子报告：</strong>检测完成即时上传，交易各方在线查阅</li>
+                    <li>• <strong>防伪追溯：</strong>报告二维码+区块链存证，扫码验真</li>
+                    <li>• <strong>标准化对接：</strong>API接口统一上报，减少定制开发</li>
+                    <li>• <strong>按次计费：</strong>平台统一收费、分账，降低结算成本</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 落地场景与模块使用 -->
+        <div class="bg-cyan-50 rounded-lg p-4 border border-cyan-100 mt-3">
+            <div class="text-xs font-bold text-cyan-800 mb-2"><i class="fas fa-rocket mr-1"></i>落地场景与模块使用</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">实际落地场景</div>
+                    <ul class="text-xs text-gray-600 space-y-1">
+                        <li>• <strong>接收质检委托：</strong>平台交易双方约定质检后，系统自动向质检机构推送委托通知（含商品信息、品质标准、取样要求）</li>
+                        <li>• <strong>现场取样检测：</strong>质检人员按标准取样、实验室检测，完成后登录平台<strong>上传电子报告</strong></li>
+                        <li>• <strong>报告自动关联：</strong>电子报告上传后自动关联到对应合同和商品，交易双方即时可见</li>
+                        <li>• <strong>防伪追溯：</strong>每份报告生成唯一二维码+区块链存证哈希值，扫码即可验真，杜绝PS篡改</li>
+                        <li>• <strong>自动结算：</strong>报告上传确认后，平台按照约定费率自动结算检测费用</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">使用的模块 & 功能</div>
+                    <table class="w-full text-xs">
+                        <tr><td class="py-1 pr-3 font-semibold text-cyan-700">商品模块</td><td class="py-1 text-gray-600">接收质检委托、查看品质标准模板、上传电子报告</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-cyan-700">合同模块</td><td class="py-1 text-gray-600">关联合同品质条款（只读）、报告绑定合同</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-cyan-700">财务模块</td><td class="py-1 text-gray-600">检测费用自动结算、按次计费分账</td></tr>
+                    </table>
+                    <div class="text-xs text-gray-500 mt-2 pt-2 border-t border-cyan-200">
+                        <strong>内部角色分工：</strong>实验室检测员 → 接收委托/上传报告；业务对接人 → 客户沟通/报告交付；财务 → 费用结算
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群7：平台运营方 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #64748B;">
+        <div class="flex items-center gap-2 mb-3">
+            <div class="w-9 h-9 rounded-lg bg-gray-200 flex items-center justify-center"><i class="fas fa-crown text-gray-600"></i></div>
+            <h3 class="text-sm font-bold text-gray-700">人群七：平台运营方（平台公司 / SaaS服务商）</h3>
+            <span class="tag bg-gray-200 text-gray-700">运营方</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-bullseye text-gray-500 mr-1"></i>典型画像</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• 大宗商品电商平台运营公司</li>
+                    <li>• 行业龙头自建的产业互联网平台</li>
+                    <li>• 供应链SaaS服务商</li>
+                    <li>• 运营团队20-100人</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-exclamation-triangle text-red-500 mr-1"></i>平台解决的痛点</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>多边协调复杂：</strong>7类角色利益诉求不同，撮合和管理难度大</li>
+                    <li>• <strong>风控压力大：</strong>大额交易纠纷/违约可能拖垮平台</li>
+                    <li>• <strong>合规成本高：</strong>电子签章/数据安全/反洗钱合规要求繁多</li>
+                    <li>• <strong>盈利模式模糊：</strong>纯信息撮合收费难，需多元化变现</li>
+                    <li>• <strong>SaaS化挑战：</strong>多租户隔离、能力集治理、计量计费</li>
+                </ul>
+            </div>
+            <div>
+                <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-cogs text-purple-500 mr-1"></i>对系统的要求</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                    <li>• <strong>多租户架构：</strong>数据隔离、独立门户、能力集灵活配置</li>
+                    <li>• <strong>运营后台：</strong>用户审核、交易监控、纠纷处理、数据统计</li>
+                    <li>• <strong>风控引擎：</strong>价格偏离预警、异常交易检测、关联账户识别</li>
+                    <li>• <strong>合规底座：</strong>CA电子签章、数据安全分级、审计日志完整</li>
+                    <li>• <strong>计费系统：</strong>按交易额/按会员等级/按功能模块灵活计费</li>
+                    <li>• <strong>开放API：</strong>支持外部系统对接，构建生态护城河</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 落地场景与模块使用 -->
+        <div class="bg-gray-100 rounded-lg p-4 border border-gray-200 mt-3">
+            <div class="text-xs font-bold text-gray-800 mb-2"><i class="fas fa-rocket mr-1"></i>落地场景与模块使用</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">实际落地场景</div>
+                    <ul class="text-xs text-gray-600 space-y-1">
+                        <li>• <strong>租户入驻管理：</strong>为新注册企业创建独立租户空间，配置能力集（L1/L2/L3模块开关），分配独立门户域名</li>
+                        <li>• <strong>用户审核与权限：</strong>审核企业资质（营业执照/经营许可），为企业内用户分配角色权限</li>
+                        <li>• <strong>交易监控中心：</strong>实时监控全平台交易数据——挂牌量/成交量/成交额，异常交易（价格偏离>15%、关联账户对倒）自动告警</li>
+                        <li>• <strong>纠纷处理：</strong>交易双方出现争议时，运营专员介入查看合同/资金/物流/质检全链路数据，公正裁决</li>
+                        <li>• <strong>计费与对账：</strong>按租户使用的模块和交易量自动生成账单（年费+按量计费），月底统一结算</li>
+                        <li>• <strong>数据分析：</strong>全平台经营数据分析——品类热力图、区域成交分布、用户活跃度、收入趋势</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-1">使用的模块 & 功能</div>
+                    <table class="w-full text-xs">
+                        <tr><td class="py-1 pr-3 font-semibold text-gray-700">SaaS模块</td><td class="py-1 text-gray-600"><strong>核心模块：</strong>多租户管理、能力集配置、独立门户、计量计费</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-gray-700">运营后台</td><td class="py-1 text-gray-600">用户审核、资质管理、交易监控大屏、纠纷仲裁、数据统计</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-gray-700">风控引擎</td><td class="py-1 text-gray-600">价格偏离预警、异常交易检测、关联账户识别、反洗钱</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-gray-700">合规底座</td><td class="py-1 text-gray-600">CA电子签章、数据安全分级、审计日志、合规报告</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-gray-700">开放平台</td><td class="py-1 text-gray-600">API网关、接口文档、第三方系统对接管理</td></tr>
+                        <tr><td class="py-1 pr-3 font-semibold text-gray-700">全模块</td><td class="py-1 text-gray-600">所有业务模块的后台管理面板（交易/合同/仓单/财务/融资/物流/商品/模板）</td></tr>
+                    </table>
+                    <div class="text-xs text-gray-500 mt-2 pt-2 border-t border-gray-300">
+                        <strong>内部角色分工：</strong>运营专员 → 用户审核/交易监控/纠纷处理；风控专员 → 异常告警/反洗钱/合规审计；系统管理员 → 租户配置/能力集/API管理；数据分析师 → 经营报表/数据洞察
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 二-B、企业类型与决策关注点差异 -->
+<section>
+    <h2 class="text-lg font-semibold text-gray-800 mb-3"><i class="fas fa-building text-indigo-500 mr-2"></i>二-B、企业类型与决策关注点差异</h2>
+
+    <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg p-4 border border-indigo-100 mb-5">
+        <p class="text-xs text-gray-600 leading-relaxed">
+            <strong class="text-indigo-700">核心洞察：</strong>同一个角色（如"上游资源方"），国企和民企的决策逻辑完全不同。
+            国企买的是<strong>"合规 + 不出事"</strong>，民企买的是<strong>"赚钱 + 提效"</strong>。
+            如果用同一套话术打两种客户，必然一成一败。以下按人群×企业类型交叉拆解。
+        </p>
+    </div>
+
+    <!-- 交叉分析表 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 overflow-x-auto mb-5">
+        <table class="w-full text-xs">
+            <thead>
+                <tr>
+                    <th class="p-3 rounded-tl-lg w-[10%]">人群</th>
+                    <th class="p-3 w-[8%]">主要企业类型</th>
+                    <th class="p-3 w-[12%]">典型代表</th>
+                    <th class="p-3 w-[22%]">国企关注什么</th>
+                    <th class="p-3 w-[22%]">民企关注什么</th>
+                    <th class="p-3 rounded-tr-lg w-[26%]">销售策略差异</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="p-3 font-semibold text-blue-700" rowspan="2"><i class="fas fa-mountain mr-1"></i>上游资源方</td>
+                    <td class="p-3"><span class="tag bg-red-100 text-red-700">国企为主</span></td>
+                    <td class="p-3">宝武、鞍钢、中铝、中石化、国家能源集团</td>
+                    <td class="p-3 text-xs">
+                        <ul class="space-y-1">
+                            <li>• <strong>合规第一：</strong>采购/销售流程必须合规，经得起审计巡视</li>
+                            <li>• <strong>数据安全：</strong>产能/价格/客户数据绝不能出企业内网</li>
+                            <li>• <strong>国有资产保值：</strong>系统不能带来任何资金风险，银行存管是刚需</li>
+                            <li>• <strong>信创适配：</strong>要求国产化部署（国产数据库/国产服务器/等保三级）</li>
+                            <li>• <strong>对接现有体系：</strong>必须能对接已有的ERP/OA/国资监管平台</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs">
+                        <ul class="space-y-1">
+                            <li>• <strong>溢价成交：</strong>竞价模式多卖3-8%是最大吸引力</li>
+                            <li>• <strong>去库存速度：</strong>滞销时快速找到买家，减少资金占用</li>
+                            <li>• <strong>坏账归零：</strong>银行存管杜绝赊销坏账</li>
+                            <li>• <strong>轻量化部署：</strong>SaaS就行，不需要自建机房</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs">
+                        <span class="tag bg-red-100 text-red-700 mr-1">对国企</span>"支持本地化部署+等保三级+信创适配，数据不出厂区"<br><br>
+                        <span class="tag bg-green-100 text-green-700 mr-1">对民企</span>"SaaS即开即用，竞价溢价多赚3-8%，坏账归零"
+                    </td>
+                </tr>
+                <tr>
+                    <td class="p-3"><span class="tag bg-green-100 text-green-700">大型民企</span></td>
+                    <td class="p-3">青山控股、沙钢、恒力石化、大型农牧集团</td>
+                    <td class="p-3 text-xs" colspan="2">（同上国企行）大型民企的合规诉求接近国企，但决策更快、预算更灵活。</td>
+                    <td class="p-3 text-xs">对大型民企：国企级合规+民企级效率，取两者之长</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-amber-700" rowspan="2"><i class="fas fa-balance-scale mr-1"></i>贸易商</td>
+                    <td class="p-3"><span class="tag bg-green-100 text-green-700">民企为主</span></td>
+                    <td class="p-3">各类钢材/矿石/化工贸易公司</td>
+                    <td class="p-3 text-xs" rowspan="2">
+                        <ul class="space-y-1">
+                            <li>• <strong>效率压倒一切：</strong>200份合同不能靠Excel管，系统必须一眼看清</li>
+                            <li>• <strong>看得见利润：</strong>每份合同实时盈亏，老板最关心这个</li>
+                            <li>• <strong>不被"能人"绑架：</strong>核心业务数据和客户关系不能只在老业务员脑子里</li>
+                            <li>• <strong>资金周转：</strong>加快回款、盘活库存、融资通道</li>
+                            <li>• <strong>低门槛：</strong>年费制，不要大额一次性投入；能先用核心模块，逐步加购</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs">
+                        <span class="tag bg-green-100 text-green-700 mr-1">对中小民企</span>"年费制，L1四件套先上，3天培训上手。管合同、看得见利润、不丢单，这是底线。"<br><br>
+                        <span class="tag bg-amber-100 text-amber-700 mr-1">对大型民企</span>"多品种模板引擎+融资模块，业务越复杂越需要系统化。别人管500份合同要20人，您10人就够了。"
+                    </td>
+                </tr>
+                <tr>
+                    <td class="p-3"><span class="tag bg-red-100 text-red-700">国企贸易子公司</span></td>
+                    <td class="p-3">中钢贸易、五矿贸易、中化贸易等</td>
+                    <td class="p-3 text-xs">对国企贸易子公司：民企级的效率诉求 + 国企级的合规要求（十不准红线）。关键是"合规前提下提效率"。</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-green-700" rowspan="2"><i class="fas fa-industry mr-1"></i>下游终端</td>
+                    <td class="p-3"><span class="tag bg-red-100 text-red-700">国企为主</span></td>
+                    <td class="p-3">中建、中铁、中交、中冶、各省建工</td>
+                    <td class="p-3 text-xs">
+                        <ul class="space-y-1">
+                            <li>• <strong>采购合规：</strong>比价过程留痕，经得起审计——"为什么选A不选B"必须有数据支撑</li>
+                            <li>• <strong>保供是政治任务：</strong>项目停工是重大事故，断供零容忍</li>
+                            <li>• <strong>资金安全：</strong>预付款绝不能打水漂，银行存管是硬门槛</li>
+                            <li>• <strong>集中采购平台对接：</strong>对接集团统一集采系统</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs">
+                        <ul class="space-y-1">
+                            <li>• <strong>降本：</strong>多供应商比价，采购成本降5-10%</li>
+                            <li>• <strong>品质保证：</strong>质检报告在线可查，到货品质不符可拒付</li>
+                            <li>• <strong>交期可控：</strong>物流轨迹实时可见，不再被供应商"忽悠"</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs">
+                        <span class="tag bg-red-100 text-red-700 mr-1">对国企</span>"比价全程留痕可审计，银行存管杜绝预付款风险。对接集团集采系统，不打乱现有流程。"<br><br>
+                        <span class="tag bg-green-100 text-green-700 mr-1">对民企</span>"钢价降5%，一年1000万采购额就省50万。而且货到付款，不怕打了钱货不来。"
+                    </td>
+                </tr>
+                <tr>
+                    <td class="p-3"><span class="tag bg-green-100 text-green-700">民企制造</span></td>
+                    <td class="p-3">各类金属加工厂、食品厂、化工厂</td>
+                    <td class="p-3 text-xs" colspan="2">（同上民企行）</td>
+                    <td class="p-3 text-xs">（同上）</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-purple-700"><i class="fas fa-warehouse mr-1"></i>仓储物流</td>
+                    <td class="p-3"><span class="tag bg-red-100 text-red-700">国企</span>+<span class="tag bg-green-100 text-green-700">民企</span></td>
+                    <td class="p-3">上港/宁波港/天津港（国企）<br>各类第三方仓储（民企）</td>
+                    <td class="p-3 text-xs">
+                        <ul class="space-y-1">
+                            <li>• <strong>国企港口：</strong>数字化转型KPI、多式联运国家战略、数据上报交通部</li>
+                            <li>• <strong>国企仓库：</strong>仓单防伪（避免"上海钢联事件"重演）、系统等保合规</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs">
+                        <ul class="space-y-1">
+                            <li>• <strong>去空置：</strong>空置就是亏钱，平台导流直接增收</li>
+                            <li>• <strong>降人力：</strong>出入库从5人减到2人，一年省30万</li>
+                            <li>• <strong>多赚钱：</strong>区块链仓单本身可收费（仓单注册费/过户费）</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs">
+                        <span class="tag bg-red-100 text-red-700 mr-1">对国企</span>"区块链电子仓单防重复质押，助力数字化转型考核。数据对接交通部/国资委监管平台。"<br><br>
+                        <span class="tag bg-green-100 text-green-700 mr-1">对民企</span>"接入平台空置率降20%，多赚25%。WMS标准适配器3天对接。"
+                    </td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-red-700" rowspan="3"><i class="fas fa-landmark mr-1"></i>金融机构</td>
+                    <td class="p-3"><span class="tag bg-red-100 text-red-700">国有大行</span></td>
+                    <td class="p-3">工行、建行、农行、中行、交行</td>
+                    <td class="p-3 text-xs">
+                        <ul class="space-y-1">
+                            <li>• <strong>合规压倒一切：</strong>银保监合规审查、反洗钱(AML)、KYC全流程覆盖</li>
+                            <li>• <strong>不敢出事：</strong>一笔不良就是重大责任，风控能力是第一位</li>
+                            <li>• <strong>总行推动：</strong>决策链长（总行→省行→分行），需要顶层设计对接</li>
+                            <li>• <strong>数据不出行：</strong>要求私有化部署或专有云，数据100%在行内</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs" rowspan="2">
+                        <ul class="space-y-1">
+                            <li>• <strong>（同国企关注点）</strong></li>
+                            <li>• <strong>业务增量：</strong>股份制银行更激进，供应链金融是重要的对公增长点</li>
+                            <li>• <strong>竞争压力：</strong>大行做了你不做，中小企业客户就被抢走</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs">
+                        <span class="tag bg-red-100 text-red-700 mr-1">对国有大行</span>"等保三级+数据安全合规审计+私有化部署。四流合一验证+区块链仓单，从源头消灭虚假贸易。送全套合规材料帮您过风控评审。"<br><br>
+                        <span class="tag bg-blue-100 text-blue-700 mr-1">对股份/城商行</span>"某股份行接入后供应链金融半年从0做到8亿，零逾期。您不做，客户就流向大行了。"
+                    </td>
+                </tr>
+                <tr>
+                    <td class="p-3"><span class="tag bg-blue-100 text-blue-700">股份/城商行</span></td>
+                    <td class="p-3">招商、浦发、兴业、各城商行</td>
+                    <td class="p-3 text-xs">（同上）</td>
+                </tr>
+                <tr>
+                    <td class="p-3"><span class="tag bg-green-100 text-green-700">民企保理</span></td>
+                    <td class="p-3">各类商业保理公司</td>
+                    <td class="p-3 text-xs" colspan="2">
+                        <ul class="space-y-1">
+                            <li>• <strong>速度：</strong>放款决策要快，审批流程不能像银行一样慢</li>
+                            <li>• <strong>利润：</strong>利差是核心，风控是手段不是目的</li>
+                            <li>• <strong>获客：</strong>平台就是获客渠道，平台上所有融资需求方都是潜在客户</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs">
+                        <span class="tag bg-green-100 text-green-700 mr-1">对保理公司</span>"平台上有融资需求的企业就是您的客户池。四流合一帮您快速验证贸易真实性，当天审批当天放款。"
+                    </td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-cyan-700" rowspan="2"><i class="fas fa-flask mr-1"></i>质检机构</td>
+                    <td class="p-3"><span class="tag bg-red-100 text-red-700">国企</span></td>
+                    <td class="p-3">中国检验认证(CCIC)、各地质检院</td>
+                    <td class="p-3 text-xs">
+                        <ul class="space-y-1">
+                            <li>• <strong>国家标准：</strong>报告格式、检测方法必须符合国标</li>
+                            <li>• <strong>公信力：</strong>区块链存证增强报告权威性</li>
+                            <li>• <strong>数字化考核：</strong>电子报告替代纸质是数字化转型成果</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs" rowspan="2">
+                        <ul class="space-y-1">
+                            <li>• <strong>接单量：</strong>平台引流 = 新增客户 = 增量收入</li>
+                            <li>• <strong>降低成本：</strong>纸质报告打印邮寄成本归零</li>
+                            <li>• <strong>品牌曝光：</strong>平台内所有企业都是潜在客户</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs">
+                        <span class="tag bg-red-100 text-red-700 mr-1">对国企/外企</span>"区块链存证+扫码验真，提升报告公信力。数字报告助力数字化转型考核。标准API对接不增加额外工作量。"<br><br>
+                        <span class="tag bg-green-100 text-green-700 mr-1">对民企</span>"零门槛免费入驻，平台引流新增30-50%客户。SDK 1天对接。"
+                    </td>
+                </tr>
+                <tr>
+                    <td class="p-3"><span class="tag bg-purple-100 text-purple-700">外企</span></td>
+                    <td class="p-3">SGS、BV、Intertek</td>
+                    <td class="p-3 text-xs">
+                        <ul class="space-y-1">
+                            <li>• <strong>全球标准：</strong>报告需符合ASTM/ISO等国际标准</li>
+                            <li>• <strong>品牌声誉：</strong>技术能力展示给中国客户</li>
+                            <li>• <strong>数据治理：</strong>跨境数据传输合规</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs">（同上国企/外企行）</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-gray-700"><i class="fas fa-crown mr-1"></i>平台运营方</td>
+                    <td class="p-3"><span class="tag bg-green-100 text-green-700">民企为主</span></td>
+                    <td class="p-3">电商平台公司、产业互联网创业公司</td>
+                    <td class="p-3 text-xs" colspan="2">
+                        <ul class="space-y-1">
+                            <li>• <strong>速度：</strong>从零到上线越快越好，市场窗口不等人</li>
+                            <li>• <strong>成本：</strong>自建5000万/18月 vs 接入年费制，差距巨大</li>
+                            <li>• <strong>灵活性：</strong>混合架构——核心数据私有化+非核心功能SaaS</li>
+                            <li>• <strong>已验证：</strong>"有别人用成功了吗？"——标杆案例是最大信用背书</li>
+                        </ul>
+                    </td>
+                    <td class="p-3 text-xs rounded-br-lg">
+                        <span class="tag bg-green-100 text-green-700">标准策略</span>"4周上线，省18个月5000万。支持混合架构——核心数据您机房，通用能力用SaaS。某平台3周上线，首年GMV破5亿。"
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 关键差异总结 -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-red-50 rounded-xl p-5 border border-red-100">
+            <div class="flex items-center gap-2 mb-3">
+                <div class="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center"><i class="fas fa-flag text-red-600"></i></div>
+                <h3 class="text-sm font-bold text-red-800">国企决策逻辑</h3>
+            </div>
+            <ul class="text-xs text-gray-700 space-y-2">
+                <li><strong>核心动机：</strong>不出事 > 合规 > 效率 > 利润</li>
+                <li><strong>决策链：</strong>业务部门提需求 → 信息中心评估 → 分管领导审批 → 领导班子过会（3-6个月）</li>
+                <li><strong>必过关卡：</strong>信创适配、等保三级、数据不出企业、审计可追溯</li>
+                <li><strong>绝对不能说的话：</strong>"这个功能比竞品好"（没用，领导不关心功能）</li>
+                <li><strong>一定要说的话：</strong>"已通过等保三级认证 / 支持国产化部署 / 数据100%在企业内网 / 全流程审计留痕"</li>
+                <li><strong>最佳切入点：</strong>数字化转型考核指标、上级文件要求、兄弟单位已在用</li>
+            </ul>
+        </div>
+        <div class="bg-green-50 rounded-xl p-5 border border-green-100">
+            <div class="flex items-center gap-2 mb-3">
+                <div class="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center"><i class="fas fa-rocket text-green-600"></i></div>
+                <h3 class="text-sm font-bold text-green-800">民企决策逻辑</h3>
+            </div>
+            <ul class="text-xs text-gray-700 space-y-2">
+                <li><strong>核心动机：</strong>利润 > 效率 > 风险 > 合规</li>
+                <li><strong>决策链：</strong>老板/总经理直接拍板（1-4周）</li>
+                <li><strong>必过关卡：</strong>ROI算得过账、不能比现在更麻烦、有同行在用</li>
+                <li><strong>绝对不能说的话：</strong>"这个系统功能架构非常先进"（没用，老板听不懂也不关心）</li>
+                <li><strong>一定要说的话：</strong>"一年帮您多赚/少亏XXX万 / 效率提升5倍 / 某同行用了之后利润增了XX%"</li>
+                <li><strong>最佳切入点：</strong>刚吃过亏（逾期损失/坏账/断供）、业务扩张管不过来了</li>
+            </ul>
+        </div>
+        <div class="bg-purple-50 rounded-xl p-5 border border-purple-100">
+            <div class="flex items-center gap-2 mb-3">
+                <div class="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center"><i class="fas fa-globe text-purple-600"></i></div>
+                <h3 class="text-sm font-bold text-purple-800">外企决策逻辑</h3>
+            </div>
+            <ul class="text-xs text-gray-700 space-y-2">
+                <li><strong>核心动机：</strong>合规（全球标准） > 品牌 > 效率 > 利润</li>
+                <li><strong>决策链：</strong>中国区提需求 → 亚太/全球审批（3-6个月）</li>
+                <li><strong>必过关卡：</strong>数据跨境合规、国际标准认证、英文界面/文档、全球SLA</li>
+                <li><strong>绝对不能说的话：</strong>"中国市场上最好的"（总部不认可"中国最好"）</li>
+                <li><strong>一定要说的话：</strong>"符合ISO 27001/SOC 2 / 支持中英双语 / 数据存储在中国境内 / 全球SLA 99.9%"</li>
+                <li><strong>最佳切入点：</strong>Global有数字化转型指令、亚太区在找合规的中国本地化方案</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 一句话总结 -->
+    <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg p-4 border border-indigo-100 mt-5">
+        <div class="text-xs font-bold text-indigo-800 mb-1"><i class="fas fa-key mr-1"></i>销售实战口诀</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-gray-700">
+            <div><strong>见国企 →</strong> 先递合规材料（等保证书、信创清单、审计报告），再谈效率提升。关键词：<span class="text-red-600">合规、安全、审计、国产化。</span></div>
+            <div><strong>见民企 →</strong> 先算账（一年省多少/赚多少），再看功能。关键词：<span class="text-green-600">多赚钱、少亏钱、提效率、低门槛。</span></div>
+            <div><strong>见外企 →</strong> 先亮国际认证（ISO/SOC/双语），再讲本地化价值。关键词：<span class="text-purple-600">全球合规、数据本地化、中国落地。</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- 三、人群需求对比总表 -->
+<section>
+    <h2 class="text-lg font-semibold text-gray-800 mb-3"><i class="fas fa-table text-orange-500 mr-2"></i>三、人群需求对比总表</h2>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 overflow-x-auto">
+        <table class="w-full text-xs">
+            <thead>
+                <tr>
+                    <th class="p-3 rounded-tl-lg">人群</th>
+                    <th class="p-3">核心痛点</th>
+                    <th class="p-3">核心诉求</th>
+                    <th class="p-3">付费意愿</th>
+                    <th class="p-3">决策周期</th>
+                    <th class="p-3 rounded-tr-lg">关键功能模块</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="p-3 font-semibold text-blue-700"><i class="fas fa-mountain mr-1"></i>上游资源方</td>
+                    <td class="p-3">找买家难、回款风险、品质争议</td>
+                    <td class="p-3">拓宽销路、保障回款、标准化品质</td>
+                    <td class="p-3"><span class="tag bg-green-100 text-green-700">高</span></td>
+                    <td class="p-3">1-3个月</td>
+                    <td class="p-3">挂牌交易、保证金、品质模板、银行存管</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-amber-700"><i class="fas fa-balance-scale mr-1"></i>贸易商</td>
+                    <td class="p-3">合同管理混乱、资金占用、对手方风险</td>
+                    <td class="p-3">效率提升、资金周转、风险可控</td>
+                    <td class="p-3"><span class="tag bg-green-100 text-green-700">高</span></td>
+                    <td class="p-3">2-4周</td>
+                    <td class="p-3">合同全生命周期、多交易模式、供应链金融</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-green-700"><i class="fas fa-industry mr-1"></i>下游终端</td>
+                    <td class="p-3">供应不稳、品质无保障、预付风险</td>
+                    <td class="p-3">稳定供应、品质保证、资金安全</td>
+                    <td class="p-3"><span class="tag bg-yellow-100 text-yellow-700">中</span></td>
+                    <td class="p-3">2-4周</td>
+                    <td class="p-3">多供应商比价、物流追踪、锁价/基差</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-purple-700"><i class="fas fa-warehouse mr-1"></i>仓储物流</td>
+                    <td class="p-3">订单碎片化、仓单造假、人工繁重</td>
+                    <td class="p-3">业务增量、效率提升、责任清晰</td>
+                    <td class="p-3"><span class="tag bg-yellow-100 text-yellow-700">中</span></td>
+                    <td class="p-3">1-2个月</td>
+                    <td class="p-3">WMS对接、电子仓单、物流轨迹、费用结算</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-red-700"><i class="fas fa-landmark mr-1"></i>金融机构</td>
+                    <td class="p-3">贸易真实性、仓单风险、贷后监控</td>
+                    <td class="p-3">优质资产、风险可控、批量获客</td>
+                    <td class="p-3"><span class="tag bg-green-100 text-green-700">极高</span></td>
+                    <td class="p-3">3-6个月</td>
+                    <td class="p-3">四流合一、区块链仓单、动态质押、企业画像</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-cyan-700"><i class="fas fa-flask mr-1"></i>质检机构</td>
+                    <td class="p-3">报告流转慢、易篡改、对接成本高</td>
+                    <td class="p-3">数字化提效、品牌曝光、增量收入</td>
+                    <td class="p-3"><span class="tag bg-gray-100 text-gray-700">低</span></td>
+                    <td class="p-3">1-2个月</td>
+                    <td class="p-3">电子报告、防伪追溯、标准化API对接</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-gray-700 rounded-bl-lg"><i class="fas fa-crown mr-1"></i>平台运营方</td>
+                    <td class="p-3">多边协调、风控压力、合规成本</td>
+                    <td class="p-3">平台增长、收入多元、风险可控</td>
+                    <td class="p-3"><span class="tag bg-green-100 text-green-700">极高</span></td>
+                    <td class="p-3">持续投入</td>
+                    <td class="p-3 rounded-br-lg">多租户、风控引擎、计费系统、开放API</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- 四、关键设计启示 -->
+<section>
+    <h2 class="text-lg font-semibold text-gray-800 mb-3"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i>四、人群分析对系统设计的关键启示</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+            <div class="text-sm font-bold text-gray-800 mb-3"><i class="fas fa-puzzle-piece text-blue-500 mr-1"></i>模块化角色入口</div>
+            <ul class="text-xs text-gray-600 space-y-2">
+                <li>• 不同角色登录后看到不同的首页和工作台</li>
+                <li>• 上游看"我的挂牌"和"销售看板"</li>
+                <li>• 贸易商看"合同看板"和"履约进度"</li>
+                <li>• 下游看"采购需求"和"物流追踪"</li>
+                <li>• 金融机构看"质押资产"和"风控预警"</li>
+            </ul>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+            <div class="text-sm font-bold text-gray-800 mb-3"><i class="fas fa-shield-alt text-green-500 mr-1"></i>权限与数据隔离</div>
+            <ul class="text-xs text-gray-600 space-y-2">
+                <li>• 同一企业内部按岗位分级：操作员/审核员/管理员</li>
+                <li>• 跨企业数据严格隔离：只能看到自己参与的合同</li>
+                <li>• 平台运营方的超级管理权限与审计日志</li>
+            </ul>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+            <div class="text-sm font-bold text-gray-800 mb-3"><i class="fas fa-plug text-purple-500 mr-1"></i>灵活对接能力</div>
+            <ul class="text-xs text-gray-600 space-y-2">
+                <li>• WMS/TMS系统标准化对接（仓储物流方）</li>
+                <li>• 银行存管/支付通道对接（金融机构+上游）</li>
+                <li>• 质检系统API对接（质检机构）</li>
+                <li>• 企业ERP对接（贸易商+下游）</li>
+            </ul>
+        </div>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+            <div class="text-sm font-bold text-gray-800 mb-3"><i class="fas fa-coins text-amber-500 mr-1"></i>分层计费模型</div>
+            <ul class="text-xs text-gray-600 space-y-2">
+                <li>• 按人群差异化定价：金融机构＞上游/贸易商＞下游/仓储＞质检</li>
+                <li>• 按使用量计费：交易笔数、合同份数、API调用次数</li>
+                <li>• 基础功能免费 + 增值服务收费（金融/质检/数据分析）</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+<!-- 五、销售话术与价值传递策略 -->
+<section>
+    <h2 class="text-lg font-semibold text-gray-800 mb-3"><i class="fas fa-comments-dollar text-green-500 mr-2"></i>五、销售话术与价值传递策略</h2>
+
+    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4 border border-green-100 mb-5">
+        <div class="text-sm font-bold text-green-800 mb-2">销售框架总纲：FABE + 算账法</div>
+        <p class="text-xs text-gray-600 leading-relaxed">
+            向大宗商品行业客户销售系统，不能讲"技术多么先进"，要讲"帮你多赚多少、少亏多少、省多少时间"。
+            核心方法是 <strong>FABE法则</strong>（特征→优势→利益→证据）+ <strong>算账法</strong>（把降本增效折算成具体金额）。
+            以下按7类人群分别拆解。
+        </p>
+    </div>
+
+    <!-- 人群1话术 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #3B82F6;">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center"><i class="fas fa-mountain text-blue-600"></i></div>
+            <h3 class="text-sm font-bold text-blue-700">人群一：上游资源方</h3>
+            <span class="tag bg-blue-100 text-blue-700">核心供给端</span>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-blue-50 rounded-lg p-3 border border-blue-100">
+                <div class="text-xs font-bold text-blue-800 mb-1"><i class="fas fa-bolt mr-1"></i>一句话触动（Elevator Pitch）</div>
+                <p class="text-sm text-gray-700">"您的货，让全国买家来竞价——价格您定，款到才发货，再也不用担心赊销坏账。"</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-star text-blue-500 mr-1"></i>FABE 价值拆解</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>F（特征）：</strong>多模式挂牌（一口价/竞价/基差点价）+ 在线品质模板</li>
+                        <li><strong>A（优势）：</strong>覆盖平台内所有注册买家，比现有客户池扩大10-50倍</li>
+                        <li><strong>B（利益）：</strong>成交价提升3-8%（竞价溢价），账期从30-90天缩至T+1</li>
+                        <li><strong>E（证据）：</strong>某钢厂上线后月均新增询盘300+，溢价成交占比45%</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-calculator text-orange-500 mr-1"></i>算账（ROI）</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li>• 年销100万吨钢材，溢价2% = <strong class="text-green-700">多赚2000万+</strong></li>
+                        <li>• 坏账率从2-3%降至0.1% = <strong class="text-green-700">少亏1000万+</strong></li>
+                        <li>• 销售团队从20人缩至10人 = <strong class="text-green-700">省300万人力/年</strong></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-shield-alt text-red-500 mr-1"></i>异议处理</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>"我们老客户够用了"</strong> → "老客户总有淡季，平台帮您淡季不淡"</li>
+                        <li><strong>"数据安全问题"</strong> → "您的客户信息、价格数据完全私有，平台不看不碰"</li>
+                        <li><strong>"我们不会用系统"</strong> → "3天驻场培训+7×12小时在线客服，0门槛上手"</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-3 border border-blue-100">
+                <div class="text-xs font-bold text-blue-800 mb-1"><i class="fas fa-lightbulb mr-1"></i>切入时机与关键人</div>
+                <p class="text-xs text-gray-600">切入时机：价格下行周期（滞销焦虑）、年底回款压力期（坏账焦虑）、产能扩张期（销售瓶颈）。关键决策人：销售总监/分管副总。关键话术核心词：<strong>溢价、回款、去库存</strong>。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群2话术 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #F59E0B;">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center"><i class="fas fa-balance-scale text-amber-600"></i></div>
+            <h3 class="text-sm font-bold text-amber-700">人群二：贸易商</h3>
+            <span class="tag bg-amber-100 text-amber-700">流通核心</span>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-amber-50 rounded-lg p-3 border border-amber-100">
+                <div class="text-xs font-bold text-amber-800 mb-1"><i class="fas fa-bolt mr-1"></i>一句话触动（Elevator Pitch）</div>
+                <p class="text-sm text-gray-700">"同时管200份合同不再是噩梦——系统自动告诉你每份合同走到哪步了、谁该付款了、哪个单子要亏了。"</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-star text-amber-500 mr-1"></i>FABE 价值拆解</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>F（特征）：</strong>合同全生命周期管理 + 履约看板 + 节点驱动自动化</li>
+                        <li><strong>A（优势）：</strong>200份合同状态一屏可视，逾期/异常自动标红</li>
+                        <li><strong>B（利益）：</strong>履约管理效率提升80%，逾期损失减少60%，人均管理合同量翻3倍</li>
+                        <li><strong>E（证据）：</strong>某贸易公司上线后，10人团队管理500+合同，零逾期</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-calculator text-orange-500 mr-1"></i>算账（ROI）</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li>• 漏跟进一份500万合同逾期 = <strong class="text-red-600">可能亏50万+</strong></li>
+                        <li>• 合同管理从5人天缩至1人天 = <strong class="text-green-700">效率5倍</strong></li>
+                        <li>• 资金周转加快15天 = 同样资金多跑0.5轮</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-shield-alt text-red-500 mr-1"></i>异议处理</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>"Excel+微信也能管"</strong> → "管的不是数据，是风险——Excel不会告诉您哪个客户要违约了"</li>
+                        <li><strong>"我们业务灵活，系统太死"</strong> → "模板引擎支持100%自定义，比Excel还灵活"</li>
+                        <li><strong>"对接麻烦"</strong> → "提供标准API，1周完成财务系统对接"</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-amber-50 rounded-lg p-3 border border-amber-100">
+                <div class="text-xs font-bold text-amber-800 mb-1"><i class="fas fa-lightbulb mr-1"></i>切入时机与关键人</div>
+                <p class="text-xs text-gray-600">切入时机：合同量增加导致管理混乱时、出现重大逾期损失后、老板不想被"能人绑架"时。关键决策人：老板/总经理。关键话术核心词：<strong>不丢单、不逾期、看得清</strong>。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群3话术 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #10B981;">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center"><i class="fas fa-industry text-green-600"></i></div>
+            <h3 class="text-sm font-bold text-green-700">人群三：下游终端用户</h3>
+            <span class="tag bg-green-100 text-green-700">需求端</span>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-green-50 rounded-lg p-3 border border-green-100">
+                <div class="text-xs font-bold text-green-800 mb-1"><i class="fas fa-bolt mr-1"></i>一句话触动（Elevator Pitch）</div>
+                <p class="text-sm text-gray-700">"您的原材料采购，从此告别'打了款怕不发货、发了货怕品质差'的焦虑——货款平台托管，收货确认才解付。"</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-star text-green-500 mr-1"></i>FABE 价值拆解</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>F（特征）：</strong>银行存管 + 多供应商比价 + 物流追踪 + 品质担保</li>
+                        <li><strong>A（优势）：</strong>资金不过平台、到货品质第三方质检、物流全程可视</li>
+                        <li><strong>B（利益）：</strong>采购成本降5-10%（比价溢价），断供风险降80%，品质纠纷归零</li>
+                        <li><strong>E（证据）：</strong>某建筑企业接入后，钢材采购成本降8%，零断供事故</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-calculator text-orange-500 mr-1"></i>算账（ROI）</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li>• 年采购1亿原料，降价5% = <strong class="text-green-700">省500万/年</strong></li>
+                        <li>• 断供1天停产损失 = <strong class="text-red-600">50-200万/天</strong></li>
+                        <li>• 品质不合格退货 = <strong class="text-red-600">运费+滞期费+停产三重损失</strong></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-shield-alt text-red-500 mr-1"></i>异议处理</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>"老供应商关系好"</strong> → "多个备选多条路，万一他断供呢？平台是您的'Plan B'"</li>
+                        <li><strong>"价格不一定更便宜"</strong> → "同品质下至少3家报价对比，比您现在更透明"</li>
+                        <li><strong>"付款要额外手续费"</strong> → "银行存管通道费由平台承担，您零额外成本"</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-green-50 rounded-lg p-3 border border-green-100">
+                <div class="text-xs font-bold text-green-800 mb-1"><i class="fas fa-lightbulb mr-1"></i>切入时机与关键人</div>
+                <p class="text-xs text-gray-600">切入时机：现有供应商涨价或断供时、新项目开工集中采购期、出现过品质事故后。关键决策人：采购总监/供应链VP。关键话术核心词：<strong>保供、比价、资金安全</strong>。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群4话术 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #8B5CF6;">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center"><i class="fas fa-warehouse text-purple-600"></i></div>
+            <h3 class="text-sm font-bold text-purple-700">人群四：仓储物流服务商</h3>
+            <span class="tag bg-purple-100 text-purple-700">履约底座</span>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-purple-50 rounded-lg p-3 border border-purple-100">
+                <div class="text-xs font-bold text-purple-800 mb-1"><i class="fas fa-bolt mr-1"></i>一句话触动（Elevator Pitch）</div>
+                <p class="text-sm text-gray-700">"您的仓库接入平台，就等于接入了一个永不关门的线上业务入口——交易越多、入库越多、您的收入越多。"</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-star text-purple-500 mr-1"></i>FABE 价值拆解</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>F（特征）：</strong>WMS对接 + 电子仓单 + 区块链存证 + 出入库线上化</li>
+                        <li><strong>A（优势）：</strong>平台内所有交易方都是您的潜在客户，出入库无需纸质单据</li>
+                        <li><strong>B（利益）：</strong>仓储利用率提升20-30%，人力成本降40%，获客成本归零</li>
+                        <li><strong>E（证据）：</strong>某港口仓库接入后，库存周转率提升35%，收入增25%</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-calculator text-orange-500 mr-1"></i>算账（ROI）</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li>• 空置率从30%降至10% = 相当于多出20%仓储面积收入</li>
+                        <li>• 出入库操作人工从5人缩至2人 = <strong class="text-green-700">省30万人力/年</strong></li>
+                        <li>• 仓单过户从3天纸质流转缩至秒级 = 周转速度质变</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-shield-alt text-red-500 mr-1"></i>异议处理</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>"对接我们现有WMS太麻烦"</strong> → "提供标准适配器，主流WMS 3天对接完成"</li>
+                        <li><strong>"数据被平台控制"</strong> → "您的客户数据、库存数据归您所有，平台只是通道"</li>
+                        <li><strong>"怕平台抢我的客户"</strong> → "平台是基础设施，不做仓储自营，只为您导流"</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-3 border border-purple-100">
+                <div class="text-xs font-bold text-purple-800 mb-1"><i class="fas fa-lightbulb mr-1"></i>切入时机与关键人</div>
+                <p class="text-xs text-gray-600">切入时机：仓储空置率高、周边有新仓库竞争、客户要求线上化管理。关键决策人：仓库经理/运营总监。关键话术核心词：<strong>去空置、增收、提效</strong>。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群5话术 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #EF4444;">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center"><i class="fas fa-landmark text-red-600"></i></div>
+            <h3 class="text-sm font-bold text-red-700">人群五：金融机构</h3>
+            <span class="tag bg-red-100 text-red-700">资金方</span>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-red-50 rounded-lg p-3 border border-red-100">
+                <div class="text-xs font-bold text-red-800 mb-1"><i class="fas fa-bolt mr-1"></i>一句话触动（Elevator Pitch）</div>
+                <p class="text-sm text-gray-700">"过去您不敢给大宗商品贸易放款，是因为不知道货在哪、合同真假。现在，四流合一+区块链仓单，每一笔交易的底层数据都真实可查——敢放、敢管、敢收。"</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-star text-red-500 mr-1"></i>FABE 价值拆解</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>F（特征）：</strong>四流合一验证 + 区块链仓单 + 动态质押 + 企业画像</li>
+                        <li><strong>A（优势）：</strong>合同/资金/物流/票据四流交叉核验，杜绝虚假贸易</li>
+                        <li><strong>B（利益）：</strong>坏账率从行业平均3-5%降至0.5%以下，放款效率提升10倍</li>
+                        <li><strong>E（证据）：</strong>某银行接入后，供应链金融规模半年从0做到8亿，零逾期</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-calculator text-orange-500 mr-1"></i>算账（ROI）</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li>• 10亿授信规模，坏账率降2% = <strong class="text-green-700">少亏2000万/年</strong></li>
+                        <li>• 单笔审批从5天缩至0.5天 = 人工成本降70%</li>
+                        <li>• 新增供应链金融收入 = 利差收入+中间业务收入双增</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-shield-alt text-red-500 mr-1"></i>异议处理</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>"上海钢联事件教训深刻"</strong> → "正是因为有教训，我们才用区块链防重复质押，一货一码不可篡改"</li>
+                        <li><strong>"合规审查难通过"</strong> → "系统已通过等保三级+数据安全合规审计，提供全套合规材料"</li>
+                        <li><strong>"存量业务迁移成本高"</strong> → "分阶段切入：先用平台做增量，再逐步迁移存量"</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-red-50 rounded-lg p-3 border border-red-100">
+                <div class="text-xs font-bold text-red-800 mb-1"><i class="fas fa-lightbulb mr-1"></i>切入时机与关键人</div>
+                <p class="text-xs text-gray-600">切入时机：总行推供应链金融KPI、有存量不良需要压降、竞行已接入形成示范效应。关键决策人：交易银行部总经理/对公业务分管行长。关键话术核心词：<strong>敢放、真数据、降不良</strong>。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群6话术 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #06B6D4;">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-cyan-100 flex items-center justify-center"><i class="fas fa-flask text-cyan-600"></i></div>
+            <h3 class="text-sm font-bold text-cyan-700">人群六：质检机构</h3>
+            <span class="tag bg-cyan-100 text-cyan-700">增信方</span>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-cyan-50 rounded-lg p-3 border border-cyan-100">
+                <div class="text-xs font-bold text-cyan-800 mb-1"><i class="fas fa-bolt mr-1"></i>一句话触动（Elevator Pitch）</div>
+                <p class="text-sm text-gray-700">"您的检测报告不再是一张纸——扫码即验真、上链即存证、平台内所有交易方都在线等您的报告。"</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-star text-cyan-500 mr-1"></i>FABE 价值拆解</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>F（特征）：</strong>电子报告API上传 + 二维码防伪 + 区块链存证</li>
+                        <li><strong>A（优势）：</strong>报告即时送达交易各方，防篡改、可追溯</li>
+                        <li><strong>B（利益）：</strong>接单效率提升50%，报告流转从3天缩至实时，品牌曝光给全平台企业</li>
+                        <li><strong>E（证据）：</strong>某检测机构接入后月报告量增40%，客户满意度评分提升至98%</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-calculator text-orange-500 mr-1"></i>算账（ROI）</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li>• 报告制作与送达人工成本降60%</li>
+                        <li>• 新增平台引流客户 = <strong class="text-green-700">增量收入30-50%/年</strong></li>
+                        <li>• 纸质报告打印邮寄成本归零</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-shield-alt text-red-500 mr-1"></i>异议处理</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>"我们量不大没必要"</strong> → "零门槛免费入驻，增量业务纯利润"</li>
+                        <li><strong>"怕数据泄露"</strong> → "报告只对合同参与方可见，其他企业看不到"</li>
+                        <li><strong>"开发对接要投入"</strong> → "提供标准SDK，1天完成对接，平台承担技术指导"</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-cyan-50 rounded-lg p-3 border border-cyan-100">
+                <div class="text-xs font-bold text-cyan-800 mb-1"><i class="fas fa-lightbulb mr-1"></i>切入时机与关键人</div>
+                <p class="text-xs text-gray-600">切入时机：业务量增长遇到瓶颈、有数字化转型需求、同行已线上化。关键决策人：业务发展总监/实验室主任。关键话术核心词：<strong>获客、提效、品牌</strong>。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 人群7话术 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-4 persona-card" style="border-left-color: #64748B;">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-gray-200 flex items-center justify-center"><i class="fas fa-crown text-gray-600"></i></div>
+            <h3 class="text-sm font-bold text-gray-700">人群七：平台运营方 / SaaS服务商</h3>
+            <span class="tag bg-gray-200 text-gray-700">运营方</span>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-gray-100 rounded-lg p-3 border border-gray-200">
+                <div class="text-xs font-bold text-gray-800 mb-1"><i class="fas fa-bolt mr-1"></i>一句话触动（Elevator Pitch）</div>
+                <p class="text-sm text-gray-700">"别人从零搭平台要2年5000万，您用我们直接上线——多租户、风控引擎、计费系统、开放API全齐，您只需关心运营。"</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-star text-gray-500 mr-1"></i>FABE 价值拆解</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>F（特征）：</strong>多租户SaaS架构 + 能力集治理 + 计量计费 + 开放API</li>
+                        <li><strong>A（优势）：</strong>开箱即用，按需选择功能模块，按量付费</li>
+                        <li><strong>B（利益）：</strong>上线周期从18个月缩至4周，研发成本从5000万降至年费制</li>
+                        <li><strong>E（证据）：</strong>某产业互联网平台基于本系统3周上线，首年GMV破5亿</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-calculator text-orange-500 mr-1"></i>算账（ROI）</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li>• 自建 vs 接入：5000万/18月 vs 年费<strong class="text-green-700">省80%+</strong></li>
+                        <li>• 省下的18个月 = <strong class="text-green-700">领先竞对1.5年的市场窗口</strong></li>
+                        <li>• 按GMV万分之五计费 = 50亿GMV对应250万平台费（远低于自建摊销）</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="text-xs font-semibold text-gray-700 mb-2"><i class="fas fa-shield-alt text-red-500 mr-1"></i>异议处理</div>
+                    <ul class="text-xs text-gray-600 space-y-1.5">
+                        <li><strong>"我们想自建，完全可控"</strong> → "自建18个月后市场已变天。先接入占位，后续可混合架构"</li>
+                        <li><strong>"数据在第三方不安全"</strong> → "支持私有化部署，数据100%在您机房"</li>
+                        <li><strong>"年费太贵，不如一次性买断"</strong> → "一次性买断但升级维护是持续成本。年费含持续迭代，永不落后"</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-gray-100 rounded-lg p-3 border border-gray-200">
+                <div class="text-xs font-bold text-gray-800 mb-1"><i class="fas fa-lightbulb mr-1"></i>切入时机与关键人</div>
+                <p class="text-xs text-gray-600">切入时机：传统企业数字化转型立项、行业龙头想做产业互联网、有交易场景但缺技术能力。关键决策人：CEO/CTO/数字化转型负责人。关键话术核心词：<strong>快上线、低成本、已验证</strong>。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 六、销售话术速查卡 -->
+<section>
+    <h2 class="text-lg font-semibold text-gray-800 mb-3"><i class="fas fa-id-card text-indigo-500 mr-2"></i>六、销售话术速查卡（一页纸）</h2>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 overflow-x-auto">
+        <table class="w-full text-xs">
+            <thead>
+                <tr>
+                    <th class="p-3 rounded-tl-lg w-[10%]">人群</th>
+                    <th class="p-3 w-[22%]">一句话</th>
+                    <th class="p-3 w-[15%]">核心价值</th>
+                    <th class="p-3 w-[13%]">ROI锚点</th>
+                    <th class="p-3 w-[13%]">关键决策人</th>
+                    <th class="p-3 w-[12%]">最佳时机</th>
+                    <th class="p-3 rounded-tr-lg w-[15%]">最大异议 & 回应</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="p-3 font-semibold text-blue-700 text-xs">上游资源方</td>
+                    <td class="p-3 text-xs">让全国买家来竞价，款到才发货</td>
+                    <td class="p-3 text-xs">溢价成交+零坏账</td>
+                    <td class="p-3 text-xs font-bold text-green-700">溢价3-8%</td>
+                    <td class="p-3 text-xs">销售总监</td>
+                    <td class="p-3 text-xs">价格下行/年底回款期</td>
+                    <td class="p-3 text-xs">"数据安全"→数据完全私有，平台不碰</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-amber-700 text-xs">贸易商</td>
+                    <td class="p-3 text-xs">200份合同一屏看清，自动预警不丢单</td>
+                    <td class="p-3 text-xs">管理效率80%提升</td>
+                    <td class="p-3 text-xs font-bold text-green-700">效率5倍</td>
+                    <td class="p-3 text-xs">老板/总经理</td>
+                    <td class="p-3 text-xs">合同量暴增/逾期损失后</td>
+                    <td class="p-3 text-xs">"Excel够用"→Excel不会预警风险</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-green-700 text-xs">下游终端</td>
+                    <td class="p-3 text-xs">货款托管，收货才解付</td>
+                    <td class="p-3 text-xs">采购降本+断供零风险</td>
+                    <td class="p-3 text-xs font-bold text-green-700">成本降5-10%</td>
+                    <td class="p-3 text-xs">采购总监</td>
+                    <td class="p-3 text-xs">供应商涨价/断供/品质事故</td>
+                    <td class="p-3 text-xs">"有老供应商"→多个备选多条路</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-purple-700 text-xs">仓储物流</td>
+                    <td class="p-3 text-xs">接入平台=永不关门的线上获客通道</td>
+                    <td class="p-3 text-xs">空置率降20%+增收</td>
+                    <td class="p-3 text-xs font-bold text-green-700">收入增25%</td>
+                    <td class="p-3 text-xs">运营总监</td>
+                    <td class="p-3 text-xs">空置率高/新仓竞争</td>
+                    <td class="p-3 text-xs">"对接麻烦"→3天标准适配器完成</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-red-700 text-xs">金融机构</td>
+                    <td class="p-3 text-xs">四流合一+区块链仓单，敢放敢管敢收</td>
+                    <td class="p-3 text-xs">坏账率降至0.5%</td>
+                    <td class="p-3 text-xs font-bold text-green-700">坏账降2%</td>
+                    <td class="p-3 text-xs">交易银行部总经理</td>
+                    <td class="p-3 text-xs">推供应链金融KPI/发生不良</td>
+                    <td class="p-3 text-xs">"仓单风险"→区块链防重复质押</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-cyan-700 text-xs">质检机构</td>
+                    <td class="p-3 text-xs">报告上链存证，全平台企业在线查阅</td>
+                    <td class="p-3 text-xs">接单量增40%+零纸质</td>
+                    <td class="p-3 text-xs font-bold text-green-700">增收30-50%</td>
+                    <td class="p-3 text-xs">业务发展总监</td>
+                    <td class="p-3 text-xs">增长瓶颈/数字化需求</td>
+                    <td class="p-3 text-xs">"量不大"→零门槛免费入驻增量</td>
+                </tr>
+                <tr>
+                    <td class="p-3 font-semibold text-gray-700 text-xs rounded-bl-lg">平台运营方</td>
+                    <td class="p-3 text-xs">从零到上线4周，省18个月5000万</td>
+                    <td class="p-3 text-xs">研发成本省80%+</td>
+                    <td class="p-3 text-xs font-bold text-green-700">省80%+</td>
+                    <td class="p-3 text-xs">CEO/CTO</td>
+                    <td class="p-3 text-xs">数字化转型立项</td>
+                    <td class="p-3 text-xs rounded-br-lg">"想自建"→先占位，后续可混合架构</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+<!-- 七、贸易商模块使用分析与双边拉新策略 -->
+<section>
+    <h2 class="text-lg font-semibold text-gray-800 mb-3"><i class="fas fa-puzzle-piece text-amber-500 mr-2"></i>七、贸易商：模块使用边界与双边拉新策略</h2>
+
+    <!-- 7.1 模块使用分析 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 mb-5">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-amber-100 flex items-center justify-center"><i class="fas fa-cubes text-amber-600"></i></div>
+            <h3 class="text-sm font-bold text-gray-800">7.1 贸易商会用到哪些模块？</h3>
+        </div>
+
+        <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+            贸易商购买系统后的使用深度是有阶梯的。不是"全买全用"，而是<strong class="text-amber-700">按自身业务阶段和复杂度，从核心模块逐步向外延伸</strong>。下表按使用必要性分层：
+        </p>
+
+        <div class="overflow-x-auto mb-5">
+            <table class="w-full text-xs styled-table">
+                <thead>
+                    <tr>
+                        <th class="p-3 rounded-tl-lg">层级</th>
+                        <th class="p-3">模块</th>
+                        <th class="p-3">使用场景</th>
+                        <th class="p-3">必要性</th>
+                        <th class="p-3 rounded-tr-lg">理由</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-3 font-bold text-red-600" rowspan="4">L1<br>必用核心</td>
+                        <td class="p-3"><i class="fas fa-exchange-alt text-red-500 mr-1"></i>交易模块</td>
+                        <td class="p-3">向上游采购挂牌、向下游销售挂牌、成交撮合</td>
+                        <td class="p-3"><span class="tag bg-red-100 text-red-700">100%</span></td>
+                        <td class="p-3">贸易商的饭碗——不交易就没有业务</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3"><i class="fas fa-file-signature text-red-500 mr-1"></i>合同模块</td>
+                        <td class="p-3">采购/销售合同全生命周期管理、履约看板</td>
+                        <td class="p-3"><span class="tag bg-red-100 text-red-700">100%</span></td>
+                        <td class="p-3">合同是交易的载体，管合同=管生意</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3"><i class="fas fa-cube text-red-500 mr-1"></i>商品模块</td>
+                        <td class="p-3">商品品类管理、品质模板、库存可视</td>
+                        <td class="p-3"><span class="tag bg-red-100 text-red-700">100%</span></td>
+                        <td class="p-3">没有商品就无法挂牌交易</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3"><i class="fas fa-coins text-red-500 mr-1"></i>财务模块</td>
+                        <td class="p-3">保证金管理、收付款、自动对账、发票</td>
+                        <td class="p-3"><span class="tag bg-red-100 text-red-700">100%</span></td>
+                        <td class="p-3">钱流是所有业务的核心，银行存管保障资金安全</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold text-amber-600" rowspan="2">L2<br>高频使用</td>
+                        <td class="p-3"><i class="fas fa-wpforms text-amber-500 mr-1"></i>模板模块</td>
+                        <td class="p-3">合同模板库、动态字段配置、字段联动校验</td>
+                        <td class="p-3"><span class="tag bg-amber-100 text-amber-700">80%</span></td>
+                        <td class="p-3">多品种贸易商必用，每个品种合同条款不同</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3"><i class="fas fa-truck text-amber-500 mr-1"></i>物流模块</td>
+                        <td class="p-3">运输追踪、物流服务商管理、费用结算</td>
+                        <td class="p-3"><span class="tag bg-amber-100 text-amber-700">70%</span></td>
+                        <td class="p-3">自控物流的贸易商用；纯交易的可以先跳过</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold text-blue-600" rowspan="2">L3<br>进阶可选</td>
+                        <td class="p-3"><i class="fas fa-warehouse text-blue-500 mr-1"></i>仓单模块</td>
+                        <td class="p-3">仓单注册/转让/质押、WMS对接、库存同步</td>
+                        <td class="p-3"><span class="tag bg-blue-100 text-blue-700">50%</span></td>
+                        <td class="p-3">有自有仓库或合作的贸易商用；纯流通商可不接</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3"><i class="fas fa-hand-holding-usd text-blue-500 mr-1"></i>融资模块</td>
+                        <td class="p-3">仓单质押融资、应收账款保理、托盘融资</td>
+                        <td class="p-3"><span class="tag bg-blue-100 text-blue-700">40%</span></td>
+                        <td class="p-3">有资金杠杆需求的大中型贸易商用；小贸易商早期不需要</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3 font-bold text-gray-500" rowspan="2">L4<br>无需使用</td>
+                        <td class="p-3"><i class="fas fa-cloud text-gray-400 mr-1"></i>SaaS模块</td>
+                        <td class="p-3">多租户管理、能力集治理、独立门户</td>
+                        <td class="p-3 rounded-bl-lg"><span class="tag bg-gray-200 text-gray-600">0%</span></td>
+                        <td class="p-3">贸易商是<strong>使用者</strong>，不是平台运营方；SaaS是卖给运营方的</td>
+                    </tr>
+                    <tr>
+                        <td class="p-3"><i class="fas fa-gavel text-gray-400 mr-1"></i>投标模块</td>
+                        <td class="p-3">投标文件管理</td>
+                        <td class="p-3"><span class="tag bg-gray-200 text-gray-600">0%</span></td>
+                        <td class="p-3 rounded-br-lg">投标文件是给甲方招标用的，与日常贸易无关</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bg-amber-50 rounded-lg p-4 border border-amber-100">
+            <div class="text-xs font-bold text-amber-800 mb-2"><i class="fas fa-lightbulb mr-1"></i>对销售的启示</div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="text-xs text-gray-700">
+                    <strong class="text-amber-800">不要卖"全家桶"</strong>
+                    <p class="mt-1">先卖 L1 四件套（交易+合同+商品+财务），让客户低门槛上车。L1 跑通了自然会买 L2（模板+物流）；L2 跑通了再推 L3（仓单+融资）。</p>
+                </div>
+                <div class="text-xs text-gray-700">
+                    <strong class="text-amber-800">报价策略</strong>
+                    <p class="mt-1">L1 基础包固定价（年费）→ L2 按模块加购 → L3 按交易量/融资额抽佣。客户先感受到价值，再自然升级。</p>
+                </div>
+                <div class="text-xs text-gray-700">
+                    <strong class="text-amber-800">区分客户类型</strong>
+                    <p class="mt-1">纯流通商（不碰货）：L1+L2模板 就够；供应链服务商（控货控物流）：L1+L2全要+L3；金融型贸易商（做融资）：全部+L3融资必买。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7.2 双边拉新策略 -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="w-9 h-9 rounded-lg bg-green-100 flex items-center justify-center"><i class="fas fa-magnet text-green-600"></i></div>
+            <h3 class="text-sm font-bold text-gray-800">7.2 贸易商如何吸引供应商和采购商上系统？</h3>
+        </div>
+
+        <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+            这是 B2B 平台的经典"<strong class="text-red-600">先有鸡还是先有蛋</strong>"问题——没有供应商就没有采购商，没有采购商供应商也不来。
+            但贸易商有一个 <strong class="text-green-700">天然优势</strong>：<strong>他们本来就有上下游</strong>。不需要从零冷启动，而是把现有线下关系线上化。
+        </p>
+
+        <!-- 策略总览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            <div class="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                <div class="text-sm font-bold text-blue-800 mb-2"><i class="fas fa-arrow-up mr-1"></i>如何吸引供应商（上游）</div>
+                <div class="text-xs text-gray-700 font-semibold mb-2">给上游算一笔账：</div>
+                <ul class="text-xs text-gray-600 space-y-2">
+                    <li><strong>策略一："预售锁定"模式</strong><br>贸易商在系统上提前发布采购需求（量、品质、交期），供应商看到确定性需求后报价，成交率远高于"等电话"</li>
+                    <li><strong>策略二："竞价溢价"诱惑</strong><br>多家贸易商同时竞价同一批货 = 供应商卖价更高。告诉上游："在我这系统上，您的货不是卖给我一个人，是全平台贸易商来竞价"</li>
+                    <li><strong>策略三："款到发货"保障</strong><br>系统内置银行存管，保证金+货款 100% 托管。供应商最怕赊销坏账——"款在银行，您发货我收不到货钱退我，我收了货钱自动解付"</li>
+                    <li><strong>策略四："品质有据"降低纠纷</strong><br>平台上品质模板+第三方质检报告在线可查，发什么货、收什么货都有数据，减少"到货品质不符"的扯皮</li>
+                </ul>
+                <div class="text-xs text-blue-700 mt-3 pt-2 border-t border-blue-200">
+                    <strong>一句话给上游：</strong>"把您的货挂上来，多个贸易商竞价买，价高者得，款在银行，零风险。"
+                </div>
+            </div>
+            <div class="bg-green-50 rounded-lg p-4 border border-green-100">
+                <div class="text-sm font-bold text-green-800 mb-2"><i class="fas fa-arrow-down mr-1"></i>如何吸引采购商（下游）</div>
+                <div class="text-xs text-gray-700 font-semibold mb-2">给下游算一笔账：</div>
+                <ul class="text-xs text-gray-600 space-y-2">
+                    <li><strong>策略一："一屏比价"透明化</strong><br>下游在系统上一屏看到多家贸易商的报价（同品质、同交期），择优而购。过去要打10通电话比价，现在30秒搞定</li>
+                    <li><strong>策略二："锁价锁量"保供</strong><br>价格波动大的时期，下游可以在系统上锁定基差/锁定价格，贸易商履约保障。不会因为市场涨价被"砍单"</li>
+                    <li><strong>策略三："收货才解付"资金安全</strong><br>下游付的款在银行存管账户，货到验收确认后钱才解付给贸易商。"不再担心打了款货不发或货不够"</li>
+                    <li><strong>策略四："物流实时可视"</strong><br>订单确认后，下游实时看到货物运输轨迹、预计到货时间。不再每天打电话问"货到哪了"</li>
+                </ul>
+                <div class="text-xs text-green-700 mt-3 pt-2 border-t border-green-200">
+                    <strong>一句话给下游：</strong>"多家贸易商同台报价，您比价选最优；货款银行托管，收货才解付，零风险。"
+                </div>
+            </div>
+        </div>
+
+        <!-- 落地步骤 -->
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-4 border border-amber-100 mb-4">
+            <div class="text-sm font-bold text-amber-800 mb-3"><i class="fas fa-list-ol mr-1"></i>五步落地法：从线下到线上</div>
+            <div class="space-y-3">
+                <div class="flex items-start gap-3">
+                    <div class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">1</div>
+                    <div>
+                        <div class="text-xs font-bold text-gray-800">第一周：内部先用，建好"货架"</div>
+                        <p class="text-xs text-gray-600 mt-0.5">贸易商在系统上录入自己的商品库、设置品质模板、上传合同模板。先让系统"有货可看"。把历史上合作过的供应商、采购商信息录入通讯录。</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">2</div>
+                    <div>
+                        <div class="text-xs font-bold text-gray-800">第二周：拉最熟的3-5个供应商"尝鲜"</div>
+                        <p class="text-xs text-gray-600 mt-0.5">选关系最好的供应商，帮他们免费注册账号。告诉他们："以后我们之间的采购合同全走系统，签约更快、对账更清、钱到的更快"。<strong>这一步不用说服，老关系就是通行证。</strong></p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">3</div>
+                    <div>
+                        <div class="text-xs font-bold text-gray-800">第三周：用"银行存管"破下游的信任壁垒</div>
+                        <p class="text-xs text-gray-600 mt-0.5">针对犹豫的下游客户，打"资金安全"这张王牌："您的货款不进我公司账户，进银行托管账户。货到您验收了，钱才到我账。和支付宝一样安全。"<strong>信任问题一旦解决，拉新速度会指数级增长。</strong></p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">4</div>
+                    <div>
+                        <div class="text-xs font-bold text-gray-800">第四周：制造"稀缺感"拉动另一边</div>
+                        <p class="text-xs text-gray-600 mt-0.5">上游够5家了 → 对下游说"平台上已有5家钢厂直供，价格透明，来比价吧"。下游够10家了 → 对上游说"平台上10家采购商等着竞价您的货，价高者得"。<strong>两头互相拉动，形成正向飞轮。</strong></p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <div class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">5</div>
+                    <div>
+                        <div class="text-xs font-bold text-gray-800">第二个月起：服务做深，自然裂变</div>
+                        <p class="text-xs text-gray-600 mt-0.5">首月跑通10-20单真实交易后，把成功案例做成"战报"发给潜在客户。利用平台的"邀请好友"机制——老客户邀请新客户入驻，双方各得交易手续费减免。供应链是网状结构，一家钢厂上来，会带上来它的其他贸易商客户。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 关键话术 -->
+        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+            <div class="text-sm font-bold text-gray-800 mb-2"><i class="fas fa-comment-dots mr-1"></i>三句拉人金句（直接可用）</div>
+            <div class="space-y-2">
+                <div class="bg-white rounded-lg p-3 border border-gray-200 text-xs text-gray-700">
+                    <span class="tag bg-blue-100 text-blue-700 mr-2">对供应商</span>
+                    "张总，我把您的货挂到我的交易系统上，不只我一个买家，平台上好几个贸易商都在看——谁出价高谁拿货。而且买家保证金是银行托管的，不存在违约。您试试看？注册免费，卖了才收您千三手续费。"
+                </div>
+                <div class="bg-white rounded-lg p-3 border border-gray-200 text-xs text-gray-700">
+                    <span class="tag bg-green-100 text-green-700 mr-2">对采购商</span>
+                    "李总，以后您采购钢材不用一个一个打电话比价了。上我这个系统，同品质下至少3家报价摆在您面前，您挑最合适的。而且货款是银行托管的，您收到货验收了，钱才从我这边划走——和淘宝一样，但您买的是钢材。"
+                </div>
+                <div class="bg-white rounded-lg p-3 border border-gray-200 text-xs text-gray-700">
+                    <span class="tag bg-amber-100 text-amber-700 mr-2">对犹豫的双方</span>
+                    "无非就是注册个账号的事，不花钱。先拿我们正在做的这一单走系统试试——合同线上签、钱走银行托管、物流轨迹手机上看得见。跑一次您就知道和以前打电话发微信的差别了。"
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+</body>
+</html>
