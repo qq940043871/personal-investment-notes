@@ -909,6 +909,25 @@
   .modal-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; margin-bottom: 18px; }
   .modal-actions { display: flex; gap: 10px; }
   .modal-actions .btn { flex: 1; min-height: 46px; font-size: 15px; }
+
+  /* 文件选择弹层 */
+  .picker-list { display: flex; flex-direction: column; gap: 8px; max-height: 54vh; overflow-y: auto; margin-bottom: 16px; }
+  .picker-item {
+    display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+    padding: 12px 14px; border-radius: var(--radius-s);
+    border: 1px solid var(--border); background: var(--surface-2);
+    color: var(--text); font-size: 14px; cursor: pointer;
+    transition: border-color 160ms, background 160ms;
+  }
+  .picker-item:hover, .picker-item:active { border-color: var(--border-strong); }
+  .picker-badge {
+    flex: none; font-size: 10px; font-weight: 700; letter-spacing: .04em;
+    padding: 3px 7px; border-radius: 6px; background: var(--surface); color: var(--text-2);
+  }
+  .picker-badge.md { background: rgba(34, 211, 238, 0.15); color: var(--primary); }
+  .picker-badge.html { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+  .picker-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .picker-arrow { flex: none; width: 16px; height: 16px; color: var(--text-3); }
   .btn-outline {
     background: transparent; color: var(--text);
     border: 1.5px solid var(--border-strong);
@@ -2305,6 +2324,16 @@
   </div>
 </div>
 
+<!-- 文件选择弹层 -->
+<div class="modal-mask" id="pickerModal">
+  <div class="modal">
+    <div class="modal-title" id="pickerTitle">选择文件</div>
+    <div class="modal-desc" style="margin-bottom:14px">Markdown 走内置阅读器（带大纲），HTML 新窗口打开</div>
+    <div class="picker-list" id="pickerList"></div>
+    <button class="btn btn-outline btn-block tap" onclick="closeFilePicker()">取消</button>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast">
   <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -3231,11 +3260,7 @@ function openBankCategory(key) {
     if (BANK_CATEGORIES[i].key === key) { cat = BANK_CATEGORIES[i]; break; }
   }
   if (!cat) return;
-  // 打开第一个文件（简化版）
-  if (cat.files && cat.files.length > 0) {
-    window.open(cat.files[0].path, '_blank');
-  }
-  showToast('正在打开 ' + cat.title);
+  openCategoryFiles(cat);
 }
 
 // 打开真题分类
@@ -3245,10 +3270,51 @@ function openFaceExpCategory(key) {
     if (FACE_EXP_CATEGORIES[i].key === key) { cat = FACE_EXP_CATEGORIES[i]; break; }
   }
   if (!cat) return;
-  if (cat.files && cat.files.length > 0) {
-    window.open(cat.files[0].path, '_blank');
+  openCategoryFiles(cat);
+}
+
+// 通用：打开分类下的文件（单个直接打开，多个弹出选择）
+function openCategoryFiles(cat) {
+  var files = (cat && cat.files) || [];
+  if (files.length === 0) return;
+  if (files.length === 1) {
+    openFriendly(files[0].path);
+    showToast('正在打开 ' + cat.title);
+    return;
   }
-  showToast('正在打开 ' + cat.title);
+  showFilePicker(cat.title, files);
+}
+
+var pickerFiles = [];
+
+function showFilePicker(title, files) {
+  pickerFiles = files;
+  $('pickerTitle').textContent = title + ' · ' + files.length + ' 个文件';
+  var html = '';
+  for (var i = 0; i < files.length; i++) {
+    var f = files[i];
+    var isHtml = f.type === 'html';
+    html += '<button class="picker-item tap" onclick="pickFile(' + i + ')">';
+    html += '<span class="picker-badge ' + (isHtml ? 'html' : 'md') + '">' + (isHtml ? 'HTML' : 'MD') + '</span>';
+    html += '<span class="picker-name">' + escapeHtml(f.name) + '</span>';
+    html += '<svg class="picker-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+    html += '</button>';
+  }
+  $('pickerList').innerHTML = html;
+  $('pickerModal').classList.add('open');
+}
+
+function pickFile(idx) {
+  var f = pickerFiles[idx];
+  closeFilePicker();
+  if (f) {
+    openFriendly(f.path);
+    showToast('正在打开 ' + f.name);
+  }
+}
+
+function closeFilePicker() {
+  $('pickerModal').classList.remove('open');
 }
 
 // 搜索过滤题库
@@ -3572,22 +3638,6 @@ function toggleReaderToc() {
   if (!panel) return;
   tocVisible = !tocVisible;
   panel.style.display = tocVisible ? '' : 'none';
-}
-
-// 题库分类也支持 md 预览
-function openBankCategory(key) {
-  var cat = null;
-  for (var i = 0; i < BANK_CATEGORIES.length; i++) {
-    if (BANK_CATEGORIES[i].key === key) { cat = BANK_CATEGORIES[i]; break; }
-  }
-  if (!cat || !cat.files || cat.files.length === 0) return;
-
-  // 找到第一个 md 或 html 文件
-  var firstFile = cat.files[0];
-  var fullPath = cat.pathPrefix ? cat.pathPrefix + '/' + firstFile.path : firstFile.path;
-  // 直接打开第一个文件
-  openFriendly(fullPath);
-  showToast('正在打开 ' + cat.title);
 }
 
 /* ===== 主题切换（亮色 / 暗色）===== */
