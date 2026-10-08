@@ -29,7 +29,7 @@ TARGETS = [
     "03-客户案例/02-数字产业链服务平台-含痛点方案.pptx",
     "03-客户案例/04-B2B技术经理-能力全景介绍.pptx",
     "03-客户案例/05-B2B产品服务客户案例.slides.pptx",
-    "04-架构决策/生产问题/07-Cookie认证失败-5Why根因分析.slides.pptx",
+    "04-架构决策/生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx",
 ]
 
 PAGENUM_RE = re.compile(r"^\s*\d+\s*/\s*\d+\s*$")

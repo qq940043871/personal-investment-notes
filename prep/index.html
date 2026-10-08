@@ -165,7 +165,7 @@ body {
   transform: rotate(90deg);
 }
 
-/* 嵌套子分组（prep/05-八股题库、prep/04-架构决策/生产问题 等一级子目录）*/
+/* 嵌套子分组（prep/05-八股题库、prep/04-架构决策/生产问题排查 等一级子目录）*/
 .folder.nested > .folder-header {
   padding-left: 32px;
   font-weight: 500;
@@ -660,11 +660,11 @@ body {
   </div>
 
   <div class="sidebar-stats">
-    <span class="stat-chip md">52 .md</span>
-    <span class="stat-chip html">27 .html</span>
+    <span class="stat-chip md">59 .md</span>
+    <span class="stat-chip html">28 .html</span>
     <span class="stat-chip pptx">4 .pptx</span>
     <span class="stat-chip">1 .pdf</span>
-    <span class="stat-chip">84 文件</span>
+    <span class="stat-chip">92 文件</span>
   </div>
 
   <div class="search-box">
@@ -697,7 +697,7 @@ body {
       <div class="welcome">
         <div class="welcome-icon">📖</div>
         <h2>资料库</h2>
-        <p>87 份精心整理的文档（已按主题归位并统一命名），覆盖产品定位、业务价值、客户案例、架构决策、八股题库、面试准备、个人简历 7 大分类。</p>
+        <p>92 份精心整理的文档（已按主题归位并统一命名），覆盖产品定位、业务价值、客户案例、架构决策、八股题库、面试准备、个人简历 7 大分类。</p>
         <p style="margin-top:8px;font-size:13px;">点击左侧文件树开始浏览 →</p>
       </div>
     </div>
@@ -756,14 +756,18 @@ const TREE = [
     ],
     children: [
       {
-        name: '生产问题', icon: '🐞',
+        name: '生产问题排查', icon: '🐞',
         files: [
           '06-Cookie认证失败-5Why根因分析.md',
           '07-Cookie认证失败-5Why根因分析.slides.pptx',
           '08-多机房多线路网络故障-排查实录.md',
           '09-竞价页面突然变慢-排查实录.md',
           '10-下载PDF致JVM进程消失-排查实录.md',
-          '11-网关扩容打穿DB-性能开发规范.md'
+          '11-网关扩容打穿DB-性能开发规范.md',
+          '12-生产排查步骤-四类场景与六步SOP.md',
+          'java-architect-troubleshooting-handbook.md',
+          'java-troubleshooting-advanced-arthas-profiler.md',
+          'java-troubleshooting-quickcards.md'
         ]
       }
     ]
