@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="blueprint">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>面试自我介绍 · 技术经理</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" id="theme-link" href="assets/themes/blueprint.css">
+<link rel="stylesheet" href="assets/animations/animations.css">
+<style>
+  /* 中文可读性：Latin/数字走 JetBrains Mono（工程蓝图的观感），中文回落到思源黑体/雅黑 */
+  :root{
+    --font-sans:'JetBrains Mono','Noto Sans SC','Microsoft YaHei','PingFang SC',monospace;
+    --font-display:'JetBrains Mono','Noto Sans SC','Microsoft YaHei',monospace;
+  }
+  .slide.dense{padding:44px 68px}
+  .hl{color:var(--accent-3)}
+  .cy{color:var(--accent-2)}
+  .big-num{font-size:46px;font-weight:800;line-height:1;color:var(--accent-3);font-variant-numeric:tabular-nums}
+  .sm-num{font-size:12px;letter-spacing:.08em;color:var(--text-3)}
+
+  /* 数据表 */
+  .t{width:100%;border-collapse:collapse;font-size:14px}
+  .t th,.t td{padding:10px 13px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+  .t th{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-2);font-weight:700}
+  .t td b{color:#fff;font-weight:700}
+  .t tr:hover td{background:rgba(255,255,255,.05)}
+  .t .k{color:var(--accent-3)}
+
+  /* 架构图 */
+  .arch{margin-top:18px;display:grid;gap:12px}
+  .arch .tier{display:grid;grid-template-columns:132px 1fr;gap:14px;align-items:stretch}
+  .arch .tname{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);
+    border:1px dashed var(--border);padding:12px;font-weight:700;font-size:12px;color:var(--accent-2);
+    text-align:center;letter-spacing:.06em;line-height:1.4}
+  .arch .cells{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .arch .cells.three{grid-template-columns:repeat(3,1fr)}
+  .arch .cell{background:rgba(255,255,255,.05);border:1px solid var(--border);padding:12px;text-align:center}
+  .arch .cell h4{font-size:13.5px;margin:0 0 3px;color:#fff}
+  .arch .cell p{font-size:11px;color:var(--text-3);margin:0;line-height:1.45}
+  .arch .tier.hl .cell{border-top:2px solid var(--accent-3)}
+
+  /* 时间线 */
+  .tl{position:relative;margin-top:34px}
+  .tl::before{content:"";position:absolute;left:0;right:0;top:46px;height:1px;background:var(--border-strong)}
+  .tl .row{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;align-items:start}
+  .tl .item{position:relative;padding-top:78px;text-align:center}
+  .tl .dot{position:absolute;top:38px;left:50%;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;
+    background:var(--accent-3);box-shadow:0 0 0 4px rgba(11,58,111,1),0 0 0 5px var(--border-strong)}
+  .tl .year{position:absolute;top:0;left:0;right:0;font-size:12px;color:var(--accent-2);font-weight:700;letter-spacing:.08em}
+  .tl h4{font-size:15px;margin:0 0 4px;color:#fff}
+  .tl p{font-size:11.5px;color:var(--text-2);line-height:1.5}
+
+  /* 对比 */
+  .vs{display:grid;grid-template-columns:1fr 60px 1fr;gap:20px;align-items:stretch;margin-top:22px}
+  .vs .mid{font-size:40px;font-weight:800;color:var(--text-3);display:flex;align-items:center;justify-content:center}
+  .vs .side{padding:22px 24px}
+  .vs .bad-side{border-top:2px solid var(--bad)}
+  .vs .good-side{border-top:2px solid var(--good)}
+  .vs h3{font-size:20px;margin:0 0 10px}
+  .vs ul{padding-left:18px;font-size:13.5px;line-height:1.75;color:var(--text-2);margin:0}
+  .vs .good-side li::marker{color:var(--good)}
+  .vs .bad-side li::marker{color:var(--bad)}
+
+  /* 六宫格 */
+  .g6{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .mcard{background:rgba(255,255,255,.05);border:1px dashed var(--border);padding:14px 16px}
+  .mcard .n{font-size:11px;color:var(--accent-3);font-weight:700;letter-spacing:.1em}
+  .mcard h4{font-size:14.5px;margin:5px 0 5px;color:#fff}
+  .mcard p{font-size:11.5px;color:var(--text-2);margin:0;line-height:1.55}
+
+  /* 流程四段 */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);margin-top:22px}
+  .flow .col{padding:18px 20px;border-right:1px solid var(--border);background:rgba(255,255,255,.04)}
+  .flow .col:last-child{border-right:none}
+  .flow .tag{display:inline-block;padding:2px 10px;font-size:11px;border:1px solid var(--border-strong);color:var(--accent-2);margin-bottom:9px}
+  .flow h4{font-size:15px;margin:4px 0 6px;color:#fff}
+  .flow ul{padding-left:16px;margin:0;font-size:11.5px;color:var(--text-2);line-height:1.6}
+  .flow li{margin-bottom:5px}
+
+  .quote-big{font-size:40px;line-height:1.3;font-weight:700;color:#fff;letter-spacing:-.01em}
+  .rule{height:1px;background:var(--border);margin:18px 0}
+  .stamp{display:inline-block;border:1px solid var(--accent-3);color:var(--accent-3);padding:4px 12px;font-size:12px;letter-spacing:.1em}
+
+  /* 流程列数变体（复用 .flow 的 .col 样式） */
+  .flow.six{grid-template-columns:repeat(6,1fr)}
+  .flow.six .col{padding:14px 13px}
+  .flow.five{grid-template-columns:repeat(5,1fr)}
+  .flow.five .col{padding:16px 16px}
+  .flow .col .mini{font-size:11px;color:var(--text-3);letter-spacing:.06em;margin:6px 0 0}
+
+  /* 能力标签行 */
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+
+  /* 四象限（年度建设规划） */
+  .quad{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  .quad .q{background:rgba(255,255,255,.05);border:1px solid var(--border);border-top:2px solid var(--accent-2);padding:15px 19px}
+  .quad .q .n{font-size:11px;letter-spacing:.1em;color:var(--accent-3);font-weight:700}
+  .quad .q ul{padding-left:16px;margin:8px 0 0;font-size:12.5px;color:var(--text-2);line-height:1.65}
+  .quad .q li{margin-bottom:4px}
+  .quad .q li b{color:#fff}
+
+  /* 金句墙 */
+  .qwall{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+  .qwall .q{border:1px solid var(--border);border-left:3px solid var(--accent-3);background:rgba(255,255,255,.04);
+    padding:20px 22px;font-size:16px;line-height:1.62;color:#fff}
+  .qwall .q span{display:block;font-size:10.5px;letter-spacing:.12em;color:var(--accent-2);margin-bottom:9px;font-weight:700}
+</style>
+</head>
+<body data-themes="blueprint,corporate-clean,swiss-grid,tokyo-night,minimal-white" data-theme-base="assets/themes/">
+<div class="deck">
+
+  <!-- ============ 01 封面 ============ -->
+  <section class="slide center tc" data-title="封面">
+    <div style="max-width:1100px">
+      <p class="kicker anim-fade-up" data-anim="fade-up">INTERVIEW · SELF-INTRODUCTION</p>
+      <h1 class="h1 anim-rise-in" data-anim="rise-in" style="font-size:82px">技术经理</h1>
+      <p class="lede" style="margin:14px auto 0;text-align:center">
+        13 年一线技术经验 · 20 人研发团队 · B2B 大宗商品在线交易平台
+      </p>
+      <div class="row wrap mt-l" style="justify-content:center;gap:10px">
+        <span class="pill pill-accent">异构架构治理 C + Java</span>
+        <span class="pill pill-accent">业务 × 技术双能力</span>
+        <span class="pill pill-accent">AI 工程化落地</span>
+        <span class="pill pill-accent">研发体系与团队机制</span>
+      </div>
+      <p class="sm-num mt-l">haswhere ｜ 郑州 ｜ ← → 翻页 · S 讲稿 · T 换主题 · F 全屏</p>
+    </div>
+    <div class="deck-footer"><span class="dim2">haswhere · 技术经理</span><span class="slide-number" data-current="1" data-total="33"></span></div>
+    <div class="notes">
+      【开场信号】不要念标题。先说一句定位，再补三个标签。<br>
+      「我是 haswhere，13 年后端与架构经验，现在带 20 人研发团队，负责一个大宗商品 B2B 交易平台的业务中台与异构架构治理。这页上四个标签就是我今天想讲的四件事：异构架构治理、业务和技术的双能力、AI 工程化落地、还有研发体系和团队机制。」<br><br>
+      【节奏】这一页 20 秒内过掉。翻页前给一句钩子：「我先用一分钟给个整体定位，然后讲三件事——我怎么理解业务、我在架构上拍了哪些板、以及我怎么带团队。」<br><br>
+      【提示 · 翻页路线】HR：第 6-20 页快翻，重点停在第 3、5、27、29、30 页；架构师 / CTO：第 7-8、12-16、18-20 页是主战场；研发总监 / 带团队的负责人：第 21-29 页的研发体系与团队成果是主战场。
+    </div>
+  </section>
+
+  <!-- ============ 02 目录 ============ -->
+  <section class="slide" data-title="目录">
+    <p class="kicker">AGENDA · 我准备讲四件事</p>
+    <h2 class="h2">一条主线：懂业务的技术决策者</h2>
+    <div class="grid g4 mt-l anim-stagger-list" data-anim-target>
+      <div class="card"><p class="eyebrow">01 · Business</p><h4>业务理解</h4><p class="dim" style="font-size:13px">行业的卡点在哪、五类客户靠什么赚钱、系统该怎么给价值</p></div>
+      <div class="card"><p class="eyebrow">02 · Architecture</p><h4>架构判断</h4><p class="dim" style="font-size:13px">异构四层架构、三个代表作、关键 trade-off 与配置化边界</p></div>
+      <div class="card"><p class="eyebrow">03 · AI</p><h4>AI 融合</h4><p class="dim" style="font-size:13px">模型接入 / 知识检索 / Agent Harness 六机制 / 确定性边界</p></div>
+      <div class="card"><p class="eyebrow">04 · Management</p><h4>团队与研发体系</h4><p class="dim" style="font-size:13px">规范 → 管控 → 建设 → 稳定 → 带人；年度技术规划、故障闭环、人才培养与团队成果</p></div>
+    </div>
+    <p class="dim mt-l">按面试官角色选重点：HR → 01 与 04 的带人／成果；架构师 → 02 / 03；CTO、研发总监 → 全部，重点在 02 / 03 的取舍与 04 的体系化落地。</p>
+    <div class="notes">
+      【15 秒】这页只做一件事：让面试官知道你的叙事有结构，不是流水账。<br><br>
+      【口播】「我准备了四条线。第一条是业务理解——大宗这个行业卡点在哪、我的客户靠什么赚钱；第二条是架构判断——我负责的异构架构和几个关键决策；第三条是 AI 融合，这是我 2024 年之后的新战场；第四条是团队和研发体系。」<br><br>
+      【记忆口诀】把四条线压成八个字：「业务、架构、AI、体系」。后面每一页我都会明确说是哪一条线。<br><br>
+      【收束】「四条的底层其实是同一句话：我是一个把业务当第一需求文档的技术经理。」
+    </div>
+  </section>
+
+  <!-- ============ 03 一句话定位 ============ -->
+  <section class="slide" data-title="一句话定位">
+    <p class="kicker">POSITIONING · 60 秒定位</p>
+    <h2 class="h2">我是一个<span class="hl">把业务当第一需求文档</span>的技术经理</h2>
+    <div class="grid g2 mt-l" style="align-items:start">
+      <div class="card" style="padding:24px 26px">
+        <p style="font-size:15.5px;line-height:1.85;color:var(--text-1);margin:0">
+          大宗商品这个行业，技术方案错一点，客户丢的是真金白银——所以我们团队的文化是：<b class="hl">先搞懂客户怎么赚钱，再决定代码怎么写。</b><br><br>
+          技术上我的主线是领域驱动的架构设计：合同域和履约域解耦、双轨履约引擎、异构桥接的防腐层；同时我在做 AI 工程化落地，知道 LLM 的能力边界在哪、什么时候它不可靠。
+        </p>
+      </div>
+      <div class="stack">
+        <div class="mcard"><span class="n">STRUCTURE 01 · 10s</span><h4>定位金句</h4><p>把业务当第一需求文档的技术经理</p></div>
+        <div class="mcard"><span class="n">STRUCTURE 02 · 20s</span><h4>交付战绩</h4><p>销售端做出 8 亿溢价增收，采购端周期 20 天 → 7 天</p></div>
+        <div class="mcard"><span class="n">STRUCTURE 03 · 20s</span><h4>技术主线</h4><p>领域驱动的架构设计 + AI 工程化落地</p></div>
+        <div class="mcard"><span class="n">STRUCTURE 04 · 10s</span><h4>差异化</h4><p>知道 LLM 能力的边界在哪</p></div>
+      </div>
+    </div>
+    <p class="dim mt-m" style="font-size:13px">全篇没有一句「我精通 Java / 微服务」——技术细节留给追问，开场只给判断力和业务感。</p>
+    <div class="notes">
+      【核心页 · 必背逐字稿，60 秒】<br><br>
+      「我是一个把业务当第一需求文档的技术经理。大宗商品这个行业，技术方案错一点，客户丢的是真金白银——所以我们团队的文化是：先搞懂客户怎么赚钱，再决定代码怎么写。<br><br>
+      我带队承建过大宗商品交易平台和阳光采购平台，销售端帮客户累计做出 8 亿溢价增收，采购端把周期从 20 天压到 7 天。技术上我的主线是领域驱动的架构设计——合同域和履约域解耦、双轨履约引擎、异构系统的防腐层；同时我也在做 AI 工程化落地，知道 LLM 的能力和工程约束的边界在哪。」<br><br>
+      【为什么这么说】右侧四段结构是我的骨架：10 秒金句 → 20 秒战绩 → 20 秒技术 → 10 秒差异。全程不报技术名词清单，因为「我精通 Java」是废话，技术细节留给追问才显深度。<br><br>
+      【提醒】「8 亿」是客户侧的经营成果，不是我们的平台收入——下一句如果要展开，务必用第 11 页的口径说。
+    </div>
+  </section>
+
+  <!-- ============ 04 履历锚点 ============ -->
+  <section class="slide dense" data-title="履历锚点">
+    <p class="kicker">TRACK · 履历锚点</p>
+    <h2 class="h2">13 年 = 前 2 年清算打底 + 后 11 年同一领域深耕</h2>
+    <div class="tl">
+      <div class="row anim-stagger-list" data-anim-target>
+        <div class="item"><div class="year">2013 — 2015</div><div class="dot"></div><h4>清算系统打底</h4><p>分布式清算核心开发，日处理交易量超 10 万笔<br>练出「数据精确性 &gt; 一切」的工程习惯</p></div>
+        <div class="item"><div class="year">2015 — 2020</div><div class="dot"></div><h4>交易系统 0 → 1</h4><p>从 0 到 1 参与核心交易系统建设<br>参数化配置、多模式交易、外部系统对接</p></div>
+        <div class="item"><div class="year">2020 — 至今</div><div class="dot"></div><h4>平台化 1 → N</h4><p>主导多租户配置化与异构治理<br>带 20 人团队，向总经理汇报</p></div>
+        <div class="item"><div class="year">2024 — 至今</div><div class="dot"></div><h4>AI 平台新战场</h4><p>公司 AI 智能服务平台技术负责人（前期建设）<br>底座选型 → 文档解析入向量库</p></div>
+        <div class="item"><div class="year">持续</div><div class="dot"></div><h4>至今在一线</h4><p>方案不飘：坑在哪、工作量多少<br>我能直接判断，不给团队挖坑</p></div>
+      </div>
+    </div>
+    <p class="dim mt-l" style="font-size:13px">主动说破年限结构，别等面试官算账：13 年不是跳来跳去，是「一个领域 + 一条主线」的复利。</p>
+    <div class="notes">
+      【为什么单列一页】13 年只待过一个平台，是会被追问的点。与其等面试官问「你怎么 13 年就一家公司」，不如自己先讲清楚结构。<br><br>
+      【口播】「我的 13 年分两段。前 2 年在金融级清算系统打底——那是真金白银的资金系统，日处理十万笔以上，练出的是数据精确性大于一切的工程习惯。后 11 年在同一家公司深耕大宗商品 B2B，从 0 到 1 参与核心交易系统，到 1 到 N 主导平台化和配置化演进，现在带 20 人团队向总经理汇报。」<br><br>
+      【换新战场】「2024 年我参与公司 AI 智能服务平台的**前期建设**——主导底座选型（Dify vs 自研）、做 MinerU 文档解析落向量库这条数据链路；后续智能体落地是团队推进的，我后期参与少，这点我不夸大。这是我在同一个业务域里的第二个战场——不是换行业，是同一个行业的技术栈升级。」<br><br>
+      【默认口径】13 年 = 2 年清算 + 11 年本司；20 人 = 3 C / 6 Java / 5 Vue / 5 测试。这两个数字必须脱口而出，全篇一致。
+    </div>
+  </section>
+
+  <!-- ============ 05 核心数字 ============ -->
+  <section class="slide dense" data-title="核心数字">
+    <p class="kicker">NUMBERS · 关键数字</p>
+    <h2 class="h2">先给结果，再讲过程</h2>
+    <div class="grid g4 mt-l anim-stagger-list" data-anim-target>
+      <div class="card"><p class="eyebrow">Reliability</p><div class="big-num">3 年+</div><p class="dim" style="font-size:12.5px">零资金差错 · 冬储高峰连续两季零 P0</p></div>
+      <div class="card"><p class="eyebrow">Delivery</p><div class="big-num">2 月 → 1 周</div><p class="dim" style="font-size:12.5px">新客户上线周期（配置化改造）</p></div>
+      <div class="card"><p class="eyebrow">Integration</p><div class="big-num">3 周 → 5 天</div><p class="dim" style="font-size:12.5px">外部系统对接周期（统一适配层）</p></div>
+      <div class="card"><p class="eyebrow">Availability</p><div class="big-num">99.95%</div><p class="dim" style="font-size:12.5px">外部接口平均可用率</p></div>
+      <div class="card"><p class="eyebrow">Efficiency</p><div class="big-num">5 天 → 1.5 天</div><p class="dim" style="font-size:12.5px">一笔交易周期</p></div>
+      <div class="card"><p class="eyebrow">Reconciliation</p><div class="big-num">9 人天 → 2 小时</div><p class="dim" style="font-size:12.5px">财务对账（三流自动勾稽）</p></div>
+      <div class="card"><p class="eyebrow">Team</p><div class="big-num">45% → 15%</div><p class="dim" style="font-size:12.5px">团队被动响应占比</p></div>
+      <div class="card"><p class="eyebrow">Autonomy</p><div class="big-num">80%</div><p class="dim" style="font-size:12.5px">线上问题团队独立处理</p></div>
+    </div>
+    <p class="dim mt-m" style="font-size:13px">所有指标口径：运行时真实结果；涉及考核线的数字（如故障次数、覆盖率）一律带「当时设定的团队目标」限定语。</p>
+    <div class="notes">
+      【30 秒】这页是「先给结果」——用数字建立可信度，后面讲过程才有分量。不要逐个念，挑三个讲。<br><br>
+      【挑三个讲】<br>
+      「三个数字我最想强调。第一，三年零资金差错，而且冬储高峰连续两季零 P0——这是大额资金场景的底线。第二，新客户上线从 2 个月压到 1 周，这是我们配置化改造的直接结果，销售签回来的客户不用再排队等系统。第三，团队被动响应占比从 45% 降到 15% 以下，团队能独立处理 80% 的线上问题——这是我作为一个技术经理最想拿出来的数字，因为它说明机制建起来了，我从救火里抽身出来了。」<br><br>
+      【口径纪律】「99.95%」「2 小时」这类是运行结果，可以直说。「重大故障 ≤1 次/年」「自动化覆盖 ≥20%」那类是当时设定的考核目标，必须说「当时定的目标」，别讲成长期达成。这一条我在全篇都守。
+    </div>
+  </section>
+
+  <!-- ============ 06 产品是什么 ============ -->
+  <section class="slide" data-title="产品是什么">
+    <p class="kicker">PRODUCT · 产品是什么</p>
+    <h2 class="h2">行业的卡点不在「找货」，在<span class="hl">「签了合同之后」</span></h2>
+    <div class="grid g3 mt-l anim-stagger-list" data-anim-target>
+      <div class="card card-accent"><p class="eyebrow">死结 01 · 信任</p><h4>跟陌生人做生意不敢</h4><p class="dim" style="font-size:13px">大额交易、决策链长，对「信任」的敏感度远高于对「价格」的敏感度。<br><b class="cy">解法：</b>平台担保 + 资金监管，钱不过对方手；履约率与成交记录公开。</p></div>
+      <div class="card card-accent"><p class="eyebrow">死结 02 · 效率</p><h4>一笔交易跑断腿</h4><p class="dim" style="font-size:13px">比价靠打电话、合同来回寄、催货靠喊、对账靠翻凭证。<br><b class="cy">解法：</b>询价 → 合同 → 支付 → 仓储 → 物流 → 质检 → 结算 → 开票全链路线上化。</p></div>
+      <div class="card card-accent"><p class="eyebrow">死结 03 · 资金</p><h4>有好机会但缺钱</h4><p class="dim" style="font-size:13px">货压仓库占资金、账期 30-90 天拖垮现金流。<br><b class="cy">解法：</b>预付款融资 / 仓单质押 / 应收账款融资——<b class="hl">让钱不够的买方也能成交，直接提高成交率</b>。</p></div>
+    </div>
+    <div class="card mt-l" style="padding:18px 22px;border-top:2px solid var(--accent-3)">
+      <p style="margin:0;font-size:15px;line-height:1.7">
+        <b class="hl">一句话概括：</b>把大宗贸易里「签了合同之后的事」全部线上化、可信化、金融化——把生意从「靠人脉、靠电话、靠运气」变成「靠数据、靠系统、靠信用」。
+      </p>
+    </div>
+    <div class="notes">
+      【45 秒 · 业务判断】这一页替代传统开场里的「我参与了一个电商平台」。<br><br>
+      【口播】「我先讲对这个行业的判断。大宗商品 B2B 的卡点不在『找货』——信息撮合早就被做烂了；卡点在『签了合同之后』：货权怎么确认、钱怎么安全地走、交收扯皮怎么办。谁能把签了合同之后的事可信地线上化，谁就有定价权。<br><br>
+      三个死结对应三件事：信任、效率、资金。所以我们做的不是撮合信息，而是把交易、支付结算、合同履约、仓单、物流、税务打通成闭环，在这个闭环上叠加供应链金融——让钱不够的买方也能成交，直接提高成交率。在这个业务里，技术不是成本，是增长引擎。」<br><br>
+      【避坑】不要说成功能清单（在线交易、支付结算、合同履约、仓单、物流、开票税务……），那是产品说明书。先说三个死结，再讲闭环。<br><br>
+      【金融服务价值必须背死这一句】「让钱不够的买方也能成交，直接提高成交率」——不是「增加交易效率」。开口说几条就数几条。
+    </div>
+  </section>
+
+  <!-- ============ 07 四层异构架构 ============ -->
+  <section class="slide dense" data-title="四层异构架构">
+    <p class="kicker">ARCHITECTURE · 系统总览</p>
+    <h2 class="h2">异构四层架构：C 负责快，Java 负责稳，DS 负责翻译</h2>
+    <div class="arch anim-stagger-list" data-anim-target>
+      <div class="tier"><div class="tname">接入层<br>三端</div>
+        <div class="cells three"><div class="cell"><h4>PC 端 / 机构端</h4><p>Vue3 全栈</p></div>
+          <div class="cell"><h4>移动端</h4><p>触屏适配</p></div>
+          <div class="cell"><h4>外部生态 9+</h4><p>银行 / 物流 / 税务 / 签章 / 企查查 / 供应链金融</p></div>
+        </div>
+      </div>
+      <div class="tier"><div class="tname">业务中台<br>Java 微服务</div>
+        <div class="cells"><div class="cell"><h4>12+ 业务服务</h4><p>交易模式 / 履约保证 / 规则配置 / 生态对接</p></div>
+          <div class="cell"><h4>midservice 业务网关</h4><p>鉴权 · 限流 · 路由：管「请求怎么进」</p></div>
+          <div class="cell"><h4>midmon 监控网关</h4><p>指标 · 健康度 · 告警：管「系统怎么样」</p></div>
+          <div class="cell"><h4>Hessian RPC + Canal CDC</h4><p>高频二进制交互；binlog 同步加速 Web 查询</p></div>
+        </div>
+      </div>
+      <div class="tier hl"><div class="tname">DS 数据中心<br>防腐层 ★</div>
+        <div class="cells three"><div class="cell"><h4>协议转换</h4><p>TCP 自定义二进制报文 ↔ Hessian 标准接口</p></div>
+          <div class="cell"><h4>连接治理</h4><p>握手 · 心跳 · 保活 · 协议版本兼容</p></div>
+          <div class="cell"><h4>可观测性收敛</h4><p>异构链路埋点与可靠性收敛在一层</p></div>
+        </div>
+      </div>
+      <div class="tier"><div class="tname">撮合引擎<br>C 语言</div>
+        <div class="cells three"><div class="cell"><h4>单线程纯内存</h4><p>价格 + 时间优先，无 GC</p></div>
+          <div class="cell"><h4>纳秒级确定性</h4><p>交易公平性的刚需</p></div>
+          <div class="cell"><h4>异步落库</h4><p>业务逻辑一行都不放进来</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      【60 秒 · 架构主线】这是整个架构叙事的地基，必须能脱手画。<br><br>
+      【口播顺序：从上到下还是从下到上？从下到上更有逻辑——先讲约束从哪来】<br>
+      「我们系统最大的技术挑战是：既要保证交易撮合的极致性能，又要支撑复杂多变的业务规则。这两个要求是矛盾的，我们用异构分工来解。<br><br>
+      第一层，撮合引擎用 C 语言：单线程、纯内存、异步落库。为什么不用 Java？撮合是 CPU 密集型，盘口匹配、价格优先时间优先的排序，Java 的 GC 停顿在撮合场景不可接受——每一次停顿都可能造成不公平。<br><br>
+      第二层，DS 数据中心，我把它定位为防腐层。它用 Java 开发，下层用 TCP 自定义二进制报文跟 C 引擎通信，上层通过 Hessian 向 Java 微服务暴露标准接口，中间管连接、心跳、协议版本兼容。C 引擎对我们 Java 团队是个黑盒，DS 做的事情就是把异构通信的复杂性封装起来，让上层服务看到的都是干净的 Java 接口调用。<br><br>
+      第三层，业务中台，12+ 微服务。这里要分清两个自研网关：midservice 是业务网关，管请求怎么进；midmon 是监控网关，管系统怎么样。<br><br>
+      第四层，接入层和外部生态：三端接入，对接 9+ 外部系统，统一适配层。」<br><br>
+      【管理岗必说的一句】「我不写 C 代码，但我通过 DS 这层桥接管住了异构通信的全链路。你能管住的边界，就是你能负责的边界。」
+    </div>
+  </section>
+
+  <!-- ============ 08 异构分工的取舍 ============ -->
+  <section class="slide" data-title="异构分工取舍">
+    <p class="kicker">TRADE-OFF · 每层都是取舍的结果</p>
+    <h2 class="h2">C 换确定性 · Java 换迭代速度 · DS 换边界可控</h2>
+    <div class="vs">
+      <div class="card bad-side side anim-fade-left" data-anim="fade-left">
+        <h3>如果不这么拆</h3>
+        <ul>
+          <li>撮合用 Java：GC 停顿带来交易不公平，资金链路心脏不可接受</li>
+          <li>每个服务直连 C 引擎：二进制协议解析散落各处，出错率高、没法维护</li>
+          <li>业务逻辑塞进 C 层：这一层不好改，等于把迭代速度锁死</li>
+        </ul>
+      </div>
+      <div class="mid">→</div>
+      <div class="card good-side side anim-fade-right" data-anim="fade-right">
+        <h3>所以这么拆</h3>
+        <ul>
+          <li><b>撮合层只干撮合</b>：C 换纳秒级确定性，代价是这层不好改</li>
+          <li><b>DS 收敛复杂度</b>：上层调 C 就像调本地方法；C 团队与 Java 团队独立演进、互不阻塞</li>
+          <li><b>中台承载变化</b>：Java 换迭代速度，业务规则全部落在这一层</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mt-l" style="padding:18px 22px">
+      <p style="margin:0 0 8px;font-size:14.5px"><b class="hl">每层先答三问（追问时的通用框架）：</b>为什么存在 / 不这么做会怎样 / 取舍了什么。</p>
+      <p class="dim" style="margin:0;font-size:13.5px">例：Hessian 而不是 JSON——高频二进制交互，序列化体积和性能都要；Canal 而不是业务双写——用 binlog 解耦读写，不把同步逻辑压进主链路。</p>
+    </div>
+    <div class="notes">
+      【30-45 秒】这一页专门用来对付一种死法：只报架构名词，两个网关说不清区别。面试官的结论会是「参与者不是设计者」。<br><br>
+      【口播】「这套架构的每层都是取舍的结果：C 换确定性、Java 换迭代速度、DS 换边界可控。<br><br>
+      举个例子：为什么不直接让每个 Java 服务去对接 C 引擎？因为协议解析会散落得到处都是，出错率高、没法维护；收敛在 DS 一层，上层调 C 就像调本地方法，而且 C 团队和 Java 团队可以各自独立演进。<br><br>
+      再比如中间件选型：RPC 用 Hessian 不用 JSON，因为我们是高频二进制交互，序列化体积和性能都要；缓存同步用 Canal 读 binlog，而不是业务代码双写——同步逻辑不该压进主链路。」<br><br>
+      【万能框架】被追问任何一层，先答三问：这一层为什么存在 / 不这么做会怎样 / 取舍了什么。答得出取舍，你就是设计者。<br><br>
+      【避坑】不要说「我们用了 Spring Cloud」，要说「12+ 微服务按业务垂直拆分，交易是核心域」。
+    </div>
+  </section>
+
+  <!-- ============ 09 业务理解五层模型 ============ -->
+  <section class="slide dense" data-title="业务理解五层">
+    <p class="kicker">BUSINESS · 业务理解力</p>
+    <h2 class="h2">懂不懂业务，看能聊到第几层</h2>
+    <div class="card mt-l" style="padding:6px 14px">
+      <table class="t">
+        <thead><tr><th style="width:120px">层次</th><th style="width:300px">能力描述</th><th>我的证据（能脱口而出的话）</th></tr></thead>
+        <tbody>
+          <tr><td class="k"><b>L1 知道流程</b></td><td>说得出交易链路</td><td>大宗交易七环：询价、看货、签约、付款、履约、结算、融资</td></tr>
+          <tr><td class="k"><b>L2 知道痛点</b></td><td>每一环的真实麻烦和后果</td><td>比价差两分钟价就没了；合同晚到三天，400 万的单子飞了</td></tr>
+          <tr><td class="k"><b>L3 知道赚钱逻辑</b></td><td>每类客户靠什么赚钱、在哪流血</td><td>给贸易商卖生存、给国企卖溢价、给政府卖监管、给平台卖信用——同一套系统，四种价值主张</td></tr>
+          <tr><td class="k"><b>L4 知道角色 KPI</b></td><td>客户方每个用系统的人考核什么</td><td>销售总监看溢价率，财务看回款账期，风控看敞口，仓管看货权清不清晰</td></tr>
+          <tr><td class="k"><b>L5 能预判演进</b></td><td>客户明年会要什么</td><td>多个客户殊途同归走向「交易 + 物流 + 金融」的产业互联网</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="dim mt-m" style="font-size:13.5px">L1–L3 是高级工程师也能有的认知；<b class="hl">L4 / L5 只有真正对客户结果负责的人才会有</b>——面试中主动展示 L4、L5，直接拉开身位。</p>
+    <div class="notes">
+      【30 秒 · 差异化页】这页的作用是把「我懂业务」从形容词变成可验证的标尺。<br><br>
+      【口播】「我判断一个人懂不懂业务，其实有层次可分。L1 知道流程，L2 知道每一环的痛点和后果，L3 知道每类客户靠什么赚钱、在哪流血，L4 知道客户方每个用系统的人考核什么，L5 能预判客户明年会要什么。<br><br>
+      L1 到 L3，一个高级工程师多做几年也能有。但 L4 和 L5 不一样——只有真正对客户结果负责过的人才有。举个 L4 的例子：同一套仓单系统，国企说『盘亏要能追责』，政府说『货权要能核验』，贸易商说『套保敞口要能算清』，资金方说『质押率要能自动盯』。能力完全相同，优先级和验收标准完全不同——这就是为什么同一底座必须分端设计。」<br><br>
+      【如果被追问 L5 证据】答：多个客户的转型方向都指向同一个地方，比如从只做交易走向「交易 + 物流 + 供应链金融」，这就是我们四层架构预演的那条路线。
+    </div>
+  </section>
+
+  <!-- ============ 10 五方盈利逻辑 ============ -->
+  <section class="slide dense" data-title="五方盈利逻辑">
+    <p class="kicker">BUSINESS · L3 核心弹药</p>
+    <h2 class="h2">五类客户，五种赚钱方式，五种「在哪流血」</h2>
+    <div class="card mt-l" style="padding:6px 14px">
+      <table class="t">
+        <thead><tr><th style="width:150px">客户方</th><th style="width:230px">怎么赚钱</th><th style="width:250px">在哪里流血</th><th>所以系统要给他什么</th></tr></thead>
+        <tbody>
+          <tr><td><b>贸易商</b></td><td>价差 + 基差收益 + 资金周转速度</td><td>价格波动裸奔、垫资占用、点价管理失控</td><td>期现敞口实时计算、履约资金效率、基差合同管理</td></tr>
+          <tr><td><b>平台运营方</b></td><td>交易服务费 + 支付结算 + 物流金融分润 + 数据</td><td>交易量起不来、资金合规、信用体系建不起来</td><td>多模式交易引擎、支付适配器、履约信用数据</td></tr>
+          <tr><td><b>国企集团</b></td><td>溢价增收（卖）+ 采购降本（买）+ 合规免责</td><td>线下销售寻租、采购围标、审计风险</td><td>竞价引擎、阳光招投标、全链路留痕</td></tr>
+          <tr><td><b>政府平台</b></td><td>税收留住 + 资源配置权 + 产业产值</td><td>资源私卖、税收流失、小企业融资难</td><td>全链监管、统配统销、代采金融</td></tr>
+          <tr><td><b>核心企业 / 工厂</b></td><td>供应链稳定 + 应收管理</td><td>原料断供、账期被拖、存货贬值</td><td>长协管理、应收融资、库存可视化</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="rule"></div>
+    <p style="margin:0;font-size:14.5px;line-height:1.7"><b class="hl">金句：</b>「给贸易商卖生存，给国企卖溢价，给政府卖监管，给平台卖信用——同一套系统，四种价值主张。我是从这个表倒推出产品功能优先级的。」</p>
+    <div class="notes">
+      【30 秒 · 如果面试官问「你懂业务吗」就翻这页】<br><br>
+      【口播】「我服务过的客户分五类。贸易商赚价差和资金周转，所以他们的命门是期现敞口和垫资；平台运营方赚服务费和金融分润，命门是交易量起不来和资金合规；国企集团赚溢价和采购降本，最怕的是寻租、围标和审计风险；政府平台要的是税收留住和资源可控；核心工厂要的是供应链稳定和应收管理。<br><br>
+      一句话记：给贸易商卖生存，给国企卖溢价，给政府卖监管，给平台卖信用。同一套系统，四种价值主张。我们的产品功能优先级不是拍脑袋排的，是从这张表倒推出来的。」<br><br>
+      【追问预案】「这些客户你都服务过吗？」——如实回答承建范围，其余讲「我们平台的设计来自这类客户的共性需求」，技术细节只讲自己实际负责的部分。不熟客户名单，报体量 + 问题 + 结果。
+    </div>
+  </section>
+
+  <!-- ============ 11 口径纪律 ============ -->
+  <section class="slide center tc" data-title="口径纪律">
+    <div style="max-width:1080px">
+      <p class="kicker">DISCIPLINE · 一条最容易讲错的口径</p>
+      <blockquote class="quote-big anim-fade-up" data-anim="fade-up" style="margin:18px 0 22px">
+        客户收益 <span class="hl">≠</span> 平台收入
+      </blockquote>
+      <p class="lede" style="margin:0 auto;text-align:center;font-size:19px">
+        溢价增收、支付金额、贸易吨数、代采金额，全部是<b class="cy">客户侧的经营成果</b>；平台自身收入靠交易服务费、供应链服务费、金融分润与数据服务。
+      </p>
+      <div class="card mt-l" style="padding:20px 24px;text-align:left">
+        <p style="margin:0;font-size:15px;line-height:1.75">
+          <b class="hl">正确说法：</b>「我建设的平台为客户创造了这些数据与收益，平台自身通过交易服务费、供应链服务费、金融分润与数据服务实现商业化。」
+        </p>
+      </div>
+      <p class="dim mt-m" style="font-size:13px">再深一层：自营买断走总额法，营收大、毛利极薄；服务型平台走净额法，营收小、毛利好看——但真实盈利能力可能接近。谈「服务过多大规模」时，主动区分交易规模与平台营收。</p>
+    </div>
+    <div class="notes">
+      【15 秒，但杀伤力最大的一页】这页存在的唯一理由：防止被懂财务的面试官当场问穿。<br><br>
+      【口播】「这里我要说清一条口径，因为它最容易讲错、也最致命：客户收益不等于平台收入。<br><br>
+      比如客户累计 8 亿的溢价增收，那是客户侧的经营成果——在国企里溢价几乎直接等于净利润——但不是平台收入；客户上万亿的成交规模，平台赚的是那百分之零点几的手续费；贸易商的几十万吨贸易量是营收，总额法下毛利率可能不到 1%。<br><br>
+      所以我的标准说法是：我建设的平台为客户创造了这些数据与收益，平台自身通过交易服务费、供应链服务费、金融分润与数据服务实现商业化。」<br><br>
+      【加分】主动补这一层更显专业：「自营买断走总额法，营收大毛利极薄；服务型平台走净额法，营收小毛利好看，但两者真实盈利能力可能接近——所以谈规模时必须区分交易规模和平台营收。」
+    </div>
+  </section>
+
+  <!-- ============ 12 代表作 1 域解耦 ============ -->
+  <section class="slide" data-title="代表作1 域解耦">
+    <p class="kicker">ARCHITECTURE · 代表作 01</p>
+    <h2 class="h2">合同域与履约域解耦</h2>
+    <div class="arch" style="margin-top:16px">
+      <div class="tier"><div class="tname">业务问题</div>
+        <div class="cells three" style="grid-template-columns:1fr">
+          <div class="cell" style="text-align:left;padding:14px 18px"><p style="font-size:13.5px;color:var(--text-1);margin:0">大宗合同变更极其频繁——补充协议、数量增减、交期调整是日常动作，<b>如果把履约状态耦合在合同上，每一次变更都是一场数据迁移事故</b>。</p></div>
+        </div>
+      </div>
+      <div class="tier"><div class="tname">备选方案</div>
+        <div class="cells" style="grid-template-columns:1fr 1fr">
+          <div class="cell" style="text-align:left;padding:14px 18px"><h4 style="text-align:left">❌ 一张大宽表全搞定</h4><p style="text-align:left">短期最省事；但合同版本链缺失，履约状态随合同挂掉，变一次改一次</p></div>
+          <div class="cell" style="text-align:left;padding:14px 18px;border-top:2px solid var(--accent-3)"><h4 style="text-align:left">✅ 域解耦 + 事件联动</h4><p style="text-align:left">合同是版本链（原合同 + N 个补充协议），履约是独立的计划与任务流，两者通过事件总线联动</p></div>
+        </div>
+      </div>
+      <div class="tier"><div class="tname">取舍 / 代价</div>
+        <div class="cells" style="grid-template-columns:1fr 1fr">
+          <div class="cell" style="text-align:left;padding:14px 18px"><h4 style="text-align:left">取舍</h4><p style="text-align:left">解耦后读写路径变长，但换来<b>合同版本链清晰、履约独立演进</b>——变更频率决定了解耦是必选项</p></div>
+          <div class="cell" style="text-align:left;padding:14px 18px"><h4 style="text-align:left">代价</h4><p style="text-align:left">跨域一致性不能再靠数据库事务，必须靠<b>事件 + 每日对账兜底</b></p></div>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      【60 秒 · 三个代表作都用同一个框架：业务问题 → 备选方案 → 取舍逻辑 → 代价。这是技术经理和架构师的通用语言。】<br><br>
+      【口播】「我们把合同域和履约域彻底解耦。合同域管的是商业契约——谁、什么、多少、什么价；履约域管的是执行——付款、发货、收货、开票。<br><br>
+      为什么？因为大宗贸易里合同变更极其频繁，补充协议、数量增减、交期调整是家常便饭。如果把履约状态耦合在合同上，每次变更都是一场数据迁移事故。<br><br>
+      备选方案是「一张大宽表全搞定」，短期确实最省事，但合同版本链会缺失，履约状态随合同一起挂掉，变一次改一次。我们选了域解耦：合同是版本链，履约是独立的计划与任务流，两者通过事件总线联动。<br><br>
+      代价要说清楚：解耦后读写路径变长，而且跨域一致性不能再靠数据库事务，必须靠事件加每日对账兜底。这是我当时就接受的代价。」<br><br>
+      【核心表设计（被追问时说）】contract / contract_item / contract_party / fulfillment_plan / payment_order / shipment_order / receipt_settlement / fund_pool / invoice / refund_order。
+    </div>
+  </section>
+
+  <!-- ============ 13 代表作 2 双轨履约引擎 ============ -->
+  <section class="slide" data-title="代表作2 双轨引擎">
+    <p class="kicker">ARCHITECTURE · 代表作 02 ★★</p>
+    <h2 class="h2">双轨履约引擎：履约节奏<span class="hl">不存在行业标准</span></h2>
+    <div class="vs">
+      <div class="card side" style="border-top:2px solid var(--accent-2)">
+        <h3 class="cy">顺序交收 · Sequential</h3>
+        <ul style="list-style:none;padding-left:0">
+          <li><b>状态机 / 工作流引擎强制有序</b></li>
+          <li>强一致，先款后货类交易的刚需</li>
+          <li>适合标准化、风险高的交易</li>
+          <li>用确定性换掉「说不清」</li>
+        </ul>
+      </div>
+      <div class="mid">⇄</div>
+      <div class="card side" style="border-top:2px solid var(--accent-3)">
+        <h3 class="hl">自由交收 · Free-form</h3>
+        <ul style="list-style:none;padding-left:0">
+          <li><b>事件驱动 + 规则引擎并行流转</b></li>
+          <li>动态条件判定，灵活并行</li>
+          <li>适合长期合作客户的灵活交收</li>
+          <li>用灵活性换掉「一刀切」</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid g3 mt-l">
+      <div class="mcard"><span class="n">共用底座</span><h4>同一套履约任务数据结构</h4><p>两轨共用底层数据结构，监控与风控视角统一</p></div>
+      <div class="mcard"><span class="n">之上叠加</span><h4>五种交收模式</h4><p>款到发货 / 货到付款 / 定金 + 尾款 / 分期 / 信用证</p></div>
+      <div class="mcard"><span class="n">代价</span><h4>自由轨补偿复杂</h4><p>异常补偿策略用规则引擎配置化，不硬编码</p></div>
+    </div>
+    <div class="notes">
+      【90 秒 · 这是「业务判断救了技术方案」的最强案例，务必讲透】<br><br>
+      【口播】「最早设计履约系统时，技术方案是纯流程引擎，一条道跑到黑。但我看了太多客户的真实交收——国企要强管控的顺序交收，民营贸易商可能今天发货、明天才补合同。是业务判断告诉我：<b>履约节奏不存在行业标准</b>，所以必须有双轨。<br><br>
+      双轨引擎由合同上的 delivery_mode 决定走哪条轨。顺序轨用状态机或工作流引擎强制有序，换的是确定性，适合先款后货这类高风险、标准化的交易；自由轨用事件驱动加规则引擎并行流转，换的是灵活性，适合长期合作客户。两轨共用同一套底层履约任务数据结构，所以监控和风控视角是统一的。上面再叠加五种交收模式：款到发货、货到付款、定金加尾款、分期付款、信用证。<br><br>
+      这个判断不是从技术博客来的，是看客户怎么干活来的。反过来，如果我当时只从技术优雅出发做一个万能引擎，现在大概率在给两种客户打补丁。」<br><br>
+      【主动给 trade-off】「顺序轨用状态机换确定性，自由轨用事件驱动换灵活性，代价是自由轨的异常补偿逻辑复杂得多——我们用规则引擎把补偿策略配置化，而不是硬编码。」<br><br>
+      【白板加分】面试中主动要求画这张图，能画图本身就是加分信号。
+    </div>
+  </section>
+
+  <!-- ============ 14 关键 trade-off 清单 ============ -->
+  <section class="slide dense" data-title="Trade-off 清单">
+    <p class="kicker">TRADE-OFF · 高概率被考</p>
+    <h2 class="h2">四个 Trade-off，回答框架</h2>
+    <div class="card mt-l" style="padding:6px 14px">
+      <table class="t">
+        <thead><tr><th style="width:290px">追问</th><th>我的回答框架</th></tr></thead>
+        <tbody>
+          <tr><td><b>为什么不用分布式事务跨域保一致？</b></td><td>跨域（合同-履约-结算-仓单）我选<b class="hl">事件驱动 + 每日对账兜底</b>，不用 2PC / TCC——大额资金场景宁可慢不可锁，同步事务把可用性押上去了。但<b>资金预检这一跳我反而用了 2PC 思路</b>，因为钱的事不能有中间态。</td></tr>
+          <tr><td><b>为什么履约不用纯工作流引擎？</b></td><td>工作流引擎擅长「人审批」，但大宗履约的核心是「货款票三轨的状态推进」，人工节点只占三成。状态机加事件让机器节点毫秒级推进，<b>人只处理异常</b>。</td></tr>
+          <tr><td><b>为什么原型阶段不做组件化？</b></td><td>原型阶段的诉求是「快验证业务模型」，静态页面让任何一页都能双击打开给客户演示。<b>但我知道它的边界</b>——所以现在做组件收敛和契约先行的转型规划。</td></tr>
+          <tr><td><b>套保风控为什么自研不买现成的？</b></td><td>敞口计算和现货合同强耦合——点价量、在途量、已点未发、期货头寸要实时轧差，通用风控软件拿不到这些一手数据。<b>自研才能把「现货合同 → 敞口 → 期货头寸」做成一条链。</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="dim mt-m" style="font-size:13.5px">通用原则：<b class="hl">两条路都对时，选可回退的那条</b>；讲架构必须先讲「为什么这么选、放弃了什么、换来什么」。</p>
+    <div class="notes">
+      【60 秒，但这是最重要的一页——所有追问都从这里长出来】<br><br>
+      【讲法】不要照着念。挑两个讲透，另外两个说「这套框架我也可以展开」。<br><br>
+      【第一问 · 关键在「反例」】「跨域一致性我选事件驱动加每日对账，不用 2PC 或 TCC，因为大额资金场景宁可慢不可锁，同步事务把可用性押上去了。但注意——资金预检这一跳我反而用了两阶段提交的思路，因为钱的事不能有中间态。所以不是说 2PC 一定不能用，是看这一跳能不能承受锁。」<br><br>
+      【第四问 · 最能打的一问】「套保风控为什么自研？因为敞口计算和现货合同强耦合——点价量、在途量、已点未发、期货头寸要实时轧差，通用风控软件拿不到这些一手数据。自研才能把现货合同到敞口到期货头寸做成一条链。」<br><br>
+      【一条原则贯穿全篇】两条路都对的时候，选可回退的那条。妥协可以，但必须被记录、被定价——无意识的妥协才叫技术债失控。
+    </div>
+  </section>
+
+  <!-- ============ 15 配置化 / 四台阶 ============ -->
+  <section class="slide" data-title="配置化四台阶">
+    <p class="kicker">ARCHITECTURE · 平台与应用边界</p>
+    <h2 class="h2">配置、编排、扩展、定制 —— <span class="hl">四个台阶</span></h2>
+    <div class="vs">
+      <div class="card bad-side side">
+        <h3>改造前</h3>
+        <ul>
+          <li>每接一个大客户，开户 / 挂牌 / 合同交收全流程都要改代码</li>
+          <li>100 个客户 = 100 套大同小异的代码分支</li>
+          <li>新客户上线 <b>2 个月</b>，销售签回来的客户排队等系统</li>
+        </ul>
+      </div>
+      <div class="mid">→</div>
+      <div class="card good-side side">
+        <h3>改造后</h3>
+        <ul>
+          <li>统计一年客户差异化需求，<b>80% 集中在四个维度</b>：报价方式 / 结算节奏 / 审批层级 / 合同格式，且「规则不同但结构相同」</li>
+          <li>不变的部分做成引擎，可变的部分做成按客户配置</li>
+          <li>新客户上线 <b>1 周</b>，代码不再膨胀</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mt-l" style="padding:20px 24px;border-top:2px solid var(--accent-3)">
+      <p style="margin:0;font-size:15px;line-height:1.75">
+        <b class="hl">台阶金句：</b>能用配置解决的绝不编排，能编排的绝不扩展，能扩展的绝不定制。<b>台阶每上一级，自由度上升、复用性下降</b>——选型的本质是给业务差异找到最低的那一级台阶。
+      </p>
+      <p class="dim mt-m" style="margin:10px 0 0;font-size:13.5px">
+        技术实现：策略模式 + 规则引擎（Drools）+ 配置化模板；结构相同走策略，结构不同才开发。
+      </p>
+    </div>
+    <div class="notes">
+      【45 秒 · 这页回答「你怎么做复用、怎么避免重复建设」这类必考题】<br><br>
+      【口播】「多租户配置化解决的是一个死循环：每接一个大客户，开户、挂牌、合同交收全流程都要改代码，100 个客户就是 100 套大同小异的代码。<br><br>
+      我的做法不是压住差异化，而是让引擎支持差异化——不变的部分做成引擎，可变的部分做成配置。判定依据来自历史需求聚类：我们统计过一年的客户差异化需求，80% 集中在报价方式、结算节奏、审批层级、合同格式这四个维度，而且都是『规则不同但结构相同』——结构相同就能抽象。<br><br>
+      结果是新客户上线从 2 个月压到 1 周，代码没有膨胀成 N 套定制分支。」<br><br>
+      【台阶金句 · 必背】「配置、编排、扩展、定制是四个台阶——能用配置解决的绝不编排，能编排的绝不扩展，能扩展的绝不定制。台阶每上一级，自由度上升、复用性下降，选型的本质是给业务差异找到最低的那一级台阶。」<br><br>
+      【红线】不管怎么选，有一条线不能破：<b>不让定制需求污染主链路</b>。
+    </div>
+  </section>
+
+  <!-- ============ 16 业务语言→技术翻译表 ============ -->
+  <section class="slide dense" data-title="翻译表">
+    <p class="kicker">KILLER · 业务语言 → 技术方案</p>
+    <h2 class="h2">客户说的每句人话，我都能接住并翻译成架构</h2>
+    <div class="card mt-l" style="padding:6px 14px">
+      <table class="t">
+        <thead><tr><th style="width:250px">客户的原始话术</th><th style="width:230px">背后的业务实质</th><th>我的技术翻译</th></tr></thead>
+        <tbody>
+          <tr><td>「价格天天变，报价跟不上」</td><td>期现联动定价，人工调价永远滞后行情</td><td>跟盘调价规则引擎（挂牌价 = 期货主力 + 升水），四种定价模式</td></tr>
+          <tr><td>「钱打过去了，对方不认账」</td><td>支付到账不可见，信任死结</td><td>收付款单 + 资金池核销记账 + 到账状态实时同步给履约状态机卡点</td></tr>
+          <tr><td>「点了价又怕行情反着走」</td><td>基差交易的价格敞口风险</td><td>敞口实时轧差（已点价 / 未点价 / 在途）+ 期货头寸绑定 + 限额分级预警</td></tr>
+          <tr><td>「这货到底是谁的？」</td><td>货权不清，一女二嫁</td><td>电子仓单 + 货权流转留痕 + 质检报告扫码溯源批次</td></tr>
+          <tr><td>「合同改了八版，谁说得清」</td><td>版本混乱引发扯皮</td><td>合同版本链（原合同 + N 补充协议）+ 全程留痕存证</td></tr>
+          <tr><td>「月底对账对到吐血」</td><td>四流数据割裂，手工核验</td><td>单据自动勾稽：合同额 vs 实付 vs 已结算 vs 待结算，差异标红</td></tr>
+          <tr><td>「领导要看数据，我攒一周报表」</td><td>数据分散在各子系统</td><td>决策驾驶仓 + 上帝视角，四流数据一屏透视</td></tr>
+          <tr><td>「老供应商靠谱，新面孔不敢碰」</td><td>信任成本高，陌生人交易难</td><td>履约率 / 成交记录 / 客户评价的信用档案体系</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="dim mt-m" style="font-size:13.5px">使用方法：被问任何业务问题，都用三段式回答——<b class="hl">「客户说 X，背后的实质是 Y，我们用 Z 解决」</b>。三段里每一段都同时在证明业务理解和技术能力。</p>
+    <div class="notes">
+      【30 秒说明 + 现场用它答题】这页不是拿来念的，是拿来「用」的——它是我的答题模板，不是内容清单。<br><br>
+      【口播说明】「我做技术经理最日常的一件事，是把客户的一句人话翻译成技术方案。举几个例子：客户说『点了价又怕行情反着走』，背后的实质是基差交易的价格敞口风险，我们的技术翻译是敞口实时轧差加期货头寸绑定加限额分级预警；客户说『这货到底是谁的』，实质是货权不清、一女二嫁，技术翻译是电子仓单加货权流转留痕加质检报告溯源批次。」<br><br>
+      【关键提示】被问任何业务问题时，用三段式回答——客户说 X，背后的实质是 Y，我们用 Z 解决。三段里每一段都同时在证明业务理解和技术能力。<br><br>
+      【如果面试官追问最细的一条】挑「点价」深讲：行情快照加版本号保证摘牌价格锁定——行情更新即递增 version，摘牌请求携带 version，版本不一致就拒绝并提示价格已变动，端到端延迟 10ms 以内。
+    </div>
+  </section>
+
+  <!-- ============ 17 技术债三段法 ============ -->
+  <section class="slide" data-title="技术债三类">
+    <p class="kicker">MANAGEMENT · 技术债与优先级</p>
+    <h2 class="h2">技术债分三类：让团队知道<span class="hl">哪些债在吃利息</span></h2>
+    <div class="grid g3 mt-l anim-stagger-list" data-anim-target>
+      <div class="card card-accent" style="border-top:3px solid var(--bad)">
+        <p class="eyebrow" style="color:var(--bad)">流血债</p>
+        <h4>影响正确性 / 资金安全</h4>
+        <p class="dim" style="font-size:13px">例：对账兜底缺失。<br><b class="hl">→ 本迭代必须还，不排期不讨论。</b></p>
+      </div>
+      <div class="card card-accent" style="border-top:3px solid var(--warn)">
+        <p class="eyebrow" style="color:var(--warn)">放血债</p>
+        <h4>拖慢交付速度</h4>
+        <p class="dim" style="font-size:13px">例：无组件库、接口无契约。<br><b class="hl">→ 排进季度规划，按「每新增一页放大多少成本」量化给老板听。</b></p>
+      </div>
+      <div class="card card-accent" style="border-top:3px solid var(--good)">
+        <p class="eyebrow" style="color:var(--good)">美容债</p>
+        <h4>风格不统一</h4>
+        <p class="dim" style="font-size:13px">例：图表库混用。<br><b class="hl">→ 顺手还，不立项。</b></p>
+      </div>
+    </div>
+    <div class="card mt-l" style="padding:20px 24px;border-top:2px solid var(--accent-3)">
+      <p style="margin:0;font-size:15px;line-height:1.7">
+        <b class="hl">金句：</b>技术经理的价值不是消灭所有技术债，是让团队知道<b>哪些债在吃利息、哪些债可以先欠着</b>。
+      </p>
+      <p class="dim mt-m" style="margin:10px 0 0;font-size:13.5px">
+        配套机制：技术债台账（债务项 / 风险 / 成本 / 优先级可视化）+ <b>20% 带宽原则</b>（每迭代固定 20% 产能用于偿还，并明确计入工程贡献分）。
+      </p>
+    </div>
+    <div class="notes">
+      【30 秒 · 这页专门治「完美主义型」死法】回答什么都「我们做得很好」是减分项。主动暴露技术债和妥协，有债有规划 = 有判断力。<br><br>
+      【口播】「我把技术债分三类排优先级。第一类是流血债，影响正确性或资金安全，比如对账兜底缺失——本迭代必须还，不排期不讨论。第二类是放血债，拖慢交付速度，比如没有组件库、接口没有契约——排进季度规划，而且我会按『每新增一页放大多少成本』量化给老板听。第三类是美容债，风格不统一这种——顺手还，不立项。<br><br>
+      我的判断是：技术经理的价值不是消灭所有技术债，是让团队知道哪些债在吃利息、哪些债可以先欠着。」<br><br>
+      【配套机制必说】「配套有两个机制：技术债台账，把债务项、风险、成本、优先级可视化；还有 20% 带宽原则，每迭代固定 20% 产能用于偿还技术债——而且明确计入工程贡献分，让还债的人不吃亏。」<br><br>
+      【追问「上一版遗留问题」】先说哪些已经验证是对的，再说哪些是技术债，最后收在我的优先级判断上——体现的不是完美，是判断力。
+    </div>
+  </section>
+
+  <!-- ============ 18 AI 融合架构 ============ -->
+  <section class="slide dense" data-title="AI 融合架构">
+    <p class="kicker">AI · 智能服务平台整体架构</p>
+    <h2 class="h2">AI 不是 demo，是<span class="hl">可控、可评估、可运维</span>的生产系统</h2>
+    <div class="arch anim-stagger-list" data-anim-target>
+      <div class="tier"><div class="tname">集成层</div>
+        <div class="cells three"><div class="cell"><h4>Service API</h4><p>业务中台代理转发</p></div>
+          <div class="cell"><h4>身份权限收口</h4><p>用户身份穿透传递，AI 网关不自带权限语义</p></div>
+          <div class="cell"><h4>避免「AI 旁路」</h4><p>不让 AI 成为新的权限边界</p></div>
+        </div>
+      </div>
+      <div class="tier"><div class="tname">Agent 层</div>
+        <div class="cells three"><div class="cell"><h4>编排</h4><p>多智能体协作完成复杂任务</p></div>
+          <div class="cell"><h4>自研智能体</h4><p>任务循环 + 工具注册</p></div>
+          <div class="cell"><h4>工具调用</h4><p>工具分级：只读 / 写 / 高危</p></div>
+        </div>
+      </div>
+      <div class="tier hl"><div class="tname">知识检索层<br>RAG</div>
+        <div class="cells" style="grid-template-columns:repeat(4,1fr)"><div class="cell"><h4>解析</h4><p>多格式文档导入</p></div>
+          <div class="cell"><h4>切块 / Embedding</h4><p>按语义边界切分</p></div>
+          <div class="cell"><h4>向量库 + 混合检索</h4><p>关键词 + 向量召回</p></div>
+          <div class="cell"><h4>Rerank → 生成</h4><p>重排后注入上下文</p></div>
+        </div>
+      </div>
+      <div class="tier"><div class="tname">模型接入层</div>
+        <div class="cells three"><div class="cell"><h4>统一模型抽象接口</h4><p>业务不感知具体模型</p></div>
+          <div class="cell"><h4>第三方 API</h4><p>通用咨询快速见效</p></div>
+          <div class="cell"><h4>内网私有化 vLLM / Ollama</h4><p>涉密数据不出内网</p></div>
+        </div>
+      </div>
+    </div>
+    <p class="dim mt-m" style="font-size:13.5px">
+      <b class="hl">选型的第一判断是「数据敏感度决定通道」</b>：通用咨询走第三方模型，涉密数据走内网私有化——成本与合规两个都占住。落地场景：智能客服、政策解读两个高频场景。
+    </p>
+    <div class="notes">
+      【60 秒 · AI 主线的开场页】如果面试官是 AI 方向，这页是地基。<br><br>
+      【口播 · 分层讲】「我们 AI 平台的架构分四层。<br>
+      模型接入层做统一模型抽象接口，业务方不感知具体是哪个模型：通用咨询走第三方 API 快速见效，涉密数据走内网私有化部署，vLLM 或 Ollama。我的核心判断是『数据敏感度决定通道』，成本与合规两个都占住。<br><br>
+      知识检索层是标准 RAG 链路：文档解析、切块、Embedding、向量库、混合检索、Rerank、生成。<br><br>
+      再上面是 Agent 层：多智能体编排完成复杂任务、工具注册与调用。工具我是分级的——只读、写操作、高危操作。<br><br>
+      最上面是集成层：通过 Service API 和业务中台代理转发，身份权限收口在业务中台。」<br><br>
+      【必被追问 & 必答】「为什么 AI 的身份权限要收口在中台？」——「因为 AI 网关不自带权限语义。用户身份要穿透传递，鉴权跟着用户身份走、不跟着 Agent 走，否则 AI 旁路会变成一个新的、没人管的权限边界。」<br><br>
+      【口径纪律】这个平台的技术栈是 Java 侧为主；FastAPI / Python 只用于我个人的 Agent Harness 项目，不要混进平台技术栈来说。<br><br>【口径纪律 · 参与边界（重要）】讲这页时**先声明真实参与**：我做的是**前期选型 + 文档解析入向量库这条数据链路**；编排 / 上下文 / 执行循环由团队推进，我只讲我能负责的层。整页架构是"我的理解与设计视角"，不是"我一手搭的"——宁可主动收窄。
+    </div>
+  </section>
+
+  <!-- ============ 19 Agent Harness 六机制 ============ -->
+  <section class="slide dense" data-title="Agent Harness 六机制">
+    <p class="kicker">AI · Agent Harness 设计</p>
+    <h2 class="h2">让 Agent 从 demo 变成生产系统：六机制</h2>
+    <div class="g6 mt-l anim-stagger-list" data-anim-target>
+      <div class="mcard"><span class="n">MECHANISM 01</span><h4>任务执行循环</h4><p>感知 → 规划 → 行动 → 观察的 MainLoop；<b>步数上限 + 预算上限</b>防失控</p></div>
+      <div class="mcard"><span class="n">MECHANISM 02</span><h4>状态管理</h4><p>会话状态外置（Redis / DB），步与步之间<b>可恢复、可回放</b>；会话关联业务单据</p></div>
+      <div class="mcard"><span class="n">MECHANISM 03</span><h4>权限控制</h4><p>工具分级：只读 / 写 / 高危；高危需显式授权；<b>鉴权跟着用户身份走，不跟着 Agent 走</b></p></div>
+      <div class="mcard"><span class="n">MECHANISM 04</span><h4>异常恢复</h4><p>工具失败重试 + 降级 + 补偿；输出非法 Schema → 带错误反馈重试；<b>循环失败熔断转人工</b></p></div>
+      <div class="mcard"><span class="n">MECHANISM 05</span><h4>人工介入</h4><p>human-in-the-loop 卡点：写操作前审批、低置信度输出转人工、<b>操作可撤销窗口</b></p></div>
+      <div class="mcard"><span class="n">MECHANISM 06</span><h4>评测观测</h4><p>每步 trace 落日志；成功率 / 步数 / 工具错误率 / 成本 / 时延；<b>离线评测集回归</b></p></div>
+    </div>
+    <div class="card mt-l" style="padding:16px 20px">
+      <p style="margin:0;font-size:14px;line-height:1.7">
+        <b class="hl">追问预案 · Agent 死循环怎么防？</b>步数上限、预算上限、重复检测三闸门，触发任一即熔断并兜底转人工——<b>循环必须有一个「停」的确定性出口。</b>
+      </p>
+    </div>
+    <div class="notes">
+      【60 秒，但这是 AI 页里最能看出「你做过」的一页】讲 AI 最容易翻车的地方是只会讲概念。每提一个机制，必须跟一个工程细节或自己的实例。<br><br>
+      【讲法建议：不要六条平铺，串成一条故事线】<br>
+      「Agent 难的地方从来不是调模型，是让它跑在生产上不出事。我按六个机制来设计。<br><br>
+      第一，任务执行循环——感知、规划、行动、观察的循环，但必须设步数上限和预算上限，不然它可能烧掉你的预算也不停。<br>
+      第二，状态管理——会话状态外置到 Redis 或 DB，这样步与步之间可恢复、可回放，而不是进程一挂就全丢。<br>
+      第三，权限控制——工具分级，只读、写、高危，高危必须显式授权；最关键的一条是鉴权跟着用户身份走，不跟着 Agent 走。<br>
+      第四，异常恢复——工具失败要重试、降级、补偿；模型输出非法 Schema 就带着错误反馈重试；循环本身失败就熔断转人工。<br>
+      第五，人工介入——写操作前审批、低置信度输出转人工、留一个可撤销窗口。<br>
+      第六，评测观测——每步 trace 落日志，看成功率、步数、工具调用错误率、成本、时延，并且有离线评测集跑回归。」<br><br>
+      【必问 · 死循环】「步数、预算、重复检测三闸门，触发任一就熔断转人工。核心是：循环必须有一个确定的『停』的出口。」<br><br>
+      【个人项目口径】我自己的 Agent Harness 用 FastAPI + MainLoop 实现，这是我的个人储备，不要讲成公司平台的一部分。
+    </div>
+  </section>
+
+  <!-- ============ 20 确定性 vs AI 边界 ============ -->
+  <section class="slide" data-title="确定性 vs AI">
+    <p class="kicker">AI · 边界划分（最见水平的一页）</p>
+    <h2 class="h2">确定性业务逻辑与 AI 能力，怎么划职责</h2>
+    <div class="grid g2 mt-l" style="align-items:start">
+      <div class="card card-accent" style="border-top:3px solid var(--accent-2)">
+        <p class="eyebrow">确定性逻辑 · AI 不碰写路径</p>
+        <h4>跟钱、合规、状态强相关的</h4>
+        <p class="dim" style="font-size:13.5px;line-height:1.75">
+          对账、资金计算、状态流转、权限判定——<br>
+          这些是确定性逻辑，<b class="hl">AI 只提示、不决策</b>。
+        </p>
+      </div>
+      <div class="card card-accent" style="border-top:3px solid var(--accent-3)">
+        <p class="eyebrow">AI 负责 · 提效、人兜底</p>
+        <h4>非结构化理解与建议生成</h4>
+        <p class="dim" style="font-size:13.5px;line-height:1.75">
+          非结构化输入的理解（合同条款抽取、工单分类）、知识检索汇总、草稿与建议生成、辅助研判。
+        </p>
+      </div>
+    </div>
+    <div class="grid g3 mt-l">
+      <div class="mcard"><span class="n">边界 01</span><h4>安全边界</h4><p>权限收口中台 · 输出 Schema 校验 · 内容安全 · 审计留痕</p></div>
+      <div class="mcard"><span class="n">边界 02</span><h4>质量边界</h4><p>评测集上线前置 · 灰度放量 · 线上回归</p></div>
+      <div class="mcard"><span class="n">边界 03</span><h4>运行边界</h4><p>可观测指标 · 降级预案 · 成本护栏</p></div>
+    </div>
+    <div class="card mt-l" style="padding:18px 22px;border-top:2px solid var(--accent-3)">
+      <p style="margin:0;font-size:14.5px;line-height:1.7">
+        <b class="hl">分级上线：</b>AI 建议 + 人工确认 → AI 自动执行但可回滚 → 全自动（仅低风险场景）。
+      </p>
+    </div>
+    <div class="notes">
+      【60 秒 · JD 里最见水平的一条，多数候选人只会背概念】<br><br>
+      【口播】「确定性业务逻辑和 AI 能力怎么划职责？我的原则是：跟钱、合规、状态强相关的——对账、资金计算、状态流转、权限判定——这些是确定性逻辑，AI 不碰写路径，只做提示不做决策。<br><br>
+      AI 负责的是非结构化的部分：合同条款抽取、工单分类这类非结构化输入的理解，知识检索汇总，草稿和建议生成，辅助研判。<br><br>
+      光划职责不够，还要三道边界。安全边界：权限收口在业务中台、输出必须过 Schema 校验、内容安全、审计留痕。质量边界：评测集跑在上线前面、灰度放量、线上回归。运行边界：可观测指标、降级预案、成本护栏。<br><br>
+      上线上我是分级的：先是 AI 建议加人工确认，再是 AI 自动执行但可回滚，最后才是全自动——而且只给低风险场景。」<br><br>
+      【必被追问 · 责任】「模型给出错误建议造成损失谁负责？」「AI 是工具，责任在人——所以流程里必须有人工卡点。出了问题的应急动作是三步：下线场景、人工兜底、定位是检索层还是生成层的问题。」<br><br>
+      【收束金句】「AI 应用的难点从来不是调模型，是把它变成一个可控、可评估、可运维的生产系统——权限收口在业务中台，输出必须过 Schema 校验，评测集跑在上线前面，降级预案写在上线后面。」
+    </div>
+  </section>
+
+  <!-- ============ 21 研发管理体系 ============ -->
+  <section class="slide dense" data-title="研发管理体系">
+    <p class="kicker">MANAGEMENT · 研发体系的确定性</p>
+    <h2 class="h2">规范 → 管控 → 建设 → 稳定 → 带人</h2>
+    <div class="chips mt-m">
+      <span class="pill pill-accent">研发管理</span>
+      <span class="pill">项目管控</span>
+      <span class="pill">架构规划</span>
+      <span class="pill">稳定性保障</span>
+      <span class="pill">团队建设</span>
+      <span class="pill">业务理解</span>
+    </div>
+    <div class="flow anim-stagger-list" data-anim-target>
+      <div class="col"><span class="tag">STEP 01 · 规范</span><h4>研发流程标准化</h4>
+        <ul>
+          <li>需求统一收口 + 业务设计 + 技术方案 + QA 验收 + 产品发布 + 系统移交</li>
+          <li>六个关键节点强制过审，<b>不通过不流转</b></li>
+          <li><b>规范不是为了增加流程，是为了减少返工</b></li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">STEP 02 · 管控</span><h4>项目管控可视化</h4>
+        <ul>
+          <li>需求池 / 已评审 / 开发中 / 待发布四态看板 + 排期表</li>
+          <li>多项目并行只抓一件事：<b>关键路径清晰</b></li>
+          <li>上线前必须完成 QA 验收与发布评审</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">STEP 03 · 建设</span><h4>复用 + 合规两条线</h4>
+        <ul>
+          <li><b>复用</b>：登录 / 开户 / 认证 / 签章组件化，推进低代码（流程编排、表单设计器、界面装修）</li>
+          <li><b>合规</b>：敏感数据加密、漏洞扫描、SQL 注入防御、双因子、对标等保三级</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">STEP 04 · 稳定</span><h4>故障闭环 + 性能沉淀</h4>
+        <ul>
+          <li>止损 → 定位 → 复盘 → 故障报告 → <b>回灌规范</b></li>
+          <li>CPU 异常、接口失败等排查路径沉淀成手册</li>
+          <li><b>故障不可怕，可怕的是同一个问题重复发生</b></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mt-m" style="padding:14px 18px;border-top:2px solid var(--accent-3)">
+      <p style="margin:0;font-size:13.5px;line-height:1.65">
+        <b class="hl">STEP 05 · 带人：</b>结对辅导按人定向带教（Java / Vue / C++·QT）+ 周技术分享讲真问题 + 成果沉淀成可复用资产 —— <b>把个人经验变成团队能力</b>。
+      </p>
+    </div>
+    <p class="dim mt-m" style="font-size:13.5px">
+      当时设定的团队目标口径：重大故障 ≤1 次/年 · 中等故障 ≤3 次/年 · 首页打开 &lt;1.5 秒 · 核心业务并发 ≥1000/秒 · 自动化覆盖率 ≥20% · 规范建设节省工作量 ≥5 人月。
+    </p>
+    <div class="notes">
+      【45 秒 · 回答「你怎么保证研发质量 / 怎么保证每次都做成」】<br><br>
+      【记忆钩子】五个词：规范、管控、建设、稳定、带人。这页是 MANAGEMENT 板块的总览，回答「你怎么保证每次都做成」，区别于架构页回答的「你做成了什么」；后面 22-29 页是每一根支柱的展开。<br><br>
+      【口播】「我接手团队后做的第一件事，不是堆人堆加班，而是把研发流程标准化。之前的问题是：需求不清就开发、设计不足就返工、测试遗漏就上线。我建立了覆盖需求、设计、开发、测试、发布、移交全流程的规范体系，六个关键节点强制评审，不通过不流转。我的原则是——规范不是为了增加流程，是为了减少返工。<br><br>
+      流程定了，进度也要看得见：需求池、已评审、开发中三态看板加排期表，多项目并行时我只抓一件事——关键路径清晰。<br><br>
+      技术上我推两件事：一是复用，把登录、开户、认证、签章这些通用模块组件化，再往前推低代码，把交付从写代码变成做配置；二是稳定，性能问题的分层排查路径沉淀进排查手册，线上问题全部出故障报告做复盘。<br><br>
+      带人上我用结对辅导加机制沉淀，按人定向带教，明确核心储备成员的培养目标。」<br><br>
+      【口径纪律 · 必说】「重大故障不超过 1 次/年，这是当时定的考核线」——不要说成「长期稳定达成」。所有数字都带「目标、考核线」限定语。<br><br>
+      【收束】「技术管理的关键，是把个人经验变成团队能力。我不只是管项目进度，更管研发过程的确定性。」<br><br>
+      【导航】接下来按这根主线展开：22 六道评审闸门 → 23 多项目并行管控 → 24 年度技术建设规划 → 25 团队赋能与技术沉淀 → 26 故障管理闭环；再往后是 27 团队机制、28 人才培养、29 团队成果总账。
+    </div>
+  </section>
+
+  <!-- ============ 22 六道评审闸门 ============ -->
+  <section class="slide dense" data-title="六道评审闸门">
+    <p class="kicker">MANAGEMENT · 质量是设计出来的，不是测出来的</p>
+    <h2 class="h2">六个关键节点，<span class="hl">不通过不流转</span></h2>
+    <div class="flow six anim-stagger-list" data-anim-target>
+      <div class="col"><span class="tag">GATE 01</span><h4>需求统一收口</h4>
+        <ul>
+          <li>业务需求统一入口收口</li>
+          <li>原型 + 需求规格说明书先行</li>
+          <li><b>过审才进需求池</b></li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">GATE 02</span><h4>业务设计评审</h4>
+        <ul>
+          <li>领域边界、状态机、异常流程</li>
+          <li>权限与数据口径对齐</li>
+          <li>对《通用业务设计规范表》</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">GATE 03</span><h4>技术方案评审</h4>
+        <ul>
+          <li>选型与接口契约</li>
+          <li>数据模型与容量预估</li>
+          <li>性能与兼容性评估</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">GATE 04</span><h4>QA 验收</h4>
+        <ul>
+          <li>验收用例取自原型页</li>
+          <li>冒烟 + 回归 + 边界异常</li>
+          <li>不通过不许提测发布</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">GATE 05</span><h4>产品发布评审</h4>
+        <ul>
+          <li>上线清单与发布窗口</li>
+          <li>灰度与回滚预案</li>
+          <li>值班与监控告警确认</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">GATE 06</span><h4>系统移交</h4>
+        <ul>
+          <li>文档 + 部署手册</li>
+          <li>监控告警 + 运维培训</li>
+          <li>移交验收才算交付完成</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid g2 mt-m" style="align-items:start;gap:18px">
+      <div class="card" style="padding:15px 19px">
+        <h4 class="cy" style="font-size:14px;margin:0 0 6px">落地载体 · 不是口号，是一叠表单与制度</h4>
+        <p class="dim" style="font-size:12px;margin:0;line-height:1.65">
+          需求统一收口评审表 · 技术统一收口评审表 · 系统需求 / 设计 / 升级评审记录表 · 产品发布评审记录表 · 系统移交评审记录表（QA 版）· 通用业务设计规范表 · 产品线研发规范执行制度 · UI 与需求评审规范 · 项目跟踪管控表 · 早会制度 · 部门奖惩制度
+        </p>
+      </div>
+      <div class="card" style="padding:15px 19px;border-top:2px solid var(--accent-3)">
+        <h4 class="hl" style="font-size:14px;margin:0 0 6px">为什么必须前置</h4>
+        <p class="dim" style="font-size:12px;margin:0;line-height:1.65">
+          返工最大的成本不是改代码，是<b>在错误的理解上跑了两周</b>。<br>
+          闸门在前 = 把不确定性挡在开发之前；事故在后 = 把责任堵在损失之后。
+        </p>
+      </div>
+    </div>
+    <div class="notes">
+      【60 秒 · 回答「你怎么保证研发质量 / 你怎么建标准」】<br><br>
+      【核心记忆点】六个闸门，一句话：<b>不通过不流转</b>。<br><br>
+      【口播】「质量不是测出来的，是设计出来的。我做的事很简单——把六个关键节点变成闸门：需求统一收口、业务设计评审、技术方案评审、QA 验收、产品发布评审、系统移交。每个闸门都有对应的评审记录表，不通过就不往下流转。<br><br>
+      具体说两个。需求统一收口，是禁止业务方绕过产品直接找开发，需求必须带着原型和需求规格说明书才能进池——这一条砍掉了我们大部分返工。技术方案评审，看的是选型、接口契约、数据模型和容量预估，不是看代码写得漂不漂亮。<br><br>
+      发布和移交这两道最容易被忽略：发布评审看上线清单、灰度回滚预案和值班安排；系统移交要求文档、部署手册、监控告警和运维培训一并交付，移交验收通过才算交付完成。<br><br>
+      我的原则是：规范不是为了增加流程，是为了减少返工。」<br><br>
+      【落地证据 · 被追问时报表单名】需求统一收口评审表、技术统一收口评审表、系统需求 / 设计 / 升级评审记录表、产品发布评审记录表、系统移交评审记录表（QA 版）、通用业务设计规范表、产品线研发规范执行制度。<br><br>
+      【避坑】不要说「我要求大家写文档」——那是行政要求，听起来像走过场。要说「我把闸门定在流程里，不通过就不流转」，这是机制。
+    </div>
+  </section>
+
+  <!-- ============ 23 多项目并行管控 ============ -->
+  <section class="slide dense" data-title="多项目并行管控">
+    <p class="kicker">MANAGEMENT · 让进度可见，让关键路径清晰</p>
+    <h2 class="h2">四态看板 <span class="dim">+</span> 一张排期表</h2>
+    <div class="flow anim-stagger-list" data-anim-target>
+      <div class="col"><span class="tag">态 01 · 需求池</span><h4>收口待评</h4>
+        <ul>
+          <li>业务提报统一入口，去重合并</li>
+          <li>查原型与规格说明是否齐备</li>
+          <li>缺材料不排期，退回补</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">态 02 · 已评审</span><h4>待排期</h4>
+        <ul>
+          <li>已过业务 / 技术两道评审</li>
+          <li>工作量与依赖关系明确</li>
+          <li>按价值与风险排序进排期表</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">态 03 · 开发中</span><h4>在途</h4>
+        <ul>
+          <li>设计文档 / 需求规格说明书齐备</li>
+          <li>每个项目一人负责到底</li>
+          <li>每日站会只过阻塞点</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">态 04 · 待发布</span><h4>验收中</h4>
+        <ul>
+          <li>QA 验收 + 发布评审双过</li>
+          <li>上线清单与回滚预案就绪</li>
+          <li>发布后进复盘清单</li>
+        </ul>
+      </div>
+    </div>
+    <p class="eyebrow mt-m">同期并行的业务域 · 不是单一项目，是多客户并行</p>
+    <div class="chips" style="margin-top:12px">
+      <span class="pill">供应链平台</span><span class="pill">仓储监管</span><span class="pill">竞价交易</span>
+      <span class="pill">商品管理</span><span class="pill">权限中心</span><span class="pill">合同中心</span>
+      <span class="pill">发票管理</span><span class="pill">门户栏目管理</span><span class="pill">产能预售</span>
+      <span class="pill">天然气报价</span><span class="pill">跨境商贸通对接</span><span class="pill">三方仓储对接</span>
+      <span class="pill">缓存优化</span><span class="pill">视频监控</span>
+    </div>
+    <div class="card mt-m" style="padding:14px 18px;border-top:2px solid var(--accent-3)">
+      <p style="margin:0;font-size:13.5px;line-height:1.65">
+        <b class="hl">多项目并行的唯一纪律：</b>任何时候我都答得出「现在有几个在途、卡在谁手上、哪条是关键路径」——<b>并行不等于平均用力，而是保证关键路径不断供</b>。
+      </p>
+    </div>
+    <div class="notes">
+      【60 秒 · 回答「你怎么管多项目并行 / 怎么把控进度」】<br><br>
+      【口播】「多项目并行最大的风险不是人手不够，是<b>资源被摊平</b>——每个项目都推一点，结果每个都延期。我用两件工具解决：一个四态看板，一张排期表。<br><br>
+      四态是：需求池、已评审、开发中、待发布。需求池只做收口和去重，缺原型、缺规格说明的直接退回，不排期；已评审的意思是业务和技术两道评审都过了，工作量、依赖都清楚，才进排期表排序；开发中，每个项目都有一个人负责到底，每日站会只过阻塞点，不过流水账；待发布要求 QA 验收和发布评审双过，上线清单和回滚预案就绪才允许发。<br><br>
+      我们同期并行的是十几个业务域——供应链平台、仓储监管、竞价交易、合同中心、发票管理、权限中心，还有产能预售、天然气报价、跨境商贸通对接、三方仓储对接这些客户定制需求。<br><br>
+      我守的唯一一条纪律是：任何时候我都能答出『现在有几个在途、卡在谁手上、哪条是关键路径』。并行不等于平均用力，是保证关键路径不断供。」<br><br>
+      【加分】主动补一句机制：「排期表不是甘特图美术作业，它只服务一个判断——这个需求插进来会挤掉谁。答不出来就不插。」
+    </div>
+  </section>
+
+  <!-- ============ 24 年度技术建设规划 ============ -->
+  <section class="slide dense" data-title="年度技术建设规划">
+    <p class="kicker">MANAGEMENT · 顶层设计 · 一年做四件事</p>
+    <h2 class="h2">复用 <span class="dim">·</span> 合规 <span class="dim">·</span> 稳定 <span class="dim">·</span> 智能</h2>
+    <div class="quad anim-stagger-list" data-anim-target>
+      <div class="q"><span class="n">LINE 01 · 架构重构与低代码</span>
+        <ul>
+          <li>统一管理与规划产品技术规范；模块化 / 组件化改造：<b>登录、开户、认证、签章</b></li>
+          <li>定义模块功能与使用规则，减少重复开发</li>
+          <li>推进配置化与低代码：<b>流程编排、界面装修设计器、表单设计器</b></li>
+        </ul>
+      </div>
+      <div class="q"><span class="n">LINE 02 · 系统安全与合规</span>
+        <ul>
+          <li>数据库敏感数据加密</li>
+          <li>漏洞扫描 · 代码混淆 · SQL 注入防御</li>
+          <li>客户端强密码策略 · <b>双因子认证</b> · 对标<b>等保三级</b></li>
+        </ul>
+      </div>
+      <div class="q"><span class="n">LINE 03 · 稳定性与性能（目标线）</span>
+        <ul>
+          <li>重大故障 ≤1 次/年 · 中等故障 ≤3 次/年</li>
+          <li>首页打开 &lt;1.5 秒 · 核心业务并发 ≥1000/秒</li>
+          <li>手段：上线评审 + 性能压测 + 监控告警 + 故障复盘</li>
+        </ul>
+      </div>
+      <div class="q"><span class="n">LINE 04 · AI 创新与智能化</span>
+        <ul>
+          <li>证件 / 卡片 / 单据 <b>智能识别</b>，解决上传与识别自动化</li>
+          <li>对接第三方大模型能力</li>
+          <li>场景探索：火警、预警、防盗、形变、作业行为识别（与仓储监管、视频监控结合）</li>
+        </ul>
+      </div>
+    </div>
+    <p class="dim mt-m" style="font-size:13px">
+      口径纪律：LINE 03 的故障次数与并发指标是<b>当时设定的团队目标 / 部门考核指标</b>，讲的时候必须带这句限定语，不要说成「长期稳定达成」。
+    </p>
+    <div class="notes">
+      【75 秒 · 回答「你的技术规划能力 / 你做过哪些架构优化」】<br><br>
+      【口播】「我带团队做年度技术规划，就四件事，按重要性排：复用、合规、稳定、智能。<br><br>
+      第一件是架构重构和低代码。我们把登录、开户、认证、签章这类每个客户都要的通用模块做组件化改造，定义清楚模块职责和使用规则，减少重复开发；再往前一步推进配置化和低代码——流程编排、界面装修设计器、表单设计器，目标是让交付从『写代码』变成『做配置』。<br><br>
+      第二件是安全和合规。数据库敏感数据加密、漏洞扫描、代码混淆、SQL 注入防御，客户端强密码策略加双因子认证，整体对标等保三级。<br><br>
+      第三件是稳定性与性能，我们给自己定了目标线：重大故障不超过 1 次/年、中等故障不超过 3 次/年、首页打开低于 1.5 秒、核心业务并发不低于 1000/秒。手段是上线评审加性能压测加监控告警加故障复盘。<br><br>
+      第四件是 AI 创新。落地场景很具体：证件、卡片、单据的智能识别，解决上传和识别的自动化；对接第三方大模型；再往外探索火警、预警、防盗、形变、作业行为识别——这些和我们的仓储监管、视频监控业务是天然结合的。」<br><br>
+      【口径纪律 · 必说】故障次数和并发指标是「当时设定的团队目标 / 部门考核指标」。若被追问「达成了吗」，答：「这是考核线，我们按季度跟踪收敛，不是长期稳定达成的结果。」<br><br>
+      【加分】把四条线和一个业务判断挂钩：「低代码不是为了炫技，是因为我们面对的是一堆中小客户，每家都要定制——不把定制变成配置，交付成本就降不下来。」
+    </div>
+  </section>
+
+  <!-- ============ 25 团队赋能与技术沉淀 ============ -->
+  <section class="slide dense" data-title="团队赋能与技术沉淀">
+    <p class="kicker">MANAGEMENT · 把个人经验变成团队资产</p>
+    <h2 class="h2">周技术分享：<span class="hl">讲真问题，不讲概念</span></h2>
+    <div class="grid g2 mt-m" style="align-items:start;gap:18px">
+      <div class="card" style="padding:14px 18px">
+        <h4 class="cy" style="font-size:14px;margin:0 0 8px">分享主题 · 全部来自真实问题</h4>
+        <table class="t" style="font-size:12.5px">
+          <thead><tr><th>主题</th><th>解决的问题</th></tr></thead>
+          <tbody>
+            <tr><td>CPU 突然变高的定位步骤</td><td>线上性能问题分层定位</td></tr>
+            <tr><td>POST 请求失败如何定位</td><td>接口故障排查路径</td></tr>
+            <tr><td>低代码引擎技术白皮书 / 百度 · 阿里低代码</td><td>交付效率与配置化方向</td></tr>
+            <tr><td>可视化规范 / UI 规范</td><td>界面一致性</td></tr>
+            <tr><td>对话框与抽屉的使用场景</td><td>交互细节规范</td></tr>
+            <tr><td>工作台应该怎么设计</td><td>场景化提效</td></tr>
+            <tr><td>采购供应链端到端全景蓝图</td><td>业务全链路认知</td></tr>
+            <tr><td>国产化信创改造方案</td><td>合规与替代路径</td></tr>
+            <tr><td>从「买软件」到「卖成果」</td><td>团队交付心态转变</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card" style="padding:14px 18px;border-top:2px solid var(--accent-3)">
+        <h4 class="hl" style="font-size:14px;margin:0 0 8px">沉淀成可复用资产</h4>
+        <ul style="padding-left:18px;margin:0;font-size:12.5px;line-height:1.7;color:var(--text-2)">
+          <li><b>方法资产</b>：采购供应链端到端全景蓝图规划方案、国产化信创改造方案</li>
+          <li><b>框架资产</b>：Q-Quick 快速开发框架</li>
+          <li><b>原型资产</b>：仓单交易管理端、新版客户端、会员管理、门户（1+N）</li>
+          <li><b>产品资产</b>：商城三端（H5 商城、店铺管理端、平台管理端）、大屏源码</li>
+          <li><b>知识资产</b>：性能排查手册、故障复盘库、产品测试标准库</li>
+        </ul>
+        <p class="dim" style="font-size:12px;margin:10px 0 0;line-height:1.65">
+          目的只有一个：<b class="hl">新人不再从零摸索，团队不依赖任何一个人的记忆</b>。
+        </p>
+      </div>
+    </div>
+    <div class="notes">
+      【60 秒 · 回答「你怎么提升团队技术氛围 / 你怎么带人」】<br><br>
+      【口播】「我提升团队技术氛围的办法很土：每周一次技术分享，但有一条硬规矩——<b>只讲真问题，不讲概念</b>。谁这周踩了坑，就把这个坑讲清楚。<br><br>
+      比如我们做过『CPU 突然变高的定位步骤』，从监控到线程栈到 SQL 逐层往下走；做过『POST 请求失败怎么定位』，把接口故障的排查路径固化下来；也做过偏建设性的——低代码引擎技术白皮书、可视化规范和 UI 规范、对话框和抽屉的使用场景、工作台应该怎么设计。还有两个偏认知的：采购供应链端到端全景蓝图，和国产化信创改造方案。<br><br>
+      分享不是目的，沉淀才是。我把这些东西变成资产：方法层面有全景蓝图方案和信创改造方案，框架层面有 Q-Quick 快速开发框架，原型层面有仓单交易管理端、新版客户端、会员管理，产品层面有商城三端和大屏源码，知识层面有性能排查手册和故障复盘库。<br><br>
+      目的只有一个：新人不再从零摸索，团队不依赖任何一个人的记忆。技术管理的关键，就是把个人经验变成团队能力。」<br><br>
+      【心态金句 · 会被记住】「我一直跟团队说，我们要从『买软件』的心态转向『卖成果』的心态——不是把功能交付出去，是把客户的经营结果交付出去。」
+    </div>
+  </section>
+
+  <!-- ============ 26 故障管理闭环 ============ -->
+  <section class="slide dense" data-title="故障管理闭环">
+    <p class="kicker">MANAGEMENT · 让同一个问题不重复发生</p>
+    <h2 class="h2">止损 → 定位 → 复盘 → 报告 → 回灌</h2>
+    <div class="flow five anim-stagger-list" data-anim-target>
+      <div class="col"><span class="tag">01 · 先止损</span><h4>恢复优先</h4>
+        <ul>
+          <li>先恢复业务，再定位原因</li>
+          <li>该回滚就回滚，该降级就降级</li>
+          <li>止损动作本身要留痕</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">02 · 再定位</span><h4>证据保全</h4>
+        <ul>
+          <li>日志 / 监控 / 操作记录三件套</li>
+          <li>还原故障时间线与影响面</li>
+          <li>区分人为、设计、流程三类根因</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">03 · 复盘会</span><h4>对事不对人</h4>
+        <ul>
+          <li>根因、责任、改进措施</li>
+          <li>P0 / P1 级别限时复盘</li>
+          <li>结论必须可执行、可验证</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">04 · 故障报告</span><h4>留档闭环</h4>
+        <ul>
+          <li>原因 · 措施 · 预防方案 · 责任人</li>
+          <li>跟踪到改进项全部关闭</li>
+          <li>纳入团队知识库</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">05 · 回灌规范</span><h4>变成制度</h4>
+        <ul>
+          <li>结论写成规范条目或检查项</li>
+          <li>能自动化的做成检查 / 告警</li>
+          <li><b>让问题只发生一次</b></li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid g2 mt-m" style="align-items:start;gap:18px">
+      <div class="card" style="padding:14px 18px">
+        <h4 class="cy" style="font-size:13.5px;margin:0 0 7px">复盘过的真实问题（已脱敏）</h4>
+        <ul style="padding-left:18px;margin:0;font-size:12px;line-height:1.65;color:var(--text-2)">
+          <li>某股份制银行客户端无法签到 → 会话与鉴权链路</li>
+          <li>待交收账户资金为负 → 清算与账务时点口径</li>
+          <li>仓单确权 / 发票红冲 → 单据状态机与冲正逻辑</li>
+          <li>某交易中心开户流程中断 → 流程编排与外部依赖</li>
+          <li>三方仓储系统对接数据不一致 → 接口契约与自动对账</li>
+        </ul>
+      </div>
+      <div class="card" style="padding:14px 18px;border-top:2px solid var(--accent-3)">
+        <h4 class="hl" style="font-size:13.5px;margin:0 0 7px">闭环带来的结果</h4>
+        <ul style="padding-left:18px;margin:0;font-size:12px;line-height:1.65;color:var(--text-2)">
+          <li>团队被动响应占比 <b>45% → 15%</b> 以下</li>
+          <li>线上问题团队独立处理 <b>80%</b></li>
+          <li>凌晨被叫起从月均 8 次降到 2 次</li>
+          <li>重复类故障显著下降（同一根因不再二次发生）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="notes">
+      【60 秒 · 回答「线上出故障你怎么处理」】<br><br>
+      【口播】「我的动作顺序是固定的五步：止损、定位、复盘、报告、回灌。<br><br>
+      第一步先止损——先恢复业务再定位原因，该回滚回滚、该降级降级，止损动作本身要留痕。<br>
+      第二步再定位——日志、监控、操作记录三件套先保全，还原时间线和影响面，然后区分根因是人为、设计还是流程问题。<br>
+      第三步开复盘会，对事不对人，P0、P1 限时复盘，结论必须可执行、可验证。<br>
+      第四步出故障报告，原因、措施、预防方案、责任人写清楚，一直跟踪到改进项全部关闭。<br>
+      第五步也是最关键的一步——<b>回灌规范</b>：把结论写成规范条目或者自动化检查项，能做成告警的就不靠人记住。<br><br>
+      我复盘过的问题很具体：某股份制银行客户端无法签到，最后落到会话和鉴权链路；待交收账户资金为负，是清算和账务的时点口径问题；仓单确权和发票红冲，是单据状态机和冲正逻辑；还有某交易中心开户流程中断、三方仓储对接数据不一致。<br><br>
+      结果上，团队被动响应占比从 45% 降到 15% 以下，线上问题团队能独立处理 80%。我常说一句话：<b>故障不可怕，可怕的是同一个问题重复发生。</b>」<br><br>
+      【避坑】不要把复盘讲成追责。强调「对事不对人」和「回灌规范」——这才是面试官想听的管理成熟度。
+    </div>
+  </section>
+
+  <!-- ============ 27 团队机制 ============ -->
+  <section class="slide dense" data-title="团队机制">
+    <p class="kicker">MANAGEMENT · 用机制替代亲力亲为</p>
+    <h2 class="h2">20 人四梯队 · 四个机制</h2>
+    <div class="grid g4 mt-l anim-stagger-list" data-anim-target>
+      <div class="card"><p class="eyebrow">Tier 1</p><div class="big-num" style="font-size:34px">3 人</div><p class="dim" style="font-size:12.5px">C 撮合内核</p></div>
+      <div class="card"><p class="eyebrow">Tier 2</p><div class="big-num" style="font-size:34px">6 人</div><p class="dim" style="font-size:12.5px">Java 业务中台</p></div>
+      <div class="card"><p class="eyebrow">Tier 3</p><div class="big-num" style="font-size:34px">5 人</div><p class="dim" style="font-size:12.5px">Vue 前端</p></div>
+      <div class="card"><p class="eyebrow">Tier 4</p><div class="big-num" style="font-size:34px">5 人</div><p class="dim" style="font-size:12.5px">测试 / 质量保障</p></div>
+    </div>
+    <div class="grid g4 mt-m">
+      <div class="mcard"><span class="n">培养</span><h4>师徒制</h4><p>新人配导师，3 个月独立接模块；主链路强制代码评审；周技术分享</p></div>
+      <div class="mcard"><span class="n">考核</span><h4>四维考核</h4><p>交付 40% / 质量 30% / 工程贡献 20% / 成长 10%；<b>技术债偿还计入工程贡献</b></p></div>
+      <div class="mcard"><span class="n">梯队</span><h4>owner + backup</h4><p>每核心模块双人制，休假不断线，模块无单点依赖</p></div>
+      <div class="mcard"><span class="n">效率</span><h4>沉淀成资产</h4><p>原型库 + 功能开发 skill，新人照着 skill 可独立交付典型功能</p></div>
+    </div>
+    <div class="card mt-m" style="padding:14px 18px;border-top:2px solid var(--accent-2)">
+      <p style="margin:0;font-size:13px;line-height:1.7">
+        <b class="cy">结对辅导 · 按人定向带教：</b>成员甲（Java 服务端）、成员乙（Vue 前端）<span class="dim">——</span>开发语言提升；成员丙（C++ / Qt 客户端）<span class="dim">——</span>攻坚客户端技术栈；并明确<b class="hl">新培养核心储备成员</b>目标。考核目标是<b class="hl">评估节省工作量 ≥5 人月</b>（规范建设 + 复用），自动化测试覆盖率按考核线不低于 <b class="hl">20%</b>。
+      </p>
+    </div>
+    <div class="card mt-m" style="padding:16px 20px;border-top:2px solid var(--accent-3)">
+      <p style="margin:0;font-size:14px;line-height:1.7">
+        <b class="hl">管理三件套：</b>On-call 轮值（主副双岗 + 四级 SLA）· 技术债台账（20% 带宽原则固定偿还）· 接口契约治理（管连线不管黑盒）
+        <span class="dim">→ 被动响应占比 45% → 15% 以下，凌晨被叫起从月均 8 次降到 2 次</span>
+      </p>
+    </div>
+    <div class="notes">
+      【45 秒 · 20 人结构必须脱口而出】<br><br>
+      【口播】「团队 20 个人，四个梯队：3 个 C 做撮合内核、6 个 Java 做业务中台、5 个 Vue 做前端、5 个测试做质量保障。<br><br>
+      我们是中小民营企业，没有大厂的资源冗余和 HR 体系，所以我用轻机制管团队。<br>
+      培养靠师徒制——新人配导师，3 个月能独立接模块——加上主链路强制代码评审、每周技术分享、P0/P1 事故 24 小时复盘出防再发措施。<br>
+      考核就四块：交付 40%、质量 30%、工程贡献 20%、成长 10%，其中技术债偿还明确计入工程贡献，让还债的人不吃亏。<br>
+      梯队是每核心模块一个 owner 一个 backup，休假不断线。<br>
+      效率上我把重复的事沉淀成资产：原型库加功能开发 skill，新人照着 skill 就能独立交付典型功能。<br><br>
+      效果是线上问题的被动响应占比从 45% 降到 15% 以下，团队能独立处理 80% 的现场问题，我从救火里抽身出来，专注架构决策和技术规划。<br><br>
+      培养上我做结对辅导：有人主攻 Java 服务端、有人主攻 Vue 前端、有人攻坚 C++/Qt 客户端，定向带教，目标是持续培养新的核心储备成员。考核目标里有一条——通过规范建设和组件复用，评估节省的工作量不低于 5 人月；自动化测试覆盖率按考核线做到 20% 以上。」<br><br>
+      【口径纪律】「节省 5 人月」「覆盖率 20%」是当时设定的团队目标 / 考核线，讲的时候带限定语。<br><br>
+      【中小民企背景是加分项】「机制轻、落地狠」，比背大厂流程更可信。<br><br>
+      【如果被问加班】「紧急情况该上就上，但日常用机制保效率——On-call 主副双岗、20% 带宽还债，这些机制让加班变成例外而不是常态。」
+    </div>
+  </section>
+
+  <!-- ============ 28 人才培养与储备 ============ -->
+  <section class="slide dense" data-title="人才培养与储备">
+    <p class="kicker">MANAGEMENT · 不让任何一块技术成为单点</p>
+    <h2 class="h2">按人定向带教 <span class="dim">+</span> 明确的目标线</h2>
+    <div class="grid g3 anim-stagger-list" data-anim-target>
+      <div class="card card-accent"><p class="eyebrow">Track 01 · Java</p><h4>服务端开发能力</h4><p class="dim" style="font-size:12.5px">结对辅导补齐 Java 服务端开发与调试能力，目标能独立承接业务中台模块。</p></div>
+      <div class="card card-accent"><p class="eyebrow">Track 02 · Vue</p><h4>前端工程能力</h4><p class="dim" style="font-size:12.5px">统一组件规范与交互规范，目标能独立交付完整业务页面。</p></div>
+      <div class="card card-accent"><p class="eyebrow">Track 03 · C++ / Qt</p><h4>客户端与内核攻坚</h4><p class="dim" style="font-size:12.5px">定向攻坚客户端技术栈，目标核心储备成员接棒，消除单点依赖。</p></div>
+    </div>
+    <table class="t mt-m">
+      <thead><tr><th>目标维度</th><th>要达成的结果</th><th>口径（当时设定的团队目标）</th></tr></thead>
+      <tbody>
+        <tr><td><b>研发效能</b></td><td>完善研发、测试标准规范，减少线上 Bug 与返工成本</td><td class="k">评估节省工作量 ≥5 人月</td></tr>
+        <tr><td><b>测试与自动化</b></td><td>建立产品测试标准库，推进程序化测试，持续提升自动化覆盖率</td><td class="k">覆盖率考核线 ≥20%</td></tr>
+        <tr><td><b>成果沉淀</b></td><td>申报技术专利，取得多项软件著作权，项目经验沉淀为可复用资产</td><td class="k">专利 / 软著 / 原型库</td></tr>
+      </tbody>
+    </table>
+    <p class="dim mt-m" style="font-size:13px">
+      口径纪律：「≥5 人月」「≥20%」「专利 / 软著」均为<b>当时设定的团队目标 / 部门考核指标</b>；讲的时候说「我们给自己定的目标线」，不要说成既有成果。
+    </p>
+    <div class="notes">
+      【45 秒 · 回答「你怎么带团队 / 怎么做人才储备」】<br><br>
+      【口播】「我带人的思路一句话：不让任何一块技术成为单点。<br><br>
+      我们的技术栈是异构的——C 撮合内核、Java 业务中台、Vue 前端，还有 C++ 和 Qt 的客户端，很容易形成『只有某个人会』的孤岛。所以我做结对辅导，按人定向带教：有人补齐 Java 服务端开发能力，目标是能独立承接业务中台模块；有人在前端方向补齐组件和交互规范，目标是能独立交付完整页面；还有人定向攻坚 C++ 和 Qt 客户端，目标是核心储备成员能接棒。<br><br>
+      同时我给团队定了三条目标线：第一，通过研发和测试标准规范建设减少线上 Bug 和返工，评估节省工作量不低于 5 人月；第二，建立产品测试标准库，推进程序化测试，自动化覆盖率做到 20% 以上；第三，把项目经验沉淀成资产——申报技术专利、取得多项软件著作权。<br><br>
+      注意，这三条是我们当时设定的目标和考核线，不是已经躺平达成的结果。」<br><br>
+      【加分】主动说明为什么重视专利和软著：「中小公司最容易把项目做完就散了。专利和软著不只是荣誉，它逼着我们把方案写清楚、能复用——这是团队能力的沉淀方式。」
+    </div>
+  </section>
+
+  <!-- ============ 29a 整改总览地图 ============ -->
+  <section class="slide dense" data-title="技术整改十一项概览">
+    <p class="kicker">ENGINEERING · 深度参与与落地</p>
+    <h2 class="h2">技术整改十一项：不是十一个孤点，是一条主线</h2>
+    <p class="dim" style="font-size:13px;margin:4px 0 0">
+      我作为技术经理主导完成的专项整改，每项按「背景问题 → 方案设计 → 落地效果」推进。底层逻辑只有一句：
+      <b class="hl">把「每次定制都要改代码」变成「配置与契约」</b>——变化发生在配置层，重复交给能力底座与 AI。
+    </p>
+    <div class="flow five mt-m anim-stagger-list" data-anim-target>
+      <div class="col"><span class="tag">① 对内多变 → 配置化</span><h4>客户差异收敛为配置</h4>
+        <ul>
+          <li><b>国际化配置</b>：行业词库 + 多语言层，词典覆盖</li>
+          <li><b>功能授权码</b>：一套代码，按客户付费开 capability</li>
+          <li><b>交收场景三元组</b>：顺序 × 付款 × 保证金模板化</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">② 对外集成 → 开放</span><h4>生态差异抹平为契约</h4>
+        <ul>
+          <li><b>统一支付中心</b>：业务与支付解耦，渠道插件化</li>
+          <li><b>DS + MID 网关</b>：破解异构语言通信，星型接入</li>
+          <li><b>统一开放网关</b>：第三方对接规范 + 自助接入</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">③ 底线信任 → 合规</span><h4>安全合规沉淀为能力</h4>
+        <ul>
+          <li><b>等保 + 信创</b>：安全与国产化双达标，竞标卖点</li>
+          <li><b>数据安全脱敏</b>：一处声明，处处生效</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">④ 能力复用 → 提效</span><h4>重复交给底座与 AI</h4>
+        <ul>
+          <li><b>统一基础模块工具</b>：五能力公共中台，开箱即用</li>
+          <li><b>规范脚手架 + AI Skill</b>：两套 Skill 库共 12 个</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">⑤ 数据可信 → 一致</span><h4>一致性靠架构保证</h4>
+        <ul>
+          <li><b>缓存服务改革</b>：CDC 变更总线 + 缓存自动失效</li>
+        </ul>
+      </div>
+    </div>
+    <p class="dim mt-m" style="font-size:13px">技术经理的价值：把不变的核心收敛到底座里，让变化发生在配置层、把重复交给 AI。</p>
+    <div class="notes">
+      【90 秒 · 亮点总览 · 回答「你除了带团队还做了什么深度的技术落地」】<br><br>
+      【口播】「那我在一线还主导了十一项技术整改，落地时每项都按『背景问题 → 方案 → 效果』走。它们看起来是十一个点，其实是同一条主线——把每次定制都要改代码，变成配置与契约。<br><br>
+      分五条腿：对内多变，用配置化收行业差异——国际化、授权码、交收三元组；对外集成，用契约抹平生态差异——统一支付、DS 加 MID 网关、开放网关；底线信任，做合规——等保信创、数据脱敏；能力复用，把重复交给底座和 AI——统一基础模块、规范脚手架加 AI Skill；数据可信，靠架构保证一致——缓存服务改革。<br><br>
+      一句话：技术经理的价值，就是把不变的核心收进底座，让变化发生在配置层、把重复交给 AI。」<br><br>
+      【用法】这页是地图，讲完给面试官一个整体框架，后面两页再各自展开，避免一上来堆细节。
+    </div>
+  </section>
+
+  <!-- ============ 29b 配置化与契约 ============ -->
+  <section class="slide dense" data-title="整改：配置化与契约">
+    <p class="kicker">ENGINEERING · 对内对外，两侧收敛</p>
+    <h2 class="h2">客户差异 → 配置化 &nbsp;·&nbsp; 生态差异 → 契约</h2>
+    <div class="grid g2 mt-l anim-stagger-list" data-anim-target style="align-items:stretch">
+      <div class="card card-accent" style="padding:18px 20px">
+        <p class="eyebrow">对内多变 → 配置化</p>
+        <div class="stack">
+          <div class="mcard"><span class="n">01 · 国际化配置</span><h4>词库覆盖层 + 统一取词服务</h4><p>平台通用词库 + 租户行业词库两层词典，术语表进领域模型；新客户名词定制从「改代码发版」变「改配置即时生效」（天级 → 小时级）。</p></div>
+          <div class="mcard"><span class="n">02 · 功能授权码</span><h4>签名的能力清单 + 双层校验</h4><p>非对称签名编码「租户×模块×配额×有效期」，菜单裁剪 + 接口级鉴权双保险；过期平滑降级只读，成为 SaaS 计费底座。</p></div>
+          <div class="mcard"><span class="n">03 · 交收场景三元组</span><h4>顺序 × 付款 × 保证金模板化</h4><p>散点参数收敛为 5 类模板 + 安全覆盖项；配置期拦截非法组合，测试从「不可能的全组合」变「模板 + 增量用例」，可覆盖性回到可解。</p></div>
+        </div>
+      </div>
+      <div class="card card-accent" style="padding:18px 20px">
+        <p class="eyebrow">对外集成 → 契约</p>
+        <div class="stack">
+          <div class="mcard"><span class="n">04 · 统一支付中心</span><h4>业务与支付解耦，渠道插件化</h4><p>业务只做「发起指令 + 接收结果」；收付款、资金池记账、路由对账下沉中心；资金预检 2PC，平台不碰资金池（二清红线）。接入从周级降到天级。</p></div>
+          <div class="mcard"><span class="n">05 · DS + MID 网关</span><h4>协议适配 + 数据契约</h4><p>MID 屏蔽报文/编码/加密差异，DS 提供统一数据契约（JSON Schema 先行）；网状耦合变星型拓扑——新系统接入只需「注册契约 + 报文模板」。</p></div>
+          <div class="mcard"><span class="n">06 · 统一开放网关</span><h4>鉴权 / 应答 / 错误码 / 重试规范</h4><p>统一鉴权 + 标准信封 + 平台级错误码字典 + 回调事件订阅；OpenAPI 契约即文档，沙箱自助联调。对接从「每家一个项目」变「按规范自助接入」。</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="notes">
+      【3 组 · 每组 30 秒 · 挑一组深入即可】这一页是中间层，不必每组都展开，面试官盯着哪组就讲哪组。<br><br>
+      【口播示范 · 授权码】「授权码这套我最有代表性。客户买的功能模块、配额、期限都不同，以前靠删代码出分支，维护失控。我把它做成一个签名的能力清单，编码租户、模块、配额和有效期。校验是双层的：启动时验合法性，运行期能力网关按授权清单拦入口——菜单裁剪加接口级鉴权双保险，杜绝藏菜单不藏接口的伪授权。过期转只读保留数据，续费恢复。结果就是一套代码交付所有版本，商务按模块报价成为可能，它直接成了我们 SaaS 计费的底座。」<br><br>
+      【延伸句】「这些都是我在多租户 ERP 化过程中的真问题，不是概念堆砌。」
+    </div>
+  </section>
+
+  <!-- ============ 29c 合规与数据可信 ============ -->
+  <section class="slide dense" data-title="整改：合规与数据可信">
+    <p class="kicker">ENGINEERING · 底线信任与数据一致</p>
+    <h2 class="h2">底线信任 → 等保信创 · 数据安全 &nbsp;·&nbsp; 数据可信 → 缓存一致</h2>
+    <div class="grid g3 mt-l anim-stagger-list" data-anim-target>
+      <div class="card card-accent" style="padding:18px 20px">
+        <p class="eyebrow">07 · 等保 + 信创</p><h4>安全合规与国产化双达标</h4>
+        <p class="dim" style="font-size:12.5px;margin:8px 0 0;line-height:1.65">等保分区分域、最小权限 + 双因子、全链路审计；信创适配层切换 MySQL↔GaussDB / Tomcat↔TongWeb / CentOS↔openEuler，L2/L3 分级报价。测评不再「测评前突击」，「国产化不降级」成为投标差异化卖点。</p>
+      </div>
+      <div class="card card-accent" style="padding:18px 20px">
+        <p class="eyebrow">08 · 数据安全脱敏</p><h4>一处声明，处处生效</h4>
+        <p class="dim" style="font-size:12.5px;margin:8px 0 0;line-height:1.65">敏感字段元数据分级打标 → 统一脱敏引擎（注解声明式）+ 四类场景分治（展示 / 接口按角色 / 日志切面 / 测试出口），明文查看全程留痕，数据库动态脱敏视图兜底。安全从「合规负担」变成可向客户展示的信任能力。</p>
+      </div>
+      <div class="card" style="padding:18px 20px;border-top:3px solid var(--bad)">
+        <p class="eyebrow">11 · 缓存服务改革</p><h4>CDC 总线 + 规则驱动自动失效</h4>
+        <p class="dim" style="font-size:12.5px;margin:8px 0 0;line-height:1.65"><b>谁改库谁删缓存，绕过代码就用日志监听删。</b>代码路径先更 DB 再 DEL；手动刷数走 Canal(binlog) / openGauss 逻辑解码(WAL)；规则集中在配置表，跨语言生效；批量刷数合并 + 防抖 + 前缀失效，所有 key 设过期兜底。缓存一致性从「靠自觉」升级为「靠架构保证」。</p>
+      </div>
+    </div>
+    <p class="dim mt-m" style="font-size:13px"><b class="hl">洞察：</b>合规与数据一致是平台「敢碰钱、能进国企」的底线能力——不是成本项，是获得入场券的信任能力。</p>
+    <div class="notes">
+      【2 组 · 每组 45 秒 · 缓存这页是大杀器，值得深讲】<br><br>
+      【口播示范 · 缓存】「缓存这项是我们的真痛点。写库方太多，C 服务、Java 中台各写各的删缓存逻辑；更麻烦的是 DBA 手动刷数、脚本批量修复根本不经过业务代码，数据库是新的但页面就出脏数据。我们的方案主线一句话：谁改数据库谁就负责删缓存；改库动作不经过代码，就用数据库日志监听自动删。代码路径写库后立刻 DEL 绝不 SET 新值；手动刷数走日志监听，MySQL 用 Canal，信创的 openGauss 没有 binlog 只有 WAL，就做逻辑解码。删哪些 key 不写死在代码里，统一放一张规则配置表，任何语言读同一份。批量刷数合并加防抖，万级删 key 压成几个命令，再给所有 key 设过期兜底。结果就是只要库变缓存一定失效，一致性从靠协议变成靠架构。」<br><br>
+      【加分句】「这项同时应对了信创替换——换数据库不影响缓存链路，正好呼应前面的等保信创。」
+    </div>
+  </section>
+
+  <!-- ============ 29d 复用与提效 + 底层逻辑 ============ -->
+  <section class="slide dense" data-title="整改：复用提效与底层逻辑">
+    <p class="kicker">ENGINEERING · 能力复用与效率复利</p>
+    <h2 class="h2">把重复交给底座与 AI</h2>
+    <div class="grid g3 mt-l anim-stagger-list" data-anim-target>
+      <div class="card card-accent" style="padding:18px 20px">
+        <p class="eyebrow">09 · 统一基础模块工具</p><h4>公共能力中台，开箱即用</h4>
+        <p class="dim" style="font-size:12.5px;margin:8px 0 0;line-height:1.65">文档转换预览（LibreOffice + Umo Editor）、自动翻译（LibreTranslate 私有化，数据不出内网）、视频网关、统一审批流、OCR（PaddleOCR 私有化）五个能力做独立微服务。新项目从「重复选型对接」变「调 API」，能力升级一次全业务受益。</p>
+      </div>
+      <div class="card card-accent" style="padding:18px 20px">
+        <p class="eyebrow">10 · 规范脚手架 + AI Skill</p><h4>规范即 AI 的系统提示词</h4>
+        <p class="dim" style="font-size:12.5px;margin:8px 0 0;line-height:1.65">技术栈 / 页面骨架 / 色板写成 CLAUDE.md，人 AI 读同一份规则；落地<b>原型 Skill 库 + 开发 Skill 库两套，共 12 个</b>（页面模式 / 工作流 / 还原度 check）。一页标准管理页从「1-2 小时手写」到「几分钟 AI 出稿 + 人工校对」。</p>
+      </div>
+      <div class="card card-accent" style="padding:18px 20px">
+        <p class="eyebrow">十一项的底层逻辑</p><h4>五条腿汇成同一句话</h4>
+        <p class="dim" style="font-size:12.5px;margin:8px 0 0;line-height:1.65">
+          对内多变（配置化）· 对外集成（契约）· 底线信任（合规）· 能力复用（底座+AI）· 数据可信（一致）——
+          <b class="hl">把不变的核心收敛到底座里，让变化发生在配置层，把重复交给 AI。</b>
+        </p>
+      </div>
+    </div>
+    <div class="card mt-m" style="padding:16px 20px;border-top:2px solid var(--accent-3)">
+      <p style="margin:0;font-size:14.5px;line-height:1.7">
+        <b class="hl">一句话讲完这十一项：</b>它们共同回答了「一个技术经理怎么让手下的平台既能接住不同行业客户、又能接住更多生态伙伴，同时安全合规、不依赖人肉一致性」——<b class="cy">架构、效率、合规、一致性，最后统一到「让平台值得被信任」</b>。
+      </p>
+    </div>
+    <div class="notes">
+      【2 组 + 收束 · 每组 40 秒 · 加分动作讲 AI Skill】<br><br>
+      【口播示范 · 脚手架+AI】「第十项我特别想说，因为它直接回答我怎么做提效。我们 1300 多页的静态原型，多人协作最容易风格漂移。我不是靠开会约束，而是把规范写进仓库当 CLAUDE.md——规范即 AI 的系统提示词，人和 AI 读同一份规则。再把重复动作封装成两套 Skill 库共 12 个：原型库管页面怎么长，开发库管功能怎么落地，还有 check 类负责交付前自动验收。结果一页标准管理页从一两个小时手写，变成几分钟 AI 出稿加人工校对。这条链路让我明白：提效不依赖任何个人，规范加 Skill 沉淀为团队资产。」<br><br>
+      【收束】「这十一项放一起就一句话：它们让平台既能接住行业差异，又能接住生态伙伴，同时安全合规、不靠人肉一致性。落到根子上，是让我负责的平台值得被客户信任。」
+    </div>
+  </section>
+
+  <!-- ============ 29 团队成果总账 ============ -->
+  <section class="slide dense" data-title="团队成果总账">
+    <p class="kicker">RESULTS · 我带队拿到的结果</p>
+    <h2 class="h2">交付 <span class="dim">·</span> 质量 <span class="dim">·</span> 机制 <span class="dim">·</span> 能力</h2>
+    <div class="grid g4 anim-stagger-list" data-anim-target>
+      <div class="card card-accent"><p class="eyebrow">01 · Delivery</p><h4 class="hl">交付</h4>
+        <ul style="padding-left:16px;margin:8px 0 0;font-size:12.5px;line-height:1.7;color:var(--text-2)">
+          <li>12+ 微服务业务中台，从 0 到 1 建成</li>
+          <li>销售端 + 采购端双平台并线交付</li>
+          <li>9+ 外部系统对接（银行 / 仓储 / 税务 / 监管）</li>
+        </ul>
+      </div>
+      <div class="card card-accent"><p class="eyebrow">02 · Quality</p><h4 class="hl">质量</h4>
+        <ul style="padding-left:16px;margin:8px 0 0;font-size:12.5px;line-height:1.7;color:var(--text-2)">
+          <li>3 年+ 零资金差错（交易 / 结算 / 清算）</li>
+          <li>冬储高峰连续两季零 P0</li>
+          <li>外联接口平均可用率 99.95%</li>
+        </ul>
+      </div>
+      <div class="card card-accent"><p class="eyebrow">03 · Mechanism</p><h4 class="hl">机制</h4>
+        <ul style="padding-left:16px;margin:8px 0 0;font-size:12.5px;line-height:1.7;color:var(--text-2)">
+          <li>On-call 轮值 · 技术债台账 · 接口契约治理全部落地</li>
+          <li>被动响应占比 45% → 15% 以下</li>
+          <li>故障报告 + 复盘闭环，根因回灌规范</li>
+        </ul>
+      </div>
+      <div class="card card-accent"><p class="eyebrow">04 · Capability</p><h4 class="hl">能力</h4>
+        <ul style="padding-left:16px;margin:8px 0 0;font-size:12.5px;line-height:1.7;color:var(--text-2)">
+          <li>20 人四梯队，核心模块无单点依赖</li>
+          <li>团队独立处理 80% 现场问题</li>
+          <li>沉淀排查手册 / 原型库 / 开发框架 / 专利与软著</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mt-m" style="padding:16px 20px;border-top:2px solid var(--accent-3)">
+      <p style="margin:0;font-size:14.5px;line-height:1.7">
+        <b class="hl">一句话总结这四本账：</b>我追求的不是短期救火，而是<b>长期可复制的研发体系</b>——交付有节奏、质量有底线、机制能自转、能力能传承。
+      </p>
+    </div>
+    <div class="notes">
+      【60 秒 · 回答「你最有成就感的事 / 你带团队的结果」】<br><br>
+      【口播】「如果问我最好的结果是什么，我不会只讲某一个项目，我会讲四本账。<br><br>
+      第一本账是交付：12 个以上微服务的业务中台，从 0 到 1 建成销售端和采购端双平台，对接了 9 个以上外部系统，银行、仓储、税务、监管都有。<br>
+      第二本账是质量：三年多零资金差错——交易、结算、清算全链路；冬储高峰连续两个季度零 P0；外联接口平均可用率 99.95%。<br>
+      第三本账是机制：On-call 轮值、技术债台账、接口契约治理三套机制全部落地，团队被动响应占比从 45% 降到 15% 以下，故障报告加复盘闭环，根因必须回灌到规范里。<br>
+      第四本账是能力：20 人四个梯队，核心模块没有单点依赖；团队能独立处理 80% 的现场问题；沉淀下排查手册、原型库、开发框架，还有专利和软著。<br><br>
+      所以我的总结是：我追求的不是短期救火，而是长期可复制的研发体系——交付有节奏、质量有底线、机制能自转、能力能传承。」<br><br>
+      【避坑】不要把它讲成「我的成绩单」。用「四本账」的框架讲，每一本都有交付物和数字，听起来是体系结果，不是个人邀功。<br><br>
+      【口径纪律】「99.95%」「3 年零差错」「45% → 15%」是运行结果，可以直说；专利、软著、覆盖率这类是目标线，必须带「当时设定的目标」。
+    </div>
+  </section>
+
+  <!-- ============ 30 战绩 STAR ============ -->
+  <section class="slide" data-title="战绩">
+    <p class="kicker">RESULTS · 主战案例（双平台交付）</p>
+    <h2 class="h2">一个客户、销售采购两端、两套系统</h2>
+    <div class="grid g4 mt-l anim-stagger-list" data-anim-target>
+      <div class="card"><p class="eyebrow">Scale</p><div class="big-num" style="font-size:32px">1.1 亿吨</div><p class="dim" style="font-size:12.5px">平台累计成交量</p></div>
+      <div class="card"><p class="eyebrow">Value</p><div class="big-num" style="font-size:32px">673 亿元</div><p class="dim" style="font-size:12.5px">累计成交额</p></div>
+      <div class="card"><p class="eyebrow">Premium</p><div class="big-num" style="font-size:32px">8 亿元</div><p class="dim" style="font-size:12.5px">竞价溢价增收累计（<b>客户侧收益</b>）</p></div>
+      <div class="card"><p class="eyebrow">Efficiency</p><div class="big-num" style="font-size:32px">20 天 → 7 天</div><p class="dim" style="font-size:12.5px">阳光采购周期</p></div>
+    </div>
+    <div class="grid g2 mt-l" style="align-items:start">
+      <div class="card" style="padding:20px 22px">
+        <h4 class="cy">S / T · 情境与任务</h4>
+        <p class="dim" style="font-size:13.5px;margin:8px 0 0;line-height:1.7">
+          世界 500 强级能源化工国企需要同时解决销售端和采购端的数字化：煤炭化工品销售要发现价格、创造溢价；采购端要阳光合规、国资审计留痕。<br>
+          我作为技术负责人承建<b>大宗商品交易平台</b>（竞价 / 挂牌 / 长协 / 邀约专场）与<b>阳光采购平台</b>（电子招投标 + 电子签约）。
+        </p>
+      </div>
+      <div class="card" style="padding:20px 22px">
+        <h4 class="hl">A / R · 行动与结果</h4>
+        <p class="dim" style="font-size:13.5px;margin:8px 0 0;line-height:1.7">
+          销售端以<b>竞价引擎</b>为核心设计多模式交易状态机与异常出价风控；采购端以全流程留痕、电子签约、审批链为主线；两端共用会员 / 资金 / 物流底座。<br>
+          阳光采购成为省级国资委试点，成交项目破万；平台主力品种成交价成为行业风向标。
+        </p>
+      </div>
+    </div>
+    <p class="dim mt-m" style="font-size:13px">
+      <b class="hl">R 的三条纪律：</b>① R 必须有数字或可感知的变化；② A 里必须有一个「我拍板的关键决策」；③ 具体模块讲「我负责 / 我拍板」，数据归客户运营，架构归团队，决策归自己。
+    </p>
+    <div class="notes">
+      【90 秒 · 主战故事，投哪家都能用】<br><br>
+      【口播】<br>
+      「说一个完整案例。客户是世界 500 强级的能源化工国企，需要同时解决销售端和采购端的数字化：销售端要发现价格、创造溢价，采购端要阳光合规、国资审计留痕。<br><br>
+      我作为技术负责人承建了两套系统：大宗商品交易平台——竞价、挂牌、长协、邀约专场四种模式；和阳光采购平台——电子招投标加电子签约。<br><br>
+      行动上，销售端我以竞价引擎为核心，设计了多模式交易状态机和异常出价风控；采购端以全流程留痕、电子签约、审批链为主线；两端共用会员、资金、物流底座。<br><br>
+      结果：平台累计成交 1.1 亿吨、673 亿元，竞价溢价增收累计 8 亿元——注意，这 8 亿是客户侧的经营成果，对国企来说溢价几乎直接等于净利润；阳光采购成为省级国资委试点，采购周期从 20 天压到 7 天，成交项目破万。平台主力品种的成交价成了行业风向标。」<br><br>
+      【加分句】「一个客户、销售采购两端、两套系统，我完整走过了大宗产业电商『卖』和『买』两侧的数字化。」<br><br>
+      【R 的三条纪律 · 讲之前自查】R 必须有数字；A 里必须有一个我拍板的关键决策（比如竞价引擎的多模式状态机）；具体模块讲「我负责 / 我拍板」，数据归客户运营，架构归团队，决策归自己——避免抢功嫌疑。
+    </div>
+  </section>
+
+  <!-- ============ 31 三个月优先级 ============ -->
+  <section class="slide dense" data-title="优先级">
+    <p class="kicker">PLAN · 如果给我三个月</p>
+    <h2 class="h2">先止血 · 再还债 · 后增值</h2>
+    <div class="flow anim-stagger-list" data-anim-target>
+      <div class="col"><span class="tag">第 1 个月 · 止血</span><h4>把不确定性前置</h4>
+        <ul>
+          <li>统一图表库与公共组件库</li>
+          <li>建立前后端契约（OpenAPI），原型页即验收用例</li>
+          <li>建立自动化对账任务</li>
+          <li><b>这些不解决，后面每加一个功能都在放大技术债</b></li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">第 2-3 个月 · 还债</span><h4>补关键短板</h4>
+        <ul>
+          <li>履约链路 trace 与事件回放（异常策略可视化审计）</li>
+          <li>跨端架构从 iframe 向微前端演进的技术验证</li>
+          <li>补齐最小闭环的薄弱环节</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">第 4-6 个月 · 增值</span><h4>做深护城河</h4>
+        <ul>
+          <li>基于可信履约数据把供应链金融做深</li>
+          <li>试点 AI 能力接入：智能推荐、单据识别、风控辅助</li>
+          <li>这些是「AI 提效、人兜底」的场景</li>
+        </ul>
+      </div>
+      <div class="col"><span class="tag">贯穿</span><h4>底层逻辑</h4>
+        <ul>
+          <li><b>先保证平台数据可信</b>（履约 / 结算 / 仓单），再谈金融增值</li>
+          <li>信任是这个行业的货币</li>
+          <li>风控能力必须跑在金融业务前面</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mt-m" style="padding:16px 20px;border-top:2px solid var(--accent-3)">
+      <p style="margin:0;font-size:14px;line-height:1.7">
+        <b class="hl">给排序逻辑，不给清单：</b>面试官考的从来不是「你打算做什么」，而是<b>你为什么先做这个</b>——这是 ROI 思维和优先级判断的直接证据。
+      </p>
+    </div>
+    <div class="notes">
+      【2 分钟 · 这道题考的是 ROI 思维和优先级判断，不是清单】<br><br>
+      【口播】「我会按『先止血、再还债、后增值』排。<br><br>
+      第 1 个月止血：统一图表库和公共组件库，建立前后端契约 OpenAPI，建立自动化对账——这些不解决，后面每加一个功能都在放大技术债。<br><br>
+      第 2 到 3 个月还债加补关键短板：履约链路 trace 与事件回放、跨端架构从 iframe 向微前端演进的技术验证，以及补齐薄弱环节的最小闭环。<br><br>
+      第 4 到 6 个月做增值：基于可信的履约数据把供应链金融能力做深，这是平台的商业护城河；同时试点 AI 能力接入——智能推荐、单据识别、风控辅助，这些是『AI 提效、人兜底』的场景。<br><br>
+      优先级的底层逻辑只有一个：先保证平台数据可信——履约、结算、仓单——再谈金融增值。信任是这个行业的货币。顺带一句，风控能力必须跑在金融业务前面，控货能力不成立的时候，金融每放大一分都是风险。」<br><br>
+      【避坑】不要给一份漂亮的三个月清单然后每条都讲一遍。要给排序逻辑——「为什么先做这个」比「做什么」重要得多。
+    </div>
+  </section>
+
+  <!-- ============ 32 金句墙 ============ -->
+  <section class="slide center tc" data-title="金句墙">
+    <div style="width:100%;max-width:1400px">
+      <p class="kicker">SOUNDBITES · 六句话，钉住我的管理主张</p>
+      <h2 class="h2" style="margin-bottom:0">如果只让我留六句话</h2>
+      <div class="qwall anim-stagger-list" data-anim-target style="text-align:left">
+        <div class="q"><span>01 · 确定性</span>我不只是管项目进度，更管研发过程的确定性。</div>
+        <div class="q"><span>02 · 规范</span>规范不是为了增加流程，而是为了减少返工。</div>
+        <div class="q"><span>03 · 复盘</span>故障不可怕，可怕的是同一个问题重复发生。</div>
+        <div class="q"><span>04 · 带人</span>技术管理的关键，是把个人经验变成团队能力。</div>
+        <div class="q"><span>05 · 体系</span>我追求的不是短期救火，而是长期可复制的研发体系。</div>
+        <div class="q"><span>06 · 心态</span>让团队从「买软件」的心态，转向「卖成果」的心态。</div>
+      </div>
+      <p class="dim mt-l" style="font-size:13px;text-align:left">用法：被追问管理类问题时，先给一句金句定调，再用对应页的案例与数据支撑；不要一次性念完，挑当次相关的两句。</p>
+    </div>
+    <div class="notes">
+      【30 秒 · 录音棚页 / 备用收束页】这一页是「弹药库」，不一定在正片里讲。当面试官问到管理观、团队观，或者临场冷场时，可以直接翻到这里。<br><br>
+      【口播示范】「如果要我用几句话总结管理观：第一，我不只是管项目进度，更管研发过程的确定性；第二，规范不是为了增加流程，而是为了减少返工；第三，故障不可怕，可怕的是同一个问题重复发生；第四，技术管理的关键是把个人经验变成团队能力；第五，我追求的不是短期救火，而是长期可复制的研发体系；第六，我希望团队从『买软件』的心态，转向『卖成果』的心态。」<br><br>
+      【用法提示】不要一次念六句——那是背书。挑当次最相关的两句，念完立刻接具体案例：第 1、5 句接 29 页四本账；第 2 句接 22 页六道闸门；第 3 句接 26 页故障闭环；第 4、6 句接 25 页团队赋能。
+    </div>
+  </section>
+
+  <!-- ============ 33 收尾 ============ -->
+  <section class="slide center tc" data-title="收尾">
+    <div style="max-width:1080px">
+      <p class="kicker">SUMMARY · 三个标签</p>
+      <h1 class="h1 anim-rise-in" data-anim="rise-in" style="font-size:60px">业务翻译官 <span class="hl">·</span> 技术操盘手 <span class="hl">·</span> 流程守护者</h1>
+      <div class="grid g3 mt-l anim-stagger-list" data-anim-target style="text-align:left">
+        <div class="card"><p class="eyebrow">01 · Positioning</p><h4>业务翻译官</h4><p class="dim" style="font-size:13px">把「支持分批付款」五个字拆成 14 个子需求、识别 3 个风险点；能在评审中反问「这个合同条款的违约触发条件，系统哪个状态节点对应」。</p></div>
+        <div class="card"><p class="eyebrow">02 · Capability</p><h4>技术操盘手</h4><p class="dim" style="font-size:13px">在 C + Java 异构架构里做选型、评审、技术债管理；不写 C 代码，但通过防腐层管住异构通信全链路。</p></div>
+        <div class="card"><p class="eyebrow">03 · Mechanism</p><h4>流程守护者</h4><p class="dim" style="font-size:13px">建立 On-call 轮值、技术债台账、接口契约治理三大机制，让团队从被动救火转向主动建设。</p></div>
+      </div>
+      <div class="card mt-l" style="padding:20px 24px;border-top:2px solid var(--accent-3);text-align:left">
+        <p style="margin:0;font-size:15.5px;line-height:1.75">
+          <b class="hl">责任金句（收尾用）：</b>技术经理的价值不是方案多漂亮，是<b>对可实施性与落地效果负责</b>——坑在哪、工作量多少、风险在哪一层，我能直接判断，不给团队挖坑。
+        </p>
+      </div>
+      <p class="lede mt-l" style="margin:20px auto 0;text-align:center;font-size:19px">
+        我的问题问完了，想听您讲讲：<b class="cy">这个岗位现在最缺的是业务深度还是工程规范？</b>
+      </p>
+    </div>
+    <div class="deck-footer"><span class="dim2">haswhere · 技术经理</span><span class="slide-number" data-current="33" data-total="33"></span></div>
+    <div class="notes">
+      【收尾 30 秒】把三个标签钉死在面试官记忆里，然后立刻转向反问。<br><br>
+      【口播】「最后一句话总结我自己：我是业务翻译官、技术操盘手、流程守护者。<br>
+      业务翻译官——客户一句『支持分批付款』，我能拆成 14 个子需求、识别 3 个风险点；<br>
+      技术操盘手——在 C 加 Java 的异构架构里做选型、评审、技术债管理，不写 C 代码，但通过防腐层管住异构通信的全链路；<br>
+      流程守护者——建立 On-call 轮值、技术债台账、接口契约治理三大机制，让团队从被动救火转向主动建设。<br><br>
+      我的价值主张是：技术经理的价值不是方案多漂亮，是对可实施性与落地效果负责——坑在哪、工作量多少、风险在哪一层，我能直接判断，不给团队挖坑。」<br><br>
+      【最后一击 · 反问】把这句话背下来当收尾：「我的问题问完了，想听您讲讲——这个岗位现在最缺的是业务深度还是工程规范？我在两者上都补过课，想知道哪边缺口更大。」<br><br>
+      这句既是提问，也是自我总结：把「业务 × 技术」的人设钉死在面试官记忆里。反问的意图是双重的——既是姿态（关注落地而非概念），也是给自己收集判断信息。
+    </div>
+  </section>
+
+</div>
+<script src="assets/runtime.js"></script>
+<script>
+/* 为每一页补上统一页脚（页码 + 章节名），方便面试现场按页索引 */
+(function () {
+  var slides = document.querySelectorAll('.deck .slide');
+  var total = slides.length;
+  slides.forEach(function (s, i) {
+    if (s.querySelector('.deck-footer')) return;
+    var t = s.getAttribute('data-title') || '';
+    var f = document.createElement('div');
+    f.className = 'deck-footer';
+    f.innerHTML = '<span class="dim2">' + t + '</span>' +
+      '<span class="slide-number" data-current="' + (i + 1) + '" data-total="' + total + '"></span>';
+    s.appendChild(f);
+  });
+})();
+</script>
+</body></html>

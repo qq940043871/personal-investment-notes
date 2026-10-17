@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>待发送第三方表 · 状态机图</title>
+<!--
+  ============================================================================
+  跨系统调用一致性方案 · 图2：「待发送第三方表」记录状态机
+  按 arch-diagram-suite / state-machine.html 骨架改造，只改状态与 TRANS，不手写坐标。
+  ============================================================================
+-->
+<style>
+:root{
+  --ink:#1F2937; --ink2:#4B5563; --ink3:#8A93A0;
+  --line:#E3E7EE; --paper:#FFFFFF; --canvas:#F1F4F9;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--canvas);
+  font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+  color:var(--ink); padding:22px 26px 26px; -webkit-font-smoothing:antialiased;
+}
+.sheet{
+  width:1740px; margin:0 auto; background:var(--paper);
+  border-radius:16px; padding:30px 30px 22px;
+  box-shadow:0 10px 34px rgba(23,42,77,.10), 0 2px 8px rgba(23,42,77,.05);
+}
+
+.hd{border-bottom:1.6px solid var(--line); padding-bottom:15px; margin-bottom:24px;}
+.hd h1{font-size:25px; margin:0 0 8px; letter-spacing:.4px; font-weight:800;}
+.hd .sub{font-size:13px; color:var(--ink2); margin:0; line-height:1.6;}
+.hd .sub b{color:#2C6FBE; font-weight:800;}
+.hd .legend{display:flex; flex-wrap:wrap; gap:9px 20px; margin-top:14px;}
+.lg{display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--ink2); font-weight:600;}
+.lg .sw{width:26px; height:0; border-top-width:2px; border-top-style:solid;}
+.lg .sw.dash{border-top-style:dashed;}
+
+.canvas{position:relative; padding:26px 6px 44px;}
+svg.edges{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; z-index:1;}
+.elabel{
+  font-size:10.5px; font-weight:800; fill:#4B5563; font-family:inherit;
+  paint-order:stroke; stroke:#FFFFFF; stroke-width:3.5px; stroke-linejoin:round;
+}
+
+/* 列间距 92px：状态卡的转移标签写在两卡之间，间距小于标签宽度时会被卡片压掉（实测 20px 时标签被吃） */
+.grid{position:relative; z-index:3; display:grid; grid-template-columns:repeat(6,1fr); gap:56px 92px;}
+
+.st{
+  border:1.6px solid var(--c,#C9D2DE); background:var(--cbg,#FBFCFE);
+  border-radius:10px; padding:11px 10px; text-align:center;
+  min-height:56px; display:flex; flex-direction:column; justify-content:center;
+}
+.st .sn{font-size:12.5px; font-weight:800; color:var(--c,#374151); letter-spacing:.2px;}
+.st .sd{font-size:10px; color:var(--ink3); margin-top:3px; font-weight:700;}
+
+.st.st-init{
+  width:48px; height:48px; min-height:0; padding:0; border-radius:50%;
+  justify-self:center; align-self:center;
+  background:#1F2937; border-color:#1F2937;
+}
+.st.st-init .sn{color:#fff; font-size:16px; line-height:1;}
+
+.st.st-final{border-width:1.6px; box-shadow:inset 0 0 0 3px var(--cbg), inset 0 0 0 4.6px var(--c);}
+
+.cell-empty{visibility:hidden;}
+
+/* ---------- 状态配色类 ---------- */
+.c-blue  {--c:#2C6FBE; --cbg:#F3F8FE;}
+.c-teal  {--c:#2E9E8F; --cbg:#F1FAF8;}
+.c-purple{--c:#7C5CBF; --cbg:#F8F5FE;}
+.c-amber {--c:#C98A1F; --cbg:#FEFAF0;}
+.c-coral {--c:#D16B65; --cbg:#FEF7F6;}
+.c-gold  {--c:#C2803A; --cbg:#FDF8F0;}
+.c-sky   {--c:#4AA3D8; --cbg:#F2F9FD;}
+.c-red   {--c:#C0504D; --cbg:#FDF3F2;}
+.c-grey  {--c:#8A93A0; --cbg:#F7F8FA;}
+
+.notes{border-top:1.6px solid var(--line); margin-top:22px; padding-top:14px;}
+.notes p{font-size:11.5px; color:var(--ink2); margin:0 0 7px; line-height:1.72;}
+.notes p:last-child{margin-bottom:0;}
+.notes p b{color:#2C6FBE;}
+.notes .no{
+  display:inline-block; width:15px; height:15px; line-height:15px; text-align:center;
+  border-radius:50%; background:#EAF1FB; color:#2C6FBE; font-size:10px; font-weight:800;
+  margin-right:6px; vertical-align:1px;
+}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="hd">
+    <h1>「待发送第三方表」记录 · 状态机图</h1>
+    <p class="sub">
+      <b>7</b> 个状态 · <b>8</b> 条转移 · <b>2</b> 个终态 · 阶梯退避上限 <b>N</b> 次，超限即熔断为待人工
+    </p>
+    <div class="legend">
+      <span class="lg"><span class="sw" style="border-color:#2C6FBE"></span>正常流转</span>
+      <span class="lg"><span class="sw" style="border-color:#C0504D"></span>异常分支</span>
+      <span class="lg"><span class="sw dash" style="border-color:#8A93A0"></span>回退 / 闭环</span>
+    </div>
+  </div>
+
+  <div class="canvas">
+    <svg class="edges">
+      <defs>
+        <marker id="ar-ok"   viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2C6FBE"/></marker>
+        <marker id="ar-err"  viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C0504D"/></marker>
+        <marker id="ar-end"  viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A93A0"/></marker>
+      </defs>
+      <g id="paths"></g>
+    </svg>
+
+    <div class="grid">
+      <div class="st st-init" data-cid="init"><div class="sn">●</div></div>
+      <div class="st c-grey"  data-cid="pending"><div class="sn">待发送</div><div class="sd">本地事务内写入</div></div>
+      <div class="st c-sky"   data-cid="sending"><div class="sn">发送中</div><div class="sd">同批同号 · 派发中</div></div>
+      <div class="st c-teal st-final" data-cid="succ"><div class="sn">发送成功</div><div class="sd">资金 · 仓单均成功 · 终态</div></div>
+      <div class="cell-empty"></div>
+      <div class="cell-empty"></div>
+
+      <div class="cell-empty"></div>
+      <div class="cell-empty"></div>
+      <div class="cell-empty"></div>
+      <div class="st c-amber" data-cid="retry"><div class="sn">待重试</div><div class="sd">退避 1s→2s→4s… ≤N</div></div>
+      <div class="st c-gold"  data-cid="dead"><div class="sn">待人工</div><div class="sd">超 N 次 · 停止自动派发</div></div>
+      <div class="st c-grey st-final" data-cid="closed"><div class="sn">已闭环</div><div class="sd">人工处理完成 · 终态</div></div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <p><span class="no">①</span><b>幂等是重试的前提</b>——每次派发都携带同一个业务幂等键，下游按「已处理即返回成功」应答；否则阶梯重试会把资金重复入账、仓单重复过户。</p>
+    <p><span class="no">②</span><b>没有「僵死」状态</b>：线程宕机后，「发送中」的记录由扫描器按「认领超时」回收并重派，等价于走一次 → 待重试，因此不必单独建模。</p>
+    <p><span class="no">③</span><b>「待人工」不是终态</b>：界面端或运营手动重试会把它重置回「待发送」重新入队；只有「发送成功」与「已闭环」不可逆。</p>
+    <p><span class="no">④</span><b>「待发送 → 发送中」这一步要带批次号</b>：线程先取一个<b>全局唯一批次号</b>，再用一条 UPDATE 把整批记录同时置为「发送中」并写入同一个批次号——这一批即<b>统一批次</b>。之后无论回写成功、记重试次数还是回收僵死记录，都以批次号为范围，<b>各实例互不越界</b>，这是将来集群部署的前提。</p>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var TRANS = [
+    { from: 'init',    to: 'pending', on: '本地事务写入',   side: ['r', 'l'], kind: 'ok'  },
+    { from: 'pending', to: 'sending', on: '取批次号认领',   side: ['r', 'l'], kind: 'ok'  },
+    { from: 'sending', to: 'succ',    on: '双方均成功',     side: ['r', 'l'], kind: 'ok'  },
+    { from: 'sending', to: 'retry',   on: '失败 / 超时',    side: ['b', 't'], kind: 'err' },
+    { from: 'retry',   to: 'sending', on: '退避到点重派',   side: ['l', 'b'], kind: 'end' },
+    { from: 'retry',   to: 'dead',    on: '超过 N 次',      side: ['r', 'l'], kind: 'err' },
+    { from: 'dead',    to: 'closed',  on: '人工确认闭环',   side: ['r', 'l'], kind: 'end' },
+    { from: 'dead',    to: 'pending', on: '界面 / 运营重试', side: ['b', 'b'], kind: 'end', at: 0.2 }
+  ];
+  var COLOR = { ok: '#2C6FBE', err: '#C0504D', end: '#8A93A0' };
+
+  var canvas = document.querySelector('.canvas');
+  var g = document.getElementById('paths');
+  if (!canvas || !g) return;
+
+  var C = canvas.getBoundingClientRect();
+  function boxOf(id) {
+    var el = document.querySelector('[data-cid="' + id + '"]');
+    if (!el) { console.warn('TRANS 里的 id 不存在:', id); return null; }
+    var r = el.getBoundingClientRect();
+    return {
+      l: r.left - C.left, t: r.top - C.top, r: r.right - C.left, b: r.bottom - C.top,
+      w: r.width, h: r.height,
+      cx: r.left - C.left + r.width / 2, cy: r.top - C.top + r.height / 2
+    };
+  }
+  function anchor(box, side, frac) {
+    if (side === 'r') return { x: box.r, y: box.t + box.h * frac, d: [1, 0] };
+    if (side === 'l') return { x: box.l, y: box.t + box.h * frac, d: [-1, 0] };
+    if (side === 't') return { x: box.l + box.w * frac, y: box.t,     d: [0, -1] };
+    return               { x: box.l + box.w * frac, y: box.b,     d: [0, 1] };
+  }
+  function autoSides(a, b) {
+    var dx = Math.abs(b.cx - a.cx), dy = Math.abs(b.cy - a.cy);
+    if (dy > dx) return b.cy > a.cy ? ['b', 't'] : ['t', 'b'];
+    return b.cx > a.cx ? ['r', 'l'] : ['l', 'r'];
+  }
+
+  var svgns = 'http://www.w3.org/2000/svg';
+
+  var outCount = {};
+  var preparsed = TRANS.map(function (e) {
+    var a = boxOf(e.from), b = boxOf(e.to);
+    if (!a || !b) return null;
+    var sides = e.side || autoSides(a, b);
+    var key = e.from + '|' + sides[0];
+    outCount[key] = (outCount[key] || 0) + 1;
+    return { e: e, a: a, b: b, sides: sides, key: key };
+  });
+
+  var seen = {};
+  var drawn = 0;
+  preparsed.forEach(function (it) {
+    if (!it) return;
+    var e = it.e, kind = e.kind || 'ok';
+    var sOut = it.sides[0], sIn = it.sides[1];
+    var idx = (seen[it.key] = (seen[it.key] || 0) + 1);
+    var fracOut = outCount[it.key] > 1 ? idx / (outCount[it.key] + 1) : 0.5;
+
+    var p1 = anchor(it.a, sOut, fracOut);
+    var p2 = anchor(it.b, sIn, 0.5);
+    var dist = 52;
+    var c1 = { x: p1.x + p1.d[0] * dist, y: p1.y + p1.d[1] * dist };
+    var c2 = { x: p2.x + p2.d[0] * dist, y: p2.y + p2.d[1] * dist };
+
+    var p = document.createElementNS(svgns, 'path');
+    p.setAttribute('d', 'M' + p1.x + ',' + p1.y + ' C' + c1.x + ',' + c1.y + ' ' + c2.x + ',' + c2.y + ' ' + p2.x + ',' + p2.y);
+    p.setAttribute('fill', 'none');
+    p.setAttribute('stroke', COLOR[kind]);
+    p.setAttribute('stroke-width', '1.8');
+    if (kind === 'end') p.setAttribute('stroke-dasharray', '5 4');
+    p.setAttribute('marker-end', 'url(#ar-' + kind + ')');
+    g.appendChild(p);
+    drawn++;
+
+    if (e.on) {
+      /* at：标签落在曲线上的位置，默认 0.5（中点）。
+         长回退线的中点在卡片带内部、会被卡片压住，此时把它前移到曲线下潜段。 */
+      var tt = (e.at == null) ? 0.5 : e.at, uu = 1 - tt;
+      var mx = uu * uu * uu * p1.x + 3 * uu * uu * tt * c1.x + 3 * uu * tt * tt * c2.x + tt * tt * tt * p2.x;
+      var my = uu * uu * uu * p1.y + 3 * uu * uu * tt * c1.y + 3 * uu * tt * tt * c2.y + tt * tt * tt * p2.y;
+      var t = document.createElementNS(svgns, 'text');
+      t.setAttribute('class', 'elabel');
+      t.setAttribute('x', mx); t.setAttribute('y', my);
+      t.setAttribute('text-anchor', 'middle');
+      t.textContent = e.on;
+      g.appendChild(t);
+    }
+  });
+
+  window.__DIAGRAM_STATS__ = {
+    type: 'statemachine',
+    nodes: document.querySelectorAll('.st').length,
+    edges: TRANS.length,
+    drawn: drawn
+  };
+  window.__DIAGRAM_READY__ = true;
+})();
+</script>
+</body>
+</html>

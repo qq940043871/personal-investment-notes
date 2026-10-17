@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C 核心热备 ↔ ZooKeeper + Kafka · 协调平面与数据平面对照图</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #EEF1F5;
+    font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", system-ui, sans-serif;
+    color: #243043;
+    -webkit-font-smoothing: antialiased;
+    padding: 26px 20px 40px;
+  }
+
+  .sheet {
+    width: 1740px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(24, 39, 65, .10), 0 2px 6px rgba(24, 39, 65, .06);
+    padding: 26px 28px 22px;
+  }
+
+  /* ---------- 头部 ---------- */
+  .hd { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding-bottom: 14px; border-bottom: 2px solid #E7EBF1; }
+  .hd h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: .5px; color: #1B2739; }
+  .hd h1 em { font-style: normal; color: #C0504D; }
+  .hd .sub { margin-top: 8px; font-size: 13px; color: #5B6878; letter-spacing: .2px; }
+  .hd .sub b { color: #7C5CBF; font-weight: 700; }
+  .hd .sub i { font-style: normal; color: #98A3B2; padding: 0 4px; }
+
+  .legend { flex: 0 0 auto; border: 1px solid #E1E6ED; border-radius: 10px; background: #FAFBFD; padding: 10px 14px; }
+  .legend .lg-title { font-size: 11px; font-weight: 700; color: #8B96A5; letter-spacing: 1px; margin-bottom: 7px; }
+  .legend .lg-row { display: flex; align-items: center; gap: 7px; margin-top: 6px; }
+  .legend .lg-row span.k { font-size: 11.5px; color: #5B6878; }
+  .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; }
+
+  /* ---------- 层带 ---------- */
+  .stack { padding-top: 18px; }
+  .band { display: flex; border: 1.6px solid var(--line); background: var(--bg); border-radius: 14px; padding: 13px 16px 13px 0; position: relative; }
+  .rail { flex: 0 0 54px; display: flex; align-items: center; justify-content: center; }
+  .rail i { font-style: normal; writing-mode: vertical-rl; font-size: 19px; font-weight: 800; color: #fff; background: var(--rail); border-radius: 8px; padding: 16px 8px; letter-spacing: 3px; box-shadow: 0 2px 6px rgba(0,0,0,.14); }
+  .rail i.small { font-size: 12.5px; letter-spacing: 1.5px; padding: 14px 7px; }
+  .bd { flex: 1; min-width: 0; }
+  .bd-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  .bd-head h2 { margin: 0; font-size: 14.5px; font-weight: 800; color: var(--rail); letter-spacing: .3px; }
+  .bd-head p { margin: 0; font-size: 12px; color: #6B7787; }
+  .bd-head .pin { margin-left: auto; font-size: 11px; color: #8B96A5; border: 1px dashed var(--line); border-radius: 6px; padding: 3px 9px; background: #fff; }
+  .bd-head .pin.on { color: #9E3B36; border-color: #E2B9B3; }
+
+  /* ---------- 网格与卡片 ---------- */
+  .row { display: grid; gap: 12px; }
+  .c3 { grid-template-columns: repeat(3, 1fr); }
+  .c4 { grid-template-columns: repeat(4, 1fr); }
+  .c5 { grid-template-columns: repeat(5, 1fr); }
+  .gap-lg { margin-top: 14px; }
+
+  .card { position: relative; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 15px 12px 13px; text-align: center; }
+  .card h3 { margin: 0; font-size: 14.5px; font-weight: 700; color: #22303F; line-height: 1.4; }
+  .card .tech { margin-top: 6px; font-size: 11.5px; font-weight: 700; color: var(--c); }
+  .card .desc { margin-top: 8px; font-size: 12.5px; color: #4A5568; line-height: 1.8; }
+  .card .desc b { color: #1B2739; }
+  .card .badge { position: absolute; left: 7px; top: 7px; font-size: 10px; font-weight: 700; color: #fff; background: #2C5F8A; padding: 2px 6px; border-radius: 4px; letter-spacing: .3px; }
+  .card.has-tag { padding-top: 27px; }
+  .card .mini { margin-top: 7px; font-size: 11.5px; color: #6B7787; line-height: 1.7; }
+  .card.hl { box-shadow: 0 0 0 3px rgba(194,128,58,.16); }
+
+  /* 映射卡：左右两栏之间的“⇄ 同一角色”说明卡 */
+  .map { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border: 1.5px dashed var(--c); background: #FBFCFE; border-radius: 10px; padding: 12px 10px; }
+  .map .eq { font-size: 20px; color: var(--c); line-height: 1; margin-bottom: 6px; }
+  .map h4 { margin: 0; font-size: 12px; font-weight: 800; color: #56626F; letter-spacing: .4px; }
+  .map p { margin: 7px 0 0; font-size: 11.5px; color: #6B7787; line-height: 1.75; }
+  .map p b { color: #3C4959; }
+
+  /* 卡片配色类 —— 必须定义 */
+  .c-amber  { --c:#D8A94A; --cbg:#FEFAF0; }
+  .c-blue   { --c:#4A88CE; --cbg:#F3F8FE; }
+  .c-purple { --c:#8871C9; --cbg:#F8F5FE; }
+  .c-coral  { --c:#D16B65; --cbg:#FEF7F6; }
+  .c-teal   { --c:#2E9E8F; --cbg:#F1FAF8; }
+  .c-gold   { --c:#C2803A; --cbg:#FDF8F0; }
+  .c-sky    { --c:#4AA3D8; --cbg:#F2F9FD; }
+  .c-red    { --c:#C0504D; --cbg:#FDF3F2; }
+  .c-grey   { --c:#9AA3AF; --cbg:#F7F8FA; }
+
+  /* 通栏数据条 */
+  .bar { margin-top: 12px; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 13px 18px; display: flex; align-items: center; gap: 18px; }
+  .bar h3 { margin: 0; font-size: 14.5px; font-weight: 800; color: #9E3B36; white-space: nowrap; letter-spacing: .3px; }
+  .bar p { margin: 0; font-size: 12.5px; color: #4A5568; line-height: 1.75; }
+  .bar p b { color: #1B2739; }
+
+  /* 演化轴 */
+  .axis { margin-top: 12px; display: flex; align-items: center; gap: 10px; }
+  .axis .end { flex: 0 0 auto; font-size: 11.5px; font-weight: 800; color: #8B96A5; letter-spacing: .5px; }
+  .axis .line { flex: 1; height: 3px; border-radius: 2px; background: linear-gradient(90deg,#7C5CBF,#C2803A); position: relative; }
+  .axis .line::before, .axis .line::after { content: ""; position: absolute; top: 50%; transform: translateY(-50%); width: 9px; height: 9px; border-radius: 50%; background: #fff; border: 2.4px solid #7C5CBF; }
+  .axis .line::before { left: -2px; }
+  .axis .line::after { right: -2px; border-color: #C2803A; }
+
+  /* 页脚注 */
+  .notes { margin-top: 20px; border-top: 2px solid #E7EBF1; padding-top: 14px; }
+  .notes p { margin: 0 0 8px; font-size: 12px; color: #56626F; line-height: 1.85; }
+  .notes p:last-child { margin-bottom: 0; }
+  .notes b { color: #1B2739; font-weight: 800; }
+  .notes i { font-style: normal; color: #98A3B2; padding: 0 4px; }
+
+  @media (max-width: 1800px) { body { padding: 16px 12px 32px; overflow-x: auto; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ================= 头部 ================= -->
+  <div class="hd">
+    <div>
+      <h1>C 核心热备 <em>↔ ZooKeeper + Kafka</em></h1>
+      <div class="sub">
+        协调平面与数据平面逐条对应<i>·</i>硬对应而非比喻<i>·</i>演化轴「<b>外部协调 ↔ 内嵌共识</b>」<i>·</i>画布 1740px
+      </div>
+    </div>
+    <div class="legend">
+      <div class="lg-title">图 例</div>
+      <div class="lg-row"><span class="dot" style="background:#8871C9"></span><span class="k">协调平面（谁来当主）</span></div>
+      <div class="lg-row"><span class="dot" style="background:#C0504D"></span><span class="k">数据平面（数据怎么复制）</span></div>
+      <div class="lg-row"><span class="dot" style="background:#2E9E8F"></span><span class="k">逐条硬对应</span></div>
+      <div class="lg-row"><span class="dot" style="background:#C2803A"></span><span class="k">演化：外部协调 ↔ 内嵌共识</span></div>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <!-- ================= 引子 ================= -->
+    <div class="band b1" style="--rail:#B8860B;--line:#E4CB84;--bg:#FEFAF0;">
+      <div class="rail"><i class="small">引子</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>这不是新发明</h2>
+          <p>"仲裁者 + 主备"在大规模分布式系统里早有一个被验证了十几年的形态</p>
+          <span class="pin">一个管协调 · 一个管数据</span>
+        </div>
+        <div class="bar c-gold">
+          <h3>ZooKeeper + Kafka</h3>
+          <p><b>ZK</b> 管协调（选主 · 元数据 · ISR 登记），<b>Kafka</b> 管数据（partition log 复制）；对应到 C 核心，<b>仲裁组</b>管"谁来当主"，<b>主备</b>管"数据怎么复制"——同一套角色分工，两种命名。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 一 · 协调平面 ================= -->
+    <div class="band b3" style="--rail:#7C5CBF;--line:#C6B6E6;--bg:#F8F5FE;">
+      <div class="rail"><i>一</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>协调平面 · Coordination</h2>
+          <p>决定"谁来当主" · 安全目标：永不给出两个互相矛盾的答案</p>
+          <span class="pin">角色极轻：只存 任期号 + 租约</span>
+        </div>
+        <div class="row c3">
+          <div class="card c-purple">
+            <h3>ZooKeeper</h3>
+            <div class="tech">ZAB 共识协议</div>
+            <div class="desc">选主与集群成员<br>ephemeral 会话 + session 超时<br>唯一 controller 写元数据</div>
+          </div>
+          <div class="map" style="--c:#8871C9">
+            <div class="eq">⇄</div>
+            <h4>同一角色</h4>
+            <p>会话超时 <b>≈</b> 租约<br>单 controller <b>≈</b> 单写权</p>
+          </div>
+          <div class="card c-purple">
+            <h3>仲裁组</h3>
+            <div class="tech">3 / 5 节点多数派</div>
+            <div class="desc">任期号 + 租约 + 到期时间<br>3 节点容 1 挂 / 5 节点容 2 挂<br>etcd · DB 租约表（复用已有 HA）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 二 · 数据平面 ================= -->
+    <div class="band b4" style="--rail:#C0504D;--line:#EBC0BE;--bg:#FEF7F6;">
+      <div class="rail"><i>二</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>数据平面 · Data Plane</h2>
+          <p>决定"数据怎么复制" · 单写 + 追加日志 + 副本确认</p>
+          <span class="pin on">复制输入，不复制结果</span>
+        </div>
+        <div class="row c3">
+          <div class="card c-teal">
+            <h3>Kafka</h3>
+            <div class="tech">partition log</div>
+            <div class="desc">leader 单写<br>follower / ISR 复制<br>高水位 = 已被 ISR 全确认的部分</div>
+          </div>
+          <div class="map" style="--c:#D16B65">
+            <div class="eq">⇄</div>
+            <h4>同一角色</h4>
+            <p>分区日志 <b>≈</b> 镜像 WAL<br>follower 复制 <b>≈</b> 备机重放输入</p>
+          </div>
+          <div class="card c-coral">
+            <h3>C 核心主备</h3>
+            <div class="tech">镜像 WAL + 单调 LSN</div>
+            <div class="desc">主单写（回写权单点）<br>备只重放：不接单 / 不回写 / 不推行情<br>因撮合确定性，重放必得同一内存</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 三 · 逐条硬对应 ================= -->
+    <div class="band b5" style="--rail:#2E9E8F;--line:#B5E0DA;--bg:#F1FAF8;">
+      <div class="rail"><i>三</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>逐条硬对应 —— 不是"看着像"，是同一招</h2>
+          <p>同一个问题，被两套系统各自解过一次</p>
+          <span class="pin">左 = Kafka 侧 · 右 = C 核心侧</span>
+        </div>
+        <div class="row c5">
+          <div class="card c-teal">
+            <h3>fencing token</h3>
+            <div class="tech">↔ leader epoch（KIP-101）</div>
+            <div class="desc">新主上任即抬升 epoch<br>副本拒绝旧 epoch 的写入<br>→ 挡住"脑裂旧主"</div>
+          </div>
+          <div class="card c-teal">
+            <h3>对外应答前同步到备</h3>
+            <div class="tech">↔ ISR + acks=all</div>
+            <div class="desc">"已提交" = 已被副本全确认<br>RPO 的判定点<br>（§8.7）</div>
+          </div>
+          <div class="card c-teal">
+            <h3>幂等 upsert</h3>
+            <div class="tech">↔ 幂等生产者 (PID+seq)</div>
+            <div class="desc">重发不产生重复消息<br>重放不产生第二笔业务<br>按业务单号去重</div>
+          </div>
+          <div class="card c-teal">
+            <h3>租约 / 任期</h3>
+            <div class="tech">↔ ephemeral + session 超时</div>
+            <div class="desc">心跳失效即让位<br>任期号必须持久化<br>（否则一个任期两个主）</div>
+          </div>
+          <div class="card c-teal">
+            <h3>回写权单点</h3>
+            <div class="tech">↔ controller 唯一</div>
+            <div class="desc">任一时刻只有一处写<br>单写权管正常时序<br>fencing 管异常时序</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 四 · 演化轴 ================= -->
+    <div class="band b6" style="--rail:#C2803A;--line:#E8CFA8;--bg:#FDF8F0;">
+      <div class="rail"><i>四</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>演化轴 · 协调层：外部独立系统 ↔ 内嵌共识</h2>
+          <p>最有价值的不是"像"，是 Kafka 后来怎么改了</p>
+        </div>
+        <div class="row c3">
+          <div class="card c-gold">
+            <h3>ZK + Kafka</h3>
+            <div class="tech">外部协调</div>
+            <div class="desc">两套系统 · 两个角色<br>ZK 一套管协调<br>Kafka 一套管数据</div>
+          </div>
+          <div class="card c-gold hl has-tag">
+            <span class="badge">★ 关键一步</span>
+            <h3>KRaft</h3>
+            <div class="tech">内嵌共识</div>
+            <div class="desc">KIP-500 → 3.3 生产可用 → 4.0 移除 ZK<br><b>一套系统 · 两个角色</b>（controller quorum 仍在 Kafka 内）</div>
+          </div>
+          <div class="card c-grey">
+            <h3>角色分离 ≠ 进程分离</h3>
+            <div class="tech">KRaft 的真正启示</div>
+            <div class="desc">协调角色<b>没有消失</b><br>只是不再用"另一套系统"来跑<br>逻辑上两角必须先分清</div>
+          </div>
+        </div>
+        <div class="axis">
+          <span class="end">外部协调（ZK 式）</span>
+          <span class="line"></span>
+          <span class="end">内嵌共识（KRaft 式）</span>
+        </div>
+        <div class="bar c-gold">
+          <h3>对 C 核心的推论</h3>
+          <p>倾向 <b>外部协调</b>——C 核心命门是"<b>撮合线程内绝不阻塞</b>"（§3），别把共识代码塞进撮合进程；但"外部"可<b>复用已有 etcd / DB 租约表</b>，不必自造 ZK。<b>协调是独立角色，但不是非得是独立系统。</b></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 五 · 类比断点 ================= -->
+    <div class="band b7" style="--rail:#6B7280;--line:#CFD4DB;--bg:#F5F6F8;">
+      <div class="rail"><i>五</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>类比断点 · 别讲过头</h2>
+          <p>两处必须说清楚，否则会误导</p>
+        </div>
+        <div class="row c3">
+          <div class="card c-red">
+            <h3>并行度不同</h3>
+            <div class="tech">分区并行 vs 全局串行</div>
+            <div class="desc">Kafka：分区并行（每 partition 各有 leader，靠分区数换吞吐）<br>C 核心：全局串行（单线程 + 单主）<br><b>→ C 核心 ≈ 只有一个 partition 的 Kafka</b></div>
+          </div>
+          <div class="card c-red">
+            <h3>一致性语义不同</h3>
+            <div class="tech">拼出来的 vs 直接的</div>
+            <div class="desc">Kafka：<b>at-least-once + 幂等生产者</b>拼出 exactly-once<br>C 核心：<b>确定性重放</b>直接得到，语义更强</div>
+          </div>
+          <div class="card c-grey">
+            <h3>一句话</h3>
+            <div class="tech">该学的到底是哪一层</div>
+            <div class="desc">ZK / Kafka = <b>两套系统分饰两角</b><br>KRaft = <b>一套系统分饰两角</b><br>C 核心要学的是——<b>先把两角分清楚</b>，至于合不合体，看谁的纯度更不能脏</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= 页脚注 ================= -->
+  <div class="notes">
+    <p><b>① 口径：</b>本图为<b>通用技术对照件</b>，与 <b>11 / 12 / 13</b> 的<b>公司项目轨道口径独立</b>；图中的「↔」仅为类比，<b>不代表平台采用 ZooKeeper / Kafka</b>。</p>
+    <p><b>② 一句话：</b>ZK 管"谁来当主"，Kafka 管"数据怎么复制"；仲裁者管"谁来当主"，C 核心主备管"数据怎么复制"——<b>同一个形态，两种命名</b>。</p>
+    <p><b>③ 演化启示：</b>协调层 <i>│</i> 外部独立系统（ZK 式）<b>↔</b> 内嵌共识（KRaft 式）；<b>但无论哪种，角色都必须先独立</b>（角色分离 ≠ 进程分离）。</p>
+  </div>
+
+</div>
+</body>
+</html>

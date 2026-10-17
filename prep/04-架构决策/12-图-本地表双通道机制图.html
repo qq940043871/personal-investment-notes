@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>本地表双通道机制 · 组件依赖图</title>
+<!--
+  ============================================================================
+  跨系统调用一致性方案 · 图3：出站派发 / 入站订阅 两条通道共用同一范式
+  按 arch-diagram-suite / component-deps.html 骨架改造，只改组件与 DEPS，不手写坐标。
+  ============================================================================
+-->
+<style>
+:root{
+  --ink:#1F2937; --ink2:#4B5563; --ink3:#8A93A0;
+  --line:#E3E7EE; --paper:#FFFFFF; --canvas:#F1F4F9;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--canvas);
+  font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+  color:var(--ink); padding:22px 26px 26px; -webkit-font-smoothing:antialiased;
+}
+.sheet{
+  width:1740px; margin:0 auto; background:var(--paper);
+  border-radius:16px; padding:30px 30px 22px;
+  box-shadow:0 10px 34px rgba(23,42,77,.10), 0 2px 8px rgba(23,42,77,.05);
+}
+
+.hd{border-bottom:1.6px solid var(--line); padding-bottom:15px; margin-bottom:24px;}
+.hd h1{font-size:25px; margin:0 0 8px; letter-spacing:.4px; font-weight:800;}
+.hd .sub{font-size:13px; color:var(--ink2); margin:0; line-height:1.6;}
+.hd .sub b{color:#2C6FBE; font-weight:800;}
+.hd .legend{display:flex; flex-wrap:wrap; gap:9px 20px; margin-top:14px;}
+.lg{display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--ink2); font-weight:600;}
+.lg .sw{width:26px; height:0; border-top-width:2px; border-top-style:solid;}
+.lg .sw.dash{border-top-style:dashed;}
+.lg .sw.dot{border-top-style:dotted;}
+
+.canvas{position:relative; display:flex; flex-direction:column; gap:26px;}
+svg.edges{
+  position:absolute; inset:0; width:100%; height:100%;
+  pointer-events:none; overflow:visible; z-index:2;
+}
+.elabel{
+  font-size:10.5px; font-weight:800; fill:#4B5563; font-family:inherit;
+  paint-order:stroke; stroke:#FFFFFF; stroke-width:3.5px; stroke-linejoin:round;
+}
+
+.zone{
+  position:relative;
+  border:1.6px dashed var(--gc,#9AA3AF); background:var(--gbg,#F7F8FA);
+  border-radius:14px; padding:14px 16px 28px;
+}
+.zone > h2{
+  display:flex; align-items:center; gap:8px;
+  font-size:12.5px; font-weight:800; color:var(--gc,#6B7280);
+  margin:0 0 12px; letter-spacing:.4px;
+}
+.zone > h2::before{content:''; width:9px; height:9px; border-radius:3px; background:var(--gc,#9AA3AF);}
+.zone > h2 small{font-size:10.5px; font-weight:700; color:var(--ink3); letter-spacing:0;}
+
+/* 组件间距必须够宽：同行相邻两卡之间的连线只有 gap - 5px 长。gap 12px 时实测只有 7px —— 比箭头还短。
+   本图取 56px：既保证连线可见，也给「同一事务」这类边标签留出书写位。 */
+.row{display:flex; gap:56px;}
+.row + .row{margin-top:56px;}
+
+.comp{
+  position:relative; z-index:3; flex:1 1 0; min-width:0;
+  border:1.6px solid var(--c,#C9D2DE); background:var(--cbg,#FBFCFE);
+  border-radius:10px; padding:10px 11px 11px;
+}
+.comp h4{font-size:12.5px; font-weight:800; color:var(--c,#374151); margin:0; letter-spacing:.2px;}
+.comp .ct{font-size:10.5px; color:var(--ink3); margin-top:4px; font-weight:700;}
+.comp .cd{font-size:11px; color:var(--ink2); margin-top:6px; line-height:1.6;}
+
+.c-blue  {--c:#2C6FBE; --cbg:#F3F8FE;}
+.c-teal  {--c:#2E9E8F; --cbg:#F1FAF8;}
+.c-purple{--c:#7C5CBF; --cbg:#F8F5FE;}
+.c-amber {--c:#C98A1F; --cbg:#FEFAF0;}
+.c-coral {--c:#D16B65; --cbg:#FEF7F6;}
+.c-gold  {--c:#C2803A; --cbg:#FDF8F0;}
+.c-sky   {--c:#4AA3D8; --cbg:#F2F9FD;}
+.c-red   {--c:#C0504D; --cbg:#FDF3F2;}
+.c-grey  {--c:#8A93A0; --cbg:#F7F8FA;}
+
+.notes{border-top:1.6px solid var(--line); margin-top:22px; padding-top:14px;}
+.notes p{font-size:11.5px; color:var(--ink2); margin:0 0 7px; line-height:1.72;}
+.notes p:last-child{margin-bottom:0;}
+.notes p b{color:#2C6FBE;}
+.notes .no{
+  display:inline-block; width:15px; height:15px; line-height:15px; text-align:center;
+  border-radius:50%; background:#EAF1FB; color:#2C6FBE; font-size:10px; font-weight:800;
+  margin-right:6px; vertical-align:1px;
+}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="hd">
+    <h1>本地表 + 异步 · 两条通道共用一个范式</h1>
+    <p class="sub">
+      出站「待发送表」与入站「订阅落库表」是同构的：<b>3</b> 个分区 · <b>10</b> 个组件 · <b>10</b> 条依赖 · 先落库、后异步，出站按<b>批次号</b>统一认领
+    </p>
+    <div class="legend">
+      <span class="lg"><span class="sw" style="border-color:#2C6FBE"></span>同步调用</span>
+      <span class="lg"><span class="sw dash" style="border-color:#2E9E8F"></span>异步 / 事件</span>
+      <span class="lg"><span class="sw dot" style="border-color:#8A93A0"></span>扫描 / 数据依赖</span>
+    </div>
+  </div>
+
+  <div class="canvas">
+    <svg class="edges">
+      <defs>
+        <marker id="ar-sync"  viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2C6FBE"/></marker>
+        <marker id="ar-async" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2E9E8F"/></marker>
+        <marker id="ar-dep"   viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A93A0"/></marker>
+      </defs>
+      <g id="paths"></g>
+    </svg>
+
+    <div class="zone" style="--gc:#7C5CBF;--gbg:#F8F5FE">
+      <h2>触发源 <small>两类入口 —— 人操作 / 消息到达</small></h2>
+      <div class="row">
+        <div class="comp c-sky" data-cid="ui"><h4>界面端 · 合同中心</h4><div class="ct">确认收货 / 手动重试</div><div class="cd">只发起业务请求，不直接联系下游</div></div>
+        <div style="flex:1 1 0"></div>
+        <div class="comp c-purple" data-cid="mq"><h4>消息中间件</h4><div class="ct">订阅 Topic</div><div class="cd">到货通知 / 支付结果 / 状态变更</div></div>
+      </div>
+    </div>
+
+    <div class="zone" style="--gc:#2C6FBE;--gbg:#F3F8FE">
+      <h2>合同中心 · 本地表 + 异步 <small>同一范式：先落本地库，再异步处理</small></h2>
+      <div class="row">
+        <div class="comp c-blue" data-cid="biz"><h4>业务事务</h4><div class="ct">合同状态 / 数量</div><div class="cd">与本地表同一个数据库事务</div></div>
+        <div class="comp c-teal" data-cid="outbox"><h4>待发送第三方表</h4><div class="ct">出站消息表</div><div class="cd">目标系统 · 状态 · <b>派发批次号</b> · 幂等键</div></div>
+        <div class="comp c-teal" data-cid="inbox"><h4>订阅落库表</h4><div class="ct">入站消息表</div><div class="cd">消息 ID 唯一索引，天然去重</div></div>
+      </div>
+      <div class="row">
+        <div style="flex:1 1 0"></div>
+        <div class="comp c-amber" data-cid="disp"><h4>异步派发线程</h4><div class="ct">出站通道</div><div class="cd">取批次号 · 批量认领 · 阶梯重试</div></div>
+        <div class="comp c-amber" data-cid="cons"><h4>异步消费线程</h4><div class="ct">入站通道</div><div class="cd">扫描 · 幂等处理 · 失败同样阶梯重试</div></div>
+      </div>
+    </div>
+
+    <div class="zone" style="--gc:#6B7280;--gbg:#F5F6F8">
+      <h2>下游与兜底 <small>跨系统边界只出现在这一层</small></h2>
+      <div class="row">
+        <div class="comp c-coral" data-cid="fund"><h4>资金模块</h4><div class="ct">下游系统</div><div class="cd">按幂等键去重</div></div>
+        <div class="comp c-coral" data-cid="wr"><h4>仓单模块</h4><div class="ct">下游系统</div><div class="cd">按幂等键去重</div></div>
+        <div class="comp c-grey" data-cid="ops"><h4>运营人工</h4><div class="ct">站内信 / 工单</div><div class="cd">超 N 次告警，处理后手动重试</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <p><span class="no">①</span><b>两条通道，一个范式</b>：出站是「业务事务内写待发送表 → 异步派发」，入站是「消息到达先写落库表 → 异步消费」；都是<b>用一次本地事务换掉一次跨系统调用</b>，把分布式问题收敛成单库问题。</p>
+    <p><span class="no">②</span><b>跨系统边界只有三处</b>：派发线程到资金、到仓单，以及超限后的运营告警。其余连线都在本地库内，因此不存在「两个下游必须同时成功」的事务要求。</p>
+    <p><span class="no">③</span>入站通道的落地顺序正好相反：<b>先落库再处理</b>，因此消息重复投递被表上的唯一索引挡掉，处理失败也只影响这张表，不影响 MQ 的位点。</p>
+    <p><span class="no">④</span><b>出站派发按「批次号」组织</b>：派发线程每次扫描前先取一个全局唯一批次号，用一条 UPDATE 把整批记录同时认领（写 status + batch_no），这一批即<b>统一批次</b>；回写与回收都以批次号为范围。这样多个实例并行派发时各管各的批次，<b>不会重复发送、也不会互相覆盖</b>——是后续集群部署的地基。</p>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var DEPS = [
+    { from: 'ui',     to: 'biz',    kind: 'sync'  },
+    { from: 'ui',     to: 'outbox', kind: 'sync',  label: '手动重试', at: 0.72 },
+    { from: 'mq',     to: 'inbox',  kind: 'sync',  label: '先落库' },
+    { from: 'biz',    to: 'outbox', kind: 'sync',  label: '同一事务' },
+    { from: 'outbox', to: 'disp',   kind: 'dep',   label: '异步扫描', side: ['b', 't'] },
+    { from: 'inbox',  to: 'cons',   kind: 'dep',   label: '异步消费', side: ['b', 't'] },
+    { from: 'cons',   to: 'biz',    kind: 'async', label: '推进合同业务', side: ['t', 'b'], at: 0.14 },
+    { from: 'disp',   to: 'fund',   kind: 'sync',  label: '确认收货' },
+    { from: 'disp',   to: 'wr',     kind: 'sync',  label: '确认收货' },
+    { from: 'disp',   to: 'ops',    kind: 'async', label: '超 N 次告警' }
+  ];
+  var COLOR = { sync: '#2C6FBE', async: '#2E9E8F', dep: '#8A93A0' };
+  var DASH  = { sync: '', async: '8 5', dep: '2 4' };
+
+  var canvas = document.querySelector('.canvas');
+  var g = document.getElementById('paths');
+  if (!canvas || !g) return;
+
+  var C = canvas.getBoundingClientRect();
+  function boxOf(id) {
+    var el = document.querySelector('[data-cid="' + id + '"]');
+    if (!el) { console.warn('DEPS 里的 id 不存在:', id); return null; }
+    var r = el.getBoundingClientRect();
+    return {
+      l: r.left - C.left, t: r.top - C.top, r: r.right - C.left, b: r.bottom - C.top,
+      w: r.width, h: r.height,
+      cx: r.left - C.left + r.width / 2, cy: r.top - C.top + r.height / 2,
+      el: el
+    };
+  }
+
+  var svgns = 'http://www.w3.org/2000/svg';
+  var drawn = 0;
+
+  function autoSides(a, b) {
+    var same = a.el && b.el && a.el.closest('.zone') === b.el.closest('.zone');
+    if (same) return b.cx > a.cx ? ['r', 'l'] : ['l', 'r'];
+    return b.cy > a.cy ? ['b', 't'] : ['t', 'b'];
+  }
+  function anchorOf(box, side, back) {
+    if (side === 'r') return { x: box.r + back, y: box.cy };
+    if (side === 'l') return { x: box.l - back, y: box.cy };
+    if (side === 'b') return { x: box.cx, y: box.b + back };
+    return { x: box.cx, y: box.t - back };
+  }
+
+  var ALLCOMP = Array.prototype.slice.call(document.querySelectorAll('.comp')).map(function (el) {
+    var r = el.getBoundingClientRect();
+    return { cx: r.left - C.left + r.width / 2, t: r.top - C.top, b: r.bottom - C.top };
+  });
+  function blocked(a, b) {
+    var lo = Math.min(a.cx, b.cx) + 4, hi = Math.max(a.cx, b.cx) - 4;
+    var yt = Math.min(a.t, b.t), yb = Math.max(a.b, b.b);
+    for (var i = 0; i < ALLCOMP.length; i++) {
+      var c = ALLCOMP[i];
+      if (c.cx > lo && c.cx < hi && c.t < yb && c.b > yt) return true;
+    }
+    return false;
+  }
+  var laneN = 0;
+
+  DEPS.forEach(function (e) {
+    var a = boxOf(e.from), b = boxOf(e.to);
+    if (!a || !b) return;
+    var kind = e.kind || 'sync';
+    var d, mid;
+
+    var sides = e.side || autoSides(a, b);
+    var sOut = sides[0], sIn = sides[1];
+    var p1 = anchorOf(a, sOut, 0);
+    var p2 = anchorOf(b, sIn, 5);
+
+    if (sOut === 'r' || sOut === 'l') {
+      if (Math.abs(p2.y - p1.y) < 2) {
+        if (blocked(a, b)) {
+          var yB = Math.max(a.b, b.b) + 10 + (laneN++) * 8;
+          d = 'M' + a.cx + ',' + a.b + ' V' + yB + ' H' + b.cx + ' V' + b.b;
+          mid = { x: (a.cx + b.cx) / 2, y: yB + 11 };
+        } else {
+          d = 'M' + p1.x + ',' + p1.y + ' H' + p2.x;
+          mid = { x: (p1.x + p2.x) / 2, y: p1.y - 9 };
+        }
+      } else {
+        var mx = (p1.x + p2.x) / 2;
+        d = 'M' + p1.x + ',' + p1.y + ' H' + mx + ' V' + p2.y + ' H' + p2.x;
+        mid = { x: mx, y: (p1.y + p2.y) / 2 - 6 };
+      }
+    } else {
+      if (Math.abs(p2.x - p1.x) < 2) {
+        d = 'M' + p1.x + ',' + p1.y + ' V' + p2.y;
+        mid = { x: p1.x + 9, y: (p1.y + p2.y) / 2 };
+      } else {
+        var my = (p1.y + p2.y) / 2;
+        d = 'M' + p1.x + ',' + p1.y + ' V' + my + ' H' + p2.x + ' V' + p2.y;
+        mid = { x: (p1.x + p2.x) / 2, y: my - 6 };
+      }
+    }
+
+    /* at：标签沿连线方向的位置，默认 0.5。
+       两条边标签撞在一起时（如「推进合同业务」与前一条），把它前移即可错开。 */
+    var at = (e.at == null) ? 0.5 : e.at;
+    if (Math.abs(p2.x - p1.x) >= 2) mid.x = p1.x + (p2.x - p1.x) * at;
+
+    var p = document.createElementNS(svgns, 'path');
+    p.setAttribute('d', d);
+    p.setAttribute('fill', 'none');
+    p.setAttribute('stroke', COLOR[kind]);
+    p.setAttribute('stroke-width', kind === 'dep' ? '1.5' : '1.8');
+    if (DASH[kind]) p.setAttribute('stroke-dasharray', DASH[kind]);
+    p.setAttribute('marker-end', 'url(#ar-' + kind + ')');
+    g.appendChild(p);
+    drawn++;
+
+    if (e.label) {
+      var t = document.createElementNS(svgns, 'text');
+      t.setAttribute('class', 'elabel');
+      t.setAttribute('x', mid.x); t.setAttribute('y', mid.y);
+      t.setAttribute('text-anchor', 'middle');
+      t.textContent = e.label;
+      g.appendChild(t);
+    }
+  });
+
+  window.__DIAGRAM_STATS__ = {
+    type: 'component',
+    nodes: document.querySelectorAll('.comp').length,
+    edges: DEPS.length,
+    drawn: drawn
+  };
+  window.__DIAGRAM_READY__ = true;
+})();
+</script>
+</body>
+</html>

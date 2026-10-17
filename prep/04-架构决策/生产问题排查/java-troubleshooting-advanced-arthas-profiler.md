@@ -13,9 +13,9 @@
 
 ---
 
-# 第一篇 Arthas tt 命令深度实战
+## 第一篇 Arthas tt 命令深度实战
 
-## 1.1 tt 是什么，为什么需要它
+### 1.1 tt 是什么，为什么需要它
 
 `trace` / `watch` 是**"实时盯梢"**——只有你盯着的这一刻发生的调用才能被捕获。
 但线上问题常常是**偶发**的：某个参数组合、某个特定用户、某个时间点才触发。
@@ -33,7 +33,7 @@
 | `trace` | 实时 | ❌ 只能看当下 |
 | `tt` | **录制 + 事后** | ✅ 可检索任意历史调用 |
 
-## 1.2 基础用法
+### 1.2 基础用法
 
 ```bash
 # 1. attach
@@ -62,7 +62,7 @@ tt -t com.demo.service.OrderService createOrder
 | `OBJECT` | 对象 hash |
 | `CLASS` / `METHOD` | 类名 / 方法名 |
 
-## 1.3 核心杀招：按耗时/异常过滤
+### 1.3 核心杀招：按耗时/异常过滤
 
 只关心慢调用和异常：
 
@@ -87,7 +87,7 @@ tt -t com.demo.service.OrderService createOrder '#cost > 1000 && params[0].userI
 > - `#cost` —— 本次调用耗时（ms）
 > - `target` —— 当前对象实例
 
-## 1.4 检索与查看现场
+### 1.4 检索与查看现场
 
 录制一段时间后（比如让"偶发问题"跑一夜），开始事后分析：
 
@@ -121,7 +121,7 @@ tt -i 1000
 
 **关键**：`tt -i 1000` 能把那一刻**完整的入参和返回值**打印出来 —— 这就是"复现偶发问题"的核心能力。
 
-## 1.5 进阶：tt 的所有子命令
+### 1.5 进阶：tt 的所有子命令
 
 ```bash
 # 列出现有录制
@@ -154,7 +154,7 @@ tt --stat
 #  有 16 次调用超过 1 秒 → 这些就是问题所在
 ```
 
-## 1.6 高阶：tt 回放（复现问题）
+### 1.6 高阶：tt 回放（复现问题）
 
 `tt` 最强大的能力 —— **把历史调用的入参重新执行一次**，用于在修复后验证：
 
@@ -179,7 +179,7 @@ tt -i 1000 -p --params '99999'
 > ⚠️ **安全警告**：`-p` 回放会**真实执行业务逻辑**（可能写库、发消息）！
 > 生产环境回放**必须极其谨慎**，优先在预发/测试环境操作。
 
-## 1.7 实战案例：偶发慢订单排查
+### 1.7 实战案例：偶发慢订单排查
 
 **背景**：订单创建接口偶发 4-5 秒，复现困难，白天不明显。
 
@@ -209,7 +209,7 @@ trace com.demo.service.CouponService calcDiscount -n 3
 
 **根因**：优惠券查询表 `user_coupon` 缺索引，带 `couponId` 的订单走全表扫描。
 
-## 1.8 tt 使用注意事项
+### 1.8 tt 使用注意事项
 
 | 事项 | 说明 |
 |---|---|
@@ -226,16 +226,16 @@ tt -t com.demo.service.OrderService createOrder '#cost > 1000' -n 200
 
 ---
 
-# 第二篇 Arthas ognl 高级用法
+## 第二篇 Arthas ognl 高级用法
 
-## 2.1 ognl 是什么
+### 2.1 ognl 是什么
 
 OGNL（Object-Graph Navigation Language）是一种**表达式语言**，Arthas 内置了 ognl 命令，
 可以直接在**运行中的 JVM 里读取/修改对象、调用方法、遍历容器**。
 
 > 它是线上"**动态调试**"的终极武器：不改代码、不重启，就能看/改运行时状态。
 
-## 2.2 基础语法
+### 2.2 基础语法
 
 ```bash
 # 执行表达式（注意整个表达式用引号包裹）
@@ -246,7 +246,7 @@ ognl '#context'                  # 当前上下文
 ognl '#classLoader'              # 当前类加载器
 ```
 
-## 2.3 实战一：读取/修改静态字段
+### 2.3 实战一：读取/修改静态字段
 
 **场景**：线上某个开关写死为 `false`，想临时打开验证。
 
@@ -268,7 +268,7 @@ ognl '@com.demo.config.FeatureConfig@DEBUG = true'
 > ⚠️ **注意**：`final` 修饰的字段无法被 ognl 修改；
 > 且修改是**临时的**，重启即失效，务必同步回代码。
 
-## 2.4 实战二：读取静态 Map/List 配置
+### 2.4 实战二：读取静态 Map/List 配置
 
 ```bash
 # 读取一个静态 Map 配置
@@ -290,7 +290,7 @@ ognl '@com.demo.config.Constants@WHITE_LIST.contains("10.0.0.5")'
 **典型用途**：排查"配置为何不生效"——直接看**运行时真实加载的配置**，
 避免"本地改了但没发布"或"配置中心没推送成功"的困惑。
 
-## 2.5 实战三：调用方法
+### 2.5 实战三：调用方法
 
 ```bash
 # 调用静态方法
@@ -307,7 +307,7 @@ ognl '@java.lang.System@getProperty("user.dir")'
 ognl '@java.lang.System@getenv("JAVA_HOME")'
 ```
 
-## 2.6 实战四：查看 Spring 容器中的 Bean
+### 2.6 实战四：查看 Spring 容器中的 Bean
 
 这是 ognl 在 Spring 项目里的**王牌用法** —— 直接定位容器里的 Bean 状态。
 
@@ -330,7 +330,7 @@ ognl '@com.demo.util.SpringContextUtil@getBean("orderExecutor").getPoolSize()'
 
 **典型场景**：线程池参数"配了但没生效"——用 ognl 读**运行时的真实参数**，一查便知。
 
-## 2.7 实战五：遍历与条件筛选
+### 2.7 实战五：遍历与条件筛选
 
 OGNL 支持类集合的操作：
 
@@ -348,7 +348,7 @@ ognl '@com.demo.config.ServerConfig@SERVERS.size()'
 ognl '@com.demo.config.StatsConfig@COUNTERS.{ #this }.sum()'
 ```
 
-## 2.8 实战六：配合 tt / watch 使用
+### 2.8 实战六：配合 tt / watch 使用
 
 `ognl` 的表达式语法可以直接用在 `watch` / `tt` 里：
 
@@ -366,7 +366,7 @@ tt -t com.demo.service.OrderService createOrder \
   '@com.demo.config.FeatureConfig@DEBUG == true'
 ```
 
-## 2.9 实战七：查看/触发 GC、查看内存
+### 2.9 实战七：查看/触发 GC、查看内存
 
 ```bash
 # 触发一次 Full GC（Arthas 自带命令更直观）
@@ -382,7 +382,7 @@ ognl '@java.lang.Runtime@getRuntime().maxMemory()'
 ognl '@java.lang.Runtime@getRuntime().freeMemory()'
 ```
 
-## 2.10 ognl 安全与注意事项
+### 2.10 ognl 安全与注意事项
 
 | 事项 | 说明 |
 |---|---|
@@ -400,9 +400,9 @@ ognl '@com.demo.config.Constants@MAP.get("key")'
 
 ---
 
-# 第三篇 async-profiler 火焰图实战
+## 第三篇 async-profiler 火焰图实战
 
-## 3.1 为什么需要火焰图
+### 3.1 为什么需要火焰图
 
 `jstack` 只能看到**某一瞬间**的线程快照，无法回答：
 - 一个接口 80% 的时间花在**哪些方法**上？
@@ -411,7 +411,7 @@ ognl '@com.demo.config.Constants@MAP.get("key")'
 
 **火焰图**能把这"**一段时间内的调用分布**"可视化。它不是快照，而是**统计采样**。
 
-## 3.2 async-profiler 的优势
+### 3.2 async-profiler 的优势
 
 相比传统工具（JVisualVM、JProfiler、perf）：
 
@@ -425,7 +425,7 @@ ognl '@com.demo.config.Constants@MAP.get("key")'
 **核心优势**：基于 `AsyncGetCallTrace` + `perf_events`，
 **不依赖安全点（Safe Point）**，能精确采集到真实热点，且开销通常 < 2%。
 
-## 3.3 安装
+### 3.3 安装
 
 ```bash
 # 下载（按 CPU 架构选，常见 x86_64）
@@ -439,7 +439,7 @@ cd async-profiler-3.0-linux-x64
 # profiler.sh  主脚本
 ```
 
-## 3.4 基础用法
+### 3.4 基础用法
 
 ```bash
 # 语法：./profiler.sh [选项] <pid>
@@ -455,7 +455,7 @@ sleep 30
 
 生成的 `cpu.html` **下载到本地用浏览器打开**即可交互查看。
 
-### 采集对象（event 类型）
+#### 采集对象（event 类型）
 
 ```bash
 # CPU 热点（默认）
@@ -474,7 +474,7 @@ sleep 30
 ./profiler.sh -e wall -t -d 30 -f /tmp/wall.html PID
 ```
 
-## 3.5 如何读懂火焰图
+### 3.5 如何读懂火焰图
 
 火焰图的规则：
 
@@ -501,7 +501,7 @@ sleep 30
 > 2. 从热点**往下看调用链** —— 找到业务入口
 > 3. **窄而高的"塔尖"** 是偶发调用，通常忽略
 
-## 3.6 实战案例一：CPU 飙高定位（火焰图版）
+### 3.6 实战案例一：CPU 飙高定位（火焰图版）
 
 **背景**：某服务 CPU 持续 90%，`jstack` 多次抓取都看到"一堆 RUNNABLE 但栈五花八门"。
 
@@ -528,7 +528,7 @@ sleep 30
 
 **修复**：改用 `long`（以"分"为单位）做整数运算，或缓存计算结果，或减少精度位数。
 
-## 3.7 实战案例二：内存分配热点（alloc 模式）
+### 3.7 实战案例二：内存分配热点（alloc 模式）
 
 **背景**：GC 频繁，Young GC 每秒好几次，但堆不算小。
 
@@ -552,7 +552,7 @@ sleep 30
 
 **修复**：日志加级别判断 / 用占位符 `log.info("{}", obj)` / 降日志级别 / 关闭无用日志。
 
-## 3.8 实战案例三：锁竞争（lock 模式）
+### 3.8 实战案例三：锁竞争（lock 模式）
 
 **背景**：接口 RT 高但 CPU 不高，怀疑锁竞争。
 
@@ -572,7 +572,7 @@ sleep 30
 
 **修复**：锁粒度细化到商品维度（`synchronized (productId)` 或分段锁 / Redis 分布式锁）。
 
-## 3.9 实战案例四：CPU 不高但接口慢（wall 模式）
+### 3.9 实战案例四：CPU 不高但接口慢（wall 模式）
 
 **背景**：接口 RT 3 秒，但 CPU 只有 10%。
 
@@ -596,7 +596,7 @@ sleep 30
 
 > **wall vs cpu 的关键区别**：CPU 不高但慢 → 一定用 **wall** 模式，因为 CPU 模式看不到等待时间。
 
-## 3.10 与 Arthas profiler 的配合
+### 3.10 与 Arthas profiler 的配合
 
 Arthas 内置了 async-profiler，无需单独安装：
 
@@ -613,7 +613,7 @@ profiler status              # 查看状态
 
 输出会提示 `Profiling started` 和生成的文件路径。
 
-## 3.11 常用参数速查
+### 3.11 常用参数速查
 
 ```bash
 ./profiler.sh -h                    # 帮助
@@ -640,7 +640,7 @@ profiler status              # 查看状态
 ./profiler.sh -d 30 -o flat -f /tmp/flat.txt PID
 ```
 
-## 3.12 火焰图之外：flat 输出（无 GUI 快速定位）
+### 3.12 火焰图之外：flat 输出（无 GUI 快速定位）
 
 不方便打开 HTML 时，用 `flat` 模式直接打文本排行：
 
@@ -659,7 +659,7 @@ Total samples: 45231
   ...
 ```
 
-## 3.13 火焰图注意事项
+### 3.13 火焰图注意事项
 
 | 事项 | 说明 |
 |---|---|
@@ -677,9 +677,9 @@ Total samples: 45231
 
 ---
 
-# 第四篇 三件套联合排查实战
+## 第四篇 三件套联合排查实战
 
-## 4.1 场景：接口偶发 RT 高 + CPU 中等
+### 4.1 场景：接口偶发 RT 高 + CPU 中等
 
 **目标**：一个完整闭环，展示 tt / ognl / 火焰图如何配合。
 
@@ -722,7 +722,7 @@ tt -i 1000 -p
 #  COST(ms): 320.11   ← 从 4521ms 降到 320ms，验证通过
 ```
 
-## 4.2 工具选择决策树
+### 4.2 工具选择决策树
 
 ```
 问题现象是什么？
@@ -744,7 +744,7 @@ tt -i 1000 -p
 └─ 方法级耗时 ──────────→ Arthas trace / watch
 ```
 
-## 4.3 组合使用速记
+### 4.3 组合使用速记
 
 | 你要做的事 | 命令 |
 |---|---|
@@ -761,7 +761,7 @@ tt -i 1000 -p
 | 慢但 CPU 低 | `profiler.sh -e wall -t -d 30 -f x.html PID` |
 | 无 GUI 快速看排行 | `profiler.sh -e cpu -o flat -f x.txt PID` |
 
-## 4.4 三大安全红线
+### 4.4 三大安全红线
 
 > 1. **`tt -p` 回放会真实执行业务逻辑** —— 写操作（下单/扣款/发消息）绝不在生产回放。
 > 2. **`ognl` 改字段立即生效** —— 高危操作，需审批、需记录、需回滚预案。
@@ -769,7 +769,7 @@ tt -i 1000 -p
 
 ---
 
-## 附：一页纸记忆口诀
+### 附：一页纸记忆口诀
 
 ```
 CPU 高     → 火焰图 cpu 找最宽方块

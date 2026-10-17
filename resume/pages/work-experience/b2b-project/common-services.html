@@ -1,19 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>公共服务模块 - B2B分布式项目</title>
+    <title>公共服务模块 - B2B大宗交易平台复盘</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .service-card {
-            transition: all 0.3s ease;
-        }
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
+        .service-card { transition: all 0.3s ease; }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -22,890 +17,263 @@
             <h1 class="text-3xl font-bold text-gray-800 mb-2">
                 <i class="fas fa-cubes mr-3 text-green-500"></i>公共服务模块
             </h1>
-            <p class="text-gray-500 mb-6">Common Services - 通用基础服务能力</p>
-            
-            <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-8">
-                <p class="text-green-700">
+            <p class="text-gray-500 mb-6">Common Services - 平台级公共能力，沉淀通用能力、避免各业务微服务重复造轮子</p>
+
+            <!-- 定位 -->
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
+                <p class="text-green-800">
                     <i class="fas fa-lightbulb mr-2"></i>
-                    <strong>核心定位：</strong>公共服务模块提供系统通用的基础服务能力，包括认证服务、短信服务、外联网关、支付模块、订单模块、客户模块、智能体模块等，减少重复开发，提升开发效率。
+                    <strong>核心定位：</strong>公共服务模块是<strong>平台级基础设施</strong>，位于业务微服务之下、为其提供文件、消息、字典、定时、数据同步等通用能力。它的价值不是"多一个服务"，而是让几十个业务微服务在<strong>存储、推送、配置、调度、数据同步</strong>上统一收口——口径一致、复用一致、运维一致。
+                </p>
+            </div>
+
+            <!-- 我的角色（诚实口径） -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong>技术经理 / Java 侧负责人。公共服务是<strong>团队共建的平台能力</strong>，并非我一人从零开发：我负责<strong>技术选型、能力边界定义与治理规范</strong>（哪些能力必须收口、对外接口契约、容量与稳定性要求），具体模块由团队分工落地。我做的是"定标准、划边界、保稳定"。
                 </p>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-th-large mr-2 text-green-500"></i>服务模块概览
+                <i class="fas fa-layer-group mr-2 text-green-500"></i>在架构中的位置
             </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="service-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">认证服务</h4>
-                    <p class="text-sm opacity-90">统一身份认证</p>
-                </div>
-                <div class="service-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-sms text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">短信服务</h4>
-                    <p class="text-sm opacity-90">短信发送与验证码</p>
-                </div>
-                <div class="service-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-plug text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">外联网关</h4>
-                    <p class="text-sm opacity-90">第三方系统对接</p>
-                </div>
-                <div class="service-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-credit-card text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">支付模块</h4>
-                    <p class="text-sm opacity-90">多渠道支付</p>
-                </div>
-                <div class="service-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-shopping-cart text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">订单模块</h4>
-                    <p class="text-sm opacity-90">订单全生命周期</p>
-                </div>
-                <div class="service-card bg-gradient-to-br from-pink-500 to-pink-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-user-tie text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">客户模块</h4>
-                    <p class="text-sm opacity-90">客户关系管理</p>
-                </div>
-                <div class="service-card bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-brain text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">智能体模块</h4>
-                    <p class="text-sm opacity-90">AI智能助手</p>
-                </div>
-                <div class="service-card bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-puzzle-piece text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">业务模块</h4>
-                    <p class="text-sm opacity-90">各业务领域服务</p>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-8">
+                <div class="space-y-3">
+                    <div class="bg-white border-2 border-dashed border-gray-300 p-3 rounded-lg text-center text-sm text-gray-600">
+                        业务微服务（合同中心 / 交易 / 支付结算 / 仓单物流 / 开票 …）
+                    </div>
+                    <div class="text-center text-gray-400"><i class="fas fa-arrow-down"></i> 依赖</div>
+                    <div class="bg-green-500 text-white p-4 rounded-lg text-center">
+                        <p class="font-bold mb-1"><i class="fas fa-cubes mr-1"></i>公共服务模块（平台级）</p>
+                        <p class="text-xs opacity-90">文件存储 · 消息推送 · 字典/配置 · 定时任务 · CDC 数据同步 · 分布式锁</p>
+                    </div>
+                    <div class="text-center text-gray-400"><i class="fas fa-arrow-down"></i> 运行于</div>
+                    <div class="bg-gray-700 text-white p-3 rounded-lg text-center text-sm">
+                        MySQL / Redis / Elasticsearch / MinIO / Kafka
+                    </div>
                 </div>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-cogs mr-2 text-green-500"></i>核心服务模块
+                <i class="fas fa-th-large mr-2 text-green-500"></i>能力概览
             </h2>
-            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="service-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-folder-open text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">文件存储</h4>
+                    <p class="text-sm opacity-90">MinIO 对象存储，统一上传/下载/签名</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-bell text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">消息推送</h4>
+                    <p class="text-sm opacity-90">站内信/短信/通知统一出口</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-book text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">字典 / 配置管理</h4>
+                    <p class="text-sm opacity-90">多租户字典与配置，缓存加速</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-clock text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">定时任务</h4>
+                    <p class="text-sm opacity-90">XXL-Job 统一调度（含日终对账）</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-arrows-rotate text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">CDC 数据同步</h4>
+                    <p class="text-sm opacity-90">Canal 增量订阅，数据异构同步</p>
+                </div>
+                <div class="service-card bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-lock text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">分布式锁</h4>
+                    <p class="text-sm opacity-90">Redisson 锁，保护并发临界区</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-cogs mr-2 text-green-500"></i>核心能力实现
+            </h2>
+
             <div class="space-y-8 mb-8">
+                <!-- 文件存储 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-blue-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-shield-alt text-blue-500 text-2xl"></i>
+                            <i class="fas fa-folder-open text-blue-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">认证服务</h3>
+                        <h3 class="text-xl font-semibold">文件存储（MinIO 对象存储）</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        提供统一的身份认证、授权管理、Token管理等功能，支持多种认证方式。
+                        合同附件、发票 PDF、物流单据、签章文件全部走统一文件服务，底层 MinIO。业务方只拿 <code>fileId</code>，存储实现与桶策略对业务透明；上传走预签名直传，避免大文件占用应用带宽。
                     </p>
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
                         <pre><code class="language-java">@Service
-public class AuthService {
-    
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private JwtService jwtService;
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    
-    public LoginResponse login(LoginRequest request) {
-        User user = userRepository.findByUsername(request.getUsername());
-        
-        if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BusinessException("用户名或密码错误");
-        }
-        
-        if (!user.isEnabled()) {
-            throw new BusinessException("账号已禁用");
-        }
-        
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-        
-        return LoginResponse.builder()
-            .accessToken(accessToken)
-            .refreshToken(refreshToken)
-            .userInfo(convertToUserInfo(user))
-            .build();
+public class FileStorageService {
+
+    @Autowired private MinioClient minioClient;
+
+    /** 预签名上传：前端直传 MinIO，返回 fileId，业务只存 fileId */
+    public PresignedUpload presignedPut(String bizType, String ext) {
+        String objectKey = bizType + "/" + UUID.randomUUID() + "." + ext;
+        String url = minioClient.getPresignedObjectUrl(
+            GetPresignedObjectUrlArgs.builder()
+                .method(Method.PUT)
+                .bucket(bucketOf(bizType))
+                .object(objectKey)
+                .expiry(15, TimeUnit.MINUTES)
+                .build());
+        return new PresignedUpload(objectKey, url);
     }
-    
-    public RefreshTokenResponse refreshToken(String refreshToken) {
-        if (!jwtService.validateRefreshToken(refreshToken)) {
-            throw new BusinessException("RefreshToken无效");
-        }
-        
-        String userId = jwtService.getUserIdFromToken(refreshToken);
-        User user = userRepository.findById(userId).orElse(null);
-        
-        if (user == null) {
-            throw new BusinessException("用户不存在");
-        }
-        
-        String newAccessToken = jwtService.generateAccessToken(user);
-        
-        return RefreshTokenResponse.builder()
-            .accessToken(newAccessToken)
-            .build();
-    }
-    
-    public void logout(String userId) {
-        jwtService.revokeTokens(userId);
+
+    /** 下载：返回短时效预签名 URL，不暴露对象存储内网地址 */
+    public String presignedGet(String objectKey) {
+        return minioClient.getPresignedObjectUrl(
+            GetPresignedObjectUrlArgs.builder()
+                .method(Method.GET)
+                .bucket(bucketOf(objectKey))
+                .object(objectKey)
+                .expiry(10, TimeUnit.MINUTES)
+                .build());
     }
 }</code></pre>
                     </div>
                 </div>
 
-                <div class="bg-white border border-gray-200 rounded-lg p-5">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-sms text-purple-500 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold">短信服务</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4">
-                        提供短信发送、验证码管理、模板管理等功能，支持多渠道短信服务商接入。
-                    </p>
-                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
-                        <pre><code class="language-java">@Service
-public class SmsService {
-    
-    @Autowired
-    private SmsProvider smsProvider;
-    
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-    
-    private static final String SMS_CODE_PREFIX = "sms:code:";
-    
-    public void sendVerificationCode(String phone, String scene) {
-        String code = generateCode(6);
-        
-        String templateCode = getTemplateCode(scene);
-        Map<String, String> params = new HashMap<>();
-        params.put("code", code);
-        
-        smsProvider.send(phone, templateCode, params);
-        
-        String redisKey = SMS_CODE_PREFIX + scene + ":" + phone;
-        redisTemplate.opsForValue().set(redisKey, code, 5, TimeUnit.MINUTES);
-    }
-    
-    public boolean verifyCode(String phone, String code, String scene) {
-        String redisKey = SMS_CODE_PREFIX + scene + ":" + phone;
-        String storedCode = redisTemplate.opsForValue().get(redisKey);
-        
-        if (storedCode == null) {
-            return false;
-        }
-        
-        boolean matched = storedCode.equals(code);
-        if (matched) {
-            redisTemplate.delete(redisKey);
-        }
-        
-        return matched;
-    }
-    
-    public void sendNotification(String phone, String templateCode, Map<String, String> params) {
-        smsProvider.send(phone, templateCode, params);
-    }
-    
-    private String generateCode(int length) {
-        StringBuilder sb = new StringBuilder();
-        Random random = new Random();
-        for (int i = 0; i < length; i++) {
-            sb.append(random.nextInt(10));
-        }
-        return sb.toString();
-    }
-    
-    private String getTemplateCode(String scene) {
-        Map<String, String> templateMap = new HashMap<>();
-        templateMap.put("login", "TPL_LOGIN");
-        templateMap.put("register", "TPL_REGISTER");
-        templateMap.put("reset", "TPL_RESET");
-        return templateMap.getOrDefault(scene, "TPL_DEFAULT");
-    }
-}
-
-public interface SmsProvider {
-    void send(String phone, String templateCode, Map<String, String> params);
-}
-
-@Service
-public class AliyunSmsProvider implements SmsProvider {
-    
-    @Override
-    public void send(String phone, String templateCode, Map<String, String> params) {
-    }
-}</code></pre>
-                    </div>
-                </div>
-
+                <!-- 字典/配置 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-orange-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-plug text-orange-500 text-2xl"></i>
+                            <i class="fas fa-book text-orange-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">外联网关</h3>
+                        <h3 class="text-xl font-semibold">字典 / 配置管理（多租户 + 缓存）</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        统一对接各种第三方系统，提供适配器模式，支持协议转换、签名验签、限流熔断等功能。
+                        字典项与业务配置按<strong>租户维度</strong>隔离，一次读取后写入 Redis 缓存；配置变更通过消息通知各节点失效本地缓存。这是多租户可配置化的底层支撑——合同模板、资金比例、交易模式的配置都从这里读。
                     </p>
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
                         <pre><code class="language-java">@Service
-public class ExternalGateway {
-    
-    private final Map<String, ExternalAdapter> adapters = new ConcurrentHashMap<>();
-    
-    @PostConstruct
-    public void init() {
-        adapters.put("alipay", new AlipayAdapter());
-        adapters.put("wechat", new WechatAdapter());
-        adapters.put("sms", new SmsAdapter());
-        adapters.put("logistics", new LogisticsAdapter());
-    }
-    
-    public ExternalResponse invoke(String system, String action, Map<String, Object> params) {
-        ExternalAdapter adapter = adapters.get(system);
-        
-        if (adapter == null) {
-            throw new BusinessException("不支持的第三方系统: " + system);
-        }
-        
-        try {
-            return adapter.execute(action, params);
-        } catch (Exception e) {
-            return ExternalResponse.error(e.getMessage());
-        }
-    }
-    
-    public void registerAdapter(String system, ExternalAdapter adapter) {
-        adapters.put(system, adapter);
-    }
-}
+public class TenantConfigService {
 
-public interface ExternalAdapter {
-    ExternalResponse execute(String action, Map<String, Object> params);
-    String getSystemName();
-}
+    @Autowired private TenantConfigRepository repository;
+    @Autowired private RedisTemplate&lt;String, String&gt; redis;
 
-@Component
-public class AlipayAdapter implements ExternalAdapter {
-    
-    @Override
-    public ExternalResponse execute(String action, Map<String, Object> params) {
-        switch (action) {
-            case "pay":
-                return pay(params);
-            case "query":
-                return query(params);
-            case "refund":
-                return refund(params);
-            default:
-                return ExternalResponse.error("不支持的操作: " + action);
-        }
-    }
-    
-    private ExternalResponse pay(Map<String, Object> params) {
-        return ExternalResponse.success();
-    }
-    
-    private ExternalResponse query(Map<String, Object> params) {
-        return ExternalResponse.success();
-    }
-    
-    private ExternalResponse refund(Map<String, Object> params) {
-        return ExternalResponse.success();
-    }
-    
-    @Override
-    public String getSystemName() {
-        return "alipay";
-    }
-}
+    private static final String KEY = "cfg:%s:%s"; // 租户 + 配置键
 
-public class ExternalResponse {
-    private boolean success;
-    private String code;
-    private String message;
-    private Object data;
-    
-    public static ExternalResponse success() {
-        return success(null);
+    /** 读配置：先缓存，回源后写入；租户隔离 */
+    public String get(String tenantId, String cfgKey) {
+        String key = String.format(KEY, tenantId, cfgKey);
+        String cached = redis.opsForValue().get(key);
+        if (cached != null) return cached;
+
+        String value = repository.find(tenantId, cfgKey).getValue();
+        redis.opsForValue().set(key, value, 30, TimeUnit.MINUTES);
+        return value;
     }
-    
-    public static ExternalResponse success(Object data) {
-        ExternalResponse response = new ExternalResponse();
-        response.setSuccess(true);
-        response.setCode("0000");
-        response.setMessage("成功");
-        response.setData(data);
-        return response;
-    }
-    
-    public static ExternalResponse error(String message) {
-        ExternalResponse response = new ExternalResponse();
-        response.setSuccess(false);
-        response.setCode("9999");
-        response.setMessage(message);
-        return response;
+
+    /** 变更后主动失效缓存（由配置变更消息触发） */
+    @EventListener
+    public void onConfigChanged(ConfigChangedEvent e) {
+        redis.delete(String.format(KEY, e.getTenantId(), e.getCfgKey()));
     }
 }</code></pre>
                     </div>
                 </div>
 
+                <!-- 定时任务 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-green-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-credit-card text-green-500 text-2xl"></i>
+                            <i class="fas fa-clock text-green-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">支付模块</h3>
+                        <h3 class="text-xl font-semibold">定时任务（XXL-Job 统一调度）</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        提供多渠道支付接入，包括支付宝、微信支付、银联等，支持支付、查询、退款、对账等功能。
+                        所有定时任务（日终对账、报表生成、超期提醒、outbox 投递）统一由 XXL-Job 调度，自带分片、失败重试与告警。任务代码只关注业务逻辑，调度与容错由平台负责。
                     </p>
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
-                        <pre><code class="language-java">@Service
-public class PaymentService {
-    
-    @Autowired
-    private PaymentChannelFactory paymentChannelFactory;
-    
-    @Autowired
-    private OrderService orderService;
-    
-    @Autowired
-    private PaymentRepository paymentRepository;
-    
-    public PaymentResponse pay(PaymentRequest request) {
-        Order order = orderService.getOrder(request.getOrderId());
-        
-        if (order == null) {
-            throw new BusinessException("订单不存在");
-        }
-        
-        if (order.isPaid()) {
-            throw new BusinessException("订单已支付");
-        }
-        
-        PaymentChannel channel = paymentChannelFactory.getChannel(request.getChannel());
-        
-        Payment payment = Payment.builder()
-            .orderId(request.getOrderId())
-            .amount(order.getAmount())
-            .channel(request.getChannel())
-            .status(PaymentStatus.PENDING)
-            .createTime(new Date())
-            .build();
-        
-        paymentRepository.save(payment);
-        
-        PaymentChannelResponse channelResponse = channel.pay(
-            payment.getId(),
-            order.getAmount(),
-            request.getExtra()
-        );
-        
-        payment.setThirdPartyPaymentId(channelResponse.getThirdPartyPaymentId());
-        paymentRepository.save(payment);
-        
-        return PaymentResponse.builder()
-            .paymentId(payment.getId())
-            .paymentUrl(channelResponse.getPaymentUrl())
-            .qrCode(channelResponse.getQrCode())
-            .build();
-    }
-    
-    public boolean callback(String channel, String paymentId, Map<String, String> params) {
-        PaymentChannel paymentChannel = paymentChannelFactory.getChannel(channel);
-        
-        if (!paymentChannel.verifyCallback(params)) {
-            return false;
-        }
-        
-        Payment payment = paymentRepository.findById(paymentId).orElse(null);
-        if (payment == null) {
-            return false;
-        }
-        
-        if (payment.getStatus() == PaymentStatus.SUCCESS) {
-            return true;
-        }
-        
-        payment.setStatus(PaymentStatus.SUCCESS);
-        payment.setPayTime(new Date());
-        paymentRepository.save(payment);
-        
-        orderService.markAsPaid(payment.getOrderId());
-        
-        return true;
-    }
-    
-    public RefundResponse refund(RefundRequest request) {
-        Payment payment = paymentRepository.findById(request.getPaymentId()).orElse(null);
-        
-        if (payment == null) {
-            throw new BusinessException("支付记录不存在");
-        }
-        
-        if (payment.getStatus() != PaymentStatus.SUCCESS) {
-            throw new BusinessException("支付未成功，无法退款");
-        }
-        
-        PaymentChannel channel = paymentChannelFactory.getChannel(payment.getChannel());
-        
-        RefundChannelResponse channelResponse = channel.refund(
-            payment.getId(),
-            request.getRefundAmount(),
-            request.getReason()
-        );
-        
-        Refund refund = Refund.builder()
-            .paymentId(payment.getId())
-            .refundAmount(request.getRefundAmount())
-            .reason(request.getReason())
-            .status(RefundStatus.SUCCESS)
-            .createTime(new Date())
-            .build();
-        
-        return RefundResponse.builder()
-            .refundId(refund.getId())
-            .status(refund.getStatus())
-            .build();
-    }
-}
+                        <pre><code class="language-java">@Component
+public class OutboxDispatchJob {
 
-public enum PaymentStatus {
-    PENDING,
-    SUCCESS,
-    FAILED,
-    REFUNDED
+    @Autowired private OutboxRepository outboxRepository;
+    @Autowired private KafkaTemplate&lt;String, String&gt; kafkaTemplate;
+
+    /** outbox 可靠投递：分片拉取未发送消息 -> 投 Kafka -> 标记已发送 */
+    @XxlJob("outboxDispatchJob")
+    public void dispatch() {
+        List&lt;OutboxMessage&gt; pending = outboxRepository.findPending(0, 200);
+        for (OutboxMessage msg : pending) {
+            kafkaTemplate.send(msg.getTopic(), msg.getIdempotentKey(), msg.getPayload());
+            outboxRepository.markSent(msg.getId());
+        }
+    }
 }</code></pre>
                     </div>
                 </div>
 
+                <!-- CDC -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
-                        <div class="bg-yellow-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-shopping-cart text-yellow-500 text-2xl"></i>
+                        <div class="bg-teal-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-arrows-rotate text-teal-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">订单模块</h3>
+                        <h3 class="text-xl font-semibold">CDC 数据同步（Canal 增量订阅）</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        提供订单全生命周期管理，包括创建、支付、发货、收货、评价、退款等功能。
+                        通过 Canal 订阅 MySQL binlog，把变更投递到 Kafka，供<strong>ES 检索、缓存刷新、数据异构同步</strong>消费。业务代码不感知同步逻辑，避免在业务里散落"双写"。
                     </p>
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
-                        <pre><code class="language-java">@Service
-public class OrderService {
-    
-    @Autowired
-    private OrderRepository orderRepository;
-    
-    @Autowired
-    private OrderItemRepository orderItemRepository;
-    
-    @Autowired
-    private IdGenerator idGenerator;
-    
-    public Order createOrder(CreateOrderRequest request) {
-        String orderId = idGenerator.generate();
-        
-        Order order = Order.builder()
-            .orderId(orderId)
-            .userId(request.getUserId())
-            .totalAmount(request.getTotalAmount())
-            .status(OrderStatus.UNPAID)
-            .createTime(new Date())
-            .build();
-        
-        List<OrderItem> items = request.getItems().stream()
-            .map(item -> OrderItem.builder()
-                .orderId(orderId)
-                .productId(item.getProductId())
-                .productName(item.getProductName())
-                .quantity(item.getQuantity())
-                .price(item.getPrice())
-                .build())
-            .collect(Collectors.toList());
-        
-        orderRepository.save(order);
-        orderItemRepository.saveAll(items);
-        
-        return order;
-    }
-    
-    public Order getOrder(String orderId) {
-        return orderRepository.findByOrderId(orderId);
-    }
-    
-    public void markAsPaid(String orderId) {
-        Order order = orderRepository.findByOrderId(orderId);
-        if (order == null) {
-            throw new BusinessException("订单不存在");
-        }
-        
-        order.setStatus(OrderStatus.PAID);
-        order.setPayTime(new Date());
-        orderRepository.save(order);
-    }
-    
-    public void ship(String orderId, ShipRequest request) {
-        Order order = orderRepository.findByOrderId(orderId);
-        if (order == null) {
-            throw new BusinessException("订单不存在");
-        }
-        
-        if (order.getStatus() != OrderStatus.PAID) {
-            throw new BusinessException("订单状态不正确");
-        }
-        
-        order.setStatus(OrderStatus.SHIPPED);
-        order.setLogisticsCompany(request.getLogisticsCompany());
-        order.setLogisticsNo(request.getLogisticsNo());
-        order.setShipTime(new Date());
-        orderRepository.save(order);
-    }
-    
-    public void confirm(String orderId) {
-        Order order = orderRepository.findByOrderId(orderId);
-        if (order == null) {
-            throw new BusinessException("订单不存在");
-        }
-        
-        if (order.getStatus() != OrderStatus.SHIPPED) {
-            throw new BusinessException("订单状态不正确");
-        }
-        
-        order.setStatus(OrderStatus.COMPLETED);
-        order.setConfirmTime(new Date());
-        orderRepository.save(order);
-    }
-    
-    public void cancel(String orderId, String reason) {
-        Order order = orderRepository.findByOrderId(orderId);
-        if (order == null) {
-            throw new BusinessException("订单不存在");
-        }
-        
-        if (order.getStatus() != OrderStatus.UNPAID && order.getStatus() != OrderStatus.PAID) {
-            throw new BusinessException("订单状态不正确");
-        }
-        
-        order.setStatus(OrderStatus.CANCELLED);
-        order.setCancelReason(reason);
-        order.setCancelTime(new Date());
-        orderRepository.save(order);
-    }
-    
-    public List<Order> queryOrders(OrderQueryRequest request) {
-        return orderRepository.queryByCondition(request);
-    }
-}
+                        <pre><code class="language-java">@Component
+public class ContractCanalListener {
 
-public enum OrderStatus {
-    UNPAID("待支付"),
-    PAID("已支付"),
-    SHIPPED("已发货"),
-    COMPLETED("已完成"),
-    CANCELLED("已取消"),
-    REFUNDED("已退款");
-    
-    private final String desc;
-    
-    OrderStatus(String desc) {
-        this.desc = desc;
+    @Autowired private KafkaTemplate&lt;String, String&gt; kafkaTemplate;
+
+    /** Canal 监听合同表变更，投递到 Kafka 供检索/缓存消费 */
+    @CanalEventListener
+    public void onEvent(CanalEntry.EventType type, CanalEntry.RowData rowData) {
+        Map&lt;String, String&gt; change = Maps.newHashMap();
+        rowData.getAfterColumnsList().forEach(c -> change.put(c.getName(), c.getValue()));
+
+        kafkaTemplate.send("cdc.contract",
+            change.get("contract_id"), JsonUtil.toJson(change));
     }
 }</code></pre>
                     </div>
                 </div>
 
-                <div class="bg-white border border-gray-200 rounded-lg p-5">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-pink-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-user-tie text-pink-500 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold">客户模块</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4">
-                        提供客户信息管理、客户画像、客户分级、客户标签、客户跟进等功能。
-                    </p>
-                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
-                        <pre><code class="language-java">@Service
-public class CustomerService {
-    
-    @Autowired
-    private CustomerRepository customerRepository;
-    
-    @Autowired
-    private CustomerTagRepository customerTagRepository;
-    
-    public Customer createCustomer(CreateCustomerRequest request) {
-        Customer customer = Customer.builder()
-            .name(request.getName())
-            .phone(request.getPhone())
-            .email(request.getEmail())
-            .company(request.getCompany())
-            .level(CustomerLevel.NORMAL)
-            .source(request.getSource())
-            .createTime(new Date())
-            .build();
-        
-        return customerRepository.save(customer);
-    }
-    
-    public Customer getCustomer(Long customerId) {
-        return customerRepository.findById(customerId).orElse(null);
-    }
-    
-    public void updateCustomer(Long customerId, UpdateCustomerRequest request) {
-        Customer customer = customerRepository.findById(customerId).orElse(null);
-        if (customer == null) {
-            throw new BusinessException("客户不存在");
-        }
-        
-        if (request.getName() != null) {
-            customer.setName(request.getName());
-        }
-        if (request.getPhone() != null) {
-            customer.setPhone(request.getPhone());
-        }
-        if (request.getEmail() != null) {
-            customer.setEmail(request.getEmail());
-        }
-        
-        customerRepository.save(customer);
-    }
-    
-    public void addTags(Long customerId, List<String> tags) {
-        Customer customer = customerRepository.findById(customerId).orElse(null);
-        if (customer == null) {
-            throw new BusinessException("客户不存在");
-        }
-        
-        List<CustomerTag> tagList = tags.stream()
-            .map(tag -> CustomerTag.builder()
-                .customerId(customerId)
-                .tag(tag)
-                .createTime(new Date())
-                .build())
-            .collect(Collectors.toList());
-        
-        customerTagRepository.saveAll(tagList);
-    }
-    
-    public void updateLevel(Long customerId, CustomerLevel level) {
-        Customer customer = customerRepository.findById(customerId).orElse(null);
-        if (customer == null) {
-            throw new BusinessException("客户不存在");
-        }
-        
-        customer.setLevel(level);
-        customerRepository.save(customer);
-    }
-    
-    public void addFollow(Long customerId, FollowRequest request) {
-        Customer customer = customerRepository.findById(customerId).orElse(null);
-        if (customer == null) {
-            throw new BusinessException("客户不存在");
-        }
-        
-        CustomerFollow follow = CustomerFollow.builder()
-            .customerId(customerId)
-            .content(request.getContent())
-            .type(request.getType())
-            .createTime(new Date())
-            .build();
-        
-        customer.setLastFollowTime(new Date());
-        customerRepository.save(customer);
-    }
-    
-    public List<Customer> queryCustomers(CustomerQueryRequest request) {
-        return customerRepository.queryByCondition(request);
-    }
-    
-    public CustomerProfile getProfile(Long customerId) {
-        Customer customer = customerRepository.findById(customerId).orElse(null);
-        if (customer == null) {
-            throw new BusinessException("客户不存在");
-        }
-        
-        List<CustomerTag> tags = customerTagRepository.findByCustomerId(customerId);
-        
-        return CustomerProfile.builder()
-            .customer(customer)
-            .tags(tags.stream().map(CustomerTag::getTag).collect(Collectors.toList()))
-            .build();
-    }
-}
-
-public enum CustomerLevel {
-    NORMAL("普通客户"),
-    SILVER("白银客户"),
-    GOLD("黄金客户"),
-    PLATINUM("铂金客户"),
-    DIAMOND("钻石客户");
-    
-    private final String desc;
-    
-    CustomerLevel(String desc) {
-        this.desc = desc;
-    }
-}</code></pre>
-                    </div>
-                </div>
-
+                <!-- 分布式锁 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-indigo-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-brain text-indigo-500 text-2xl"></i>
+                            <i class="fas fa-lock text-indigo-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">智能体模块</h3>
+                        <h3 class="text-xl font-semibold">分布式锁（Redisson）</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        提供AI智能助手功能，包括对话、知识库、意图识别、自动回复等功能。
+                        对"同一询价只确认一个成交""同一合同只允许一次结算"等临界区，用 Redisson 分布式锁串行化，配合幂等键防止并发重复处理。这是公共能力，被业务中台多处复用。
                     </p>
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
                         <pre><code class="language-java">@Service
-public class AgentService {
-    
-    @Autowired
-    private LlmService llmService;
-    
-    @Autowired
-    private KnowledgeBaseService knowledgeBaseService;
-    
-    @Autowired
-    private ConversationRepository conversationRepository;
-    
-    @Autowired
-    private MessageRepository messageRepository;
-    
-    public ChatResponse chat(ChatRequest request) {
-        String conversationId = request.getConversationId();
-        
-        if (conversationId == null) {
-            conversationId = createConversation(request.getUserId());
-        }
-        
-        saveMessage(conversationId, MessageRole.USER, request.getContent());
-        
-        List<Message> history = messageRepository.findByConversationId(conversationId);
-        
-        String context = buildContext(history);
-        
-        List<String> knowledge = knowledgeBaseService.retrieve(request.getContent(), 3);
-        
-        String prompt = buildPrompt(request.getContent(), context, knowledge);
-        
-        String answer = llmService.generate(prompt);
-        
-        saveMessage(conversationId, MessageRole.ASSISTANT, answer);
-        
-        return ChatResponse.builder()
-            .conversationId(conversationId)
-            .content(answer)
-            .build();
-    }
-    
-    private String createConversation(Long userId) {
-        Conversation conversation = Conversation.builder()
-            .userId(userId)
-            .createTime(new Date())
-            .build();
-        
-        conversationRepository.save(conversation);
-        return conversation.getId();
-    }
-    
-    private void saveMessage(String conversationId, MessageRole role, String content) {
-        Message message = Message.builder()
-            .conversationId(conversationId)
-            .role(role)
-            .content(content)
-            .createTime(new Date())
-            .build();
-        
-        messageRepository.save(message);
-    }
-    
-    private String buildContext(List<Message> history) {
-        StringBuilder context = new StringBuilder();
-        for (Message message : history) {
-            context.append(message.getRole().name().toLowerCase())
-                   .append(": ")
-                   .append(message.getContent())
-                   .append("\n");
-        }
-        return context.toString();
-    }
-    
-    private String buildPrompt(String query, String context, List<String> knowledge) {
-        StringBuilder prompt = new StringBuilder();
-        prompt.append("你是一个智能助手，请根据以下信息回答用户问题。\n\n");
-        
-        if (!knowledge.isEmpty()) {
-            prompt.append("参考知识库:\n");
-            for (String k : knowledge) {
-                prompt.append("- ").append(k).append("\n");
+public class DistributedLockService {
+
+    @Autowired private RedissonClient redisson;
+
+    /** 以业务号加锁，锁内执行临界逻辑，避免并发重复处理 */
+    public &lt;T&gt; T executeWithLock(String lockKey, long waitMs, Supplier&lt;T&gt; action) {
+        RLock lock = redisson.getLock("lock:" + lockKey);
+        try {
+            if (!lock.tryLock(waitMs, 30, TimeUnit.SECONDS)) {
+                throw new BusinessException("操作过于频繁，请稍后重试");
             }
-            prompt.append("\n");
+            return action.get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new BusinessException("锁获取被中断");
+        } finally {
+            if (lock.isHeldByCurrentThread()) {
+                lock.unlock();
+            }
         }
-        
-        if (!context.isEmpty()) {
-            prompt.append("对话历史:\n").append(context).append("\n");
-        }
-        
-        prompt.append("用户问题: ").append(query).append("\n");
-        prompt.append("请回答:");
-        
-        return prompt.toString();
-    }
-    
-    public List<Conversation> getConversations(Long userId) {
-        return conversationRepository.findByUserId(userId);
-    }
-    
-    public List<Message> getMessages(String conversationId) {
-        return messageRepository.findByConversationId(conversationId);
-    }
-    
-    public void addToKnowledgeBase(KnowledgeRequest request) {
-        Knowledge knowledge = Knowledge.builder()
-            .title(request.getTitle())
-            .content(request.getContent())
-            .category(request.getCategory())
-            .createTime(new Date())
-            .build();
-        
-        knowledgeBaseService.add(knowledge);
-    }
-}
-
-public enum MessageRole {
-    USER,
-    ASSISTANT,
-    SYSTEM
-}
-
-@Service
-public class KnowledgeBaseService {
-    
-    @Autowired
-    private VectorDatabase vectorDatabase;
-    
-    public void add(Knowledge knowledge) {
-        String embedding = generateEmbedding(knowledge.getContent());
-        vectorDatabase.store(knowledge.getId(), embedding, knowledge);
-    }
-    
-    public List<String> retrieve(String query, int topK) {
-        String queryEmbedding = generateEmbedding(query);
-        List<Knowledge> results = vectorDatabase.search(queryEmbedding, topK);
-        return results.stream().map(Knowledge::getContent).collect(Collectors.toList());
-    }
-    
-    private String generateEmbedding(String text) {
-        return "";
     }
 }</code></pre>
                     </div>
@@ -913,39 +281,38 @@ public class KnowledgeBaseService {
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-list-check mr-2 text-green-500"></i>核心优势
+                <i class="fas fa-list-check mr-2 text-green-500"></i>关键决策与价值
             </h2>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
                     <i class="fas fa-cubes text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">模块化设计</h4>
-                    <p class="text-sm opacity-90">高内聚低耦合，易于扩展</p>
+                    <h4 class="font-bold mb-1">能力收口</h4>
+                    <p class="text-sm opacity-90">存储/推送/字典/调度统一出口，避免各服务重复实现</p>
                 </div>
                 <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
                     <i class="fas fa-plug text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">适配器模式</h4>
-                    <p class="text-sm opacity-90">灵活接入第三方系统</p>
+                    <h4 class="font-bold mb-1">对业务透明</h4>
+                    <p class="text-sm opacity-90">业务只依赖 fileId/配置键，不感知底层存储与同步实现</p>
                 </div>
                 <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-repeat text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">复用性强</h4>
-                    <p class="text-sm opacity-90">统一服务，减少重复开发</p>
+                    <i class="fas fa-sliders-h text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">多租户支撑</h4>
+                    <p class="text-sm opacity-90">字典/配置按租户隔离，是可配置化落地的底座</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tachometer-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">性能与稳定</h4>
+                    <p class="text-sm opacity-90">缓存 + 预签名直传 + 分片调度，核心接口稳定 200ms 内</p>
                 </div>
                 <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">安全可靠</h4>
-                    <p class="text-sm opacity-90">完整的安全防护机制</p>
-                </div>
-                <div class="bg-gradient-to-br from-pink-500 to-pink-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-tachometer-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">高性能</h4>
-                    <p class="text-sm opacity-90">缓存优化，异步处理</p>
+                    <i class="fas fa-clock text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">统一调度</h4>
+                    <p class="text-sm opacity-90">XXL-Job 承载日终对账等任务，对账 9 人天 → 2 小时</p>
                 </div>
                 <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-brain text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">智能赋能</h4>
-                    <p class="text-sm opacity-90">AI智能体提升效率</p>
+                    <i class="fas fa-arrows-rotate text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">数据一致</h4>
+                    <p class="text-sm opacity-90">CDC 增量同步 + outbox 可靠投递，支撑最终一致</p>
                 </div>
             </div>
 
@@ -953,4 +320,3 @@ public class KnowledgeBaseService {
     </div>
 </body>
 </html>
-

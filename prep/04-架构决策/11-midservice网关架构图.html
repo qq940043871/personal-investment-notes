@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>midservice 网关职责与治理架构图</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #EEF1F5;
+    font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", system-ui, sans-serif;
+    color: #243043;
+    -webkit-font-smoothing: antialiased;
+    padding: 26px 20px 40px;
+  }
+
+  .sheet {
+    width: 1740px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(24, 39, 65, .10), 0 2px 6px rgba(24, 39, 65, .06);
+    padding: 26px 28px 22px;
+  }
+
+  /* ---------- 头部 ---------- */
+  .hd { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding-bottom: 14px; border-bottom: 2px solid #E7EBF1; }
+  .hd h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: .5px; color: #1B2739; }
+  .hd h1 em { font-style: normal; color: #C0504D; }
+  .hd .sub { margin-top: 8px; font-size: 13px; color: #5B6878; letter-spacing: .2px; }
+  .hd .sub b { color: #2C6FBE; font-weight: 700; }
+  .hd .sub i { font-style: normal; color: #98A3B2; padding: 0 4px; }
+
+  .legend { flex: 0 0 auto; border: 1px solid #E1E6ED; border-radius: 10px; background: #FAFBFD; padding: 10px 14px; }
+  .legend .lg-title { font-size: 11px; font-weight: 700; color: #8B96A5; letter-spacing: 1px; margin-bottom: 7px; }
+  .legend .lg-row { display: flex; align-items: center; gap: 7px; margin-top: 6px; }
+  .legend .lg-row span.k { font-size: 11.5px; color: #5B6878; }
+  .legend .cost { font-size: 11.5px; color: #5B6878; margin-top: 8px; padding-top: 7px; border-top: 1px dashed #E1E6ED; }
+  .lang { display: inline-block; font-size: 10.5px; font-weight: 700; color: #fff; padding: 2px 7px; border-radius: 4px; letter-spacing: .4px; }
+  .lang.gw { background: #7C5CBF; }
+  .lang.cfg { background: #C2803A; } .lang.ext { background: #6B7280; }
+  .line-sample { display: inline-block; width: 30px; height: 0; border-top: 2px solid #7C8CA0; }
+  .line-sample.dash { border-top-style: dashed; }
+
+  /* ---------- 层带 ---------- */
+  .stack { padding-top: 18px; }
+  .band { display: flex; border: 1.6px solid var(--line); background: var(--bg); border-radius: 14px; padding: 13px 16px 13px 0; position: relative; }
+  .rail { flex: 0 0 54px; display: flex; align-items: center; justify-content: center; }
+  .rail i { font-style: normal; writing-mode: vertical-rl; font-size: 19px; font-weight: 800; color: #fff; background: var(--rail); border-radius: 8px; padding: 16px 8px; letter-spacing: 3px; box-shadow: 0 2px 6px rgba(0,0,0,.14); }
+  .rail i.small { font-size: 12.5px; letter-spacing: 2px; padding: 12px 7px; }
+  .bd { flex: 1; min-width: 0; }
+  .bd-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  .bd-head h2 { margin: 0; font-size: 14.5px; font-weight: 800; color: var(--rail); letter-spacing: .3px; }
+  .bd-head p { margin: 0; font-size: 12px; color: #6B7787; }
+  .bd-head p b { font-weight: 800; }
+  .bd-head .pin { margin-left: auto; font-size: 11px; color: #8B96A5; border: 1px dashed var(--line); border-radius: 6px; padding: 3px 9px; background: #fff; }
+
+  /* ---------- 网格与卡片 ---------- */
+  .row { display: grid; gap: 12px; }
+  .c3 { grid-template-columns: repeat(3, 1fr); }
+  .c4 { grid-template-columns: repeat(4, 1fr); }
+  .c5 { grid-template-columns: repeat(5, 1fr); }
+  .c6 { grid-template-columns: repeat(6, 1fr); }
+  .c7 { grid-template-columns: 1.25fr 1.05fr .95fr 1.15fr 1.05fr .95fr 1.1fr; }
+  .c4b { grid-template-columns: 1.15fr 1.35fr 1.15fr 1.25fr; }
+  .gap-lg { margin-top: 14px; }
+
+  .card { position: relative; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 15px 12px 13px; text-align: center; }
+  .card h3 { margin: 0; font-size: 14.5px; font-weight: 700; color: #22303F; line-height: 1.4; }
+  .card .tech { margin-top: 6px; font-size: 11.5px; font-weight: 700; color: var(--c); }
+  .card .desc { margin-top: 8px; font-size: 12.5px; color: #4A5568; line-height: 1.8; }
+  .card .badge { position: absolute; left: 7px; top: 7px; font-size: 10px; font-weight: 700; color: #fff; background: #2C5F8A; padding: 2px 6px; border-radius: 4px; letter-spacing: .3px; }
+  .card.has-tag { padding-top: 27px; }
+  .card .mini { margin-top: 7px; font-size: 11.5px; color: #6B7787; line-height: 1.7; }
+
+  /* 卡片配色类 —— 必须定义！只写 class 不定义会让 border/background 静默失效 */
+  .c-amber  { --c:#D8A94A; --cbg:#FEFAF0; }
+  .c-blue   { --c:#4A88CE; --cbg:#F3F8FE; }
+  .c-purple { --c:#8871C9; --cbg:#F8F5FE; }
+  .c-coral  { --c:#D16B65; --cbg:#FEF7F6; }
+  .c-teal   { --c:#2E9E8F; --cbg:#F1FAF8; }
+  .c-gold   { --c:#C2803A; --cbg:#FDF8F0; }
+  .c-sky    { --c:#4AA3D8; --cbg:#F2F9FD; }
+  .c-red    { --c:#C0504D; --cbg:#FDF3F2; }
+  .c-grey   { --c:#9AA3AF; --cbg:#F7F8FA; }
+
+  /* 通栏数据条 */
+  .bar { margin-top: 12px; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 13px 18px; display: flex; align-items: center; gap: 20px; }
+  .bar h3 { margin: 0; font-size: 15px; font-weight: 800; color: #9E3B36; white-space: nowrap; letter-spacing: .3px; }
+  .bar p { margin: 0; font-size: 12.5px; color: #4A5568; line-height: 1.7; }
+  .bar p b { color: #1B2739; font-weight: 800; }
+
+  /* 层间流向条 */
+  .flows { padding: 9px 0 9px 54px; display: flex; flex-wrap: wrap; align-items: center; gap: 7px; position: relative; }
+  .flows::before { content: "⇅"; position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 17px; color: #AEB9C7; line-height: 1; }
+  .flows .cap { font-size: 11px; font-weight: 700; color: #98A3B2; letter-spacing: .8px; margin-right: 2px; }
+  .fl { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: #3C4959; background: #fff; border: 1.4px solid var(--c); border-radius: 999px; padding: 3px 11px; }
+  .fl.dash { border-style: dashed; }
+  .fl b { color: var(--c); font-weight: 800; font-size: 12.5px; }
+
+  /* 页脚注 */
+  .notes { margin-top: 20px; border-top: 2px solid #E7EBF1; padding-top: 14px; }
+  .notes p { margin: 0 0 8px; font-size: 12px; color: #56626F; line-height: 1.85; }
+  .notes p:last-child { margin-bottom: 0; }
+  .notes b { color: #1B2739; font-weight: 800; }
+  .notes i { font-style: normal; color: #98A3B2; padding: 0 4px; }
+
+  @media (max-width: 1800px) { body { padding: 16px 12px 32px; overflow-x: auto; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ================= 头部 ================= -->
+  <div class="hd">
+    <div>
+      <h1>midservice 网关 · <em>职责与治理架构图</em></h1>
+      <div class="sub">
+        十道关按「<b>拦截成本</b>」归为五档 <i>·</i> 拒绝要早、要便宜 <i>·</i> 契约注册表一处定义四处生效 <i>·</i> 画布 1740px
+      </div>
+    </div>
+    <div class="legend">
+      <div class="lg-title">图 例</div>
+      <div class="lg-row">
+        <span class="lang gw">接入</span><span class="k">租户 / 应用接入与身份入口</span>
+      </div>
+      <div class="lg-row">
+        <span class="lang cfg">配置</span><span class="k">契约驱动：字段 / 配额 / TTL 均从契约读</span>
+      </div>
+      <div class="lg-row">
+        <span class="lang ext">下游</span><span class="k">网关之后的系统（非网关自身资产）</span>
+      </div>
+      <div class="cost">层序自上而下 = <b style="color:#C0504D">拦截成本递增</b>（本地内存 → 网络调用）</div>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <!-- ================= 一 · 接入层 ================= -->
+    <div class="band" style="--rail:#B8860B;--line:#E4CB84;--bg:#FEFAF0;">
+      <div class="rail"><i>一</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>接入层</h2>
+          <p>三类租户 + 第三方应用 · 分级路由与配额的起点</p>
+          <span class="pin">全部入口强制鉴权 · 按租户路由到独立数据隔离域</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-amber">
+            <h3>外部大屏（只读）</h3>
+            <div class="tech">租户类型 · 一类</div>
+            <div class="desc">展示与行情只读<br>配额最低 · 无写权限</div>
+          </div>
+          <div class="card c-amber">
+            <h3>普通客户</h3>
+            <div class="tech">租户类型 · 二类</div>
+            <div class="desc">PC + 移动双端<br>常规配额</div>
+          </div>
+          <div class="card c-amber">
+            <h3>机构客户</h3>
+            <div class="tech">租户类型 · 三类</div>
+            <div class="desc">最高配额 · 独立隔离域<br><b>触发限流须同步通知值班</b></div>
+          </div>
+          <div class="card c-amber">
+            <h3>第三方应用</h3>
+            <div class="tech">AppKey 接入</div>
+            <div class="desc">应用注册制<br>按 AppKey 分配配额</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">流量</span>
+      <span class="fl" style="--c:#B8860B">三端 + 第三方 <b>→</b> midservice × N 多实例（统一入口 · traceId 起点）</span>
+      <span class="fl dash" style="--c:#6B7280">midmon <b>⇠</b> 访问日志与指标旁路采集</span>
+    </div>
+
+    <!-- ================= 二 · 契约与参数关（②③④） ================= -->
+    <div class="band" style="--rail:#2E9E8F;--line:#9FD4CB;--bg:#F1FAF8;">
+      <div class="rail"><i>二</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>契约与参数关</h2>
+          <p>拦截成本 = <b style="color:#2E9E8F">本地内存 · 零 IO</b>（契约注册表本地缓存）</p>
+          <span class="pin">未定义字段一律拒绝 —— 不忽略、不透传</span>
+        </div>
+        <div class="row c3">
+          <div class="card c-teal">
+            <h3>② 契约校验</h3>
+            <div class="tech">编码存在性 + 入参白名单</div>
+            <div class="desc">编码不在契约注册表 → 直接拒<br>入参不在契约字段表 → 拒<br><b>扫描器在此被本地 Map 拒掉</b></div>
+          </div>
+          <div class="card c-teal">
+            <h3>③ 参数预校验</h3>
+            <div class="tech">只校验「形状」</div>
+            <div class="desc">类型 / 长度 / 格式 / 枚举 / 集合大小<br><b>不校验领域含义</b>（下沉业务层）</div>
+          </div>
+          <div class="card c-teal">
+            <h3>④ 压力参数强制校验</h3>
+            <div class="tech">防「一次查询拖垮 DB」</div>
+            <div class="desc">pageSize ≤ 100 · 时间跨度 ≤ 31 天<br>批量 ≤ 200 · 排序字段白名单<br><b>显式拒绝，不做静默截断</b></div>
+          </div>
+        </div>
+        <div class="bar c-teal">
+          <h3 style="color:#2E9E8F">契约注册表 · 一处定义</h3>
+          <p>接口编码 / 入参定义 / 压力参数标记 / 权限点 / 限流配额 / 脱敏字段 —— 一次登记，同时生效到 <b>校验规则 · 接口文档 · 监控维度 · 限流脱敏配置</b> 四处</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 三 · 身份与频率关（①⑤⑥） ================= -->
+    <div class="band" style="--rail:#2C6FBE;--line:#A9C9EA;--bg:#F3F8FE;">
+      <div class="rail"><i>三</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>身份与频率关</h2>
+          <p>拦截成本 = 本地计数 + 一次缓存读</p>
+          <span class="pin">触发源不止 QPS —— 高频错误 / 扫描特征 / 行为异常</span>
+        </div>
+        <div class="row c3">
+          <div class="card c-blue has-tag">
+            <span class="lang gw">接入</span>
+            <h3>① 接入与身份</h3>
+            <div class="tech">会话 / Token / AppKey 签名</div>
+            <div class="desc">会话有效性与登录级别<br>敏感接口强制双因子</div>
+          </div>
+          <div class="card c-blue">
+            <h3>⑤ 授权</h3>
+            <div class="tech">四维判定</div>
+            <div class="desc">角色权限点 + 协议授权<br>登录级别 + 能力授权码<br><b>垂直越权在此拦截</b></div>
+          </div>
+          <div class="card c-blue">
+            <h3>⑥ 频率与信誉</h3>
+            <div class="tech">三级配额 + 四类触发源</div>
+            <div class="desc">租户 / 应用 / 接口 三级配额<br>处置：告警 → 限流 → 临时封禁 15min → 黑名单</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 四 · 安全与合规关（⑦） ================= -->
+    <div class="band" style="--rail:#7C5CBF;--line:#C6B6E6;--bg:#F8F5FE;">
+      <div class="rail"><i>四</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>安全与合规关（等保）</h2>
+          <p>拦截成本 = 一次签名 / 时间戳计算</p>
+          <span class="pin">请求里的租户 ID 不可信 —— 只信会话上下文</span>
+        </div>
+        <div class="row c3">
+          <div class="card c-purple">
+            <h3>⑦ 等保拦截</h3>
+            <div class="tech">防重放 + 防篡改</div>
+            <div class="desc">时间戳窗口 ≤ 5 分钟 · nonce 窗口内不重复<br>签名比对防篡改 · 写接口强制幂等键</div>
+          </div>
+          <div class="card c-purple">
+            <h3>越权防护</h3>
+            <div class="tech">水平 + 垂直</div>
+            <div class="desc">请求里的 tenantId / customerId 不作鉴权依据<br><b>会话租户 ≠ 请求租户 → 拒</b></div>
+          </div>
+          <div class="card c-purple">
+            <h3>文件上传十一项</h3>
+            <div class="tech">管「能不能进」</div>
+            <div class="desc">扩展名白名单 + MIME + <b>魔数</b><br>服务端重命名 · 隔离存储 · 下载走一次性令牌</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 五 · 缓存与转发关（⑧⑨） ================= -->
+    <div class="band" style="--rail:#C0504D;--line:#EBC0BE;--bg:#FEF7F6;">
+      <div class="rail"><i>五</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>缓存与转发关</h2>
+          <p>拦截成本 = 缓存读 → 一次网络调用（<b style="color:#C0504D">最贵</b>）</p>
+          <span class="pin">前面的关必须把脏流量榨干，才轮到最贵的一跳</span>
+        </div>
+        <div class="row c3">
+          <div class="card c-red has-tag">
+            <span class="lang cfg">配置</span>
+            <h3>⑧ 协议缓存</h3>
+            <div class="tech">命中即返回</div>
+            <div class="desc">契约声明可缓存的接口<br><b>命中完全不打后端</b></div>
+          </div>
+          <div class="card c-red">
+            <h3>⑨ 转发治理</h3>
+            <div class="tech">超时 / 熔断 / 隔离 / 路由</div>
+            <div class="desc">按租户路由到独立隔离域<br>线程池舱壁隔离（慢接口与快接口不共享配额）</div>
+          </div>
+          <div class="card c-red">
+            <h3>熔断与降级</h3>
+            <div class="tech">慢调用比例 ≥ 50% 触发</div>
+            <div class="desc">10s 窗口 / 20 请求<br>熔断后 5s 半开探针</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">下游</span>
+      <span class="fl" style="--c:#C0504D">midservice <b>→</b> Java 业务中台（12+ 微服务）<b>→</b> DS 数据中心（异构防腐 / 协议转换）<b>→</b> C 撮合引擎（单线程内存撮合）</span>
+      <span class="fl dash" style="--c:#6B7280">Hessian over HTTP <b>/</b> Kafka</span>
+    </div>
+
+    <!-- ================= 六 · 响应治理关（⑩） ================= -->
+    <div class="band" style="--rail:#C2803A;--line:#E8CDA6;--bg:#FDF8F0;">
+      <div class="rail"><i>六</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>响应治理关（出口）</h2>
+          <p>脱敏兜底 · 统一信封 · 审计留痕</p>
+          <span class="pin">入口只认定义过的，出口只给定义过的</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-gold">
+            <h3>⑩ 兜底脱敏</h3>
+            <div class="tech">契约声明敏感字段掩码</div>
+            <div class="desc">业务层做精确脱敏（按角色）<br>网关这层防「漏标」—— 绝不裸奔</div>
+          </div>
+          <div class="card c-gold">
+            <h3>统一信封</h3>
+            <div class="tech">code / message / data / traceId</div>
+            <div class="desc">错误响应不返堆栈<br>不暴露内部服务名与路径</div>
+          </div>
+          <div class="card c-gold">
+            <h3>输出白名单</h3>
+            <div class="tech">只输出契约声明字段</div>
+            <div class="desc">未声明字段默认不输出<br><b>泄露面不随开发增长</b></div>
+          </div>
+          <div class="card c-gold">
+            <h3>审计留痕</h3>
+            <div class="tech">不可篡改审计流</div>
+            <div class="desc">谁 / 何时 / 从哪<br>调了什么编码 / 结果 / 耗时</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 七 · midmon 观测（横切） ================= -->
+    <div class="band" style="--rail:#6B7280;--line:#CFD4DB;--bg:#F5F6F8;">
+      <div class="rail"><i class="small">横切</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>midmon · 观测与预警（横切 ①–⑩ 全程）</h2>
+          <p>多实例聚合 · 慢协议预警 · 调用量与耗时统计</p>
+          <span class="pin">观察者只发现不执行 —— 限流 / 熔断动作由 midservice 执行</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-grey">
+            <h3>慢协议预警</h3>
+            <div class="tech">看 P95 / P99，不看平均值</div>
+            <div class="desc">比例 ≥ 10% 且连续 3 窗口才报<br>告警落到 <b>编码 × 实例 × 租户 × 下游</b> 四元组</div>
+          </div>
+          <div class="card c-grey">
+            <h3>调用量与耗时统计</h3>
+            <div class="tech">五维 Top-N</div>
+            <div class="desc">接口编码 / 租户 / 应用 / 实例 / 下游<br>用途：容量规划 · 阈值校准 · 下线决策 · 计量</div>
+          </div>
+          <div class="card c-grey">
+            <h3>多实例聚合</h3>
+            <div class="tech">实例视图 + 全局视图</div>
+            <div class="desc">指标带实例标签，预警只看全局<br>traceId 去重 · NTP 统一时钟</div>
+          </div>
+          <div class="card c-grey">
+            <h3>看板与告警</h3>
+            <div class="tech">六块看板</div>
+            <div class="desc">全局大盘 / 慢协议榜 / 调用量榜<br>限流封禁 / 契约健康度 / 容量水位</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= 页脚注 ================= -->
+  <div class="notes">
+    <p><b>主轴 · 拒绝要早、要便宜：</b>十道关按「拦截成本」归为五档——本地 Map（②③④）<i>→</i>本地计数 + 缓存读（①⑤⑥）<i>→</i>签名计算（⑦）<i>→</i>缓存读 → 网络调用（⑧⑨）<i>→</i>出口治理（⑩）<i>│</i>扫描器在 ② 就被拒，连鉴权都不做。</p>
+    <p><b>组件 · 观察者与执行者分离：</b>midservice 是<b>执行者</b>（限流 / 熔断 / 脱敏 / 转发）<i>│</i>midmon 是<b>观察者</b>（只发现并报告，通过配置下发让 midservice 执行）<i>│</i>监控挂了不影响交易，限流策略只有一个执行点。</p>
+    <p><b>边界 · 网关不做业务：</b>库存 / 授信 / 状态机 / 事务编排 / 重计算一律下沉业务层<i>│</i>判据：凡需问「这个客户是谁、这笔业务合不合法」才能做的判断，都不属于网关。</p>
+    <p><b>跨轨备注（认知对照）：</b>本图为<b>公司项目轨道</b>——Java Web 自研 midservice<i>│</i>其「闸门排序 + 契约即白名单 + 观察者／执行者分离」与个人储备的 Harness 方法论同构，两条轨道口径独立、技术栈不互指。</p>
+  </div>
+
+</div>
+</body>
+</html>

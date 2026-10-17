@@ -213,23 +213,23 @@
                         </a>
                         <div class="submenu ml-8" id="b2b-project-submenu">
                             <a href="#" onclick="loadPage('pages/work-experience/b2b-project/overview.html')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目概述</a>
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目总览</a>
                             <a href="#" onclick="loadPage('pages/work-experience/b2b-project/data-exchange.html')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">数据交换中心</a>
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">DS 数据中心（防腐层）</a>
                             <a href="#" onclick="loadPage('pages/work-experience/b2b-project/middleware-gateway.html')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">中间件网关</a>
                             <a href="#" onclick="loadPage('pages/work-experience/b2b-project/common-services.html')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">公共服务模块</a>
                             <a href="#" onclick="loadPage('pages/work-experience/b2b-project/auth-module.html')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">认证模块</a>
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">认证与权限</a>
                             <a href="#" onclick="loadPage('pages/work-experience/b2b-project/business-modules.html')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">合同中心</a>
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">业务模块（合同中心）</a>
                             <a href="#" onclick="loadPage('pages/work-experience/b2b-project/external-gateway.html')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">外联网关</a>
                             <a href="#" onclick="loadPage('pages/work-experience/b2b-project/大宗贸易场景.html')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">大宗贸易场景</a>
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">交易模式</a>
                             <a href="#" onclick="loadPage('pages/work-experience/b2b-project/付款发货场景.html')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">付款发货场景</a>
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">合同履约与资金</a>
                         </div>
                     </div>
 
@@ -282,6 +282,42 @@
                     </div>
 
                     <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('clearing-platform')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-calculator mr-3"></i>
+                                <span>清算平台项目</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200"
+                                id="clearing-platform-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="clearing-platform-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/clearing-platform/clearing-platform-overview.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目概述</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('online-complaint')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-comment-dots mr-3"></i>
+                                <span>在线投诉平台</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200"
+                                id="online-complaint-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="online-complaint-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/online-complaint/online-complaint-overview.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目概述</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/online-complaint/online-complaint-technical-implementation.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">技术实现</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/online-complaint/online-complaint-best-practices.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">最佳实践</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
                         <a href="#" onclick="toggleMainMenu('ecommerce')"
                             class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
                             <div class="flex items-center">
@@ -292,6 +328,8 @@
                                 id="ecommerce-chevron"></i>
                         </a>
                         <div class="submenu ml-8" id="ecommerce-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/b2c-project/ecommerce-overview.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目概述</a>
                             <a href="#" onclick="loadPage('pages/work-experience/b2c-project/order-system.html')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">订单系统</a>
                             <a href="#" onclick="loadPage('pages/work-experience/b2c-project/payment-system.html')"
@@ -419,33 +457,7 @@
                             <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/08_电商平台专项场景.md')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">电商平台专项场景</a>
                             <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/09_技术选型总览.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">技术选型总览</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_01_模型部署_vLLM学习指南.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">模型部署 vLLM学习指南</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_02_Embedding模型学习指南.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">Embedding模型学习指南</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_03_RAG框架_LangChain学习指南.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">RAG框架 LangChain学习指南</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_04_RAG框架_LlamaIndex学习指南.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">RAG框架 LlamaIndex学习指南</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_05_向量数据库_Milvus学习指南.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">向量数据库 Milvus学习指南</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_06_Agent框架_AutoGen学习指南.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">Agent框架 AutoGen学习指南</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_07_API框架_FastAPI学习指南.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">API框架 FastAPI学习指南</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/10_08_前端框架_Vue3学习指南.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">前端框架 Vue3学习指南</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/11_00_内网私有化部署开源软件清单.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">内网私有化部署开源软件清单</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/11_01_vLLM内网部署指南.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">vLLM内网部署指南</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/11_02_Ollama内网部署指南.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">Ollama内网部署指南</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/11_03_Qdrant内网部署指南.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">Qdrant内网部署指南</a>
-                            <a href="#" onclick="loadPage('pages/work-experience/大模型企业落地/12_模型微调蒸馏开源工具与完整步骤.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">模型微调蒸馏开源工具与完整步骤</a>
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">技术选型复盘</a>
                         </div>
                     </div>
 
@@ -454,13 +466,13 @@
                             class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
                             <div class="flex items-center">
                                 <i class="fas fa-shopping-cart mr-3"></i>
-                                <span>电商项目问题指南</span>
+                                <span>电商 / 交易系统问题指南</span>
                             </div>
                             <i class="fas fa-chevron-right transition-transform duration-200" id="ecommerce-guide-chevron"></i>
                         </a>
                         <div class="submenu ml-8" id="ecommerce-guide-submenu">
                             <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/README.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">电商项目问题指南</a>
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">手册说明与经验锚点</a>
                             <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/01-系统架构设计.md')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">系统架构设计</a>
                             <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/02-高可用架构.md')"
@@ -515,6 +527,99 @@
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">工作流与审批流</a>
                             <a href="#" onclick="loadPage('pages/work-experience/电商项目问题指南/27-表单与模板配置.md')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">表单与模板配置</a>
+                        </div>
+                    </div>
+
+                    <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">学习沉淀 · 技术笔记</div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('llm-study')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-book-open mr-3"></i>
+                                <span>大模型技术学习（非项目落地）</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200" id="llm-study-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="llm-study-submenu">
+                            <a href="#" onclick="loadPage('pages/llm-study/README.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">目录索引与边界声明</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/10_01_模型部署_vLLM学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">模型部署 vLLM 学习指南</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/10_02_Embedding模型学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">Embedding 模型学习指南</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/10_03_RAG框架_LangChain学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">RAG 框架 LangChain 学习指南</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/10_04_RAG框架_LlamaIndex学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">RAG 框架 LlamaIndex 学习指南</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/10_05_向量数据库_Milvus学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">向量数据库 Milvus 学习指南</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/10_06_Agent框架_AutoGen学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">Agent 框架 AutoGen 学习指南</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/10_07_API框架_FastAPI学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">API 框架 FastAPI 学习指南</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/10_08_前端框架_Vue3学习指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">前端框架 Vue3 学习指南</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/11_00_内网私有化部署开源软件清单.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">内网私有化部署开源软件清单</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/11_01_vLLM内网部署指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">vLLM 内网部署指南</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/11_02_Ollama内网部署指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">Ollama 内网部署指南</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/11_03_Qdrant内网部署指南.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">Qdrant 内网部署指南</a>
+                            <a href="#" onclick="loadPage('pages/llm-study/12_模型微调蒸馏开源工具与完整步骤.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">模型微调蒸馏工具与步骤</a>
+                        </div>
+                    </div>
+
+                    <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">早期技术积累</div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('early-arcgis')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-map mr-3"></i>
+                                <span>ArcGIS 开发（早期）</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200" id="early-arcgis-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="early-arcgis-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/arcgis-project/arcgis-java-overview.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">开发概述</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/arcgis-project/arcgis-java-environment-setup.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">环境搭建</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/arcgis-project/arcgis-java-core-features.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">核心功能</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/arcgis-project/arcgis-java-best-practices.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">最佳实践与注意事项</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('early-blockchain')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-link mr-3"></i>
+                                <span>区块链开发（早期）</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200" id="early-blockchain-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="early-blockchain-submenu">
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/03_teacher/math.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">密码学基础（SHA-256 等）</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/balance.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">账户与余额数据结构</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/02_develop/bitcoin-centos.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">BTC 节点部署（CentOS）</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/02_develop/bitcoin-test.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">BTC 接口与测试</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/02_develop/bitcoin.pri.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">BTC 私钥与地址编码</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/02_develop/omini.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">Omni 协议实践</a>
+                            <a href="#" onclick="loadPage('pages/work-experience/blockchain/02_develop/problem.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">常见问题排查</a>
                         </div>
                     </div>
 

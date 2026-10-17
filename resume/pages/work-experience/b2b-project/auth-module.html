@@ -1,878 +1,314 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>认证模块 - B2B分布式项目</title>
+    <title>认证与权限模块 - B2B大宗交易平台复盘</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
+        .feature-card { transition: all 0.3s ease; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
     </style>
 </head>
 <body class="bg-gray-50">
     <div class="max-w-6xl mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-8">
             <h1 class="text-3xl font-bold text-gray-800 mb-2">
-                <i class="fas fa-shield-alt mr-3 text-red-500"></i>认证模块
+                <i class="fas fa-shield-alt mr-3 text-red-500"></i>认证与权限模块
             </h1>
-            <p class="text-gray-500 mb-6">Authentication Module - 统一身份认证与权限管理</p>
-            
-            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-8">
-                <p class="text-red-700">
+            <p class="text-gray-500 mb-6">Authentication &amp; Authorization - 统一认证、单点登录与角色权限收口</p>
+
+            <!-- 项目背景 -->
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                <p class="text-red-800">
                     <i class="fas fa-lightbulb mr-2"></i>
-                    <strong>核心定位：</strong>认证模块提供统一的身份认证、权限管理、多方式登录、账户安全等功能，支持手机号对应多账户、多种登录方式、账户锁定、多终端登录配置等特性。
+                    <strong>项目背景：</strong>平台服务多家企业（多租户），用户分属不同租户、不同角色（买方/卖方/运营/管理员），且对外只有<strong>中间件网关这一个统一入口</strong>。认证与权限必须在这里收口：谁进得来（认证）、进来能干什么（角色权限）、跨系统如何一次登录（单点登录）。它是平台的安全边界，也是多租户隔离的第一道闸门。
                 </p>
+            </div>
+
+            <!-- 我的角色（诚实口径） -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong>技术经理 / Java 侧负责人。我负责这块的<strong>技术选型与边界定义</strong>：确定采用"统一 Token 认证 + 网关集中校验 + RBAC 角色权限"的<strong>成熟方案组合</strong>，而不是自研一套复杂的认证协议。我关注的是<strong>多租户下的权限隔离</strong>与<strong>认证在网关侧的一致收口</strong>，具体实现由团队落地。
+                </p>
+            </div>
+
+            <!-- 关键决策：技术边界 -->
+            <div class="bg-amber-50 border border-amber-300 rounded-lg p-5 mb-8">
+                <h3 class="text-lg font-semibold text-amber-800 mb-2">
+                    <i class="fas fa-scale-balanced mr-2"></i>技术选型与边界（如实说明）
+                </h3>
+                <ul class="list-disc list-inside space-y-1 text-amber-900 text-sm">
+                    <li><strong>采用：</strong>基于标准 Token（JWT / 服务端会话）的统一认证、网关集中校验、RBAC 角色权限、单点登录（SSO）；</li>
+                    <li><strong>不自研：</strong>不自行实现 OAuth2/OIDC 全套协议栈，认证协议、加密算法、密码存储走成熟标准与组件，平台只做集成与编排；</li>
+                    <li><strong>边界：</strong>认证负责"身份可信"，权限负责"能否访问"，二者都在网关侧收口，业务微服务不再各自维护鉴权逻辑。</li>
+                </ul>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
                 <i class="fas fa-th-large mr-2 text-red-500"></i>功能概览
             </h2>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 <div class="feature-card bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-user-shield text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">用户权限加载</h4>
-                    <p class="text-sm opacity-90">菜单权限、接口权限</p>
+                    <i class="fas fa-key text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">统一认证</h4>
+                    <p class="text-sm opacity-90">Token 签发 / 校验，一个入口收口</p>
                 </div>
                 <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-mobile-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">多账户支持</h4>
-                    <p class="text-sm opacity-90">手机号对应多账户</p>
+                    <i class="fas fa-right-to-bracket text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">单点登录（SSO）</h4>
+                    <p class="text-sm opacity-90">一次登录，多系统共享会话</p>
                 </div>
                 <div class="feature-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-sign-in-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">多种登录方式</h4>
-                    <p class="text-sm opacity-90">验证码、密码、第三方</p>
+                    <i class="fas fa-user-shield text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">RBAC 角色权限</h4>
+                    <p class="text-sm opacity-90">用户-角色-菜单/接口权限</p>
                 </div>
                 <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-lock text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">账户锁定</h4>
-                    <p class="text-sm opacity-90">锁定、注销、失败锁定</p>
+                    <i class="fas fa-building-shield text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">多租户隔离</h4>
+                    <p class="text-sm opacity-90">租户内授权，跨租户不可见</p>
                 </div>
                 <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-desktop text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">多终端管理</h4>
-                    <p class="text-sm opacity-90">多终端登录配置</p>
+                    <i class="fas fa-network-wired text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">网关统一校验</h4>
+                    <p class="text-sm opacity-90">与中间件网关联动的认证/权限拦截</p>
                 </div>
                 <div class="feature-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-device-mobile text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">单设备登录</h4>
-                    <p class="text-sm opacity-90">单设备限制</p>
+                    <i class="fas fa-lock text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">会话与登录安全</h4>
+                    <p class="text-sm opacity-90">失败锁定、会话失效、登出联动</p>
                 </div>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-cogs mr-2 text-red-500"></i>核心功能实现
+                <i class="fas fa-cogs mr-2 text-red-500"></i>核心实现
             </h2>
-            
+
             <div class="space-y-8 mb-8">
+                <!-- 统一认证 + 网关校验 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-red-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-user-shield text-red-500 text-2xl"></i>
+                            <i class="fas fa-key text-red-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">用户信息与权限加载</h3>
+                        <h3 class="text-xl font-semibold">1. 统一认证 + 网关集中校验</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        根据不同用户加载用户信息、菜单权限和接口权限。
+                        登录成功后签发 Token（含用户与租户标识），之后所有请求在<strong>中间件网关</strong>统一校验 Token 合法性与有效期；校验通过才放行到业务微服务。业务侧只从网关注入的身份上下文取用户，不重复鉴权。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Service
+public class AuthService {
+
+    @Autowired private UserRepository userRepository;
+    @Autowired private TokenService tokenService;      // 标准 Token 签发/校验
+    @Autowired private PasswordEncoder passwordEncoder; // 标准密码编码器
+
+    public LoginResponse login(LoginRequest req) {
+        User user = userRepository.findByUsername(req.getUsername());
+        // 统一提示，避免暴露"用户是否存在"
+        if (user == null || !passwordEncoder.matches(req.getPassword(), user.getPassword())) {
+            throw new BusinessException("用户名或密码错误");
+        }
+        if (user.isDisabled()) {
+            throw new BusinessException("账号已被禁用");
+        }
+        String token = tokenService.issue(user); // 内含 userId / tenantId / roles
+        return LoginResponse.of(token, user.toSafeInfo());
+    }
+
+    public void logout(String userId) {
+        tokenService.revoke(userId); // 会话失效，网关后续校验不通过
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- RBAC -->
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-yellow-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-user-shield text-yellow-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">2. RBAC 角色权限：菜单 + 接口</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        权限模型为"用户 → 角色 → 权限"。登录后加载用户的<strong>菜单权限树</strong>（前端渲染导航）与<strong>接口权限集合</strong>（网关侧做接口级拦截）。角色与权限按<strong>租户</strong>维护，天然隔离。
                     </p>
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
                         <pre><code class="language-java">@Service
 public class UserPermissionService {
-    
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private RoleRepository roleRepository;
-    
-    @Autowired
-    private MenuRepository menuRepository;
-    
-    @Autowired
-    private ApiPermissionRepository apiPermissionRepository;
-    
-    public UserInfoDTO loadUserInfo(Long userId) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            throw new BusinessException("用户不存在");
-        }
-        
-        List<Role> roles = roleRepository.findByUserId(userId);
-        List<Menu> menus = menuRepository.findByRoles(roles.stream().map(Role::getId).collect(Collectors.toList()));
-        List<ApiPermission> apiPermissions = apiPermissionRepository.findByRoles(roles.stream().map(Role::getId).collect(Collectors.toList()));
-        
+
+    @Autowired private RoleRepository roleRepository;
+    @Autowired private MenuRepository menuRepository;
+    @Autowired private ApiPermissionRepository apiPermissionRepository;
+
+    /** 按用户加载菜单树 + 接口权限；均限定在当前租户内 */
+    public UserInfoDTO loadUserInfo(Long userId, Long tenantId) {
+        List&lt;Role&gt; roles = roleRepository.findByUserAndTenant(userId, tenantId);
+        List&lt;Long&gt; roleIds = roles.stream().map(Role::getId).collect(Collectors.toList());
+
+        List&lt;Menu&gt; menus = menuRepository.findByRoles(roleIds);
+        Set&lt;String&gt; apiPerms = apiPermissionRepository.findByRoles(roleIds).stream()
+            .map(ApiPermission::getPermission)
+            .collect(Collectors.toSet());
+
         return UserInfoDTO.builder()
-            .userId(user.getId())
-            .username(user.getUsername())
-            .nickname(user.getNickname())
-            .avatar(user.getAvatar())
+            .userId(userId)
             .roles(roles.stream().map(Role::getCode).collect(Collectors.toList()))
-            .menus(buildMenuTree(menus))
-            .apiPermissions(apiPermissions.stream()
-                .map(ApiPermission::getPermission)
-                .collect(Collectors.toSet()))
+            .menus(buildMenuTree(menus))   // 菜单树
+            .apiPermissions(apiPerms)      // 接口权限，供网关拦截
             .build();
     }
-    
-    private List<MenuDTO> buildMenuTree(List<Menu> menus) {
-        Map<Long, List<Menu>> menuMap = menus.stream()
+
+    /** 菜单由 parentId 递归组装成树 */
+    private List&lt;MenuDTO&gt; buildMenuTree(List&lt;Menu&gt; menus) {
+        Map&lt;Long, List&lt;Menu&gt;&gt; grouped = menus.stream()
             .collect(Collectors.groupingBy(Menu::getParentId));
-        
-        return buildMenuTree(menuMap, 0L);
+        return build(grouped, 0L);
     }
-    
-    private List<MenuDTO> buildMenuTree(Map<Long, List<Menu>> menuMap, Long parentId) {
-        List<Menu> children = menuMap.getOrDefault(parentId, Collections.emptyList());
-        return children.stream()
-            .map(menu -> MenuDTO.builder()
-                .id(menu.getId())
-                .name(menu.getName())
-                .path(menu.getPath())
-                .icon(menu.getIcon())
-                .children(buildMenuTree(menuMap, menu.getId()))
+
+    private List&lt;MenuDTO&gt; build(Map&lt;Long, List&lt;Menu&gt;&gt; grouped, Long parentId) {
+        return grouped.getOrDefault(parentId, List.of()).stream()
+            .map(m -&gt; MenuDTO.builder()
+                .id(m.getId()).name(m.getName()).path(m.getPath()).icon(m.getIcon())
+                .children(build(grouped, m.getId()))
                 .build())
             .collect(Collectors.toList());
     }
-}
-
-@Data
-@Builder
-public class UserInfoDTO {
-    private Long userId;
-    private String username;
-    private String nickname;
-    private String avatar;
-    private List<String> roles;
-    private List<MenuDTO> menus;
-    private Set<String> apiPermissions;
-}
-
-@Data
-@Builder
-public class MenuDTO {
-    private Long id;
-    private String name;
-    private String path;
-    private String icon;
-    private List<MenuDTO> children;
 }</code></pre>
                     </div>
                 </div>
 
+                <!-- SSO -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-orange-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-mobile-alt text-orange-500 text-2xl"></i>
+                            <i class="fas fa-right-to-bracket text-orange-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">多账户支持</h3>
+                        <h3 class="text-xl font-semibold">3. 单点登录（SSO）</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        支持一个手机号对应多个账户，用户可以选择登录哪个账户。
+                        平台内多个子系统（交易、合同、结算、运营后台）共享一次登录状态：认证中心集中签发会话票据，各子系统凭票据到认证中心校验，无需各自维护登录。登出时统一失效会话，实现"一处登出、多处下线"。
                     </p>
-                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
-                        <pre><code class="language-java">@Service
-public class MultiAccountService {
-    
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private UserAccountRepository userAccountRepository;
-    
-    public List<UserAccountDTO> getAccountsByPhone(String phone) {
-        List<UserAccount> accounts = userAccountRepository.findByPhone(phone);
-        
-        return accounts.stream()
-            .map(account -> UserAccountDTO.builder()
-                .accountId(account.getId())
-                .userId(account.getUserId())
-                .username(account.getUsername())
-                .nickname(account.getNickname())
-                .avatar(account.getAvatar())
-                .accountType(account.getAccountType())
-                .lastLoginTime(account.getLastLoginTime())
-                .build())
-            .collect(Collectors.toList());
-    }
-    
-    public LoginResponse selectAccount(String phone, Long accountId) {
-        UserAccount account = userAccountRepository.findById(accountId).orElse(null);
-        if (account == null) {
-            throw new BusinessException("账户不存在");
-        }
-        
-        if (!account.getPhone().equals(phone)) {
-            throw new BusinessException("账户与手机号不匹配");
-        }
-        
-        User user = userRepository.findById(account.getUserId()).orElse(null);
-        if (user == null) {
-            throw new BusinessException("用户不存在");
-        }
-        
-        return LoginResponse.builder()
-            .userId(user.getId())
-            .accountId(accountId)
-            .username(account.getUsername())
-            .nickname(account.getNickname())
-            .build();
-    }
-    
-    public void bindAccount(String phone, Long userId, String accountType) {
-        UserAccount account = UserAccount.builder()
-            .phone(phone)
-            .userId(userId)
-            .username(generateUsername())
-            .accountType(accountType)
-            .createTime(new Date())
-            .build();
-        
-        userAccountRepository.save(account);
-    }
-    
-    private String generateUsername() {
-        return "user_" + System.currentTimeMillis();
-    }
-}
-
-@Entity
-@Table(name = "user_account")
-public class UserAccount {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String phone;
-    
-    private Long userId;
-    
-    private String username;
-    
-    private String nickname;
-    
-    private String avatar;
-    
-    private String accountType;
-    
-    private Date lastLoginTime;
-    
-    private Date createTime;
-}
-
-@Data
-@Builder
-public class UserAccountDTO {
-    private Long accountId;
-    private Long userId;
-    private String username;
-    private String nickname;
-    private String avatar;
-    private String accountType;
-    private Date lastLoginTime;
-}</code></pre>
+                    <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-lg">
+                        <div class="flex items-center justify-between flex-wrap gap-3">
+                            <div class="bg-blue-500 text-white p-3 rounded-lg text-center">
+                                <i class="fas fa-user text-2xl mb-2"></i>
+                                <p class="text-xs font-medium">用户一次登录</p>
+                            </div>
+                            <i class="fas fa-arrow-right text-gray-400"></i>
+                            <div class="bg-red-500 text-white p-3 rounded-lg text-center">
+                                <i class="fas fa-id-card text-2xl mb-2"></i>
+                                <p class="text-xs font-medium">认证中心签票据</p>
+                            </div>
+                            <i class="fas fa-arrow-right text-gray-400"></i>
+                            <div class="bg-green-500 text-white p-3 rounded-lg text-center">
+                                <i class="fas fa-network-wired text-2xl mb-2"></i>
+                                <p class="text-xs font-medium">网关校验票据</p>
+                            </div>
+                            <i class="fas fa-arrow-right text-gray-400"></i>
+                            <div class="bg-teal-500 text-white p-3 rounded-lg text-center">
+                                <i class="fas fa-window-restore text-2xl mb-2"></i>
+                                <p class="text-xs font-medium">多系统通行</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="bg-white border border-gray-200 rounded-lg p-5">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-yellow-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-sign-in-alt text-yellow-500 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold">多种登录方式</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm mb-4">
-                        支持手机号+验证码、账户+密码、邮箱+密码、第三方登录（微信等）。
-                    </p>
-                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
-                        <pre><code class="language-java">@Service
-public class LoginService {
-    
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private UserAccountRepository userAccountRepository;
-    
-    @Autowired
-    private SmsService smsService;
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    
-    @Autowired
-    private JwtService jwtService;
-    
-    @Autowired
-    private ThirdPartyLoginService thirdPartyLoginService;
-    
-    public LoginResponse loginByPhoneCode(PhoneCodeLoginRequest request) {
-        boolean verified = smsService.verifyCode(request.getPhone(), request.getCode(), "login");
-        
-        if (!verified) {
-            throw new BusinessException("验证码错误");
-        }
-        
-        List<UserAccount> accounts = userAccountRepository.findByPhone(request.getPhone());
-        
-        if (accounts.isEmpty()) {
-            throw new BusinessException("手机号未注册");
-        }
-        
-        if (accounts.size() > 1) {
-            return LoginResponse.builder()
-                .needSelectAccount(true)
-                .accounts(accounts.stream()
-                    .map(this::convertToDTO)
-                    .collect(Collectors.toList()))
-                .build();
-        }
-        
-        UserAccount account = accounts.get(0);
-        return doLogin(account.getUserId(), account.getId(), request.getDeviceType());
-    }
-    
-    public LoginResponse loginByPassword(PasswordLoginRequest request) {
-        User user = userRepository.findByUsername(request.getUsername());
-        
-        if (user == null) {
-            throw new BusinessException("用户名或密码错误");
-        }
-        
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BusinessException("用户名或密码错误");
-        }
-        
-        UserAccount account = userAccountRepository.findByUserId(user.getId()).stream()
-            .findFirst()
-            .orElse(null);
-        
-        if (account == null) {
-            throw new BusinessException("账户不存在");
-        }
-        
-        return doLogin(user.getId(), account.getId(), request.getDeviceType());
-    }
-    
-    public LoginResponse loginByEmail(EmailLoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail());
-        
-        if (user == null) {
-            throw new BusinessException("邮箱或密码错误");
-        }
-        
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BusinessException("邮箱或密码错误");
-        }
-        
-        UserAccount account = userAccountRepository.findByUserId(user.getId()).stream()
-            .findFirst()
-            .orElse(null);
-        
-        if (account == null) {
-            throw new BusinessException("账户不存在");
-        }
-        
-        return doLogin(user.getId(), account.getId(), request.getDeviceType());
-    }
-    
-    public LoginResponse loginByThirdParty(ThirdPartyLoginRequest request) {
-        ThirdPartyUser thirdPartyUser = thirdPartyLoginService.getUserInfo(
-            request.getProvider(),
-            request.getCode()
-        );
-        
-        User user = userRepository.findByThirdPartyId(
-            request.getProvider(),
-            thirdPartyUser.getOpenId()
-        );
-        
-        if (user == null) {
-            user = createUserFromThirdParty(thirdPartyUser, request.getProvider());
-        }
-        
-        UserAccount account = userAccountRepository.findByUserId(user.getId()).stream()
-            .findFirst()
-            .orElse(null);
-        
-        if (account == null) {
-            account = createAccountForUser(user, request.getProvider());
-        }
-        
-        return doLogin(user.getId(), account.getId(), request.getDeviceType());
-    }
-    
-    private LoginResponse doLogin(Long userId, Long accountId, String deviceType) {
-        User user = userRepository.findById(userId).orElse(null);
-        UserAccount account = userAccountRepository.findById(accountId).orElse(null);
-        
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-        
-        account.setLastLoginTime(new Date());
-        userAccountRepository.save(account);
-        
-        return LoginResponse.builder()
-            .accessToken(accessToken)
-            .refreshToken(refreshToken)
-            .userId(userId)
-            .accountId(accountId)
-            .username(account.getUsername())
-            .nickname(account.getNickname())
-            .avatar(account.getAvatar())
-            .build();
-    }
-    
-    private UserAccountDTO convertToDTO(UserAccount account) {
-        return UserAccountDTO.builder()
-            .accountId(account.getId())
-            .userId(account.getUserId())
-            .username(account.getUsername())
-            .nickname(account.getNickname())
-            .avatar(account.getAvatar())
-            .accountType(account.getAccountType())
-            .build();
-    }
-}
-
-public enum LoginType {
-    PHONE_CODE,
-    USERNAME_PASSWORD,
-    EMAIL_PASSWORD,
-    WECHAT,
-    QQ,
-    WEIBO
-}
-
-@Data
-@Builder
-public class LoginResponse {
-    private boolean needSelectAccount;
-    private List<UserAccountDTO> accounts;
-    private String accessToken;
-    private String refreshToken;
-    private Long userId;
-    private Long accountId;
-    private String username;
-    private String nickname;
-    private String avatar;
-}</code></pre>
-                    </div>
-                </div>
-
+                <!-- 多租户隔离 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-green-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-lock text-green-500 text-2xl"></i>
+                            <i class="fas fa-building-shield text-green-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">账户锁定与注销</h3>
+                        <h3 class="text-xl font-semibold">4. 多租户权限隔离</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        支持账户锁定、注销、登录失败多次后锁定。
+                        每个用户归属于一个租户，Token 中携带租户标识；网关与业务侧强制以租户维度过滤数据与权限，从认证层就杜绝跨租户越权访问。这是"一套引擎 + 每客户一套配置"能在权限层面成立的前提。
                     </p>
-                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
-                        <pre><code class="language-java">@Service
-public class AccountSecurityService {
-    
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private UserAccountRepository userAccountRepository;
-    
-    @Autowired
-    private LoginFailRecordRepository loginFailRecordRepository;
-    
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-    
-    private static final String LOCK_KEY_PREFIX = "account:lock:";
-    private static final String FAIL_COUNT_KEY_PREFIX = "login:fail:";
-    
-    public void lockAccount(Long accountId, String reason, int lockMinutes) {
-        UserAccount account = userAccountRepository.findById(accountId).orElse(null);
-        if (account == null) {
-            throw new BusinessException("账户不存在");
-        }
-        
-        account.setLocked(true);
-        account.setLockReason(reason);
-        account.setLockTime(new Date());
-        account.setUnlockTime(new Date(System.currentTimeMillis() + lockMinutes * 60 * 1000));
-        userAccountRepository.save(account);
-        
-        String lockKey = LOCK_KEY_PREFIX + accountId;
-        redisTemplate.opsForValue().set(lockKey, reason, lockMinutes, TimeUnit.MINUTES);
-    }
-    
-    public void unlockAccount(Long accountId) {
-        UserAccount account = userAccountRepository.findById(accountId).orElse(null);
-        if (account == null) {
-            throw new BusinessException("账户不存在");
-        }
-        
-        account.setLocked(false);
-        account.setLockReason(null);
-        account.setLockTime(null);
-        account.setUnlockTime(null);
-        userAccountRepository.save(account);
-        
-        String lockKey = LOCK_KEY_PREFIX + accountId;
-        redisTemplate.delete(lockKey);
-    }
-    
-    public boolean isAccountLocked(Long accountId) {
-        UserAccount account = userAccountRepository.findById(accountId).orElse(null);
-        if (account == null) {
-            return false;
-        }
-        
-        if (account.isLocked()) {
-            if (account.getUnlockTime() != null && 
-                account.getUnlockTime().before(new Date())) {
-                unlockAccount(accountId);
-                return false;
-            }
-            return true;
-        }
-        
-        String lockKey = LOCK_KEY_PREFIX + accountId;
-        return Boolean.TRUE.equals(redisTemplate.hasKey(lockKey));
-    }
-    
-    public void recordLoginFail(String username, String ip) {
-        String failKey = FAIL_COUNT_KEY_PREFIX + username;
-        Long failCount = redisTemplate.opsForValue().increment(failKey);
-        
-        if (failCount == 1) {
-            redisTemplate.expire(failKey, 1, TimeUnit.HOURS);
-        }
-        
-        LoginFailRecord record = LoginFailRecord.builder()
-            .username(username)
-            .ip(ip)
-            .failTime(new Date())
-            .build();
-        loginFailRecordRepository.save(record);
-        
-        if (failCount >= 5) {
-            User user = userRepository.findByUsername(username);
-            if (user != null) {
-                UserAccount account = userAccountRepository.findByUserId(user.getId()).stream()
-                    .findFirst()
-                    .orElse(null);
-                if (account != null) {
-                    lockAccount(account.getId(), "登录失败次数过多", 30);
-                }
-            }
-        }
-    }
-    
-    public void clearLoginFail(String username) {
-        String failKey = FAIL_COUNT_KEY_PREFIX + username;
-        redisTemplate.delete(failKey);
-    }
-    
-    public void deactivateAccount(Long accountId, String reason) {
-        UserAccount account = userAccountRepository.findById(accountId).orElse(null);
-        if (account == null) {
-            throw new BusinessException("账户不存在");
-        }
-        
-        account.setActive(false);
-        account.setDeactivateReason(reason);
-        account.setDeactivateTime(new Date());
-        userAccountRepository.save(account);
-    }
-    
-    public void reactivateAccount(Long accountId) {
-        UserAccount account = userAccountRepository.findById(accountId).orElse(null);
-        if (account == null) {
-            throw new BusinessException("账户不存在");
-        }
-        
-        account.setActive(true);
-        account.setDeactivateReason(null);
-        account.setDeactivateTime(null);
-        userAccountRepository.save(account);
-    }
-}
-
-@Entity
-@Table(name = "login_fail_record")
-public class LoginFailRecord {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String username;
-    
-    private String ip;
-    
-    private Date failTime;
-}</code></pre>
-                    </div>
                 </div>
 
+                <!-- 登录安全 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
-                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-desktop text-blue-500 text-2xl"></i>
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-lock text-purple-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">多终端登录配置</h3>
+                        <h3 class="text-xl font-semibold">5. 会话与登录安全基线</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        支持配置账户是否可以多终端登录，只能一种设备登录一次等。
+                        内建基础登录安全：登录失败次数计数与临时锁定、账号禁用/启用、会话有效期与主动失效、登出联动。这些是平台安全基线的一部分，由团队按统一规范实现。
                     </p>
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
                         <pre><code class="language-java">@Service
-public class MultiDeviceService {
-    
-    @Autowired
-    private UserRepository userRepository;
-    
-    @Autowired
-    private UserAccountRepository userAccountRepository;
-    
-    @Autowired
-    private UserSessionRepository userSessionRepository;
-    
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-    
-    @Autowired
-    private JwtService jwtService;
-    
-    private static final String SESSION_KEY_PREFIX = "user:session:";
-    private static final String DEVICE_KEY_PREFIX = "user:device:";
-    
-    public DeviceConfigDTO getDeviceConfig(Long accountId) {
-        UserAccount account = userAccountRepository.findById(accountId).orElse(null);
-        if (account == null) {
-            throw new BusinessException("账户不存在");
-        }
-        
-        return DeviceConfigDTO.builder()
-            .accountId(accountId)
-            .allowMultiDevice(account.isAllowMultiDevice())
-            .maxDeviceCount(account.getMaxDeviceCount())
-            .singleDeviceType(account.isSingleDeviceType())
-            .deviceTypes(account.getAllowedDeviceTypes())
-            .build();
-    }
-    
-    public void updateDeviceConfig(Long accountId, DeviceConfigUpdateRequest request) {
-        UserAccount account = userAccountRepository.findById(accountId).orElse(null);
-        if (account == null) {
-            throw new BusinessException("账户不存在");
-        }
-        
-        account.setAllowMultiDevice(request.isAllowMultiDevice());
-        account.setMaxDeviceCount(request.getMaxDeviceCount());
-        account.setSingleDeviceType(request.isSingleDeviceType());
-        account.setAllowedDeviceTypes(request.getDeviceTypes());
-        userAccountRepository.save(account);
-    }
-    
-    public boolean checkDeviceLogin(Long userId, Long accountId, String deviceId, String deviceType) {
-        UserAccount account = userAccountRepository.findById(accountId).orElse(null);
-        if (account == null) {
-            throw new BusinessException("账户不存在");
-        }
-        
-        if (!account.isAllowMultiDevice()) {
-            String sessionKey = SESSION_KEY_PREFIX + accountId;
-            String existingDevice = redisTemplate.opsForValue().get(sessionKey);
-            
-            if (existingDevice != null && !existingDevice.equals(deviceId)) {
-                kickOutDevice(userId, accountId, existingDevice);
-            }
-            
-            redisTemplate.opsForValue().set(sessionKey, deviceId, 7, TimeUnit.DAYS);
-            return true;
-        }
-        
-        if (account.isSingleDeviceType()) {
-            String deviceKey = DEVICE_KEY_PREFIX + accountId + ":" + deviceType;
-            String existingDevice = redisTemplate.opsForValue().get(deviceKey);
-            
-            if (existingDevice != null && !existingDevice.equals(deviceId)) {
-                kickOutDevice(userId, accountId, existingDevice);
-            }
-            
-            redisTemplate.opsForValue().set(deviceKey, deviceId, 7, TimeUnit.DAYS);
-        }
-        
-        if (account.getMaxDeviceCount() != null && account.getMaxDeviceCount() > 0) {
-            String sessionPattern = SESSION_KEY_PREFIX + accountId + ":*";
-            Set<String> keys = redisTemplate.keys(sessionPattern);
-            
-            if (keys != null && keys.size() >= account.getMaxDeviceCount()) {
-                throw new BusinessException("已达到最大设备登录数");
-            }
-        }
-        
-        String sessionKey = SESSION_KEY_PREFIX + accountId + ":" + deviceId;
-        redisTemplate.opsForValue().set(sessionKey, deviceType, 7, TimeUnit.DAYS);
-        
-        saveUserSession(userId, accountId, deviceId, deviceType);
-        
-        return true;
-    }
-    
-    public void logoutDevice(Long userId, Long accountId, String deviceId) {
-        String sessionKey = SESSION_KEY_PREFIX + accountId + ":" + deviceId;
-        redisTemplate.delete(sessionKey);
-        
-        userSessionRepository.findByAccountIdAndDeviceId(accountId, deviceId)
-            .ifPresent(session -> {
-                session.setActive(false);
-                session.setLogoutTime(new Date());
-                userSessionRepository.save(session);
-            });
-    }
-    
-    public void kickOutDevice(Long userId, Long accountId, String deviceId) {
-        logoutDevice(userId, accountId, deviceId);
-        
-        String kickMessage = "您的账号已在其他设备登录，您已被踢下线";
-        notifyUser(userId, deviceId, kickMessage);
-    }
-    
-    public List<UserSessionDTO> getActiveSessions(Long accountId) {
-        String sessionPattern = SESSION_KEY_PREFIX + accountId + ":*";
-        Set<String> keys = redisTemplate.keys(sessionPattern);
-        
-        if (keys == null || keys.isEmpty()) {
-            return Collections.emptyList();
-        }
-        
-        return userSessionRepository.findByAccountIdAndActive(accountId, true).stream()
-            .map(this::convertToDTO)
-            .collect(Collectors.toList());
-    }
-    
-    private void saveUserSession(Long userId, Long accountId, String deviceId, String deviceType) {
-        UserSession session = UserSession.builder()
-            .userId(userId)
-            .accountId(accountId)
-            .deviceId(deviceId)
-            .deviceType(deviceType)
-            .loginTime(new Date())
-            .active(true)
-            .build();
-        
-        userSessionRepository.save(session);
-    }
-    
-    private void notifyUser(Long userId, String deviceId, String message) {
-    }
-    
-    private UserSessionDTO convertToDTO(UserSession session) {
-        return UserSessionDTO.builder()
-            .sessionId(session.getId())
-            .deviceId(session.getDeviceId())
-            .deviceType(session.getDeviceType())
-            .loginTime(session.getLoginTime())
-            .active(session.isActive())
-            .build();
-    }
-}
+public class LoginFailService {
 
-@Data
-@Builder
-public class DeviceConfigDTO {
-    private Long accountId;
-    private boolean allowMultiDevice;
-    private Integer maxDeviceCount;
-    private boolean singleDeviceType;
-    private List<String> deviceTypes;
-}
+    @Autowired private RedisTemplate&lt;String, String&gt; redis;
 
-@Data
-@Builder
-public class UserSessionDTO {
-    private Long sessionId;
-    private String deviceId;
-    private String deviceType;
-    private Date loginTime;
-    private boolean active;
-}
+    private static final String FAIL_KEY = "login:fail:";
+    private static final int MAX_FAIL = 5;
 
-public enum DeviceType {
-    WEB,
-    IOS,
-    ANDROID,
-    WINDOWS,
-    MAC
-}
+    /** 记录失败次数，达到阈值临时锁定（基于 Redis 计数，自动过期） */
+    public void recordFail(String username) {
+        String key = FAIL_KEY + username;
+        Long count = redis.opsForValue().increment(key);
+        if (count != null &amp;&amp; count == 1) {
+            redis.expire(key, 1, TimeUnit.HOURS);
+        }
+        if (count != null &amp;&amp; count &gt;= MAX_FAIL) {
+            redis.opsForValue().set("login:lock:" + username, "1", 30, TimeUnit.MINUTES);
+        }
+    }
 
-@Entity
-@Table(name = "user_session")
-public class UserSession {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private Long userId;
-    
-    private Long accountId;
-    
-    private String deviceId;
-    
-    private String deviceType;
-    
-    private Date loginTime;
-    
-    private Date logoutTime;
-    
-    private boolean active;
+    public boolean isLocked(String username) {
+        return Boolean.TRUE.equals(redis.hasKey("login:lock:" + username));
+    }
+
+    public void clearFail(String username) {
+        redis.delete(FAIL_KEY + username);
+    }
 }</code></pre>
                     </div>
                 </div>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-list-check mr-2 text-red-500"></i>核心优势
+                <i class="fas fa-list-check mr-2 text-red-500"></i>关键点与结果
             </h2>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
                     <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">灵活认证</h4>
-                    <p class="text-sm opacity-90">多种登录方式任选</p>
+                    <h4 class="font-bold mb-1">安全收口</h4>
+                    <p class="text-sm opacity-90">认证与权限集中在网关，业务服务不再各自鉴权</p>
                 </div>
                 <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-users text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">多账户支持</h4>
-                    <p class="text-sm opacity-90">一号多账，灵活切换</p>
+                    <i class="fas fa-key text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">成熟方案组合</h4>
+                    <p class="text-sm opacity-90">标准 Token + RBAC + SSO，不重复造轮子</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-building-shield text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">多租户隔离</h4>
+                    <p class="text-sm opacity-90">Token 携带租户标识，权限按租户维护</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-network-wired text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">与网关联动</h4>
+                    <p class="text-sm opacity-90">复用中间件网关做认证/权限拦截，统一入口</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-sliders-h text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">权限可配置</h4>
+                    <p class="text-sm opacity-90">角色/菜单/接口权限按租户维护，适配差异化</p>
                 </div>
                 <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
                     <i class="fas fa-lock text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">安全可靠</h4>
-                    <p class="text-sm opacity-90">多重安全防护机制</p>
-                </div>
-                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-mobile-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">设备管理</h4>
-                    <p class="text-sm opacity-90">灵活的多终端配置</p>
-                </div>
-                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-key text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">权限精细</h4>
-                    <p class="text-sm opacity-90">菜单权限与接口权限</p>
-                </div>
-                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-bell text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">异常监控</h4>
-                    <p class="text-sm opacity-90">登录失败自动锁定</p>
+                    <h4 class="font-bold mb-1">基线安全</h4>
+                    <p class="text-sm opacity-90">失败锁定、会话失效、登出联动等基础防护</p>
                 </div>
             </div>
 
@@ -880,4 +316,3 @@ public class UserSession {
     </div>
 </body>
 </html>
-

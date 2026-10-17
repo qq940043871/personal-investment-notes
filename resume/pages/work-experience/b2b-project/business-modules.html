@@ -1,1023 +1,407 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>业务模块 - B2B分布式项目</title>
+    <title>业务模块 · 合同中心 - B2B大宗交易平台复盘</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        .flow-node {
-            transition: all 0.3s ease;
-        }
-        .flow-node:hover {
-            transform: scale(1.05);
-        }
+        .feature-card { transition: all 0.3s ease; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .flow-node { transition: all 0.3s ease; }
+        .flow-node:hover { transform: scale(1.05); }
     </style>
 </head>
 <body class="bg-gray-50">
     <div class="max-w-6xl mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-8">
             <h1 class="text-3xl font-bold text-gray-800 mb-2">
-                <i class="fas fa-puzzle-piece mr-3 text-yellow-500"></i>合同中心
+                <i class="fas fa-file-contract mr-3 text-yellow-500"></i>业务模块 · 合同中心
             </h1>
-            <p class="text-gray-500 mb-6">Business Modules - 核心业务功能实现</p>
-            
-            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-8">
-                <p class="text-yellow-700">
+            <p class="text-gray-500 mb-6">Contract Center - 合同全生命周期与履约中枢（B2B 大宗商品在线交易平台）</p>
+
+            <!-- 项目背景 -->
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6">
+                <p class="text-yellow-800">
                     <i class="fas fa-lightbulb mr-2"></i>
-                    <strong>核心定位：</strong>合同中心作为业务模块的核心，提供合同全生命周期管理，支持多种交收方式、支付方式、签章、付款、配货、开票等功能，同时处理复杂的资金组合方式。
+                    <strong>项目背景：</strong>平台承载挂牌/竞价/询价/招标/基差点价五种交易模式，交易撮合后必须落到一份可履约的合同上——合同要串起<strong>多租户交易规则、两种交收方式（组织交收/自由交收）、电子签章、仓单过户、物流配货、税务开票、复杂资金组合</strong>。这是一个"高金额、长周期、多环节、跨月"的业务中枢，也是资金差错风险最集中、差异化需求最密集的模块。
                 </p>
+            </div>
+
+            <!-- 我的角色 -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong>技术经理 / Java 侧负责人，带队 20 人负责业务中台。我主导了合同中心领域建模与<strong>合同状态机</strong>设计，牵头<strong>多租户可配置化</strong>（合同模板、交收方式、资金规则一套引擎多套配置）与<strong>Saga + 状态机 + 事件溯源</strong>的长流程一致性方案。底层 C 内存撮合引擎与 Java 业务中台经自研 DS 数据中心（防腐层）异构桥接，合同中心的边界与适配由我定义。
+                </p>
+            </div>
+
+            <!-- 结果指标 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold">2 月 → 1 周</div>
+                    <p class="text-xs opacity-90 mt-1">新客户上线周期</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold">5 天 → 1.5 天</div>
+                    <p class="text-xs opacity-90 mt-1">平均交易周期（合同→完成）</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold">零膨胀</div>
+                    <p class="text-xs opacity-90 mt-1">100+ 客户差异化需求</p>
+                </div>
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold">3 年 0 差错</div>
+                    <p class="text-xs opacity-90 mt-1">资金差错</p>
+                </div>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
                 <i class="fas fa-th-large mr-2 text-yellow-500"></i>功能概览
             </h2>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 <div class="feature-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
                     <i class="fas fa-file-contract text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">合同中心</h4>
-                    <p class="text-sm opacity-90">合同全生命周期</p>
+                    <h4 class="font-bold mb-1">合同全生命周期</h4>
+                    <p class="text-sm opacity-90">状态机驱动，草稿→完成 12 态</p>
                 </div>
                 <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
                     <i class="fas fa-exchange-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">交收方式</h4>
-                    <p class="text-sm opacity-90">组织交收、自由交收</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-credit-card text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">支付方式</h4>
-                    <p class="text-sm opacity-90">多种支付方式</p>
+                    <h4 class="font-bold mb-1">交收方式可配置</h4>
+                    <p class="text-sm opacity-90">组织交收 / 自由交收</p>
                 </div>
                 <div class="feature-card bg-gradient-to-br from-pink-500 to-pink-600 text-white p-4 rounded-lg">
                     <i class="fas fa-signature text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">合同签章</h4>
-                    <p class="text-sm opacity-90">电子签章</p>
+                    <h4 class="font-bold mb-1">电子签章</h4>
+                    <p class="text-sm opacity-90">买方/卖方双签，外部签章系统对接</p>
                 </div>
                 <div class="feature-card bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
                     <i class="fas fa-truck-loading text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">合同配货</h4>
-                    <p class="text-sm opacity-90">对接仓单物流</p>
+                    <h4 class="font-bold mb-1">配货 / 仓单 / 物流</h4>
+                    <p class="text-sm opacity-90">仓单过户、物流单、轨迹回传</p>
                 </div>
                 <div class="feature-card bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
                     <i class="fas fa-file-invoice-dollar text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">合同开票</h4>
-                    <p class="text-sm opacity-90">对接开票服务</p>
+                    <h4 class="font-bold mb-1">税务开票</h4>
+                    <p class="text-sm opacity-90">对接开票服务，发票申请/查询/下载</p>
                 </div>
-                <div class="feature-card bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg md:col-span-2 lg:col-span-3">
+                <div class="feature-card bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
                     <i class="fas fa-coins text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">资金管理</h4>
-                    <p class="text-sm opacity-90">预付款、手续费、货款、短溢货款、开票保证金</p>
+                    <h4 class="font-bold mb-1">复杂资金组合</h4>
+                    <p class="text-sm opacity-90">预付款/手续费/货款/短溢/保证金</p>
                 </div>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-cogs mr-2 text-yellow-500"></i>核心功能实现
+                <i class="fas fa-cogs mr-2 text-yellow-500"></i>方案与实现
             </h2>
-            
+
             <div class="space-y-8 mb-8">
+                <!-- 1 合同全生命周期 + 状态机 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-yellow-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-file-contract text-yellow-500 text-2xl"></i>
+                            <i class="fas fa-project-diagram text-yellow-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">合同中心基础功能</h3>
+                        <h3 class="text-xl font-semibold">1. 合同全生命周期与状态机</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        提供合同的创建、查询、修改、删除等基础功能，支持合同全生命周期管理。
+                        合同不是一张表，而是一台<strong>状态机</strong>：每个动作（提交/审批/签章/付款/配货/发货/收货/开票/完成/取消）都只能从合法前置态迁移。我们把状态迁移规则集中到一处校验，避免几十个 if-else 散落在各服务里——这是后续接 Saga 长流程的地基。
                     </p>
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
-                        <pre><code class="language-java">@Service
-public class ContractService {
-    
-    @Autowired
-    private ContractRepository contractRepository;
-    
-    @Autowired
-    private ContractItemRepository contractItemRepository;
-    
-    @Autowired
-    private IdGenerator idGenerator;
-    
-    public Contract createContract(CreateContractRequest request) {
-        String contractId = idGenerator.generate();
-        
-        Contract contract = Contract.builder()
-            .contractId(contractId)
-            .contractNo(generateContractNo())
-            .buyerId(request.getBuyerId())
-            .sellerId(request.getSellerId())
-            .contractType(request.getContractType())
-            .settlementType(request.getSettlementType())
-            .paymentType(request.getPaymentType())
-            .totalAmount(request.getTotalAmount())
-            .status(ContractStatus.DRAFT)
-            .createTime(new Date())
-            .build();
-        
-        List<ContractItem> items = request.getItems().stream()
-            .map(item -> ContractItem.builder()
-                .contractId(contractId)
-                .productId(item.getProductId())
-                .productName(item.getProductName())
-                .quantity(item.getQuantity())
-                .price(item.getPrice())
-                .amount(item.getAmount())
-                .build())
-            .collect(Collectors.toList());
-        
-        contractRepository.save(contract);
-        contractItemRepository.saveAll(items);
-        
-        return contract;
-    }
-    
-    public Contract getContract(String contractId) {
-        return contractRepository.findByContractId(contractId);
-    }
-    
-    public void updateContract(String contractId, UpdateContractRequest request) {
-        Contract contract = contractRepository.findByContractId(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
+                        <pre><code class="language-java">/**
+ * 合同状态机：集中定义合法迁移，所有业务动作统一走 transition()
+ * 我在合同中心落地的第一件事，就是把散落的 if 判断收拢成一张迁移表。
+ */
+@Component
+public class ContractStateMachine {
+
+    // 前置态 -> 允许的后继态
+    private static final Map&lt;ContractStatus, Set&lt;ContractStatus&gt;&gt; TRANSITIONS = Map.of(
+        ContractStatus.DRAFT,     Set.of(ContractStatus.PENDING, ContractStatus.CANCELLED),
+        ContractStatus.PENDING,   Set.of(ContractStatus.APPROVED, ContractStatus.REJECTED),
+        ContractStatus.APPROVED,  Set.of(ContractStatus.SIGNED, ContractStatus.CANCELLED),
+        ContractStatus.SIGNED,    Set.of(ContractStatus.PAID, ContractStatus.SHIPPED),
+        ContractStatus.PAID,      Set.of(ContractStatus.ALLOCATED, ContractStatus.SHIPPED),
+        ContractStatus.ALLOCATED, Set.of(ContractStatus.SHIPPED),
+        ContractStatus.SHIPPED,   Set.of(ContractStatus.DELIVERED),
+        ContractStatus.DELIVERED, Set.of(ContractStatus.INVOICED, ContractStatus.COMPLETED),
+        ContractStatus.INVOICED,  Set.of(ContractStatus.COMPLETED)
+    );
+
+    public void transition(Contract contract, ContractStatus target) {
+        ContractStatus from = contract.getStatus();
+        if (!TRANSITIONS.getOrDefault(from, Set.of()).contains(target)) {
+            throw new BusinessException(
+                "非法状态迁移: " + from.getDesc() + " -> " + target.getDesc());
         }
-        
-        if (contract.getStatus() != ContractStatus.DRAFT) {
-            throw new BusinessException("只有草稿状态的合同可以修改");
-        }
-        
-        if (request.getTotalAmount() != null) {
-            contract.setTotalAmount(request.getTotalAmount());
-        }
-        if (request.getSettlementType() != null) {
-            contract.setSettlementType(request.getSettlementType());
-        }
-        if (request.getPaymentType() != null) {
-            contract.setPaymentType(request.getPaymentType());
-        }
-        if (request.getRemark() != null) {
-            contract.setRemark(request.getRemark());
-        }
-        
-        contractRepository.save(contract);
-    }
-    
-    public void submitContract(String contractId) {
-        Contract contract = contractRepository.findByContractId(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getStatus() != ContractStatus.DRAFT) {
-            throw new BusinessException("只有草稿状态的合同可以提交");
-        }
-        
-        contract.setStatus(ContractStatus.PENDING);
-        contract.setSubmitTime(new Date());
-        contractRepository.save(contract);
-    }
-    
-    public void approveContract(String contractId, Long approverId, String approvalOpinion) {
-        Contract contract = contractRepository.findByContractId(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getStatus() != ContractStatus.PENDING) {
-            throw new BusinessException("只有待审批状态的合同可以审批");
-        }
-        
-        contract.setStatus(ContractStatus.APPROVED);
-        contract.setApproverId(approverId);
-        contract.setApprovalOpinion(approvalOpinion);
-        contract.setApprovalTime(new Date());
-        contractRepository.save(contract);
-    }
-    
-    public void rejectContract(String contractId, Long approverId, String rejectReason) {
-        Contract contract = contractRepository.findByContractId(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getStatus() != ContractStatus.PENDING) {
-            throw new BusinessException("只有待审批状态的合同可以审批");
-        }
-        
-        contract.setStatus(ContractStatus.REJECTED);
-        contract.setApproverId(approverId);
-        contract.setRejectReason(rejectReason);
-        contract.setApprovalTime(new Date());
-        contractRepository.save(contract);
-    }
-    
-    public List<Contract> queryContracts(ContractQueryRequest request) {
-        return contractRepository.queryByCondition(request);
-    }
-    
-    private String generateContractNo() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        String dateStr = sdf.format(new Date());
-        String sequence = String.format("%06d", contractRepository.countByCreateTimeLike(dateStr + "%") + 1);
-        return "HT" + dateStr + sequence;
+        contract.setStatus(target);
     }
 }
 
 public enum ContractStatus {
-    DRAFT("草稿"),
-    PENDING("待审批"),
-    APPROVED("已审批"),
-    REJECTED("已拒绝"),
-    SIGNED("已签章"),
-    PAID("已付款"),
-    ALLOCATED("已配货"),
-    SHIPPED("已发货"),
-    DELIVERED("已收货"),
-    INVOICED("已开票"),
-    COMPLETED("已完成"),
-    CANCELLED("已取消");
-    
+    DRAFT("草稿"), PENDING("待审批"), APPROVED("已审批"), REJECTED("已拒绝"),
+    SIGNED("已签章"), PAID("已付款"), ALLOCATED("已配货"), SHIPPED("已发货"),
+    DELIVERED("已收货"), INVOICED("已开票"), COMPLETED("已完成"), CANCELLED("已取消");
     private final String desc;
-    
-    ContractStatus(String desc) {
-        this.desc = desc;
-    }
+    ContractStatus(String desc) { this.desc = desc; }
+    public String getDesc() { return desc; }
 }
 
 public enum SettlementType {
-    ORGANIZED("组织交收"),
-    FREE("自由交收");
-    
+    ORGANIZED("组织交收"), FREE("自由交收");
     private final String desc;
-    
-    SettlementType(String desc) {
-        this.desc = desc;
-    }
-}
-
-@Entity
-@Table(name = "contract")
-public class Contract {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String contractId;
-    
-    private String contractNo;
-    
-    private Long buyerId;
-    
-    private Long sellerId;
-    
-    private String contractType;
-    
-    @Enumerated(EnumType.STRING)
-    private SettlementType settlementType;
-    
-    private String paymentType;
-    
-    private BigDecimal totalAmount;
-    
-    @Enumerated(EnumType.STRING)
-    private ContractStatus status;
-    
-    private Date createTime;
-    
-    private Date submitTime;
-    
-    private Long approverId;
-    
-    private String approvalOpinion;
-    
-    private String rejectReason;
-    
-    private Date approvalTime;
-    
-    private String remark;
-}
-
-@Entity
-@Table(name = "contract_item")
-public class ContractItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String contractId;
-    
-    private Long productId;
-    
-    private String productName;
-    
-    private BigDecimal quantity;
-    
-    private BigDecimal price;
-    
-    private BigDecimal amount;
+    SettlementType(String desc) { this.desc = desc; }
+    public String getDesc() { return desc; }
 }</code></pre>
                     </div>
                 </div>
 
+                <!-- 2 交收方式 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-orange-100 p-3 rounded-lg mr-4">
                             <i class="fas fa-exchange-alt text-orange-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">多种交收方式流程</h3>
+                        <h3 class="text-xl font-semibold">2. 两种交收方式：组织交收 vs 自由交收</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        支持组织交收和自由交收两种交收方式，每种方式都有完整的流程处理。
+                        交收方式由<strong>客户配置</strong>决定，代码里只保留一个策略分派点：组织交收走"付款→仓单过户→交收完成"，自由交收走"签章→自行发货→物流→确认收货"。同一套状态机，两种履约路径，客户切换交收方式无需改代码。
                     </p>
-                    
-                    <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-6">
-                        <h4 class="font-semibold text-gray-800 mb-4">组织交收流程</h4>
-                        <div class="flex items-center justify-between flex-wrap gap-4">
-                            <div class="flow-node bg-blue-500 text-white p-3 rounded-lg text-center">
-                                <i class="fas fa-file-contract text-2xl mb-2"></i>
-                                <p class="text-xs font-medium">合同审批</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-4"><i class="fas fa-warehouse text-yellow-600 mr-2"></i>组织交收</h4>
+                            <div class="flex items-center flex-wrap gap-2">
+                                <span class="flow-node bg-blue-500 text-white px-3 py-1 rounded-lg text-xs">审批</span>
+                                <i class="fas fa-arrow-right text-gray-400 text-xs"></i>
+                                <span class="flow-node bg-green-500 text-white px-3 py-1 rounded-lg text-xs">签章</span>
+                                <i class="fas fa-arrow-right text-gray-400 text-xs"></i>
+                                <span class="flow-node bg-purple-500 text-white px-3 py-1 rounded-lg text-xs">支付</span>
+                                <i class="fas fa-arrow-right text-gray-400 text-xs"></i>
+                                <span class="flow-node bg-yellow-500 text-white px-3 py-1 rounded-lg text-xs">仓单过户</span>
+                                <i class="fas fa-arrow-right text-gray-400 text-xs"></i>
+                                <span class="flow-node bg-teal-500 text-white px-3 py-1 rounded-lg text-xs">完成</span>
                             </div>
-                            <i class="fas fa-arrow-right text-gray-400"></i>
-                            <div class="flow-node bg-green-500 text-white p-3 rounded-lg text-center">
-                                <i class="fas fa-signature text-2xl mb-2"></i>
-                                <p class="text-xs font-medium">合同签章</p>
-                            </div>
-                            <i class="fas fa-arrow-right text-gray-400"></i>
-                            <div class="flow-node bg-purple-500 text-white p-3 rounded-lg text-center">
-                                <i class="fas fa-money-check-alt text-2xl mb-2"></i>
-                                <p class="text-xs font-medium">支付货款</p>
-                            </div>
-                            <i class="fas fa-arrow-right text-gray-400"></i>
-                            <div class="flow-node bg-yellow-500 text-white p-3 rounded-lg text-center">
-                                <i class="fas fa-warehouse text-2xl mb-2"></i>
-                                <p class="text-xs font-medium">仓单过户</p>
-                            </div>
-                            <i class="fas fa-arrow-right text-gray-400"></i>
-                            <div class="flow-node bg-teal-500 text-white p-3 rounded-lg text-center">
-                                <i class="fas fa-check-circle text-2xl mb-2"></i>
-                                <p class="text-xs font-medium">交收完成</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-5 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-4"><i class="fas fa-truck text-orange-600 mr-2"></i>自由交收</h4>
+                            <div class="flex items-center flex-wrap gap-2">
+                                <span class="flow-node bg-blue-500 text-white px-3 py-1 rounded-lg text-xs">审批</span>
+                                <i class="fas fa-arrow-right text-gray-400 text-xs"></i>
+                                <span class="flow-node bg-green-500 text-white px-3 py-1 rounded-lg text-xs">签章</span>
+                                <i class="fas fa-arrow-right text-gray-400 text-xs"></i>
+                                <span class="flow-node bg-orange-500 text-white px-3 py-1 rounded-lg text-xs">自行发货</span>
+                                <i class="fas fa-arrow-right text-gray-400 text-xs"></i>
+                                <span class="flow-node bg-purple-500 text-white px-3 py-1 rounded-lg text-xs">物流</span>
+                                <i class="fas fa-arrow-right text-gray-400 text-xs"></i>
+                                <span class="flow-node bg-yellow-500 text-white px-3 py-1 rounded-lg text-xs">收货</span>
+                                <i class="fas fa-arrow-right text-gray-400 text-xs"></i>
+                                <span class="flow-node bg-teal-500 text-white px-3 py-1 rounded-lg text-xs">完成</span>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-4">
-                        <h4 class="font-semibold text-gray-800 mb-4">自由交收流程</h4>
-                        <div class="flex items-center justify-between flex-wrap gap-4">
-                            <div class="flow-node bg-blue-500 text-white p-3 rounded-lg text-center">
-                                <i class="fas fa-file-contract text-2xl mb-2"></i>
-                                <p class="text-xs font-medium">合同审批</p>
-                            </div>
-                            <i class="fas fa-arrow-right text-gray-400"></i>
-                            <div class="flow-node bg-green-500 text-white p-3 rounded-lg text-center">
-                                <i class="fas fa-signature text-2xl mb-2"></i>
-                                <p class="text-xs font-medium">合同签章</p>
-                            </div>
-                            <i class="fas fa-arrow-right text-gray-400"></i>
-                            <div class="flow-node bg-orange-500 text-white p-3 rounded-lg text-center">
-                                <i class="fas fa-truck-loading text-2xl mb-2"></i>
-                                <p class="text-xs font-medium">自行发货</p>
-                            </div>
-                            <i class="fas fa-arrow-right text-gray-400"></i>
-                            <div class="flow-node bg-purple-500 text-white p-3 rounded-lg text-center">
-                                <i class="fas fa-truck text-2xl mb-2"></i>
-                                <p class="text-xs font-medium">物流配送</p>
-                            </div>
-                            <i class="fas fa-arrow-right text-gray-400"></i>
-                            <div class="flow-node bg-yellow-500 text-white p-3 rounded-lg text-center">
-                                <i class="fas fa-box-open text-2xl mb-2"></i>
-                                <p class="text-xs font-medium">确认收货</p>
-                            </div>
-                            <i class="fas fa-arrow-right text-gray-400"></i>
-                            <div class="flow-node bg-teal-500 text-white p-3 rounded-lg text-center">
-                                <i class="fas fa-check-circle text-2xl mb-2"></i>
-                                <p class="text-xs font-medium">交收完成</p>
-                            </div>
-                        </div>
-                    </div>
-                    
+
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
                         <pre><code class="language-java">@Service
 public class SettlementService {
-    
-    @Autowired
-    private ContractService contractService;
-    
-    @Autowired
-    private WarehouseReceiptService warehouseReceiptService;
-    
-    @Autowired
-    private LogisticsService logisticsService;
-    
-    public void startSettlement(String contractId) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getStatus() != ContractStatus.APPROVED && contract.getStatus() != ContractStatus.SIGNED) {
-            throw new BusinessException("只有已审批或已签章的合同可以开始交收");
-        }
-        
-        if (contract.getSettlementType() == SettlementType.ORGANIZED) {
-            startOrganizedSettlement(contract);
+
+    @Autowired private ContractStateMachine stateMachine;
+    @Autowired private WarehouseReceiptService warehouseReceiptService;
+    @Autowired private LogisticsService logisticsService;
+
+    /** 交收方式来自租户配置，这里只做策略分派 */
+    public void start(SettlementContext ctx) {
+        Contract c = ctx.getContract();
+        if (c.getSettlementType() == SettlementType.ORGANIZED) {
+            // 组织交收：付款后按仓单过户推进
+            stateMachine.transition(c, ContractStatus.SIGNED);
         } else {
-            startFreeSettlement(contract);
+            // 自由交收：签章后走自行发货
+            stateMachine.transition(c, ContractStatus.SIGNED);
         }
     }
-    
-    private void startOrganizedSettlement(Contract contract) {
-        contract.setStatus(ContractStatus.SIGNED);
-        contractService.updateContractStatus(contract.getContractId(), ContractStatus.SIGNED);
-    }
-    
-    private void startFreeSettlement(Contract contract) {
-        contract.setStatus(ContractStatus.SIGNED);
-        contractService.updateContractStatus(contract.getContractId(), ContractStatus.SIGNED);
-    }
-    
-    public void allocateWarehouseReceipt(String contractId, List<String> warehouseReceiptIds) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getSettlementType() != SettlementType.ORGANIZED) {
-            throw new BusinessException("只有组织交收的合同可以分配仓单");
-        }
-        
-        if (contract.getStatus() != ContractStatus.PAID) {
-            throw new BusinessException("只有已付款的合同可以分配仓单");
-        }
-        
-        for (String warehouseReceiptId : warehouseReceiptIds) {
-            warehouseReceiptService.transfer(warehouseReceiptId, contract.getBuyerId());
-        }
-        
-        contract.setStatus(ContractStatus.ALLOCATED);
-        contractService.updateContractStatus(contractId, ContractStatus.ALLOCATED);
-    }
-    
-    public void arrangeDelivery(String contractId, DeliveryRequest request) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getSettlementType() != SettlementType.FREE) {
-            throw new BusinessException("只有自由交收的合同可以安排发货");
-        }
-        
-        if (contract.getStatus() != ContractStatus.SIGNED) {
-            throw new BusinessException("只有已签章的合同可以安排发货");
-        }
-        
-        LogisticsOrder logisticsOrder = logisticsService.createOrder(
-            request.getLogisticsCompany(),
-            request.getSenderAddress(),
-            request.getReceiverAddress(),
-            request.getItems()
-        );
-        
-        contract.setStatus(ContractStatus.SHIPPED);
-        contract.setLogisticsOrderId(logisticsOrder.getOrderId());
-        contractService.updateContractStatus(contractId, ContractStatus.SHIPPED);
-    }
-    
-    public void confirmDelivery(String contractId) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getStatus() != ContractStatus.SHIPPED && contract.getStatus() != ContractStatus.ALLOCATED) {
-            throw new BusinessException("只有已发货或已配货的合同可以确认收货");
-        }
-        
-        contract.setStatus(ContractStatus.DELIVERED);
-        contract.setDeliverTime(new Date());
-        contractService.updateContractStatus(contractId, ContractStatus.DELIVERED);
-    }
-    
-    public void completeSettlement(String contractId) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getStatus() != ContractStatus.DELIVERED) {
-            throw new BusinessException("只有已收货的合同可以完成交收");
-        }
-        
-        contract.setStatus(ContractStatus.COMPLETED);
-        contract.setCompleteTime(new Date());
-        contractService.updateContractStatus(contractId, ContractStatus.COMPLETED);
-    }
-}
 
-@Data
-public class DeliveryRequest {
-    private String logisticsCompany;
-    private String senderAddress;
-    private String receiverAddress;
-    private List<DeliveryItem> items;
-}
+    /** 组织交收：仓单批量过户到买方，一次 Saga 事务 */
+    public void allocateWarehouseReceipt(Contract c, List&lt;String&gt; receiptIds) {
+        stateMachine.transition(c, ContractStatus.ALLOCATED); // 校验必须为已付款
+        for (String id : receiptIds) {
+            warehouseReceiptService.transfer(id, c.getBuyerId());
+        }
+    }
 
-@Data
-public class DeliveryItem {
-    private Long productId;
-    private String productName;
-    private BigDecimal quantity;
+    /** 自由交收：创建物流单 */
+    public String arrangeDelivery(Contract c, DeliveryRequest req) {
+        stateMachine.transition(c, ContractStatus.SHIPPED); // 校验必须为已签章
+        return logisticsService.createOrder(req.getLogisticsCompany(),
+                req.getSenderAddress(), req.getReceiverAddress(), req.getItems());
+    }
 }</code></pre>
                     </div>
                 </div>
 
+                <!-- 3 电子签章 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-purple-100 p-3 rounded-lg mr-4">
                             <i class="fas fa-signature text-purple-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">合同签章与付款</h3>
+                        <h3 class="text-xl font-semibold">3. 电子签章（对接外部签章系统）</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        提供合同电子签章、合同付款等功能，支持多种支付方式。
+                        签章系统属于外部集成（外联网关统一适配），合同中心只负责<strong>双签状态编排</strong>：买卖双方各自签署完成后，合同才进入 SIGNED。签章回调通过外联网关统一入口、幂等消费，避免重复签章导致状态错乱。
                     </p>
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
                         <pre><code class="language-java">@Service
 public class ContractSignatureService {
-    
-    @Autowired
-    private ContractService contractService;
-    
-    @Autowired
-    private EsignService esignService;
-    
-    public SignResult signContract(String contractId, Long signerId, String signerRole) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getStatus() != ContractStatus.APPROVED) {
+
+    @Autowired private ContractStateMachine stateMachine;
+    @Autowired private ExternalGateway externalGateway; // 外联网关统一适配签章系统
+
+    public SignResult sign(String contractId, Long signerId, SignerRole role) {
+        Contract c = contractService.getContract(contractId);
+        if (c.getStatus() != ContractStatus.APPROVED) {
             throw new BusinessException("只有已审批的合同可以签章");
         }
-        
-        EsignRequest esignRequest = EsignRequest.builder()
-            .contractId(contractId)
-            .signerId(signerId)
-            .signerRole(signerRole)
-            .build();
-        
-        EsignResult esignResult = esignService.sign(esignRequest);
-        
-        if (esignResult.isSuccess()) {
-            if ("buyer".equals(signerRole)) {
-                contract.setBuyerSigned(true);
-                contract.setBuyerSignTime(new Date());
-            } else if ("seller".equals(signerRole)) {
-                contract.setSellerSigned(true);
-                contract.setSellerSignTime(new Date());
-            }
-            
-            if (contract.isBuyerSigned() && contract.isSellerSigned()) {
-                contract.setStatus(ContractStatus.SIGNED);
-                contract.setSignTime(new Date());
-            }
-            
-            contractService.updateContract(contract);
+
+        // 经网关调用签章系统，返回签署链接
+        ExternalResponse resp = externalGateway.invoke("esign", "sign",
+                Map.of("contractId", contractId, "signerId", signerId, "role", role));
+        if (!resp.isSuccess()) {
+            return SignResult.fail(resp.getMessage());
         }
-        
-        return SignResult.builder()
-            .success(esignResult.isSuccess())
-            .signUrl(esignResult.getSignUrl())
-            .build();
-    }
-    
-    public boolean isContractSigned(String contractId) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            return false;
+
+        if (role == SignerRole.BUYER) {
+            c.setBuyerSigned(true);  c.setBuyerSignTime(new Date());
+        } else {
+            c.setSellerSigned(true); c.setSellerSignTime(new Date());
         }
-        return contract.isBuyerSigned() && contract.isSellerSigned();
+        // 双签完成才推进状态机
+        if (c.isBuyerSigned() &amp;&amp; c.isSellerSigned()) {
+            stateMachine.transition(c, ContractStatus.SIGNED);
+            c.setSignTime(new Date());
+        }
+        contractService.update(c);
+        return SignResult.ok(resp.getData());
     }
 }
 
-@Service
-public class ContractPaymentService {
-    
-    @Autowired
-    private ContractService contractService;
-    
-    @Autowired
-    private PaymentService paymentService;
-    
-    @Autowired
-    private CapitalFlowService capitalFlowService;
-    
-    public PaymentResult payContract(String contractId, PaymentRequest request) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getStatus() != ContractStatus.SIGNED) {
-            throw new BusinessException("只有已签章的合同可以付款");
-        }
-        
-        BigDecimal payableAmount = calculatePayableAmount(contract);
-        
-        PaymentResult paymentResult = paymentService.pay(
-            request.getPaymentType(),
-            payableAmount,
-            request.getExtra()
-        );
-        
-        if (paymentResult.isSuccess()) {
-            capitalFlowService.createFlow(
-                contractId,
-                "PAYMENT",
-                payableAmount,
-                "合同付款"
-            );
-            
-            contract.setStatus(ContractStatus.PAID);
-            contract.setPayTime(new Date());
-            contractService.updateContractStatus(contractId, ContractStatus.PAID);
-        }
-        
-        return paymentResult;
-    }
-    
-    private BigDecimal calculatePayableAmount(Contract contract) {
-        return contract.getTotalAmount();
-    }
-}
-
-@Data
-@Builder
-public class SignResult {
-    private boolean success;
-    private String signUrl;
-    private String errorMessage;
-}
-
-@Data
-public class PaymentRequest {
-    private String paymentType;
-    private Map<String, Object> extra;
-}
-
-@Data
-@Builder
-public class PaymentResult {
-    private boolean success;
-    private String paymentId;
-    private String paymentUrl;
-    private String errorMessage;
-}</code></pre>
+public enum SignerRole { BUYER, SELLER }</code></pre>
                     </div>
                 </div>
 
+                <!-- 4 配货 / 仓单 / 物流 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-teal-100 p-3 rounded-lg mr-4">
                             <i class="fas fa-truck-loading text-teal-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">合同配货与对接仓单物流系统</h3>
+                        <h3 class="text-xl font-semibold">4. 合同配货：仓单过户 + 物流对接</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        提供合同配货功能，对接仓单系统和物流系统，支持货物调配和物流跟踪。
+                        配货要保证<strong>合同标的多数量 = 实际分配的仓单数量</strong>，数量不匹配直接拦截；配货成功后创建物流单并回传轨迹。物流 WMS 与仓单系统都在外联网关适配层之下，换供应商不影响合同中心。
                     </p>
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
                         <pre><code class="language-java">@Service
 public class ContractAllocationService {
-    
-    @Autowired
-    private ContractService contractService;
-    
-    @Autowired
-    private WarehouseReceiptService warehouseReceiptService;
-    
-    @Autowired
-    private LogisticsService logisticsService;
-    
-    @Autowired
-    private ContractItemRepository contractItemRepository;
-    
-    public AllocationResult allocateGoods(String contractId, AllocationRequest request) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getStatus() != ContractStatus.PAID) {
+
+    @Autowired private ContractStateMachine stateMachine;
+    @Autowired private ContractItemRepository contractItemRepository;
+
+    public AllocationResult allocateGoods(String contractId, AllocationRequest req) {
+        Contract c = contractService.getContract(contractId);
+        if (c.getStatus() != ContractStatus.PAID) {
             throw new BusinessException("只有已付款的合同可以配货");
         }
-        
-        List<ContractItem> items = contractItemRepository.findByContractId(contractId);
-        
-        List<AllocationItem> allocationItems = new ArrayList<>();
+
+        List&lt;ContractItem&gt; items = contractItemRepository.findByContractId(contractId);
         for (ContractItem item : items) {
-            AllocationRequest.Item requestItem = request.getItems().stream()
-                .filter(i -> i.getProductId().equals(item.getProductId()))
-                .findFirst()
-                .orElse(null);
-            
-            if (requestItem == null) {
-                throw new BusinessException("商品 " + item.getProductName() + " 未分配");
+            AllocationRequest.Item r = req.findByProduct(item.getProductId());
+            if (r == null) {
+                throw new BusinessException("商品未分配: " + item.getProductName());
             }
-            
-            if (requestItem.getQuantity().compareTo(item.getQuantity()) != 0) {
-                throw new BusinessException("商品 " + item.getProductName() + " 数量不匹配");
+            // 数量必须严格匹配，避免"少配多配"埋下资金差
+            if (r.getQuantity().compareTo(item.getQuantity()) != 0) {
+                throw new BusinessException("数量不匹配: " + item.getProductName());
             }
-            
-            WarehouseReceipt warehouseReceipt = warehouseReceiptService.getById(requestItem.getWarehouseReceiptId());
-            if (warehouseReceipt == null) {
-                throw new BusinessException("仓单不存在");
-            }
-            
-            allocationItems.add(AllocationItem.builder()
-                .productId(item.getProductId())
-                .productName(item.getProductName())
-                .quantity(item.getQuantity())
-                .warehouseReceiptId(requestItem.getWarehouseReceiptId())
-                .warehouseId(warehouseReceipt.getWarehouseId())
-                .build());
+            warehouseReceiptService.transfer(r.getWarehouseReceiptId(), c.getBuyerId());
         }
-        
-        ContractAllocation allocation = ContractAllocation.builder()
-            .contractId(contractId)
-            .items(allocationItems)
-            .createTime(new Date())
-            .build();
-        
-        contract.setStatus(ContractStatus.ALLOCATED);
-        contract.setAllocationTime(new Date());
-        contractService.updateContractStatus(contractId, ContractStatus.ALLOCATED);
-        
-        return AllocationResult.builder()
-            .success(true)
-            .allocationId(allocation.getId())
-            .build();
+
+        stateMachine.transition(c, ContractStatus.ALLOCATED);
+        c.setAllocationTime(new Date());
+        contractService.update(c);
+        return AllocationResult.ok();
     }
-    
-    public void createLogisticsOrder(String contractId, LogisticsOrderRequest request) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getStatus() != ContractStatus.ALLOCATED) {
-            throw new BusinessException("只有已配货的合同可以创建物流单");
-        }
-        
-        LogisticsOrder logisticsOrder = logisticsService.createOrder(
-            request.getLogisticsCompany(),
-            request.getSenderAddress(),
-            request.getReceiverAddress(),
-            request.getItems()
-        );
-        
-        contract.setStatus(ContractStatus.SHIPPED);
-        contract.setLogisticsOrderId(logisticsOrder.getOrderId());
-        contract.setShipTime(new Date());
-        contractService.updateContractStatus(contractId, ContractStatus.SHIPPED);
-    }
-    
-    public LogisticsTraceResult getLogisticsTrace(String contractId) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getLogisticsOrderId() == null) {
-            throw new BusinessException("物流单号不存在");
-        }
-        
-        return logisticsService.getTrace(contract.getLogisticsOrderId());
-    }
-}
-
-@Data
-public class AllocationRequest {
-    private List<Item> items;
-    
-    @Data
-    public static class Item {
-        private Long productId;
-        private BigDecimal quantity;
-        private String warehouseReceiptId;
-    }
-}
-
-@Data
-@Builder
-public class AllocationResult {
-    private boolean success;
-    private String allocationId;
-    private String errorMessage;
-}
-
-@Data
-@Builder
-public class AllocationItem {
-    private Long productId;
-    private String productName;
-    private BigDecimal quantity;
-    private String warehouseReceiptId;
-    private Long warehouseId;
-}
-
-@Data
-public class LogisticsOrderRequest {
-    private String logisticsCompany;
-    private String senderAddress;
-    private String receiverAddress;
-    private List<LogisticsItem> items;
-}
-
-@Data
-public class LogisticsItem {
-    private Long productId;
-    private String productName;
-    private BigDecimal quantity;
-}
-
-@Data
-@Builder
-public class LogisticsTraceResult {
-    private String orderId;
-    private List<TraceNode> traces;
-}
-
-@Data
-@Builder
-public class TraceNode {
-    private Date time;
-    private String location;
-    private String description;
 }</code></pre>
                     </div>
                 </div>
 
+                <!-- 5 开票 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-indigo-100 p-3 rounded-lg mr-4">
                             <i class="fas fa-file-invoice-dollar text-indigo-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">合同开票与对接开票服务</h3>
+                        <h3 class="text-xl font-semibold">5. 税务开票（对接开票服务）</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        提供合同开票功能，对接开票服务，支持发票申请、开具、查询等功能。
+                        收货/完成后才允许申请开票，发票申请单落本地库、经外联网关提交税务开票平台，异步回调更新发票号与状态。开票金额支持按合同全额或按短溢后实际金额，与资金模块共用同一套计算口径。
                     </p>
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
                         <pre><code class="language-java">@Service
 public class ContractInvoiceService {
-    
-    @Autowired
-    private ContractService contractService;
-    
-    @Autowired
-    private InvoiceService invoiceService;
-    
-    public InvoiceResult applyInvoice(String contractId, InvoiceRequest request) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getStatus() != ContractStatus.DELIVERED && contract.getStatus() != ContractStatus.COMPLETED) {
+
+    @Autowired private ContractStateMachine stateMachine;
+    @Autowired private ExternalGateway externalGateway; // 对接税务开票平台
+
+    public InvoiceResult applyInvoice(String contractId, InvoiceRequest req) {
+        Contract c = contractService.getContract(contractId);
+        if (c.getStatus() != ContractStatus.DELIVERED
+                &amp;&amp; c.getStatus() != ContractStatus.COMPLETED) {
             throw new BusinessException("只有已收货或已完成的合同可以开票");
         }
-        
-        BigDecimal invoiceAmount = calculateInvoiceAmount(contract, request);
-        
-        InvoiceApplication application = InvoiceApplication.builder()
+
+        InvoiceApplication app = InvoiceApplication.builder()
             .contractId(contractId)
-            .invoiceType(request.getInvoiceType())
-            .invoiceAmount(invoiceAmount)
-            .buyerName(request.getBuyerName())
-            .buyerTaxNo(request.getBuyerTaxNo())
-            .buyerAddress(request.getBuyerAddress())
-            .buyerPhone(request.getBuyerPhone())
-            .buyerBankName(request.getBuyerBankName())
-            .buyerBankAccount(request.getBuyerBankAccount())
-            .items(request.getItems())
+            .invoiceType(req.getInvoiceType())
+            .invoiceAmount(resolveInvoiceAmount(c, req)) // 全额 or 短溢后实际额
             .status(InvoiceApplicationStatus.PENDING)
             .createTime(new Date())
             .build();
-        
-        InvoiceResult invoiceResult = invoiceService.applyInvoice(application);
-        
-        if (invoiceResult.isSuccess()) {
-            application.setInvoiceId(invoiceResult.getInvoiceId());
-            application.setStatus(InvoiceApplicationStatus.APPLIED);
-            
-            contract.setStatus(ContractStatus.INVOICED);
-            contract.setInvoiceTime(new Date());
-            contractService.updateContractStatus(contractId, ContractStatus.INVOICED);
+        invoiceApplicationRepository.save(app);
+
+        ExternalResponse resp = externalGateway.invoke("tax-invoice", "apply", app.toMap());
+        if (resp.isSuccess()) {
+            app.setInvoiceNo((String) resp.getData().get("invoiceNo"));
+            app.setStatus(InvoiceApplicationStatus.ISSUED);
+            stateMachine.transition(c, ContractStatus.INVOICED);
+            c.setInvoiceTime(new Date());
         }
-        
-        return invoiceResult;
-    }
-    
-    public InvoiceResult queryInvoice(String contractId) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        return invoiceService.queryInvoice(contract.getInvoiceId());
-    }
-    
-    public void downloadInvoice(String contractId, String filePath) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (contract.getInvoiceId() == null) {
-            throw new BusinessException("发票不存在");
-        }
-        
-        invoiceService.downloadInvoice(contract.getInvoiceId(), filePath);
-    }
-    
-    private BigDecimal calculateInvoiceAmount(Contract contract, InvoiceRequest request) {
-        if (request.getInvoiceAmount() != null) {
-            return request.getInvoiceAmount();
-        }
-        return contract.getTotalAmount();
+        return InvoiceResult.of(resp, app);
     }
 }
 
 public enum InvoiceApplicationStatus {
-    PENDING("待申请"),
-    APPLIED("已申请"),
-    ISSUED("已开具"),
-    FAILED("申请失败");
-    
+    PENDING("待申请"), APPLIED("已申请"), ISSUED("已开具"), FAILED("申请失败");
     private final String desc;
-    
-    InvoiceApplicationStatus(String desc) {
-        this.desc = desc;
-    }
-}
-
-@Data
-public class InvoiceRequest {
-    private String invoiceType;
-    private BigDecimal invoiceAmount;
-    private String buyerName;
-    private String buyerTaxNo;
-    private String buyerAddress;
-    private String buyerPhone;
-    private String buyerBankName;
-    private String buyerBankAccount;
-    private List<InvoiceItem> items;
-}
-
-@Data
-public class InvoiceItem {
-    private String productName;
-    private String specification;
-    private String unit;
-    private BigDecimal quantity;
-    private BigDecimal price;
-    private BigDecimal amount;
-    private String taxRate;
-}
-
-@Data
-@Builder
-public class InvoiceResult {
-    private boolean success;
-    private String invoiceId;
-    private String invoiceNo;
-    private String invoiceUrl;
-    private String errorMessage;
+    InvoiceApplicationStatus(String desc) { this.desc = desc; }
 }</code></pre>
                     </div>
                 </div>
 
+                <!-- 6 复杂资金组合 -->
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-red-100 p-3 rounded-lg mr-4">
                             <i class="fas fa-coins text-red-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">复杂资金组合方式</h3>
+                        <h3 class="text-xl font-semibold">6. 复杂资金组合方式</h3>
                     </div>
                     <p class="text-gray-600 text-sm mb-4">
-                        处理复杂的资金组合方式，包括预付款、手续费、货款、多发货少发货时的短溢货款、开票保证金等。
+                        一张合同可能同时涉及预付款、手续费、货款、短溢货款、开票保证金五种资金。我的做法是：<strong>资金规则全部配置化</strong>（预付比例、费率、保证金比例按租户/合同类型配置），每笔资金变动落<strong>资金流水</strong>，短溢、冻结/解冻都生成不可逆流水，为日终对账提供唯一事实。
                     </p>
-                    
+
                     <div class="overflow-x-auto mb-4">
                         <table class="min-w-full bg-white border border-gray-200 rounded-lg">
                             <thead>
@@ -1030,13 +414,13 @@ public class InvoiceResult {
                             <tbody class="divide-y divide-gray-200">
                                 <tr>
                                     <td class="px-4 py-2 text-sm font-medium text-gray-900">预付款</td>
-                                    <td class="px-4 py-2 text-sm text-gray-600">合同签订前支付的定金</td>
-                                    <td class="px-4 py-2 text-sm text-gray-600">合同金额 × 预付比例</td>
+                                    <td class="px-4 py-2 text-sm text-gray-600">签约前/后支付的定金</td>
+                                    <td class="px-4 py-2 text-sm text-gray-600">合同金额 × 预付比例（配置）</td>
                                 </tr>
                                 <tr>
                                     <td class="px-4 py-2 text-sm font-medium text-gray-900">手续费</td>
-                                    <td class="px-4 py-2 text-sm text-gray-600">交易服务费用</td>
-                                    <td class="px-4 py-2 text-sm text-gray-600">合同金额 × 手续费率</td>
+                                    <td class="px-4 py-2 text-sm text-gray-600">平台交易服务费</td>
+                                    <td class="px-4 py-2 text-sm text-gray-600">合同金额 × 手续费率（配置）</td>
                                 </tr>
                                 <tr>
                                     <td class="px-4 py-2 text-sm font-medium text-gray-900">货款</td>
@@ -1045,241 +429,142 @@ public class InvoiceResult {
                                 </tr>
                                 <tr>
                                     <td class="px-4 py-2 text-sm font-medium text-gray-900">短溢货款</td>
-                                    <td class="px-4 py-2 text-sm text-gray-600">多发货或少发货的差额</td>
-                                    <td class="px-4 py-2 text-sm text-gray-600">（实际数量 - 合同数量）× 单价</td>
+                                    <td class="px-4 py-2 text-sm text-gray-600">多发/少发产生的差额，需单独对账</td>
+                                    <td class="px-4 py-2 text-sm text-gray-600">（实际数量 − 合同数量）× 单价</td>
                                 </tr>
                                 <tr>
                                     <td class="px-4 py-2 text-sm font-medium text-gray-900">开票保证金</td>
-                                    <td class="px-4 py-2 text-sm text-gray-600">开票前冻结的保证金</td>
-                                    <td class="px-4 py-2 text-sm text-gray-600">合同金额 × 保证金比例</td>
+                                    <td class="px-4 py-2 text-sm text-gray-600">开票前冻结、开票后解冻</td>
+                                    <td class="px-4 py-2 text-sm text-gray-600">合同金额 × 保证金比例（配置）</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    
+
                     <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
                         <pre><code class="language-java">@Service
 public class CapitalService {
-    
-    @Autowired
-    private ContractService contractService;
-    
-    @Autowired
-    private CapitalFlowRepository capitalFlowRepository;
-    
-    public CapitalCalculationResult calculateCapital(String contractId) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        BigDecimal contractAmount = contract.getTotalAmount();
-        
-        BigDecimal prepayment = calculatePrepayment(contract);
-        BigDecimal serviceFee = calculateServiceFee(contract);
-        BigDecimal goodsPayment = calculateGoodsPayment(contract);
-        BigDecimal shortOverPayment = calculateShortOverPayment(contract);
-        BigDecimal invoiceDeposit = calculateInvoiceDeposit(contract);
-        
-        BigDecimal totalPayable = prepayment.add(serviceFee).add(goodsPayment)
-            .add(shortOverPayment.compareTo(BigDecimal.ZERO) > 0 ? shortOverPayment : BigDecimal.ZERO);
-        
+
+    @Autowired private CapitalFlowRepository capitalFlowRepository;
+
+    /** 资金组合计算：所有比例来自租户配置，不写死在代码里 */
+    public CapitalCalculationResult calculate(Contract c, List&lt;ContractItem&gt; items) {
+        BigDecimal base = c.getTotalAmount();
+        BigDecimal prepayment   = base.multiply(c.prepaymentRate());     // 预付款
+        BigDecimal serviceFee   = base.multiply(c.serviceFeeRate());     // 手续费
+        BigDecimal goodsPayment = items.stream()                         // 货款（按实际数量）
+            .map(i -> i.actualOrContractQty().multiply(i.getPrice()))
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal shortOver    = items.stream()                         // 短溢货款
+            .map(i -> i.actualOrContractQty().subtract(i.getQuantity()).multiply(i.getPrice()))
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal invoiceDeposit = base.multiply(c.invoiceDepositRate()); // 开票保证金
+
         return CapitalCalculationResult.builder()
-            .contractAmount(contractAmount)
-            .prepayment(prepayment)
-            .serviceFee(serviceFee)
-            .goodsPayment(goodsPayment)
-            .shortOverPayment(shortOverPayment)
-            .invoiceDeposit(invoiceDeposit)
-            .totalPayable(totalPayable)
-            .build();
+            .contractAmount(base).prepayment(prepayment).serviceFee(serviceFee)
+            .goodsPayment(goodsPayment).shortOverPayment(shortOver)
+            .invoiceDeposit(invoiceDeposit).build();
     }
-    
-    private BigDecimal calculatePrepayment(Contract contract) {
-        BigDecimal prepaymentRate = contract.getPrepaymentRate() != null ? 
-            contract.getPrepaymentRate() : new BigDecimal("0.3");
-        return contract.getTotalAmount().multiply(prepaymentRate);
+
+    /** 开票保证金冻结/解冻：每次操作都落一条不可逆资金流水，供日终对账 */
+    public void freezeInvoiceDeposit(Contract c) {
+        CapitalCalculationResult r = calculate(c, itemsOf(c));
+        capitalFlowRepository.save(CapitalFlow.of(c.getContractId(),
+            "INVOICE_DEPOSIT_FREEZE", r.getInvoiceDeposit(), "开票保证金冻结"));
+        c.setInvoiceDepositFrozen(true);
     }
-    
-    private BigDecimal calculateServiceFee(Contract contract) {
-        BigDecimal serviceFeeRate = contract.getServiceFeeRate() != null ? 
-            contract.getServiceFeeRate() : new BigDecimal("0.005");
-        return contract.getTotalAmount().multiply(serviceFeeRate);
-    }
-    
-    private BigDecimal calculateGoodsPayment(Contract contract) {
-        List<ContractItem> items = contractItemRepository.findByContractId(contract.getContractId());
-        BigDecimal actualQuantity = items.stream()
-            .map(ContractItem::getActualQuantity)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal contractQuantity = items.stream()
-            .map(ContractItem::getQuantity)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
-        
-        if (actualQuantity.compareTo(BigDecimal.ZERO) == 0) {
-            return contract.getTotalAmount();
-        }
-        
-        return items.stream()
-            .map(item -> item.getActualQuantity() != null ? 
-                item.getActualQuantity().multiply(item.getPrice()) : item.getAmount())
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-    
-    private BigDecimal calculateShortOverPayment(Contract contract) {
-        List<ContractItem> items = contractItemRepository.findByContractId(contract.getContractId());
-        
-        return items.stream()
-            .map(item -> {
-                BigDecimal actualQty = item.getActualQuantity() != null ? item.getActualQuantity() : item.getQuantity();
-                BigDecimal diff = actualQty.subtract(item.getQuantity());
-                return diff.multiply(item.getPrice());
-            })
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-    
-    private BigDecimal calculateInvoiceDeposit(Contract contract) {
-        BigDecimal invoiceDepositRate = contract.getInvoiceDepositRate() != null ? 
-            contract.getInvoiceDepositRate() : new BigDecimal("0.1");
-        return contract.getTotalAmount().multiply(invoiceDepositRate);
-    }
-    
-    public void createCapitalFlow(String contractId, String flowType, BigDecimal amount, String remark) {
-        CapitalFlow flow = CapitalFlow.builder()
-            .contractId(contractId)
-            .flowType(flowType)
-            .amount(amount)
-            .remark(remark)
-            .createTime(new Date())
-            .build();
-        
-        capitalFlowRepository.save(flow);
-    }
-    
-    public List<CapitalFlow> getCapitalFlows(String contractId) {
-        return capitalFlowRepository.findByContractIdOrderByCreateTimeDesc(contractId);
-    }
-    
-    public void freezeInvoiceDeposit(String contractId) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        CapitalCalculationResult calculation = calculateCapital(contractId);
-        
-        createCapitalFlow(contractId, "INVOICE_DEPOSIT_FREEZE", 
-            calculation.getInvoiceDeposit(), "开票保证金冻结");
-        
-        contract.setInvoiceDepositFrozen(true);
-        contractService.updateContract(contract);
-    }
-    
-    public void unfreezeInvoiceDeposit(String contractId) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        if (!contract.isInvoiceDepositFrozen()) {
+
+    public void unfreezeInvoiceDeposit(Contract c) {
+        if (!c.isInvoiceDepositFrozen()) {
             throw new BusinessException("开票保证金未冻结");
         }
-        
-        CapitalCalculationResult calculation = calculateCapital(contractId);
-        
-        createCapitalFlow(contractId, "INVOICE_DEPOSIT_UNFREEZE", 
-            calculation.getInvoiceDeposit().negate(), "开票保证金解冻");
-        
-        contract.setInvoiceDepositFrozen(false);
-        contractService.updateContract(contract);
+        CapitalCalculationResult r = calculate(c, itemsOf(c));
+        capitalFlowRepository.save(CapitalFlow.of(c.getContractId(),
+            "INVOICE_DEPOSIT_UNFREEZE", r.getInvoiceDeposit().negate(), "开票保证金解冻"));
+        c.setInvoiceDepositFrozen(false);
     }
-    
-    public void settleShortOverPayment(String contractId, BigDecimal settleAmount) {
-        Contract contract = contractService.getContract(contractId);
-        if (contract == null) {
-            throw new BusinessException("合同不存在");
-        }
-        
-        CapitalCalculationResult calculation = calculateCapital(contractId);
-        
-        String flowType = settleAmount.compareTo(BigDecimal.ZERO) >= 0 ? 
-            "SHORT_OVER_PAYMENT_RECEIVE" : "SHORT_OVER_PAYMENT_PAY";
-        
-        createCapitalFlow(contractId, flowType, settleAmount.abs(), 
-            settleAmount.compareTo(BigDecimal.ZERO) >= 0 ? "短溢货款收取" : "短溢货款支付");
-        
-        contract.setShortOverPaymentSettled(true);
-        contractService.updateContract(contract);
+
+    /** 短溢货款结算：正数=向买方收，负数=向卖方付 */
+    public void settleShortOver(Contract c, BigDecimal settleAmount) {
+        String type = settleAmount.signum() &gt;= 0
+            ? "SHORT_OVER_RECEIVE" : "SHORT_OVER_PAY";
+        capitalFlowRepository.save(CapitalFlow.of(c.getContractId(),
+            type, settleAmount.abs(), settleAmount.signum() &gt;= 0 ? "短溢货款收取" : "短溢货款支付"));
+        c.setShortOverPaymentSettled(true);
     }
-}
-
-@Data
-@Builder
-public class CapitalCalculationResult {
-    private BigDecimal contractAmount;
-    private BigDecimal prepayment;
-    private BigDecimal serviceFee;
-    private BigDecimal goodsPayment;
-    private BigDecimal shortOverPayment;
-    private BigDecimal invoiceDeposit;
-    private BigDecimal totalPayable;
-}
-
-@Entity
-@Table(name = "capital_flow")
-public class CapitalFlow {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String contractId;
-    
-    private String flowType;
-    
-    private BigDecimal amount;
-    
-    private String remark;
-    
-    private Date createTime;
 }</code></pre>
                     </div>
                 </div>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-list-check mr-2 text-yellow-500"></i>核心优势
+                <i class="fas fa-sliders-h mr-2 text-yellow-500"></i>关键决策：多租户可配置化
             </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    平台服务 100+ 客户，每家的合同模板、交收方式、资金规则、审批流都不同。若为每家写分支，代码必然膨胀。<strong>决策：一套引擎 + 每客户一套配置</strong>——用 Drools 规则 + 策略模式 + 配置化模板，把"差异"从代码移到配置。
+                </p>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                    <pre><code class="language-java">/**
+ * 合同模板 / 交收方式 / 资金规则从租户配置读取，
+ * 新增客户只加配置，不改代码 —— 100+ 客户差异化需求下代码零膨胀。
+ */
+@Service
+public class ContractTemplateResolver {
+
+    @Autowired private TenantConfigRepository tenantConfigRepository;
+    @Autowired private KieContainer kieContainer; // Drools 规则引擎
+
+    public ContractTemplate resolve(String tenantId, String tradeMode) {
+        TenantConfig cfg = tenantConfigRepository.get(tenantId);
+        // 1) 基础模板（审批节点、交收方式、必填项）来自配置
+        ContractTemplate tpl = cfg.templateOf(tradeMode);
+        // 2) 差异化规则（资金比例、开票时点、短溢阈值）走 Drools
+        KieSession session = kieContainer.newKieSession(cfg.ruleSet());
+        session.insert(tpl);
+        session.fireAllRules();
+        return tpl;
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-exclamation-triangle mr-2 text-yellow-500"></i>踩坑与解决
+            </h2>
+            <div class="space-y-4 mb-8">
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                    <p class="text-sm text-red-800">
+                        <strong>坑 1 · 跨月长事务：</strong>合同履约从签约到完成可能跨月，早期用数据库本地事务把"付款+仓单过户+开票+状态更新"耦合在一个事务里，导致长事务锁表、外部系统超时无法回滚。
+                        <br><strong>解：</strong>拆成 <strong>Saga + 状态机 + 事件溯源</strong>——每个履约节点是独立 Saga 步骤，状态迁移由状态机校验，领域事件落事件表；任一步失败按补偿动作回滚，跨月长流程不再依赖一个大事务。
+                    </p>
+                </div>
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                    <p class="text-sm text-red-800">
+                        <strong>坑 2 · 短溢货款对账：</strong>实际发货量与合同量差异（石油、煤炭按批次称重）导致货款与预付款对不平，早期靠人工台账核对，效率低且易错。
+                        <br><strong>解：</strong>短溢货款单独建流水类型、单独结算动作，并把"短溢"口径写入资金流水的唯一事实；日终对账以流水为准自动比对，把对账从 9 人天压缩到 2 小时（详见"合同履约"页）。
+                    </p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-yellow-500"></i>结果
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
                     <i class="fas fa-file-contract text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">全生命周期</h4>
-                    <p class="text-sm opacity-90">合同从创建到完成全流程</p>
+                    <h4 class="font-bold mb-1">履约闭环打通</h4>
+                    <p class="text-sm opacity-90">交易→签约→支付→仓单过户/发货→开票→完成，全流程可由状态机驱动</p>
                 </div>
                 <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-exchange-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">灵活交收</h4>
-                    <p class="text-sm opacity-90">组织交收和自由交收</p>
-                </div>
-                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-coins text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">资金灵活</h4>
-                    <p class="text-sm opacity-90">多种资金组合方式</p>
-                </div>
-                <div class="bg-gradient-to-br from-pink-500 to-pink-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-signature text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">电子签章</h4>
-                    <p class="text-sm opacity-90">安全便捷的电子签章</p>
+                    <i class="fas fa-sliders-h text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">可配置化落地</h4>
+                    <p class="text-sm opacity-90">新客户上线 2 月→1 周，100+ 客户差异化需求代码零膨胀</p>
                 </div>
                 <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-plug text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">系统集成</h4>
-                    <p class="text-sm opacity-90">对接仓单、物流、开票系统</p>
-                </div>
-                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">资金安全</h4>
-                    <p class="text-sm opacity-90">完善的资金管理机制</p>
+                    <i class="fas fa-gauge-high text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">周期与稳定性</h4>
+                    <p class="text-sm opacity-90">平均交易周期 5 天→1.5 天；核心接口稳定 200ms 内，冬储高峰两季零 P0</p>
                 </div>
             </div>
 
@@ -1287,4 +572,3 @@ public class CapitalFlow {
     </div>
 </body>
 </html>
-

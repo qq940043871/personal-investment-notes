@@ -3,291 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>付款发货场景 - B2B分布式项目</title>
+    <title>合同履约与资金一致性设计 - B2B大宗交易平台复盘</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../../../assets/css/common.css">
 </head>
 <body class="bg-gray-50">
     <div class="max-w-6xl mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-8">
             <h1 class="text-3xl font-bold text-gray-800 mb-2">
-                <i class="fas fa-hand-holding-usd mr-3 text-teal-500"></i>付款发货场景
+                <i class="fas fa-hand-holding-usd mr-3 text-teal-500"></i>合同履约与付款发货的资金一致性设计
             </h1>
-            <p class="text-gray-500 mb-6">Payment and Delivery Scenarios - 贸易付款发货典型场景</p>
-            
-            <div class="bg-teal-50 border-l-4 border-teal-500 p-4 mb-8">
-                <p class="text-teal-700">
+            <p class="text-gray-500 mb-6">Payment &amp; Delivery - 付款方式、短溢货款、开票保证金与一致性保障</p>
+
+            <!-- 项目背景 -->
+            <div class="bg-teal-50 border-l-4 border-teal-500 p-4 mb-6">
+                <p class="text-teal-800">
                     <i class="fas fa-lightbulb mr-2"></i>
-                    <strong>核心概述：</strong>实际贸易中，付款与发货的约定场景高度依赖交易双方的信任度、商品类型（如大宗商品/定制化产品/快消品）、交易规模及行业惯例，核心是平衡"<strong>买方资金安全</strong>"与"<strong>卖方货权/收款保障</strong>"。
+                    <strong>项目背景：</strong>合同签约之后，"付款"和"发货/过户"是资金风险最集中的环节。一笔合同可能同时涉及<strong>预付款、尾款、分期、短溢货款、开票保证金冻结/解冻</strong>；而付款动作还要和支付通道、银行、仓单系统、物流系统、税务系统多方交互，任何一环超时或重复回调，都可能造成资金与账目不一致。这个模块的目标只有一个：<strong>钱和货的状态，永远对得上</strong>。
                 </p>
             </div>
 
-            <div class="space-y-8 mb-8">
+            <!-- 我的角色 -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong>技术经理 / Java 侧负责人。我主导了这条链路的<strong>资金一致性方案</strong>：用 <strong>Saga + 状态机 + 事件溯源</strong>编排跨系统长流程，用 <strong>Kafka + outbox 本地消息表 + 消费幂等</strong>保证消息不丢不重，再以<strong>日终对账</strong>兜底。方案让"3 年零资金差错"从口号变成可复制的工程约束。
+                </p>
+            </div>
+
+            <!-- 结果指标 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold">3 年 0 差错</div>
+                    <p class="text-xs opacity-90 mt-1">资金差错</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold">9 人天 → 2 小时</div>
+                    <p class="text-xs opacity-90 mt-1">对账耗时</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold">99.95%</div>
+                    <p class="text-xs opacity-90 mt-1">外部接口可用率</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold">&lt; 200ms</div>
+                    <p class="text-xs opacity-90 mt-1">核心接口稳定延迟</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-teal-500"></i>付款与资金构成
+            </h2>
+
+            <div class="space-y-6 mb-8">
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-red-100 p-3 rounded-lg mr-4">
                             <i class="fas fa-money-bill-wave text-red-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">1. 预付款（款到发货）：卖方主导风险控制</h3>
+                        <h3 class="text-xl font-semibold">1. 付款方式：预付款 / 尾款 / 分期</h3>
                     </div>
-                    
                     <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-                        <h4 class="font-semibold text-red-800 mb-2">约定逻辑</h4>
                         <p class="text-gray-700 text-sm">
-                            买方先支付部分或全部款项，卖方收到款项后再安排生产/发货。
+                            付款计划与履约节点绑定：签约后付预付款（比例按租户配置），发货/过户前后付尾款，大额项目按节点分期。每个付款节点都是一次独立的幂等支付，付款成功后通过状态机推进合同。
                         </p>
                     </div>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">常见细分</h4>
-                    <div class="space-y-3 mb-4">
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h5 class="font-semibold text-gray-800 mb-2">全额预付款</h5>
-                            <p class="text-sm text-gray-600">买方支付100%货款后，卖方发货（如小众定制产品、紧俏大宗商品，避免卖方生产后买方违约）。</p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h5 class="font-semibold text-gray-800 mb-2">部分预付款（定金）</h5>
-                            <p class="text-sm text-gray-600">买方支付30%-50%定金，卖方启动生产，发货前买方付清尾款（如设备定制、批量采购，覆盖卖方原材料成本）。</p>
-                        </div>
-                    </div>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
-                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
-                        <li>卖方为小厂商/新供应商，买方对其货权履约能力信任度低；</li>
-                        <li>商品为定制化、非标准化产品（如专属规格的机械零件），卖方无法转售给其他买家；</li>
-                        <li>紧俏资源类商品（如旺季的煤炭、芯片），卖方占据谈判优势。</li>
-                    </ul>
-                </div>
-
-                <div class="bg-white border border-gray-200 rounded-lg p-5">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-box-open text-blue-500 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold">2. 货到付款（款到放单/收货付款）：买方主导风险控制</h3>
-                    </div>
-                    
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                        <h4 class="font-semibold text-blue-800 mb-2">约定逻辑</h4>
-                        <p class="text-gray-700 text-sm">
-                            卖方先发货，买方收到货物（或货物单据）后再支付款项，核心保障买方"见货付款"。
-                        </p>
-                    </div>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">常见细分</h4>
-                    <div class="space-y-3 mb-4">
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h5 class="font-semibold text-gray-800 mb-2">货到付款（现金/电汇）</h5>
-                            <p class="text-sm text-gray-600">卖方送货上门，买方验收无误后当场支付全款（如本地小额贸易、零售批发）。</p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h5 class="font-semibold text-gray-800 mb-2">凭单付款（DP，付款交单）</h5>
-                            <p class="text-sm text-gray-600">卖方将货运单据（提单、装箱单）交给银行，买方付款给银行后才能领取单据、提取货物（多用于国际贸易，通过银行保障单据与款项对流）。</p>
-                        </div>
-                    </div>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
-                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
-                        <li>买方为大型企业/终端客户，谈判地位强（如连锁超市向供应商采购日用品）；</li>
-                        <li>商品为标准化、可快速验货的产品（如家电、快消品），买方能当场确认质量/数量；</li>
-                        <li>首次合作双方信任度低，买方不愿提前垫资。</li>
+                    <ul class="list-disc list-inside space-y-1 text-gray-600 text-sm">
+                        <li><strong>预付款：</strong>合同金额 × 预付比例（配置化）；</li>
+                        <li><strong>尾款：</strong>按实际交货数量结算的剩余货款；</li>
+                        <li><strong>分期：</strong>把付款拆成多个履约节点，逐节点触发；</li>
+                        <li><strong>手续费：</strong>平台服务费，与货款同笔或独立扣取，口径统一进资金流水。</li>
                     </ul>
                 </div>
 
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
                         <div class="bg-amber-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-project-diagram text-amber-500 text-2xl"></i>
+                            <i class="fas fa-scale-balanced text-amber-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">3. 分期付款（按履约节点付款）：平衡双方风险</h3>
+                        <h3 class="text-xl font-semibold">2. 短溢货款：多发少发的差额</h3>
                     </div>
-                    
                     <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
-                        <h4 class="font-semibold text-amber-800 mb-2">约定逻辑</h4>
                         <p class="text-gray-700 text-sm">
-                            将付款拆分为多笔，与发货、验收等履约节点绑定，完成一个节点付一笔款，是贸易中最常用的"平衡方案"。
+                            大宗商品按批次称重/计量，实际发货量常与合同量有偏差，产生"短溢货款"。差异金额 = （实际数量 − 合同数量）× 单价，正数向买方收取、负数向卖方退还。这是最容易产生对账争议的地方，必须独立建流水类型、单独结算、单独可查。
                         </p>
                     </div>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">典型流程（以设备采购为例）</h4>
-                    <ol class="list-decimal list-inside space-y-2 text-gray-600 text-sm mb-4">
-                        <li>合同签订后，买方向卖方支付20%预付款（卖方启动生产）；</li>
-                        <li>设备生产完成、买方到厂验收合格后，支付30%进度款（卖方安排发货）；</li>
-                        <li>设备运到买方工厂、安装调试完成后，支付40%验收款；</li>
-                        <li>质保期（如1年）结束后，支付剩余10%质保金。</li>
-                    </ol>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
-                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
-                        <li>交易周期长、金额大的项目（如设备采购、工程材料供应）；</li>
-                        <li>履约环节多（生产-验收-发货-安装），需分阶段确认进度；</li>
-                        <li>双方合作基础中等，需通过节点控制降低单方风险。</li>
-                    </ul>
                 </div>
 
                 <div class="bg-white border border-gray-200 rounded-lg p-5">
                     <div class="flex items-center mb-4">
-                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-university text-purple-500 text-2xl"></i>
+                        <div class="bg-indigo-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-vault text-indigo-500 text-2xl"></i>
                         </div>
-                        <h3 class="text-xl font-semibold">4. 信用证（L/C）：银行担保的国际贸易场景</h3>
+                        <h3 class="text-xl font-semibold">3. 开票保证金：冻结 / 解冻</h3>
                     </div>
-                    
-                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
-                        <h4 class="font-semibold text-purple-800 mb-2">约定逻辑</h4>
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4 mb-4">
                         <p class="text-gray-700 text-sm">
-                            买方委托银行开立信用证，银行承诺"只要卖方提交符合信用证条款的单据（如提单、发票），就无条件付款"，本质是用银行信用替代买卖双方的商业信用。
+                            为保障开票履约，开票前按配置比例<strong>冻结</strong>开票保证金，发票开具完成后<strong>解冻</strong>。冻结与解冻各生成一条不可逆资金流水（解冻为负向），保证任意时点的保证金余额可由流水推导。
                         </p>
                     </div>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">核心流程</h4>
-                    <ol class="list-decimal list-inside space-y-2 text-gray-600 text-sm mb-4">
-                        <li>买卖双方签订合同，约定以信用证结算；</li>
-                        <li>买方（开证申请人）向银行申请开立信用证，明确"发货期限、单据要求、付款金额"等条款；</li>
-                        <li>银行（开证行）将信用证发送给卖方（受益人）所在地银行（通知行）；</li>
-                        <li>卖方按约定发货，收集全套单据提交给通知行；</li>
-                        <li>银行审核单据无误后，向卖方付款（或承兑远期汇票），再向买方收取款项。</li>
-                    </ol>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
-                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
-                        <li>国际贸易（跨国家/地区，买卖双方互不信任，缺乏法律管辖便利）；</li>
-                        <li>高金额交易（如大宗商品进出口、大型设备跨境采购），需规避"付款不发货"或"发货不付款"的跨境风险。</li>
-                    </ul>
-                </div>
-
-                <div class="bg-white border border-gray-200 rounded-lg p-5">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-green-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-calendar-check text-green-500 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold">5. 账期结算（先货后款，约定周期付款）：基于长期信任的合作</h3>
-                    </div>
-                    
-                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
-                        <h4 class="font-semibold text-green-800 mb-2">约定逻辑</h4>
-                        <p class="text-gray-700 text-sm">
-                            卖方先发货，买方在约定的"账期"内（如30天/60天）支付货款，本质是卖方给买方提供短期资金支持，基于长期稳定的合作关系。
-                        </p>
-                    </div>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">常见形式</h4>
-                    <div class="space-y-3 mb-4">
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h5 class="font-semibold text-gray-800 mb-2">固定账期</h5>
-                            <p class="text-sm text-gray-600">每月5日结算上月1-30日的所有发货货款（如大型零售商与长期供应商的合作，如沃尔玛向食品供应商采购）。</p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h5 class="font-semibold text-gray-800 mb-2">滚动账期</h5>
-                            <p class="text-sm text-gray-600">每笔发货后，买方在30天内支付该笔货款（如长期合作的工业品贸易）。</p>
-                        </div>
-                    </div>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
-                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
-                        <li>双方长期合作（如3年以上），信任度高，了解彼此的履约能力；</li>
-                        <li>买方为下游渠道商/零售商，需通过账期缓解资金周转压力（如超市先铺货、卖完再付款）。</li>
-                    </ul>
-                </div>
-
-                <div class="bg-white border border-gray-200 rounded-lg p-5">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-teal-100 p-3 rounded-lg mr-4">
-                            <i class="fas fa-user-shield text-teal-500 text-2xl"></i>
-                        </div>
-                        <h3 class="text-xl font-semibold">6. 委托第三方担保/监管：特殊风险场景的补充</h3>
-                    </div>
-                    
-                    <div class="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-4">
-                        <h4 class="font-semibold text-teal-800 mb-2">约定逻辑</h4>
-                        <p class="text-gray-700 text-sm">
-                            引入第三方（如担保公司、仓储监管机构），对"付款"或"发货"环节进行担保，降低单方违约风险，常见于高价值、易损耗或需存储的商品。
-                        </p>
-                    </div>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">典型场景</h4>
-                    <div class="space-y-3 mb-4">
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h5 class="font-semibold text-gray-800 mb-2">大宗商品质押监管</h5>
-                            <p class="text-sm text-gray-600">买方支付部分货款，卖方将货物存入第三方监管仓库，买方付清尾款后，监管方才释放货物（如钢材、有色金属贸易）。</p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h5 class="font-semibold text-gray-800 mb-2">担保公司承保</h5>
-                            <p class="text-sm text-gray-600">卖方投保"买方付款履约险"，若买方到期不付款，担保公司向卖方赔付，再向买方追偿（如中小卖方与陌生买方的大额交易）。</p>
-                        </div>
-                    </div>
-                    
-                    <h4 class="font-semibold text-gray-800 mb-3">适用场景</h4>
-                    <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
-                        <li>商品需长期存储（如粮食、化工品），担心"货权被挪用"；</li>
-                        <li>买方信用资质一般，但交易金额大，卖方不愿承担坏账风险。</li>
-                    </ul>
                 </div>
             </div>
 
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4">
-                    <i class="fas fa-table mr-2 text-gray-500"></i>不同场景的核心差异（总结）
-                </h3>
-                
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white border border-gray-200 rounded-lg">
-                        <thead>
-                            <tr class="bg-gray-100">
-                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">场景类型</th>
-                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">核心优势（对买方）</th>
-                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">核心优势（对卖方）</th>
-                                <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">关键前提</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            <tr>
-                                <td class="px-4 py-3 text-sm font-medium text-gray-900">预付款</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">锁定货源，避免涨价</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">保障收款，降低生产风险</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">卖方谈判强/商品紧俏</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="px-4 py-3 text-sm font-medium text-gray-900">货到付款</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">见货付款，规避货不对板</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">快速成交，适合小额零售</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">买方谈判强/商品标准化</td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 text-sm font-medium text-gray-900">分期付款</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">分阶段控制风险，资金压力小</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">逐步回款，覆盖成本</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">交易周期长/双方信任中等</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="px-4 py-3 text-sm font-medium text-gray-900">信用证</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">单据审核，保障货权</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">银行担保，确保收款</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">国际贸易/高金额</td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 text-sm font-medium text-gray-900">账期结算</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">缓解资金周转压力</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">稳定长期订单</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">长期合作/高信任度</td>
-                            </tr>
-                            <tr class="bg-gray-50">
-                                <td class="px-4 py-3 text-sm font-medium text-gray-900">第三方担保</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">降低付款后货权风险</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">降低发货后收款风险</td>
-                                <td class="px-4 py-3 text-sm text-gray-600">高价值/易损耗商品</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-shield-halved mr-2 text-teal-500"></i>核心方案：资金一致性设计
+            </h2>
+
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-6">
+                <h4 class="font-semibold text-gray-800 mb-4">履约长流程（Saga 编排）</h4>
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div class="bg-blue-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-play text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">Saga 开始</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-purple-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-money-check-alt text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">扣款 / 冻结</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-yellow-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-boxes text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">过户 / 发货</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-teal-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-file-invoice-dollar text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">开票 / 解冻</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-green-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-check text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">Saga 完成</p>
+                    </div>
                 </div>
-                
-                <p class="text-gray-600 mt-4 text-sm">
-                    实际贸易中，企业会根据自身谈判地位、商品特性及合作阶段，选择单一场景或组合场景（如"预付款+尾款""信用证+部分预付款"），最终目的是在"促成交易"与"控制风险"之间找到平衡。
+                <p class="text-gray-600 text-sm mt-4">
+                    任一步失败触发<strong>补偿动作</strong>（反向解冻/退款/回滚过户）；长流程不依赖一个大事务，跨月场景也能收敛。
                 </p>
+            </div>
+
+            <div class="space-y-8 mb-8">
+                <!-- Saga + 状态机 -->
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-diagram-project text-purple-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">1. Saga + 状态机 + 事件溯源</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        每个履约节点是一个 Saga 步骤，步骤的成功/失败都写入事件表（事件溯源），状态机校验迁移合法性。这样任意时刻都能"重放"出合同与资金走到哪一步，出问题可定位到具体事件。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">/** Saga 编排：每步幂等，失败执行补偿，事件落库可追溯 */
+@Service
+public class FulfillmentSaga {
+
+    @Autowired private ContractStateMachine stateMachine;
+    @Autowired private EventStore eventStore;
+    @Autowired private CompensationHandler compensation;
+
+    public void execute(Contract c, PaymentPlan plan) {
+        try {
+            for (SagaStep step : plan.steps()) {
+                // 1) 幂等执行当前步骤
+                step.run(c);
+                // 2) 事件溯源：记录"发生了什么"
+                eventStore.append(step.toEvent(c));
+                // 3) 状态机校验并推进
+                stateMachine.transition(c, step.targetStatus());
+            }
+        } catch (Exception e) {
+            // 4) 逆序补偿，保证钱货回到一致状态
+            compensation.compensate(plan.completedSteps(), c);
+            throw new SagaRollbackException("履约失败已补偿", e);
+        }
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Kafka + outbox + 幂等 -->
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-envelope-circle-check text-blue-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">2. Kafka + outbox 本地消息表 + 消费幂等</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        "付款成功"与"发消息通知下游"必须同时成功或同时失败。我用 <strong>outbox 本地消息表</strong>：业务操作与消息写入同一本地事务；再由定时任务/CDC 把 outbox 投递到 Kafka。消费侧用<strong>幂等表</strong>去重，避免重复扣款或重复过户。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">@Service
+public class PaymentService {
+
+    @Autowired private PaymentRepository paymentRepository;
+    @Autowired private OutboxRepository outboxRepository;
+
+    /** 业务写入 + outbox 写入在同一本地事务，保证不丢消息 */
+    @Transactional
+    public void paySuccess(Payment p) {
+        if (p.getStatus() == PaymentStatus.SUCCESS) return; // 幂等：已处理直接返回
+        p.setStatus(PaymentStatus.SUCCESS);
+        paymentRepository.save(p);
+
+        outboxRepository.save(OutboxMessage.of(
+            "payment.success",
+            p.getPaymentId(),           // 幂等键
+            new PaymentSuccessEvent(p)));
+    }
+}
+
+/** 消费侧：以消息幂等键去重，重复投递不会重复处理 */
+@Component
+public class PaymentSuccessConsumer {
+
+    @Autowired private IdempotentTable idempotentTable;
+
+    @KafkaListener(topics = "payment.success")
+    public void onMessage(String msgId, PaymentSuccessEvent e) {
+        if (!idempotentTable.tryLock(msgId)) {
+            return; // 已消费过，直接忽略
+        }
+        contractService.onPaid(e.getContractId(), e.getAmount());
+        idempotentTable.markDone(msgId);
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- 日终对账兜底 -->
+                <div class="bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-teal-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-file-invoice text-teal-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">3. 日终对账兜底</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">
+                        再严密的实时链路也需要兜底。每天日终用 XXL-Job 定时任务，把<strong>本地资金流水</strong>与<strong>银行/支付通道对账单</strong>（经外联网关拉取）做全量比对，以资金流水为唯一事实，差异项自动生成待办并告警。这一步把对账从 9 人天的人工核对压缩到 2 小时的自动化任务。
+                    </p>
+                    <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                        <pre><code class="language-java">/** XXL-Job 日终对账：本地流水 vs 银行/通道账单 */
+@XxlJob("dailyReconciliationJob")
+public void dailyReconcile() {
+    LocalDate bizDate = LocalDate.now().minusDays(1);
+
+    List&lt;CapitalFlow&gt; localFlows = capitalFlowRepository.findByBizDate(bizDate);
+    ChannelStatement channelStmt = externalGateway.fetchStatement(bizDate); // 外联网关拉账单
+
+    Map&lt;String, BigDecimal&gt; localMap = localFlows.stream()
+        .collect(Collectors.groupingBy(CapitalFlow::getOutBizNo,
+                 Collectors.reducing(BigDecimal.ZERO, CapitalFlow::getAmount, BigDecimal::add)));
+
+    List&lt;DiffItem&gt; diffs = channelStmt.diff(localMap); // 逐单比对
+    if (!diffs.isEmpty()) {
+        alertService.raise("资金对账差异", diffs);   // 生成待办并告警
+    }
+    reconReport.save(bizDate, localMap.size(), diffs);  // 留档
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-exclamation-triangle mr-2 text-teal-500"></i>踩坑与解决
+            </h2>
+            <div class="space-y-4 mb-8">
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                    <p class="text-sm text-red-800">
+                        <strong>坑 1 · 支付回调重复：</strong>银行/通道回调可能重复到达。早期无幂等导致同一笔款被记账两次。
+                        <br><strong>解：</strong>以支付业务号作为幂等键，处理前先查状态/幂等表，重复回调直接返回成功。
+                    </p>
+                </div>
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                    <p class="text-sm text-red-800">
+                        <strong>坑 2 · 消息发送与业务不一致：</strong>付款成功但通知下游的消息没发出去（或发了两次），造成合同状态与资金不一致。
+                        <br><strong>解：</strong>outbox 本地消息表：业务与消息同事务写入，后台可靠投递 + 消费幂等，做到"最终一致、不丢不重"。
+                    </p>
+                </div>
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                    <p class="text-sm text-red-800">
+                        <strong>坑 3 · 短溢货款对不平：</strong>实际交货与合同量差异导致预付款、货款、尾款对不平，人工核对耗时且易错。
+                        <br><strong>解：</strong>短溢单独建流水类型、单独结算并纳入日终对账口径，差异自动暴露。
+                    </p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-teal-500"></i>结果
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-shield-halved text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">资金零差错</h4>
+                    <p class="text-sm opacity-90">Saga + 状态机 + 事件溯源 + outbox + 幂等 + 日终对账，连续 3 年零资金差错</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-gauge-high text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">对账提效</h4>
+                    <p class="text-sm opacity-90">日终对账由 9 人天人工核对 → 2 小时自动化任务</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tower-broadcast text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">链路稳定</h4>
+                    <p class="text-sm opacity-90">外部接口可用率 99.95%，核心接口稳定 200ms 内，冬储两季零 P0</p>
+                </div>
             </div>
 
         </div>
     </div>
 </body>
 </html>
-

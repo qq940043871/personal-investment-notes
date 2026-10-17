@@ -1,160 +1,323 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B2B分布式项目 - 架构师学习笔记</title>
+    <title>B2B 大宗商品在线交易平台 · 项目总览</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tier-card { transition: all .25s ease; }
+        .tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.10); }
+        .flow-arrow { animation: flowPulse 2s infinite; }
+        @keyframes flowPulse { 0%,100% { opacity:.45; } 50% { opacity:1; } }
+    </style>
 </head>
 <body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-building mr-1"></i>B2B大宗贸易</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/overview.html')" class="px-3 py-1 rounded-full bg-blue-600 text-white font-medium">总览</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/data-exchange.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">DS数据中心</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/middleware-gateway.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">中间件网关</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/common-services.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">公共服务</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/auth-module.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">认证模块</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/business-modules.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">业务模块</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/external-gateway.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">外联网关</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/大宗贸易场景.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">交易模式</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/付款发货场景.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">合同履约</a>
+        </div>
+    </nav>
+
     <div class="max-w-6xl mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-6">
-                <i class="fas fa-building mr-3 text-primary"></i>B2B分布式项目
-            </h1>
-            
-            <div class="prose max-w-none">
-                <p class="text-gray-600 mb-6">
-                    这是一个大型分布式B2B项目，为企业间提供数据交换、业务协同和管理服务。
+
+            <!-- Hero -->
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-building mr-3 text-blue-600"></i>B2B 大宗商品在线交易平台 · 项目总览
+                </h1>
+                <p class="text-gray-500 mb-4">Bulk Commodity Online Trading Platform — 底层 C 语言内存撮合引擎 × Java 微服务业务中台，经自研 DS 数据中心（防腐层）异构桥接。</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-user-tie mr-1"></i>技术经理 / Java 侧负责人</span>
+                    <span class="bg-green-50 text-green-700 px-3 py-1 rounded-full"><i class="fas fa-calendar-alt mr-1"></i>2020 至今</span>
+                    <span class="bg-purple-50 text-purple-700 px-3 py-1 rounded-full"><i class="fas fa-users mr-1"></i>带 20 人团队</span>
+                    <span class="bg-orange-50 text-orange-700 px-3 py-1 rounded-full"><i class="fas fa-industry mr-1"></i>大宗商品交易</span>
+                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full"><i class="fas fa-map-marker-alt mr-1"></i>郑州</span>
+                </div>
+            </div>
+
+            <!-- 1. 项目背景 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-bullseye mr-2 text-blue-600"></i>一、项目背景：大宗交易的三个「死结」</h2>
+            <p class="text-gray-600 mb-5 text-sm">
+                大宗商品（煤炭、钢铁、矿石、农产品等）客单价从数十万到上千万，交易金额大、周期长、环节多。要把陌生买卖双方搬到线上成交，必须先解开三个死结：
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                <div class="bg-rose-50 border border-rose-200 rounded-lg p-5">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-handshake-slash text-rose-500 text-xl mr-2"></i>
+                        <h3 class="font-semibold text-rose-800">死结一 · 陌生人大额交易的信任</h3>
+                    </div>
+                    <p class="text-sm text-gray-600">买卖双方互不相识却要打出百万级资金，谁先付款、谁先发货？需要平台提供<strong>资金监管、货权控制、电子签章与履约担保</strong>，把「信任」做成可执行的产品能力。</p>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-5">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-tachometer-alt text-amber-500 text-xl mr-2"></i>
+                        <h3 class="font-semibold text-amber-800">死结二 · 比价与履约效率</h3>
+                    </div>
+                    <p class="text-sm text-gray-600">价格随行就市、交易模式多样（挂牌/竞价/询价/招标/基差点价），且合同签订后还牵着仓单、物流、税务。需要<strong>高效撮合 + 全链路履约闭环</strong>，否则一次交易周期长达数天。</p>
+                </div>
+                <div class="bg-sky-50 border border-sky-200 rounded-lg p-5">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-coins text-sky-500 text-xl mr-2"></i>
+                        <h3 class="font-semibold text-sky-800">死结三 · 买方资金不足</h3>
+                    </div>
+                    <p class="text-sm text-gray-600">下游买方常因囤货（如冬储）缺现金流而不敢下单。需要<strong>供应链金融</strong>把订单、仓单、应收账款变成可融资资产，打通资金侧堵点。</p>
+                </div>
+            </div>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-10">
+                <p class="text-blue-800 text-sm">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <strong>平台定位：</strong>以交易为核心，打通<strong>交易、支付结算、合同履约、仓单、物流、税务</strong>闭环，并叠加供应链金融。底层用 C 语言内存撮合引擎保障撮合性能，上层用 Java 微服务业务中台承载复杂业务编排与外部集成。
                 </p>
-                
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
-                    <p class="text-blue-700">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        该项目采用微服务架构，包含多个核心模块，实现高并发、高可用的企业级应用。
-                    </p>
-                </div>
-                
-                <!-- 系统架构图 -->
-                <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">系统架构</h2>
-                <div class="bg-gray-100 p-6 rounded-lg mb-8">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-white p-4 rounded shadow text-center">
-                            <i class="fas fa-exchange-alt text-3xl text-purple-500 mb-2"></i>
-                            <h3 class="font-semibold">数据交换中心</h3>
-                        </div>
-                        
-                        <div class="bg-white p-4 rounded shadow text-center">
-                            <i class="fas fa-network-wired text-3xl text-blue-500 mb-2"></i>
-                            <h3 class="font-semibold">中间件网关</h3>
-                        </div>
-                        
-                        <div class="bg-white p-4 rounded shadow text-center">
-                            <i class="fas fa-cubes text-3xl text-green-500 mb-2"></i>
-                            <h3 class="font-semibold">公共服务模块</h3>
-                        </div>
-                        
-                        <div class="bg-white p-4 rounded shadow text-center">
-                            <i class="fas fa-shield-alt text-3xl text-red-500 mb-2"></i>
-                            <h3 class="font-semibold">认证模块</h3>
-                        </div>
-                        
-                        <div class="bg-white p-4 rounded shadow text-center">
-                            <i class="fas fa-puzzle-piece text-3xl text-yellow-500 mb-2"></i>
-                            <h3 class="font-semibold">业务模块</h3>
-                        </div>
-                        
-                        <div class="bg-white p-4 rounded shadow text-center">
-                            <i class="fas fa-plug text-3xl text-indigo-500 mb-2"></i>
-                            <h3 class="font-semibold">外联网关</h3>
+            </div>
+
+            <!-- 2. 我的角色 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-user-tie mr-2 text-blue-600"></i>二、我的角色与职责</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="bg-gray-50 rounded-lg p-5">
+                        <h3 class="font-semibold text-gray-800 mb-2"><i class="fas fa-sitemap text-blue-500 mr-2"></i>角色定位</h3>
+                        <p class="text-sm text-gray-600">项目<strong>技术经理 / Java 侧负责人</strong>。向上对齐产品与业务目标、拆解里程碑；向下负责 Java 侧技术方案评审、架构演进、排期与交付质量，并作为 C 撮合团队与 Java 团队之间的技术接口人。</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-5">
+                        <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-users-cog text-blue-500 mr-2"></i>团队构成（20 人）</h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                            <div class="bg-white rounded-lg p-3 border border-gray-200">
+                                <div class="text-2xl font-bold text-blue-600">3</div>
+                                <div class="text-xs text-gray-500 mt-1">C 撮合引擎</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-3 border border-gray-200">
+                                <div class="text-2xl font-bold text-green-600">6</div>
+                                <div class="text-xs text-gray-500 mt-1">Java 业务中台</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-3 border border-gray-200">
+                                <div class="text-2xl font-bold text-purple-600">5</div>
+                                <div class="text-xs text-gray-500 mt-1">Vue 前端</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-3 border border-gray-200">
+                                <div class="text-2xl font-bold text-orange-600">5</div>
+                                <div class="text-xs text-gray-500 mt-1">测试</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- 各模块详情 -->
-                <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">核心模块</h2>
-                
-                <div class="space-y-6 mb-8">
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                            <i class="fas fa-exchange-alt text-purple-500 mr-3"></i>
-                            数据交换中心
-                        </h3>
-                        <p class="text-gray-600">
-                            负责企业间数据的安全、可靠交换，支持同步/异步模式，实现数据格式转换、路由、重试、幂等性等功能。
-                        </p>
-                    </div>
-                    
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                            <i class="fas fa-network-wired text-blue-500 mr-3"></i>
-                            中间件网关
-                        </h3>
-                        <p class="text-gray-600">
-                            提供统一的服务网关，实现请求路由、负载均衡、限流、熔断、日志记录等功能。
-                        </p>
-                    </div>
-                    
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                            <i class="fas fa-cubes text-green-500 mr-3"></i>
-                            公共服务模块
-                        </h3>
-                        <p class="text-gray-600">
-                            提供通用的公共服务，包括文件存储、消息推送、字典管理、配置中心等。
-                        </p>
-                    </div>
-                    
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                            <i class="fas fa-shield-alt text-red-500 mr-3"></i>
-                            认证模块
-                        </h3>
-                        <p class="text-gray-600">
-                            实现OAuth2.0、JWT等认证机制，支持单点登录、权限管理、角色控制等安全功能。
-                        </p>
-                    </div>
-                    
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                            <i class="fas fa-puzzle-piece text-yellow-500 mr-3"></i>
-                            业务模块
-                        </h3>
-                        <p class="text-gray-600">
-                            包含订单管理、供应链、财务管理、客户管理等核心业务功能的微服务。
-                        </p>
-                    </div>
-                    
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                            <i class="fas fa-plug text-indigo-500 mr-3"></i>
-                            外联网关
-                        </h3>
-                        <p class="text-gray-600">
-                            对接第三方系统，提供API集成、数据同步、协议转换等功能。
-                        </p>
-                    </div>
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-tasks text-blue-500 mr-2"></i>核心职责</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>制定 C ↔ Java 系统边界与 DS 数据中心契约</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>主导架构级技术决策与选型否决</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>维护技术债台账、组织 Code Review</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>建立 On-call 值班与故障复盘机制</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>牵头冬储高峰容量保障与压测</li>
+                    </ul>
                 </div>
-                
-                <!-- 技术栈 -->
-                <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">技术栈</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h3 class="font-semibold mb-3 text-gray-800">后端技术</h3>
-                        <ul class="text-gray-600 space-y-1">
-                            <li>• Spring Boot / Spring Cloud</li>
-                            <li>• MySQL / PostgreSQL</li>
-                            <li>• Redis / MongoDB</li>
-                            <li>• RabbitMQ / Kafka</li>
-                            <li>• Elasticsearch</li>
-                        </ul>
+            </div>
+
+            <!-- 3. 整体架构 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-project-diagram mr-2 text-blue-600"></i>三、整体架构：四层异构桥接</h2>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 mb-6">
+                <div class="space-y-3 max-w-3xl mx-auto">
+                    <div class="tier-card bg-indigo-50 border-2 border-indigo-200 rounded-lg p-4 text-center">
+                        <div class="font-semibold text-indigo-800"><i class="fas fa-cloud mr-2"></i>外部系统（External Systems）</div>
+                        <div class="text-sm text-indigo-600 mt-1">5 家银行 · 物流 WMS · 税务 · 电子签章 · 供应链金融 …（9+ 系统）</div>
                     </div>
-                    
-                    <div>
-                        <h3 class="font-semibold mb-3 text-gray-800">基础设施</h3>
-                        <ul class="text-gray-600 space-y-1">
-                            <li>• Docker / Kubernetes</li>
-                            <li>• Nginx / Kong</li>
-                            <li>• Prometheus / Grafana</li>
-                            <li>• ELK Stack</li>
-                            <li>• Jenkins / GitLab CI</li>
-                        </ul>
+                    <div class="text-center text-gray-400 flow-arrow"><i class="fas fa-arrows-alt-v text-xl"></i><span class="text-xs ml-2">统一外联网关适配层</span></div>
+                    <div class="tier-card bg-green-50 border-2 border-green-200 rounded-lg p-4 text-center">
+                        <div class="font-semibold text-green-800"><i class="fas fa-cubes mr-2"></i>Java 微服务业务中台（12+ 微服务）</div>
+                        <div class="text-sm text-green-600 mt-1">交易 · 支付结算 · 合同履约 · 仓单 · 物流 · 税务 · 供应链金融 · 公共服务 · 认证</div>
+                    </div>
+                    <div class="text-center text-gray-400 flow-arrow"><i class="fas fa-arrows-alt-v text-xl"></i><span class="text-xs ml-2">统一报文 / 幂等 / 链路追踪</span></div>
+                    <div class="tier-card bg-purple-50 border-2 border-purple-300 rounded-lg p-4 text-center">
+                        <div class="font-semibold text-purple-800"><i class="fas fa-exchange-alt mr-2"></i>自研 DS 数据中心（防腐层）</div>
+                        <div class="text-sm text-purple-600 mt-1">协议转换 · 可靠性保障 · 可观测性 · 让两侧独立演进</div>
+                    </div>
+                    <div class="text-center text-gray-400 flow-arrow"><i class="fas fa-arrows-alt-v text-xl"></i><span class="text-xs ml-2">Hessian RPC / TCP 自定义二进制协议</span></div>
+                    <div class="tier-card bg-blue-50 border-2 border-blue-300 rounded-lg p-4 text-center">
+                        <div class="font-semibold text-blue-800"><i class="fas fa-microchip mr-2"></i>C 语言内存撮合引擎（Matching Engine）</div>
+                        <div class="text-sm text-blue-600 mt-1">挂牌 · 竞价 · 询价 · 招标 · 基差点价</div>
                     </div>
                 </div>
             </div>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-10">
+                <p class="text-sm text-gray-700">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                    <strong>设计哲学：</strong>让「擅长的交给擅长的」——C 撮合引擎负责低延迟、高吞吐的订单撮合；Java 业务中台负责复杂的业务编排、事务、外部集成与多租户配置。两者中间的 <strong>DS 数据中心（防腐层）</strong> 负责把协议、可靠性与可观测性收敛到一层，使 C 团队与 Java 团队可以各自独立迭代、互不阻塞。
+                </p>
+            </div>
+
+            <!-- 4. 核心技术决策 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-gavel mr-2 text-blue-600"></i>四、核心技术决策与踩坑</h2>
+            <div class="overflow-x-auto mb-10">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-40">决策点</th>
+                            <th class="px-4 py-3 text-left font-semibold">背景 / 问题</th>
+                            <th class="px-4 py-3 text-left font-semibold">我的决策</th>
+                            <th class="px-4 py-3 text-left font-semibold w-52">收益 / 结果</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">① 否决「C 重写成 Java」</td>
+                            <td class="px-4 py-3">新人接手时有人提议用 Java 重写撮合引擎以统一技术栈。</td>
+                            <td class="px-4 py-3">坚决否决。撮合是资金链路的心脏，Java GC 停顿不可接受，重写带来的性能倒退与业务中断风险远超收益。</td>
+                            <td class="px-4 py-3">保住撮合性能与稳定性，避免一次可能长达数月的重写悬崖。</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">② 多租户可配置化</td>
+                            <td class="px-4 py-3">每个客户交易规则、审批流、单据模板都不同，定制开发导致上线周期长。</td>
+                            <td class="px-4 py-3">「一套引擎 + 每客户一套配置」：Drools 规则引擎 + 策略模式 + 配置化模板，把差异从代码下沉到配置。</td>
+                            <td class="px-4 py-3">新客户上线周期 <strong>2 个月 → 1 周</strong>。</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">③ Saga + 状态机 + 事件溯源</td>
+                            <td class="px-4 py-3">一笔交易跨月存在（合同签署→备货→发运→验收→结算），跨服务、跨月，传统事务无法覆盖。</td>
+                            <td class="px-4 py-3">以状态机描述单据生命周期，Saga 编排跨服务补偿，事件溯源保留全量状态变迁历史。</td>
+                            <td class="px-4 py-3"><strong>3 年零资金差错</strong>，任意单据可回溯。</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">④ Kafka + Outbox + 消费幂等</td>
+                            <td class="px-4 py-3">早期服务间点对点直连同步数据，耦合重、丢消息、重复投递难处理。</td>
+                            <td class="px-4 py-3">改造为 Kafka 事件驱动；本地消息表（Outbox）保证「写库与发消息」原子；消费端按业务键幂等去重。</td>
+                            <td class="px-4 py-3">数据同步解耦、可重放，杜绝重复入账。</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">⑤ 外部集成统一网关</td>
+                            <td class="px-4 py-3">银行、WMS、税务、签章各说各话，每家对接都要重写一遍认证、重试、对账。</td>
+                            <td class="px-4 py-3">抽象统一网关适配层：防腐 + 协议转换 + 幂等 + 对账兜底，新渠道以「接插件」方式接入。</td>
+                            <td class="px-4 py-3">对接 9+ 系统，新系统对接 <strong>2-3 周 → 3-5 天</strong>。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 5. 业务与量化结果 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-chart-line mr-2 text-blue-600"></i>五、业务与量化结果</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg p-5">
+                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
+                    <div class="text-2xl font-bold">3 年零资金差错</div>
+                    <p class="text-sm opacity-90 mt-1">跨月长事务用 Saga + 状态机 + 事件溯源兜住，资金链路全程可回溯。</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg p-5">
+                    <i class="fas fa-cubes text-3xl mb-2 opacity-80"></i>
+                    <div class="text-2xl font-bold">12+ 微服务 · 9+ 外部系统</div>
+                    <p class="text-sm opacity-90 mt-1">业务中台 + 统一外联网关适配层支撑交易全链路闭环。</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-lg p-5">
+                    <i class="fas fa-rocket text-3xl mb-2 opacity-80"></i>
+                    <div class="text-2xl font-bold">新客户上线 2 月 → 1 周</div>
+                    <p class="text-sm opacity-90 mt-1">多租户可配置化，把客户差异从代码下沉到配置与规则。</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-lg p-5">
+                    <i class="fas fa-snowflake text-3xl mb-2 opacity-80"></i>
+                    <div class="text-2xl font-bold">冬储零 P0 · 核心接口 200ms 内</div>
+                    <p class="text-sm opacity-90 mt-1">连续两季冬储高峰保障零 P0 事故，核心接口稳定在 200ms 内。</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-lg p-5">
+                    <i class="fas fa-balance-scale text-3xl mb-2 opacity-80"></i>
+                    <div class="text-2xl font-bold">对账 9 人天 → 2 小时</div>
+                    <p class="text-sm opacity-90 mt-1">以系统化对账 + 对账兜底替代人工逐笔核对。</p>
+                </div>
+                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-lg p-5">
+                    <i class="fas fa-clock text-3xl mb-2 opacity-80"></i>
+                    <div class="text-2xl font-bold">交易周期 5 天 → 1.5 天</div>
+                    <p class="text-sm opacity-90 mt-1">合同履约、仓单、物流、税务线上闭环，履约效率大幅提升。</p>
+                </div>
+            </div>
+
+            <!-- 6. 子系统详解导航 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-sitemap mr-2 text-blue-600"></i>六、子系统详解</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+                <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/data-exchange.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-purple-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-exchange-alt text-purple-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">DS 数据中心（防腐层）</h3></div>
+                    <p class="text-sm text-gray-500">收敛 C 与 Java 之间的协议转换、可靠性、可观测性，两侧独立演进。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/middleware-gateway.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-blue-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-network-wired text-blue-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">中间件网关与契约治理</h3></div>
+                    <p class="text-sm text-gray-500">统一入口、路由与流量治理，以及「管连线不管黑盒」的接口契约治理。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/external-gateway.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-indigo-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-plug text-indigo-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">外联网关适配层</h3></div>
+                    <p class="text-sm text-gray-500">5 家银行、物流 WMS、税务、电子签章等 9+ 外部系统的统一接入层。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/business-modules.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-yellow-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-puzzle-piece text-yellow-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">业务模块</h3></div>
+                    <p class="text-sm text-gray-500">交易、支付结算、合同履约、仓单、物流、税务等业务中台微服务。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/common-services.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-green-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-cubes text-green-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">公共服务</h3></div>
+                    <p class="text-sm text-gray-500">文件存储、消息推送、字典、配置中心等通用基础服务能力。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/auth-module.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-red-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-shield-alt text-red-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">认证模块</h3></div>
+                    <p class="text-sm text-gray-500">单点登录、权限管理、角色控制、多租户隔离等安全能力。</p>
+                </a>
+            </div>
+
+            <!-- 7. 技术栈 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-layer-group mr-2 text-blue-600"></i>七、技术栈</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold mb-3 text-gray-800"><i class="fas fa-server text-blue-500 mr-2"></i>后端与语言</h3>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Spring Boot / Spring Cloud</li>
+                        <li>• Java 微服务业务中台</li>
+                        <li>• C 语言内存撮合引擎</li>
+                        <li>• Hessian RPC / TCP 自定义二进制协议</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold mb-3 text-gray-800"><i class="fas fa-database text-green-500 mr-2"></i>数据与存储</h3>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• MySQL（分库分表） / PostgreSQL</li>
+                        <li>• Redis / Redisson（分布式锁）</li>
+                        <li>• Elasticsearch</li>
+                        <li>• MinIO（对象存储）</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold mb-3 text-gray-800"><i class="fas fa-tools text-purple-500 mr-2"></i>中间件与基础设施</h3>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Kafka（事件驱动 + Outbox）</li>
+                        <li>• Drools（规则引擎） / Canal（CDC）</li>
+                        <li>• XXL-Job（分布式调度）</li>
+                        <li>• Docker / Kubernetes</li>
+                        <li>• GitLab CI/CD / Nginx</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 8. 个人背景一笔带过 -->
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-5 mb-6">
+                <h3 class="font-semibold text-gray-800 mb-2"><i class="fas fa-user-circle text-gray-400 mr-2"></i>个人成长背景（简要）</h3>
+                <p class="text-sm text-gray-600">
+                    13 年一线研发经验，郑州。2015 年至今任职于某软件公司，现为技术经理。此前经历过 <strong>2018-2019 年 B2C 电商</strong> 与 <strong>2015-2017 年清算平台</strong> 两段项目，分别夯实了高并发交易与资金清结算的基础，为本次 B2B 大宗商品交易平台的资金链路与交易链路的稳健性提供了直接支撑。
+                </p>
+            </div>
+
         </div>
     </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/data-exchange.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">DS数据中心</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/middleware-gateway.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">中间件网关</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/external-gateway.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">外联网关</a>
+        </div>
+    </nav>
 </body>
 </html>
-

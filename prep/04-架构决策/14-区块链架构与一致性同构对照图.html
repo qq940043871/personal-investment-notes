@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>区块链 · 分层架构与一致性机制</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #EEF1F5;
+    font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", system-ui, sans-serif;
+    color: #243043;
+    -webkit-font-smoothing: antialiased;
+    padding: 26px 20px 40px;
+  }
+
+  /* 画布：设计宽度 1740px，导出 2× 得 3720px */
+  .sheet {
+    width: 1740px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(24, 39, 65, .10), 0 2px 6px rgba(24, 39, 65, .06);
+    padding: 26px 28px 22px;
+  }
+
+  /* ---------- 头部 ---------- */
+  .hd { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding-bottom: 14px; border-bottom: 2px solid #E7EBF1; }
+  .hd h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: .5px; color: #1B2739; }
+  .hd h1 em { font-style: normal; color: #C0504D; }
+  .hd .sub { margin-top: 8px; font-size: 13px; color: #5B6878; letter-spacing: .2px; }
+  .hd .sub b { color: #2C6FBE; font-weight: 700; }
+  .hd .sub i { font-style: normal; color: #98A3B2; padding: 0 4px; }
+
+  .legend { flex: 0 0 auto; border: 1px solid #E1E6ED; border-radius: 10px; background: #FAFBFD; padding: 10px 14px; }
+  .legend .lg-title { font-size: 11px; font-weight: 700; color: #8B96A5; letter-spacing: 1px; margin-bottom: 7px; }
+  .legend .lg-row { display: flex; align-items: center; gap: 7px; margin-top: 6px; }
+  .legend .lg-row span.k { font-size: 11.5px; color: #5B6878; }
+  .cmp-mark { display:inline-block; font-size:11px; font-weight:800; color:#C0504D; border:1.4px solid #EBC0BE; background:#FEF7F6; border-radius:4px; padding:1px 6px; letter-spacing:.5px; }
+  .no-mark  { display:inline-block; font-size:11px; font-weight:800; color:#6B7280; border:1.4px solid #CFD4DB; background:#F5F6F8; border-radius:4px; padding:1px 6px; letter-spacing:.5px; }
+
+  /* ---------- 层带 ---------- */
+  .stack { padding-top: 18px; }
+  .band { display: flex; border: 1.6px solid var(--line); background: var(--bg); border-radius: 14px; padding: 13px 16px 13px 0; position: relative; }
+  .rail { flex: 0 0 54px; display: flex; align-items: center; justify-content: center; }
+  .rail i { font-style: normal; writing-mode: vertical-rl; font-size: 19px; font-weight: 800; color: #fff; background: var(--rail); border-radius: 8px; padding: 16px 8px; letter-spacing: 3px; box-shadow: 0 2px 6px rgba(0,0,0,.14); }
+  .rail i.small { font-size: 13px; letter-spacing: 2px; padding: 12px 7px; }
+  .bd { flex: 1; min-width: 0; }
+  .bd-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  .bd-head h2 { margin: 0; font-size: 14.5px; font-weight: 800; color: var(--rail); letter-spacing: .3px; }
+  .bd-head p { margin: 0; font-size: 12px; color: #6B7787; }
+  .bd-head .pin { margin-left: auto; font-size: 11px; color: #8B96A5; border: 1px dashed var(--line); border-radius: 6px; padding: 3px 9px; background: #fff; }
+  .bd-head .pin.cmp { color: #A8423D; border: 1px dashed #E2B9B3; background: #FEF7F6; font-weight: 700; }
+  .bd-head .pin.no  { color: #6B7280; border: 1px dashed #CFD4DB; background: #F5F6F8; font-weight: 700; }
+
+  /* ---------- 网格与卡片 ---------- */
+  .row { display: grid; gap: 12px; }
+  .c3 { grid-template-columns: repeat(3, 1fr); }
+  .c4 { grid-template-columns: repeat(4, 1fr); }
+  .c5 { grid-template-columns: repeat(5, 1fr); }
+  .c6 { grid-template-columns: repeat(6, 1fr); }
+  .c7 { grid-template-columns: 1.25fr 1.05fr .95fr 1.15fr 1.05fr .95fr 1.1fr; }
+  .c4b { grid-template-columns: 1.15fr 1.35fr 1.15fr 1.25fr; }
+  .gap-lg { margin-top: 14px; }
+
+  .card { position: relative; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 15px 12px 13px; text-align: center; }
+  .card h3 { margin: 0; font-size: 14.5px; font-weight: 700; color: #22303F; line-height: 1.4; }
+  .card .tech { margin-top: 6px; font-size: 11.5px; font-weight: 700; color: var(--c); }
+  .card .desc { margin-top: 8px; font-size: 12.5px; color: #4A5568; line-height: 1.8; }
+  .card .badge { position: absolute; left: 7px; top: 7px; font-size: 10px; font-weight: 700; color: #fff; background: #2C5F8A; padding: 2px 6px; border-radius: 4px; letter-spacing: .3px; }
+  .card.has-tag { padding-top: 27px; }
+  .card .mini { margin-top: 7px; font-size: 11.5px; color: #6B7787; line-height: 1.7; }
+
+  /* ⚠️ 卡片配色类 —— 必须定义！只写 class 不定义会让 border/background 静默失效 */
+  .c-amber  { --c:#D8A94A; --cbg:#FEFAF0; }
+  .c-blue   { --c:#4A88CE; --cbg:#F3F8FE; }
+  .c-purple { --c:#8871C9; --cbg:#F8F5FE; }
+  .c-coral  { --c:#D16B65; --cbg:#FEF7F6; }
+  .c-teal   { --c:#2E9E8F; --cbg:#F1FAF8; }
+  .c-gold   { --c:#C2803A; --cbg:#FDF8F0; }
+  .c-sky    { --c:#4AA3D8; --cbg:#F2F9FD; }
+  .c-red    { --c:#C0504D; --cbg:#FDF3F2; }
+  .c-grey   { --c:#9AA3AF; --cbg:#F7F8FA; }
+
+  /* 通栏数据条 */
+  .bar { margin-top: 12px; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 13px 18px; display: flex; align-items: center; gap: 20px; }
+  .bar h3 { margin: 0; font-size: 15px; font-weight: 800; color: #9E3B36; white-space: nowrap; letter-spacing: .3px; }
+  .bar p { margin: 0; font-size: 12.5px; color: #4A5568; line-height: 1.7; }
+
+  /* 层间流向条 */
+  .flows { padding: 9px 0 9px 54px; display: flex; flex-wrap: wrap; align-items: center; gap: 7px; position: relative; }
+  .flows::before { content: "⇅"; position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 17px; color: #AEB9C7; line-height: 1; }
+  .flows .cap { font-size: 11px; font-weight: 700; color: #98A3B2; letter-spacing: .8px; margin-right: 2px; }
+  .fl { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: #3C4959; background: #fff; border: 1.4px solid var(--c); border-radius: 999px; padding: 3px 11px; }
+  .fl.dash { border-style: dashed; }
+  .fl b { color: var(--c); font-weight: 800; font-size: 12.5px; }
+
+  /* 层内分区 */
+  .zones { display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 0; align-items: stretch; }
+  .zone { display: flex; flex-direction: column; padding: 0 14px 0 0; }
+  .zone + .zone { border-left: 2px dashed #E0AFA8; padding-left: 14px; }
+  .zone:last-child { padding-right: 0; }
+  .zone h4 { margin: 0 0 8px; font-size: 12.5px; font-weight: 800; color: #B0574F; letter-spacing: .3px; }
+  .zone .box { flex: 1; border: 1.4px dashed #D89289; background: #FDF1EF; border-radius: 8px; padding: 12px 13px; font-size: 12px; color: #4A5568; line-height: 1.8; display: flex; align-items: center; }
+  .zone .box b { color: #9E3B36; font-weight: 700; }
+
+  .floating { text-align: center; margin: 9px 0; }
+  .floating span { display: inline-block; font-size: 11.5px; color: #9E3B36; background: #fff; border: 1px solid #E2B9B3; border-radius: 999px; padding: 3px 12px; }
+
+  /* 页脚注 */
+  .notes { margin-top: 20px; border-top: 2px solid #E7EBF1; padding-top: 14px; }
+  .notes p { margin: 0 0 8px; font-size: 12px; color: #56626F; line-height: 1.85; }
+  .notes p:last-child { margin-bottom: 0; }
+  .notes b { color: #1B2739; font-weight: 800; }
+  .notes i { font-style: normal; color: #98A3B2; padding: 0 4px; }
+  .notes .hl { color: #A8423D; }
+
+  @media (max-width: 1800px) { body { padding: 16px 12px 32px; overflow-x: auto; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ================= 头部 ================= -->
+  <div class="hd">
+    <div>
+      <h1>区块链 · <em>分层架构与一致性机制</em></h1>
+      <div class="sub">
+        六层架构 <i>·</i> 每层标注<b>与 C 核心一致性方案的对应件</b> <i>·</i> 自上而下 = 应用 → 数据 <i>·</i> 画布 1740px
+      </div>
+    </div>
+    <div class="legend">
+      <div class="lg-title">图 例</div>
+      <div class="lg-row">
+        <span class="cmp-mark">↔</span><span class="k">在 C 核心方案里有对应件（同构）</span>
+      </div>
+      <div class="lg-row">
+        <span class="no-mark">✕</span><span class="k">C 核心无对应（本质差异处）</span>
+      </div>
+      <div class="lg-row">
+        <span class="k">层带自上而下：应用 <b>→</b> 数据，越往下越贴近底层机制</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <!-- ================= 一 · 应用层 ================= -->
+    <div class="band b1" style="--rail:#B8860B;--line:#E4CB84;--bg:#FEFAF0;">
+      <div class="rail"><i>一</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>应用层</h2>
+          <p>面向用户的去中心化应用 · DApp 生态</p>
+          <span class="pin cmp">↔ C 核心：运营界面（人工介入入口）</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-amber">
+            <h3>DApp</h3>
+            <div class="tech">去中心化应用</div>
+            <div class="desc">业务逻辑上链<br>链上交互</div>
+          </div>
+          <div class="card c-amber">
+            <h3>钱包 Wallet</h3>
+            <div class="tech">密钥与签名</div>
+            <div class="desc">私钥管理<br>交易签名</div>
+          </div>
+          <div class="card c-amber">
+            <h3>区块浏览器</h3>
+            <div class="tech">查询与验证</div>
+            <div class="desc">交易查询<br>状态与 Merkle 证明</div>
+          </div>
+          <div class="card c-amber">
+            <h3>DeFi · NFT · DAO</h3>
+            <div class="tech">数字资产生态</div>
+            <div class="desc">链上金融<br>资产与治理</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">流向</span>
+      <span class="fl" style="--c:#B8860B">应用 <b>→</b> 调用合约（发起交易）</span>
+      <span class="fl dash" style="--c:#B8860B">钱包 <b>→</b> 私钥签名 · 广播上链</span>
+    </div>
+
+    <!-- ================= 二 · 合约层 ================= -->
+    <div class="band b2" style="--rail:#2C6FBE;--line:#A9C9EA;--bg:#F3F8FE;">
+      <div class="rail"><i>二</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>合约层</h2>
+          <p>智能合约与确定性执行 · 代码即法律</p>
+          <span class="pin cmp">↔ C 核心：撮合逻辑（确定性规则）</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-blue">
+            <h3>智能合约</h3>
+            <div class="tech">Solidity · Rust · Go</div>
+            <div class="desc">可编程业务规则<br>部署即不可改</div>
+          </div>
+          <div class="card c-blue">
+            <h3>执行引擎</h3>
+            <div class="tech">EVM · WASM · 链码</div>
+            <div class="desc">沙箱隔离执行<br>Gas 限额约束</div>
+          </div>
+          <div class="card c-blue">
+            <h3>Gas 计量</h3>
+            <div class="tech">资源定价</div>
+            <div class="desc">防无限循环<br>计算有成本</div>
+          </div>
+          <div class="card c-blue has-tag">
+            <span class="badge">题眼</span>
+            <h3>确定性执行</h3>
+            <div class="tech">同输入必得同输出</div>
+            <div class="desc">全节点重放一致<br><b>＝ C 核心确定性撮合</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">流向</span>
+      <span class="fl" style="--c:#2C6FBE">合约执行 <b>→</b> 产生状态变更（待共识）</span>
+      <span class="fl dash" style="--c:#C2803A">激励层 <b>→</b> 为出块与守规提供经济动机</span>
+    </div>
+
+    <!-- ================= 三 · 激励层 ================= -->
+    <div class="band b3" style="--rail:#C2803A;--line:#E8CDA8;--bg:#FDF8F0;">
+      <div class="rail"><i class="small">三·横切</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>激励层</h2>
+          <p>用经济手段约束节点行为 · 公链特有</p>
+          <span class="pin no">✕ C 核心无对应 · 可信内网不需经济约束</span>
+        </div>
+        <div class="row c3">
+          <div class="card c-gold">
+            <h3>代币发行</h3>
+            <div class="tech">Token Issuance</div>
+            <div class="desc">总量上限 · 释放曲线<br>把"守规"变成有价资产</div>
+          </div>
+          <div class="card c-gold">
+            <h3>出块奖励</h3>
+            <div class="tech">Block Reward · Fee</div>
+            <div class="desc">区块奖励 + 交易手续费<br>补偿诚实节点的成本</div>
+          </div>
+          <div class="card c-gold">
+            <h3>罚没 Slashing</h3>
+            <div class="tech">经济惩罚</div>
+            <div class="desc">质押金罚没<br>抬高作恶成本</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">流向</span>
+      <span class="fl" style="--c:#C2803A">激励 <b>→</b> 驱动共识参与者诚实出块</span>
+      <span class="fl" style="--c:#7C5CBF">待确认交易 <b>→</b> 进入共识排队</span>
+    </div>
+
+    <!-- ================= 四 · 共识层 ================= -->
+    <div class="band b4" style="--rail:#7C5CBF;--line:#C6B6E6;--bg:#F8F5FE;">
+      <div class="rail"><i>四</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>共识层</h2>
+          <p>互不信任的节点对「区块顺序」达成一致</p>
+          <span class="pin cmp">↔ C 核心：仲裁者选主（唯一写者）</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-purple">
+            <h3>PoW 工作量证明</h3>
+            <div class="tech">算力竞争</div>
+            <div class="desc">最长链胜出<br>概率最终性</div>
+          </div>
+          <div class="card c-purple">
+            <h3>PoS 权益证明</h3>
+            <div class="tech">质押权重</div>
+            <div class="desc">经济安全<br>出块权按权益分配</div>
+          </div>
+          <div class="card c-purple">
+            <h3>BFT 拜占庭容错</h3>
+            <div class="tech">PBFT · Tendermint · HotStuff</div>
+            <div class="desc">容忍节点<b>作恶</b><br>即时最终性</div>
+          </div>
+          <div class="card c-coral has-tag">
+            <span class="badge">≈ C 核心仲裁</span>
+            <h3>CFT 崩溃容错</h3>
+            <div class="tech">Raft · Paxos</div>
+            <div class="desc">只防<b>宕机</b>、不防作恶<br>与 C 核心热备同层</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">流向</span>
+      <span class="fl" style="--c:#7C5CBF">共识达成 <b>→</b> 新区块向全网广播</span>
+      <span class="fl dash" style="--c:#2E9E8F">网络 <b>→</b> 交易聚合至内存池（待打包）</span>
+    </div>
+
+    <!-- ================= 五 · 网络层 ================= -->
+    <div class="band b5" style="--rail:#2E9E8F;--line:#A9DCD4;--bg:#F1FAF8;">
+      <div class="rail"><i>五</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>网络层</h2>
+          <p>节点互联 · 交易与区块的广播同步</p>
+          <span class="pin cmp">↔ C 核心：日志复制通道</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-teal">
+            <h3>P2P 网络</h3>
+            <div class="tech">Peer-to-Peer</div>
+            <div class="desc">对等连接<br>无中心节点</div>
+          </div>
+          <div class="card c-teal">
+            <h3>Gossip 广播</h3>
+            <div class="tech">洪泛传播</div>
+            <div class="desc">交易 / 区块扩散<br>最终覆盖全节点</div>
+          </div>
+          <div class="card c-teal">
+            <h3>节点发现</h3>
+            <div class="tech">Bootstrap · DHT</div>
+            <div class="desc">引导节点接入<br>路由表维护</div>
+          </div>
+          <div class="card c-teal">
+            <h3>区块同步</h3>
+            <div class="tech">Fast Sync · Snapshot</div>
+            <div class="desc">新节点追链<br>状态快照下载</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">流向</span>
+      <span class="fl" style="--c:#2E9E8F">区块<b>先落盘、再执行</b> · 追加到链尾</span>
+      <span class="fl dash" style="--c:#C0504D">数据层 <b>→</b> 状态根回传各节点校验</span>
+    </div>
+
+    <!-- ================= 六 · 数据层（视觉重心） ================= -->
+    <div class="band b6" style="--rail:#C0504D;--line:#EBC0BE;--bg:#FEF7F6;">
+      <div class="rail"><i>六</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>数据层</h2>
+          <p>只追加的链式账本 · 不可篡改的真相之源</p>
+          <span class="pin cmp">↔ C 核心：镜像 WAL（append-only 日志 + LSN）</span>
+        </div>
+
+        <div class="zones">
+          <div class="zone">
+            <h4>区块头 · Block Header</h4>
+            <div class="box"><b>父哈希 Prev Hash</b> · 时间戳 · Merkle 根<br>随机数 Nonce · 状态根 State Root</div>
+          </div>
+          <div class="zone">
+            <h4>区块体 · Block Body</h4>
+            <div class="box"><b>交易列表 Tx[…]</b><br>每笔交易含发起方数字签名 · 按序执行</div>
+          </div>
+          <div class="zone">
+            <h4>状态与存储 · State</h4>
+            <div class="box"><b>世界状态（MPT）</b><br>KV 存储 LevelDB / RocksDB · 可回溯的版本化状态</div>
+          </div>
+        </div>
+
+        <div class="bar c-red" style="--c:#C0504D;--cbg:#FDF3F2;">
+          <h3>只追加账本 Append-only</h3>
+          <p>区块 = 近期交易的批量提交；链 = <b>哈希指针</b>串联的历史；改动历史 = 必须重算该块之后的所有区块 —— 这就是"不可篡改"的技术本质，也是它与 C 核心「镜像 WAL」共享的核心范式。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= 页脚注 ================= -->
+  <div class="notes">
+    <p><b>① 为什么像（同构）：</b>两者共享同一套一致性范式 —— <span class="hl">只追加日志 + 确定性重放 + 序号/哈希校验 + 多副本确认</span>。区别只是"日志叫区块、序号叫 LSN、副本叫备机"。C 核心的镜像 WAL ≈ 单链区块、备机重放 ≈ 全节点重放、仲裁者选主 ≈ 共识选块。</p>
+    <p><b>② 为什么不能等同（差异）：</b>区块链要解决<span class="hl">无信任环境下的拜占庭容错</span>（节点可能作恶 → 必须靠 PoW/PoS 经济激励 + BFT 共识）；C 核心是<span class="hl">可信内网下的崩溃容错</span>（只需 CFT，如 Raft / 仲裁者）。前者多出整个"激励层"，后者省掉它换取极致性能（单机内存撮合万级 TPS vs 公链 7–数千 TPS）。</p>
+    <p><b>③ 一句话：</b>区块链 = 在<b>互不信任</b>的节点间，<i>用代价换一致</i>；C 核心 = 在<b>自己可控</b>的节点间，<i>用简洁换速度</i>。同的是数据结构与恢复范式，<span class="hl">不同的是信任模型</span>。</p>
+  </div>
+
+</div>
+</body>
+</html>

@@ -232,14 +232,14 @@
 
                 <div class="project-item">
                     <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/ai-project-overview.md')" class="project-title text-lg hover:text-blue-600 transition-colors duration-200">AI 智能服务平台</a>
-                    <div class="job-period mt-1">2024年至今 · 技术负责人</div>
+                    <div class="job-period mt-1">2024年至今 · 技术负责人（平台前期建设）</div>
                     <div class="project-description">
-                        <p class="mb-2">作为技术负责人主导 AI 智能服务平台的前期建设（选型 → 内网私有化落地）：集成人工客服、知识库、政策解读，支持第三方大模型与本地化大模型双通道。</p>
+                        <p class="mb-2">作为技术负责人负责 AI 智能服务平台的前期建设（选型 → 原型验证）：主导平台底座选型与数据链路方案，覆盖人工客服、知识库、政策解读三条业务线。</p>
                         <ul class="list-disc pl-5 space-y-1">
                             <li>核心判断是"数据敏感度决定通道"：通用咨询走第三方模型快速见效，涉密数据走内网私有化部署（vLLM），成本与合规两个都占住</li>
-                            <li>设计 RAG 知识库方案（多格式文档快速导入），落地智能客服与政策解读两个高频场景</li>
-                            <li>构建多智能体协作流程完成复杂任务编排，打通模型微调与数据标注闭环</li>
-                            <li>完整走通 AI 从场景识别、技术选型、私有化部署到微调优化的落地路径</li>
+                            <li>RAG 数据链路技术改造：用 MinerU 把多格式文档统一解析为 Markdown 再落向量库，负责批量解析调度、失败兜底与下游入库格式衔接</li>
+                            <li>主导平台底座选型复盘（Dify vs 自研）：平台化补齐通用能力、二开补差异，避免 AI 基建重复建设</li>
+                            <li>完成 AI 应用从场景识别、技术选型到数据链路（解析 → 入向量库）的前期链路验证；后续智能体编排与模型微调由团队推进</li>
                         </ul>
                     </div>
                 </div>
@@ -333,7 +333,6 @@
                     <div class="skill-group-title"><i class="fas fa-sitemap mr-1.5"></i>架构设计</div>
                     <div class="flex flex-wrap">
                         <span class="skill-item tag-highlight">C+Java 异构架构治理</span>
-                        <span class="skill-item">Spring Cloud 微服务</span>
                         <span class="skill-item">Saga + 状态机 + 事件溯源</span>
                         <span class="skill-item">多租户可配置化架构</span>
                         <span class="skill-item">分库分表</span>
@@ -346,14 +345,12 @@
                     <div class="flex flex-wrap">
                         <span class="skill-item">Kafka（outbox + 幂等）</span>
                         <span class="skill-item">Canal CDC</span>
-                        <span class="skill-item">Drools 规则引擎</span>
                         <span class="skill-item">Redisson 分布式锁</span>
                         <span class="skill-item">XXL-Job</span>
                         <span class="skill-item">MySQL</span>
                         <span class="skill-item">Redis</span>
                         <span class="skill-item">Elasticsearch</span>
                         <span class="skill-item">MinIO</span>
-                        <span class="skill-item">MongoDB</span>
                     </div>
                 </div>
 
@@ -364,7 +361,6 @@
                         <span class="skill-item">Vue 全栈（PC + 移动端）</span>
                         <span class="skill-item">Docker / K8s</span>
                         <span class="skill-item">GitLab CI/CD</span>
-                        <span class="skill-item">Prometheus + Grafana</span>
                         <span class="skill-item">Linux</span>
                     </div>
                 </div>

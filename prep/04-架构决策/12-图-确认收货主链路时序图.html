@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>确认收货跨系统调用 · 时序图</title>
+<!--
+  ============================================================================
+  跨系统调用一致性方案 · 图1：合同中心「确认收货」主链路时序图
+  按 arch-diagram-suite / seq-diagram.html 骨架改造，只改内容，不手写坐标。
+  ============================================================================
+-->
+<style>
+:root{
+  --ink:#1F2937; --ink2:#4B5563; --ink3:#8A93A0;
+  --line:#E3E7EE; --paper:#FFFFFF; --canvas:#F1F4F9;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--canvas);
+  font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+  color:var(--ink); padding:22px 26px 26px; -webkit-font-smoothing:antialiased;
+}
+.sheet{
+  width:1740px; margin:0 auto; background:var(--paper);
+  border-radius:16px; padding:30px 30px 22px;
+  box-shadow:0 10px 34px rgba(23,42,77,.10), 0 2px 8px rgba(23,42,77,.05);
+}
+
+/* ---------- 头部 ---------- */
+.hd{border-bottom:1.6px solid var(--line); padding-bottom:15px; margin-bottom:22px;}
+.hd h1{font-size:25px; margin:0 0 8px; letter-spacing:.4px; font-weight:800;}
+.hd .sub{font-size:13px; color:var(--ink2); margin:0; line-height:1.6;}
+.hd .sub b{color:#2C6FBE; font-weight:800;}
+.hd .legend{display:flex; flex-wrap:wrap; gap:9px 20px; margin-top:14px;}
+.lg{display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--ink2); font-weight:600;}
+.lg .sw{width:26px; height:0; border-top-width:2px; border-top-style:solid;}
+.lg .sw.dash{border-top-style:dashed;}
+
+/* ---------- 参与者（顶部一排） ---------- */
+.acts{display:grid; gap:18px; position:relative; z-index:5;}
+.actor{
+  border:1.6px solid var(--c,#C9D2DE); background:var(--cbg,#FBFCFE);
+  border-radius:11px; padding:10px 8px; text-align:center;
+}
+.actor .an{font-size:12.5px; font-weight:800; color:var(--c,#374151); letter-spacing:.2px;}
+.actor .at{font-size:10.5px; color:var(--ink3); margin-top:3px; font-weight:700;}
+
+/* ---------- 生命线与消息 ---------- */
+.seq{position:relative;}
+.track{position:relative; display:grid; grid-auto-rows:40px; padding:18px 0 6px;}
+.life{
+  position:absolute; top:0; bottom:0; width:0;
+  border-left:1.6px dashed #D6DDE8; transform:translateX(-50%); z-index:0;
+}
+.msg{position:relative; z-index:4; grid-column:1 / -1;}
+.bar{
+  position:absolute; top:50%; height:0;
+  border-top:2px solid var(--ec,#4A88CE); color:var(--ec,#4A88CE);
+}
+.bar::after{
+  content:''; position:absolute; right:-1px; top:0; transform:translateY(-50%);
+  border-left:9px solid currentColor;
+  border-top:5.5px solid transparent; border-bottom:5.5px solid transparent;
+}
+.bar::before{
+  content:''; position:absolute; left:0; top:0; width:2px; height:9px;
+  transform:translateY(-50%); background:currentColor; border-radius:1px;
+}
+.msg.m-ret .bar, .msg.m-async .bar, .msg.m-fail .bar{border-top-style:dashed;}
+.msg.m-ret .bar::after{
+  right:auto; left:-1px;
+  border-left:0; border-right:9px solid currentColor;
+}
+.msg.m-ret .bar::before{left:auto; right:0;}
+
+.mlbl{
+  position:absolute; left:50%; top:-12px; transform:translateX(-50%);
+  font-size:11px; font-weight:700; color:var(--ink2); letter-spacing:.2px;
+  background:var(--paper); padding:0 8px; white-space:nowrap;
+}
+
+/* 消息色调（--ec = edge color） */
+.m-sync {--ec:#2C6FBE;}
+.m-ret  {--ec:#8A93A0;}
+.m-async{--ec:#2E9E8F;}
+.m-fail {--ec:#C0504D;}
+
+/* ---------- 参与者配色类 ---------- */
+.c-blue  {--c:#2C6FBE; --cbg:#F3F8FE;}
+.c-teal  {--c:#2E9E8F; --cbg:#F1FAF8;}
+.c-purple{--c:#7C5CBF; --cbg:#F8F5FE;}
+.c-amber {--c:#C98A1F; --cbg:#FEFAF0;}
+.c-coral {--c:#D16B65; --cbg:#FEF7F6;}
+.c-gold  {--c:#C2803A; --cbg:#FDF8F0;}
+.c-sky   {--c:#4AA3D8; --cbg:#F2F9FD;}
+.c-red   {--c:#C0504D; --cbg:#FDF3F2;}
+.c-grey  {--c:#8A93A0; --cbg:#F7F8FA;}
+
+/* ---------- 页脚注 ---------- */
+.notes{border-top:1.6px solid var(--line); margin-top:20px; padding-top:14px;}
+.notes p{font-size:11.5px; color:var(--ink2); margin:0 0 7px; line-height:1.72;}
+.notes p:last-child{margin-bottom:0;}
+.notes p b{color:#2C6FBE;}
+.notes .no{
+  display:inline-block; width:15px; height:15px; line-height:15px; text-align:center;
+  border-radius:50%; background:#EAF1FB; color:#2C6FBE; font-size:10px; font-weight:800;
+  margin-right:6px; vertical-align:1px;
+}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="hd">
+    <h1>合同中心「确认收货」· 跨系统调用时序图</h1>
+    <p class="sub">
+      本地事务 + 异步派发 + 阶梯重试 · <b>7</b> 个参与者 · <b>12</b> 条消息 · 每次派发<b>先取唯一批次号</b> · 重试上限 <b>N</b> 次
+    </p>
+    <div class="legend">
+      <span class="lg"><span class="sw" style="border-color:#2C6FBE"></span>同步请求</span>
+      <span class="lg"><span class="sw dash" style="border-color:#8A93A0"></span>事务边界 / 应答</span>
+      <span class="lg"><span class="sw dash" style="border-color:#2E9E8F"></span>异步派发 / 回写</span>
+      <span class="lg"><span class="sw dash" style="border-color:#C0504D"></span>失败 · 重试 · 熔断</span>
+    </div>
+  </div>
+
+  <div class="seq">
+
+    <div class="acts">
+      <div class="actor c-sky"><div class="an">界面端</div><div class="at">合同中心页面</div></div>
+      <div class="actor c-purple"><div class="an">合同中心</div><div class="at">业务应用</div></div>
+      <div class="actor c-blue"><div class="an">本地库 MySQL</div><div class="at">合同表 + 待发送表</div></div>
+      <div class="actor c-teal"><div class="an">异步派发线程</div><div class="at">取批次号 · 认领 · 重试</div></div>
+      <div class="actor c-amber"><div class="an">资金模块</div><div class="at">下游系统</div></div>
+      <div class="actor c-coral"><div class="an">仓单模块</div><div class="at">下游系统</div></div>
+      <div class="actor c-grey"><div class="an">运营</div><div class="at">站内信 / 工单</div></div>
+    </div>
+
+    <div class="track">
+      <div class="msg m-sync"  data-a="1" data-b="2"><div class="bar"><span class="mlbl">① 确认收货请求</span></div></div>
+      <div class="msg m-sync"  data-a="2" data-b="3"><div class="bar"><span class="mlbl">② 同事务写「待发送表」</span></div></div>
+      <div class="msg m-ret"   data-a="3" data-b="2"><div class="bar"><span class="mlbl">③ 本地事务提交</span></div></div>
+      <div class="msg m-ret"   data-a="2" data-b="1"><div class="bar"><span class="mlbl">④ 受理成功（异步中）</span></div></div>
+      <div class="msg m-sync"  data-a="4" data-b="3"><div class="bar"><span class="mlbl">⑤ 申请唯一派发批次号</span></div></div>
+      <div class="msg m-sync"  data-a="4" data-b="3"><div class="bar"><span class="mlbl">⑥ 按批次号批量认领（同批同号）</span></div></div>
+      <div class="msg m-sync"  data-a="4" data-b="5"><div class="bar"><span class="mlbl">⑦ 派发资金（幂等）</span></div></div>
+      <div class="msg m-sync"  data-a="4" data-b="6"><div class="bar"><span class="mlbl">⑧ 派发仓单（幂等）</span></div></div>
+      <div class="msg m-async" data-a="4" data-b="3"><div class="bar"><span class="mlbl">⑨ 双成功：回写批次 + 推进状态</span></div></div>
+      <div class="msg m-fail"  data-a="4" data-b="3"><div class="bar"><span class="mlbl">⑩ 失败：阶梯重试 ≤ N 次</span></div></div>
+      <div class="msg m-fail"  data-a="4" data-b="7"><div class="bar"><span class="mlbl">⑪ 超 N 次 → 人工介入</span></div></div>
+      <div class="msg m-sync"  data-a="1" data-b="2"><div class="bar"><span class="mlbl">⑫ 界面重试 → 重新入队</span></div></div>
+    </div>
+
+  </div>
+
+  <div class="notes">
+    <p><span class="no">①</span><b>本地事务的边界只到「合同状态 + 待发送表」</b>——两个下游一律不进事务。事务提交成功即对外返回「受理成功」，用户不必等资金与仓单；跨系统的最终一致性交给异步段。</p>
+    <p><span class="no">②</span><b>失败不抛回用户</b>：异步线程按阶梯退避（1s→2s→4s…）重派，累计超过 N 次即熔断为「待人工」，同时推送运营；重试之所以安全，是因为两个下游都按业务幂等键做去重。</p>
+    <p><span class="no">③</span><b>界面重试是兜底，不是主路径</b>：它只把记录重置回「待发送」重新入队，不产生第二笔业务；与运营线下处理后手动触发的语义完全一致。</p>
+    <p><span class="no">④</span><b>⑤⑥ 两步是「统一批次」的关键</b>：线程先申请一个<b>全局唯一批次号</b>，再用一条带该批次号的 UPDATE 原子认领整批记录（<code>… SET status='sending', batch_no=? WHERE status='pending' AND next_time&lt;=now LIMIT ?</code>）——这一批就共享同一个号。后续每次回写（⑨⑩）都<b>只认自己的批次号</b>，因此多实例并行时不会互相覆盖；实例宕机也能按批次号整批回收，而不是靠时间猜。</p>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var actors = Array.prototype.slice.call(document.querySelectorAll('.actor'));
+  var n = actors.length;
+  var acts = document.querySelector('.acts');
+  var track = document.querySelector('.track');
+  var cols = 'repeat(' + n + ',1fr)';
+  acts.style.gridTemplateColumns = cols;
+  track.style.gridTemplateColumns = cols;
+
+  var tr = track.getBoundingClientRect();
+  var centers = actors.map(function (a) {
+    var ar = a.getBoundingClientRect();
+    return ar.left + ar.width / 2 - tr.left;
+  });
+
+  actors.forEach(function (a, i) {
+    var l = document.createElement('div');
+    l.className = 'life';
+    l.style.left = centers[i] + 'px';
+    track.appendChild(l);
+  });
+
+  var msgs = Array.prototype.slice.call(document.querySelectorAll('.msg'));
+  msgs.forEach(function (m) {
+    var a = parseInt(m.dataset.a, 10);
+    var b = parseInt(m.dataset.b, 10);
+    if (!a || !b || b === a || centers[a - 1] == null || centers[b - 1] == null) {
+      m.style.display = 'none'; return;
+    }
+    var x1 = centers[a - 1], x2 = centers[b - 1];
+    var bar = m.querySelector('.bar');
+    bar.style.left = Math.min(x1, x2) + 'px';
+    bar.style.width = Math.abs(x2 - x1) + 'px';
+    if (a > b) m.classList.add('m-ret');
+  });
+
+  window.__DIAGRAM_STATS__ = {
+    type: 'sequence',
+    nodes: n,
+    edges: msgs.filter(function (m) { return m.style.display !== 'none'; }).length,
+    drawn: msgs.filter(function (m) { return m.style.display !== 'none'; }).length
+  };
+  window.__DIAGRAM_READY__ = true;
+})();
+</script>
+</body>
+</html>

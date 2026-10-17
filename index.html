@@ -1671,6 +1671,11 @@
       <span>模拟面试</span>
     </div>
 
+    <div class="sidebar-nav-item" data-page="page-ai" onclick="switchTab('page-ai')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
+      <span>AI 方案集</span>
+    </div>
+
     <div class="sidebar-nav-item" data-page="page-cases" onclick="switchTab('page-cases')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
       <span>案例 · 场景</span>
@@ -2099,6 +2104,145 @@
 
     </section>
 
+    <!-- ========== 页面：AI 方案集（ai/ 目录入口） ========== -->
+    <section class="page" id="page-ai">
+
+      <div class="section-header" style="margin-top:0">
+        <div class="section-title"><span class="section-title-bar"></span>AI 工程方案集</div>
+        <div class="section-more tap" onclick="openFile('ai/LLM-Agent-Harness-三层认知深度解读.md')">
+          认知总纲
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+
+      <div class="prep-category" onclick="toggleMockDetail(this)">
+        <div class="prep-cat-header">
+          <div class="prep-cat-icon" style="background:rgba(139,92,246,0.12);color:#8b5cf6">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M4 14h16"/><path d="M6 14v3a6 6 0 0 0 12 0v-3"/></svg>
+          </div>
+          <div class="prep-cat-body">
+            <div class="prep-cat-title">Agent / Harness 核心设计</div>
+            <div class="prep-cat-meta">6 份 · 认知总纲 + 详细设计 + 两张架构图（`ai/`，不在 prep 文件树内）</div>
+          </div>
+          <div class="prep-cat-arrow open">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+        <div class="prep-cat-list open">
+          <div class="prep-item tap" onclick="openFile('ai/LLM-Agent-Harness-三层认知深度解读.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">★ LLM / Agent / Harness 三层认知深度解读（总纲）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/Agent-详细设计与项目落地.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">Agent 详细设计与项目落地（政策解读）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/Harness-详细设计与项目落地.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">Harness 详细设计与项目落地（六机制）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/Harness-功能架构图.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">Harness 功能架构图（六层 · 可导出 PNG）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/Harness-传统工程对应关系图.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">传统工程 ↔ Harness 对应关系图（四层 · 可导出 PNG）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/Agent-Harness-LLM报文全链路拆解.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">Agent / Harness / LLM 报文全链路拆解</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="prep-category" onclick="toggleMockDetail(this)">
+        <div class="prep-cat-header">
+          <div class="prep-cat-icon" style="background:rgba(59,130,246,0.12);color:#3b82f6">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          </div>
+          <div class="prep-cat-body">
+            <div class="prep-cat-title">Dify 平台与 RAG</div>
+            <div class="prep-cat-meta">8 份 · 平台接入手册 + RAG 16 卡点 + Agent 流程设计（`ai/dify/`）</div>
+          </div>
+          <div class="prep-cat-arrow open">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+        <div class="prep-cat-list open">
+          <div class="prep-item tap" onclick="openFile('ai/dify/AI智能体企业级应用平台-定位与项目价值.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">★ AI 智能体企业级应用平台 · 定位与项目价值</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/dify/Dify快速深入指南.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">Dify 快速深入指南（平台接入手册）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/dify/Dify-RAG关键点详解.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">Dify RAG 16 卡点与解法</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/dify/Dify速读.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">Dify 速读（HTML 速览版）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/dify/policy-agent/README.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">政策解读 Agent 通用设计（六层 + 两道闸门）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/dify/电力政策解读Agent-完整设计.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">电力政策解读 Agent 落地设计</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/dify/智能客服-完整流程设计.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">智能客服完整流程设计</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/dify/rag-cases/README.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">RAG 直击库（Q&A 命中直返）方案</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="prep-category" onclick="toggleMockDetail(this)">
+        <div class="prep-cat-header">
+          <div class="prep-cat-icon" style="background:rgba(245,158,11,0.12);color:#f59e0b">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2"/><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 12h8"/></svg>
+          </div>
+          <div class="prep-cat-body">
+            <div class="prep-cat-title">文档解析 · MinerU</div>
+            <div class="prep-cat-meta">1 份 · RAG 入口的复杂 PDF 解析改造（`ai/`，面试锚点见 06-面试准备/15）</div>
+          </div>
+          <div class="prep-cat-arrow open">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+        <div class="prep-cat-list open">
+          <div class="prep-item tap" onclick="openFile('ai/minerU复杂PDF识别优化方案与选型分析.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">MinerU 复杂 PDF 解析优化方案与选型</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
     <!-- ========== 页面：案例 · 场景（桌面侧边栏入口） ========== -->
     <section class="page" id="page-cases">
 
@@ -2290,6 +2434,10 @@
   <button class="tabbar-item tap" data-page="page-mock" aria-label="模拟" onclick="switchTab('page-mock')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12z"/><path d="M12 2a10 10 0 0 1 10 10h-7.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
     <span>模拟</span>
+  </button>
+  <button class="tabbar-item tap" data-page="page-ai" aria-label="AI 方案集" onclick="switchTab('page-ai')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
+    <span>AI</span>
   </button>
   <button class="tabbar-item tap" data-page="page-me" aria-label="我的" onclick="switchTab('page-me')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -2593,7 +2741,7 @@ var PREP_CATEGORIES = [
       { name: '01-业务价值与客户运营.md', type: 'md', path: '02-业务价值/01-业务价值与客户运营.md' },
       { name: '02-业务全链路场景手册.md', type: 'md', path: '02-业务价值/02-业务全链路场景手册.md' },
       { name: '05-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-业务价值/05-业务痛点与系统解决方案-架构详解.md' },
-      { name: '06-客户案例与行业对标手册.md', type: 'md', path: '02-业务价值/06-客户案例与行业对标手册.md' },
+      { name: '06-客户案例与行业对标手册.md', type: 'md', path: '03-客户案例/06-客户案例与行业对标手册.md' },
       { name: '09-业务-技术映射地图.md', type: 'md', path: '02-业务价值/09-业务-技术映射地图.md' }
     ]
   },
@@ -2618,6 +2766,9 @@ var PREP_CATEGORIES = [
       { name: '06-Cookie认证失败-5Why根因分析.md', type: 'md', path: '04-架构决策/生产问题排查/06-Cookie认证失败-5Why根因分析.md' },
       { name: '07-Cookie认证失败-5Why根因分析.slides.pptx', type: 'pptx', path: '04-架构决策/生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx' },
       { name: '07-B2B合同中心vsB2C订单中心-区别分析.md', type: 'md', path: '04-架构决策/07-B2B合同中心vsB2C订单中心-区别分析.md' },
+      { name: '08-Dify与自研业务中台-技术选型复盘.md', type: 'md', path: '04-架构决策/08-Dify与自研业务中台-技术选型复盘.md' },
+      { name: '09-B2B系统从原型到优秀平台的建设框架.md', type: 'md', path: '04-架构决策/09-B2B系统从原型到优秀平台的建设框架.md' },
+      { name: '10-优秀B2B系统完整技术选型与设计方案.md', type: 'md', path: '04-架构决策/10-优秀B2B系统完整技术选型与设计方案.md' },
       { name: '08-多机房多线路网络故障-排查实录.md', type: 'md', path: '04-架构决策/生产问题排查/08-多机房多线路网络故障-排查实录.md' },
       { name: '09-竞价页面突然变慢-排查实录.md', type: 'md', path: '04-架构决策/生产问题排查/09-竞价页面突然变慢-排查实录.md' },
       { name: '10-下载PDF致JVM进程消失-排查实录.md', type: 'md', path: '04-架构决策/生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
@@ -2625,7 +2776,19 @@ var PREP_CATEGORIES = [
       { name: '12-生产排查步骤-四类场景与六步SOP.md', type: 'md', path: '04-架构决策/生产问题排查/12-生产排查步骤-四类场景与六步SOP.md' },
       { name: 'java-architect-troubleshooting-handbook.md', type: 'md', path: '04-架构决策/生产问题排查/java-architect-troubleshooting-handbook.md' },
       { name: 'java-troubleshooting-advanced-arthas-profiler.md', type: 'md', path: '04-架构决策/生产问题排查/java-troubleshooting-advanced-arthas-profiler.md' },
-      { name: 'java-troubleshooting-quickcards.md', type: 'md', path: '04-架构决策/生产问题排查/java-troubleshooting-quickcards.md' }
+      { name: 'java-troubleshooting-quickcards.md', type: 'md', path: '04-架构决策/生产问题排查/java-troubleshooting-quickcards.md' },
+      { name: '11-midservice网关职责与治理设计.md', type: 'md', path: '04-架构决策/11-midservice网关职责与治理设计.md' },
+      { name: '11-midservice网关架构图.html', type: 'html', path: '04-架构决策/11-midservice网关架构图.html' },
+      { name: '12-跨系统调用一致性方案.md', type: 'md', path: '04-架构决策/12-跨系统调用一致性方案.md' },
+      { name: '12-图-待发送表状态机.html', type: 'html', path: '04-架构决策/12-图-待发送表状态机.html' },
+      { name: '12-图-本地表双通道机制图.html', type: 'html', path: '04-架构决策/12-图-本地表双通道机制图.html' },
+      { name: '12-图-确认收货主链路时序图.html', type: 'html', path: '04-架构决策/12-图-确认收货主链路时序图.html' },
+      { name: '13-C核心单线程内存一致性设计.md', type: 'md', path: '04-架构决策/13-C核心单线程内存一致性设计.md' },
+      { name: '13-图-C核心热备一致性机制图.html', type: 'html', path: '04-架构决策/13-图-C核心热备一致性机制图.html' },
+      { name: '13-图-协调平面与数据平面对照图.html', type: 'html', path: '04-架构决策/13-图-协调平面与数据平面对照图.html' },
+      { name: '14-区块链架构与一致性同构对照图.html', type: 'html', path: '04-架构决策/14-区块链架构与一致性同构对照图.html' },
+      { name: '15-DS数据交换中心-C-Java异构桥接设计.md', type: 'md', path: '04-架构决策/15-DS数据交换中心-C-Java异构桥接设计.md' },
+      { name: '15-图-DS数据交换中心双通道流水线.html', type: 'html', path: '04-架构决策/15-图-DS数据交换中心双通道流水线.html' }
     ]
   },
   { key: 'strategy', title: '06 面试准备', icon: 'zap', color: 'green',
@@ -2640,7 +2803,15 @@ var PREP_CATEGORIES = [
       { name: '08-技术整改十项与落地.html', type: 'html', path: '06-面试准备/08-技术整改十项与落地.html' },
       { name: '12-面试自证与训练手册.md', type: 'md', path: '06-面试准备/12-面试自证与训练手册.md' },
       { name: '12-面试自证与训练手册.visual.html', type: 'html', path: '06-面试准备/12-面试自证与训练手册.visual.html' },
-      { name: '13-超聚变面试准备.md', type: 'md', path: '06-面试准备/13-超聚变面试准备.md' }
+      { name: '13-超聚变面试准备.md', type: 'md', path: '06-面试准备/13-超聚变面试准备.md' },
+      { name: '15-AI工程能力补强手册.md', type: 'md', path: '06-面试准备/15-AI工程能力补强手册.md' },
+      { name: '16-简历知识补强清单.md', type: 'md', path: '06-面试准备/16-简历知识补强清单.md' },
+      { name: '14-面试介绍PPT · 放映站点', type: 'html', path: '06-面试准备/14-面试介绍PPT/index.html' },
+      { name: '14-面试介绍PPT · 模板与排版规范.md', type: 'md', path: '06-面试准备/14-面试介绍PPT/PPT模板与排版规范.md' },
+      { name: '14-面试介绍PPT · 面试自我介绍-haswhere.pptx', type: 'pptx', path: '06-面试准备/14-面试介绍PPT/面试自我介绍-haswhere.pptx' },
+      { name: '14-面试介绍PPT · 个人简历介绍-24页.pptx', type: 'pptx', path: '06-面试准备/14-面试介绍PPT/个人简历介绍-24页.pptx' },
+      { name: '14-面试介绍PPT · 面试自我介绍.pdf', type: 'pdf', path: '06-面试准备/14-面试介绍PPT/render/面试自我介绍-haswhere.pdf' },
+      { name: '14-面试介绍PPT · 个人简历介绍-24页.pdf', type: 'pdf', path: '06-面试准备/14-面试介绍PPT/render/个人简历介绍-24页.pdf' }
     ]
   },
   { key: 'resume', title: '09 个人简历', icon: 'rocket', color: 'purple',
@@ -2701,7 +2872,7 @@ var CASE_GROUPS = [
     { name: '04-B2B技术经理-能力全景介绍.pptx', type: 'pptx', path: '03-客户案例/04-B2B技术经理-能力全景介绍.pptx' },
     { name: '05-B2B产品服务客户案例.slides.pptx', type: 'pptx', path: '03-客户案例/05-B2B产品服务客户案例.slides.pptx' },
     { name: '05-B2B产品服务客户案例.pdf', type: 'pdf', path: '03-客户案例/05-B2B产品服务客户案例.pdf' },
-    { name: '06-客户案例与行业对标手册.md', type: 'md', path: '02-业务价值/06-客户案例与行业对标手册.md' },
+    { name: '06-客户案例与行业对标手册.md', type: 'md', path: '03-客户案例/06-客户案例与行业对标手册.md' },
     { name: '10-供应链B2B与供应链金融方案深度分析.html', type: 'html', path: '01-产品定位/10-供应链B2B与供应链金融方案深度分析.html' }
   ] },
   { key: 'scenes', title: '02 业务场景材料', files: [
@@ -2855,6 +3026,7 @@ var pageTitles = {
   'page-home': '面试工作台',
   'page-bank': '技术题库',
   'page-mock': '模拟面试',
+  'page-ai': 'AI 方案集',
   'page-cases': '案例 · 场景',
   'page-me': '我的'
 };
