@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能体开发 · AI 智能服务平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tier-card { transition: all .25s ease; }
+        .tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.10); }
+        .flow-arrow { animation: flowPulse 2s infinite; }
+        @keyframes flowPulse { 0%,100% { opacity:.45; } 50% { opacity:1; } }
+        .step-node { transition: all .25s ease; }
+        .step-node:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,.10); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-robot mr-1"></i>AI 开发项目</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/customer-service.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能客服</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/knowledge-base.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">知识库检索</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/policy-interpretation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">政策解读</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/rag-system.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">RAG与解析</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/model-management.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">大模型管理</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/model-finetuning.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">模型微调</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/data-annotation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">数据标注</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/agent-development.html')" class="px-3 py-1 rounded-full bg-violet-600 text-white font-medium">智能体开发</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <!-- Hero -->
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-diagram-project mr-3 text-violet-600"></i>智能体开发
+                </h1>
+                <p class="text-gray-500 mb-4">Agent Development — Workflow 保确定性，Agent 补开放环节；工具调用一律过中台网关</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-violet-50 text-violet-700 px-3 py-1 rounded-full"><i class="fas fa-diagram-project mr-1"></i>底座 · 能力封装</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-route mr-1"></i>确定性优先</span>
+                    <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full"><i class="fas fa-hand-paper mr-1"></i>写操作人工确认</span>
+                </div>
+            </div>
+
+            <!-- 边界 -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
+                <p class="text-amber-900 text-sm"><i class="fas fa-triangle-exclamation mr-2"></i><strong>口径声明：</strong>本页描述的是智能体的<strong>设计原则与边界</strong>。个人未承担智能体编排落地（由团队推进）；此处讲的是「为什么这样设计」，不是「我写了这些工作流」。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-circle-question mr-2 text-violet-600"></i>一、智能体在平台里到底干什么</h2>
+            <p class="text-gray-600 mb-5 text-sm">一句话：<strong>把多步骤流程串成一次可执行的任务</strong>——查数 → 判断 → 调用 → 写回。它解决的不是「答得更聪明」，而是「把跨系统的动作接起来」。</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                <div class="bg-rose-50 border border-rose-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-rose-800 mb-2"><i class="fas fa-arrows-split-up-and-left mr-2"></i>拆不掉的多步</h3>
+                    <p class="text-sm text-gray-600">「查这个客户的合同 → 看有没有逾期 → 有则生成催办」这类任务，单轮问答模型做不了。</p>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-amber-800 mb-2"><i class="fas fa-plug mr-2"></i>要跨系统</h3>
+                    <p class="text-sm text-gray-600">数据在交易、合同、仓单、结算不同服务里，需要工具调用而不是检索。</p>
+                </div>
+                <div class="bg-sky-50 border border-sky-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-sky-800 mb-2"><i class="fas fa-shield-halved mr-2"></i>但要能被管住</h3>
+                    <p class="text-sm text-gray-600">自主性越强，越需要鉴权、只读优先、写操作确认、全程留痕。</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-route mr-2 text-violet-600"></i>二、Workflow 与 Agent 的分工：确定性优先</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="border-2 border-blue-200 bg-blue-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-blue-900 mb-2"><i class="fas fa-diagram-project mr-2"></i>Workflow · 关键路径</h3>
+                    <p class="text-sm text-gray-600 mb-2">步骤已知、顺序确定、必须可解释可回滚。</p>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• 政策解读主链路（规范化 → 意图 → 槽位 → 直击 → 检索 → 生成 → 核验）</li>
+                        <li>• 智能客服的知识类/数据类分流</li>
+                        <li>• 输出前终检与降级判定</li>
+                    </ul>
+                    <p class="text-xs text-blue-700 mt-2">好处：每一步看得见、错在哪查得到、改一处不影响别处。</p>
+                </div>
+                <div class="border-2 border-violet-200 bg-violet-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-violet-900 mb-2"><i class="fas fa-robot mr-2"></i>Agent · 开放环节</h3>
+                    <p class="text-sm text-gray-600 mb-2">步骤不确定、需要模型自己决定「先查什么、再查什么」。</p>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• 检索策略选择（该查知识库还是查单据）</li>
+                        <li>• 多工具编排（一次没查到时换个条件再查）</li>
+                        <li>• 追问与澄清</li>
+                    </ul>
+                    <p class="text-xs text-violet-700 mt-2">代价：不可预测，必须配套超时、最大步数、失败退出条件。</p>
+                </div>
+            </div>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-10">
+                <p class="text-sm text-gray-700"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i><strong>为什么不全用 Agent？</strong>因为业务要的是「<strong>确定性可解释</strong>」。关键路径交给 Agent，等于把一条资金/合规链路交给概率——今天对明天错，还说不清为什么。<strong>Workflow 保确定性与可解释，Agent 补开放性</strong>，这个组合不是保守，是必要。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-toolbox mr-2 text-violet-600"></i>三、工具怎么接：四类工具，四种权限</h2>
+            <div class="overflow-x-auto mb-10">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-40">工具类型</th>
+                            <th class="px-4 py-3 text-left font-semibold">例子</th>
+                            <th class="px-4 py-3 text-left font-semibold w-56">管控要求</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">只读查询</td><td class="px-4 py-3">按单号查合同、查物流进度、查账户余额</td><td class="px-4 py-3">鉴权到人（身份级别 L1/L2/L3）+ 结果脱敏</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">写操作</td><td class="px-4 py-3">创建工单、提交催办、修改资料</td><td class="px-4 py-3"><strong>必须人工确认</strong>；幂等键防重复提交</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">外部系统</td><td class="px-4 py-3">ERP / OA / CRM / BPM 接口</td><td class="px-4 py-3">经中台统一收敛：鉴权、限流、熔断、对账兜底</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">人工节点</td><td class="px-4 py-3">审批、复核、异常处置</td><td class="px-4 py-3">HITL 显式插入点，不允许「模型自己决定跳过」</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-shield-halved mr-2 text-violet-600"></i>四、四条安全约束（写进架构规范）</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                <div class="bg-rose-50 border border-rose-200 rounded-lg p-4"><p class="text-sm text-gray-600"><i class="fas fa-lock text-rose-500 mr-2"></i><strong>权限校验永远在中台侧。</strong>不把数据过滤责任交给 Prompt——「请不要说其他客户的数据」不是权限。</p></div>
+                <div class="bg-rose-50 border border-rose-200 rounded-lg p-4"><p class="text-sm text-gray-600"><i class="fas fa-database text-rose-500 mr-2"></i><strong>不直连业务数据库。</strong>只通过中台暴露的受控工具/API 访问，这是硬约束不是建议。</p></div>
+                <div class="bg-rose-50 border border-rose-200 rounded-lg p-4"><p class="text-sm text-gray-600"><i class="fas fa-code text-rose-500 mr-2"></i><strong>工作流内不写复杂业务逻辑。</strong>只做路由、拼装、调用与格式化；事务与补偿留在中台。</p></div>
+                <div class="bg-rose-50 border border-rose-200 rounded-lg p-4"><p class="text-sm text-gray-600"><i class="fas fa-hand text-rose-500 mr-2"></i><strong>写操作默认加人工确认。</strong>只读优先；LLM 调用不具备 ACID，写操作的事务边界不在模型手里。</p></div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-triangle-exclamation mr-2 text-violet-600"></i>五、失败与降级：Agent 必须有的退出条件</h2>
+            <div class="overflow-x-auto mb-6">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-44">失败形态</th>
+                            <th class="px-4 py-3 text-left font-semibold">兜底动作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">工具调用超时</td><td class="px-4 py-3">限次重试 → 仍失败则降级为「告知 + 转人工/建工单」，不空转</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">反复查不到</td><td class="px-4 py-3">最大步数 / 最大时长硬上限，到点退出并如实告知</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">越权请求</td><td class="px-4 py-3">中台侧直接拒绝，不把拒绝理由与库内组织信息暴露给用户</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">写操作重复提交</td><td class="px-4 py-3">幂等键 + 人工确认双重保险，避免重复下单/重复建单</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                <p class="text-blue-800 text-sm"><i class="fas fa-circle-info mr-2"></i><strong>边界：</strong>多智能体协作（多个 Agent 互相委派）被排在<strong>阶段四</strong>——前三个阶段的价值没被度量之前，它只是烧钱又难排查的复杂度。这条与「微调」同属「先证明再上」的清单。</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/customer-service.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能客服</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/policy-interpretation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">政策解读</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/ai-project/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+        </div>
+    </nav>
+</body>
+</html>
