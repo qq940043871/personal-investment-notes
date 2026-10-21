@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Harness 功能架构图</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #EEF1F5;
+    font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", system-ui, sans-serif;
+    color: #243043;
+    -webkit-font-smoothing: antialiased;
+    padding: 26px 20px 40px;
+  }
+
+  .sheet {
+    width: 1740px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(24, 39, 65, .10), 0 2px 6px rgba(24, 39, 65, .06);
+    padding: 26px 28px 22px;
+  }
+
+  /* ---------- 头部 ---------- */
+  .hd { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding-bottom: 14px; border-bottom: 2px solid #E7EBF1; }
+  .hd h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: .5px; color: #1B2739; }
+  .hd h1 em { font-style: normal; color: #C0504D; }
+  .hd .sub { margin-top: 8px; font-size: 13px; color: #5B6878; letter-spacing: .2px; }
+  .hd .sub b { color: #2C6FBE; font-weight: 700; }
+  .hd .sub i { font-style: normal; color: #98A3B2; padding: 0 4px; }
+
+  .legend { flex: 0 0 auto; border: 1px solid #E1E6ED; border-radius: 10px; background: #FAFBFD; padding: 10px 14px; }
+  .legend .lg-title { font-size: 11px; font-weight: 700; color: #8B96A5; letter-spacing: 1px; margin-bottom: 7px; }
+  .legend .lg-row { display: flex; align-items: center; gap: 7px; margin-top: 6px; }
+  .legend .lg-row span.k { font-size: 11.5px; color: #5B6878; }
+  .lang { display: inline-block; font-size: 10.5px; font-weight: 700; color: #fff; padding: 2px 7px; border-radius: 4px; letter-spacing: .4px; }
+  .lang.core { background: #C0504D; } .lang.gw { background: #7C5CBF; }
+  .lang.cfg { background: #C2803A; } .lang.ext { background: #6B7280; }
+  .line-sample { display: inline-block; width: 30px; height: 0; border-top: 2px solid #7C8CA0; }
+  .line-sample.dash { border-top-style: dashed; }
+
+  /* ---------- 层带 ---------- */
+  .stack { padding-top: 18px; }
+  .band { display: flex; border: 1.6px solid var(--line); background: var(--bg); border-radius: 14px; padding: 13px 16px 13px 0; position: relative; }
+  .rail { flex: 0 0 54px; display: flex; align-items: center; justify-content: center; }
+  .rail i { font-style: normal; writing-mode: vertical-rl; font-size: 19px; font-weight: 800; color: #fff; background: var(--rail); border-radius: 8px; padding: 16px 8px; letter-spacing: 3px; box-shadow: 0 2px 6px rgba(0,0,0,.14); }
+  .bd { flex: 1; min-width: 0; }
+  .bd-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  .bd-head h2 { margin: 0; font-size: 14.5px; font-weight: 800; color: var(--rail); letter-spacing: .3px; }
+  .bd-head p { margin: 0; font-size: 12px; color: #6B7787; }
+  .bd-head .pin { margin-left: auto; font-size: 11px; color: #8B96A5; border: 1px dashed var(--line); border-radius: 6px; padding: 3px 9px; background: #fff; }
+
+  /* ---------- 网格与卡片 ---------- */
+  .row { display: grid; gap: 12px; }
+  .c3 { grid-template-columns: repeat(3, 1fr); }
+  .c4 { grid-template-columns: repeat(4, 1fr); }
+  .c5 { grid-template-columns: repeat(5, 1fr); }
+  .c6 { grid-template-columns: repeat(6, 1fr); }
+  .c7 { grid-template-columns: 1.25fr 1.05fr .95fr 1.15fr 1.05fr .95fr 1.1fr; }
+  .c4b { grid-template-columns: 1.15fr 1.35fr 1.15fr 1.25fr; }
+  .gap-lg { margin-top: 14px; }
+
+  .card { position: relative; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 15px 12px 13px; text-align: center; }
+  .card h3 { margin: 0; font-size: 14.5px; font-weight: 700; color: #22303F; line-height: 1.4; }
+  .card .tech { margin-top: 6px; font-size: 11.5px; font-weight: 700; color: var(--c); }
+  .card .desc { margin-top: 8px; font-size: 12.5px; color: #4A5568; line-height: 1.8; }
+  .card .badge { position: absolute; left: 7px; top: 7px; font-size: 10px; font-weight: 700; color: #fff; background: #2C5F8A; padding: 2px 6px; border-radius: 4px; letter-spacing: .3px; }
+  .card.has-tag { padding-top: 27px; }
+  .card .mini { margin-top: 7px; font-size: 11.5px; color: #6B7787; line-height: 1.7; }
+
+  /* 卡片配色类 —— 必须定义！只写 class 不定义会让 border/background 静默失效 */
+  .c-amber  { --c:#D8A94A; --cbg:#FEFAF0; }
+  .c-blue   { --c:#4A88CE; --cbg:#F3F8FE; }
+  .c-purple { --c:#8871C9; --cbg:#F8F5FE; }
+  .c-coral  { --c:#D16B65; --cbg:#FEF7F6; }
+  .c-teal   { --c:#2E9E8F; --cbg:#F1FAF8; }
+  .c-gold   { --c:#C2803A; --cbg:#FDF8F0; }
+  .c-sky    { --c:#4AA3D8; --cbg:#F2F9FD; }
+  .c-red    { --c:#C0504D; --cbg:#FDF3F2; }
+  .c-grey   { --c:#9AA3AF; --cbg:#F7F8FA; }
+
+  /* 通栏数据条 */
+  .bar { margin-top: 12px; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 13px 18px; display: flex; align-items: center; gap: 20px; }
+  .bar h3 { margin: 0; font-size: 15px; font-weight: 800; color: #9E3B36; white-space: nowrap; letter-spacing: .3px; }
+  .bar p { margin: 0; font-size: 12.5px; color: #4A5568; line-height: 1.7; }
+
+  /* 层间流向条 */
+  .flows { padding: 9px 0 9px 54px; display: flex; flex-wrap: wrap; align-items: center; gap: 7px; position: relative; }
+  .flows::before { content: "⇅"; position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 17px; color: #AEB9C7; line-height: 1; }
+  .flows .cap { font-size: 11px; font-weight: 700; color: #98A3B2; letter-spacing: .8px; margin-right: 2px; }
+  .fl { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: #3C4959; background: #fff; border: 1.4px solid var(--c); border-radius: 999px; padding: 3px 11px; }
+  .fl.dash { border-style: dashed; }
+  .fl b { color: var(--c); font-weight: 800; font-size: 12.5px; }
+
+  /* 页脚注 */
+  .notes { margin-top: 20px; border-top: 2px solid #E7EBF1; padding-top: 14px; }
+  .notes p { margin: 0 0 8px; font-size: 12px; color: #56626F; line-height: 1.85; }
+  .notes p:last-child { margin-bottom: 0; }
+  .notes b { color: #1B2739; font-weight: 800; }
+  .notes i { font-style: normal; color: #98A3B2; padding: 0 4px; }
+
+  @media (max-width: 1800px) { body { padding: 16px 12px 32px; overflow-x: auto; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ================= 头部 ================= -->
+  <div class="hd">
+    <div>
+      <h1>Agent Harness · <em>功能架构图</em></h1>
+      <div class="sub">
+        六层功能视图 <i>·</i> Python + FastAPI 承载 MainLoop <i>·</i> 客户端 PyQt6 / Vue3 <i>·</i> 画布 1740px
+      </div>
+    </div>
+    <div class="legend">
+      <div class="lg-title">图 例</div>
+      <div class="lg-row">
+        <span class="lang core">核心</span><span class="k">骨架核心模块 · 缺一不可</span>
+      </div>
+      <div class="lg-row">
+        <span class="lang cfg">配置</span><span class="k">配置驱动的注册与校验</span>
+      </div>
+      <div class="lg-row">
+        <span class="lang gw">接入</span><span class="k">接入与协议适配</span>
+      </div>
+      <div class="lg-row">
+        <span class="lang ext">外部</span><span class="k">外部依赖（非我方资产）</span>
+      </div>
+      <div class="lg-row">
+        <span class="line-sample"></span><span class="k">同步调用</span>
+        <span class="line-sample dash"></span><span class="k">异步 / 反向推送</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <!-- ================= 一 · 客户端与接入层 ================= -->
+    <div class="band" style="--rail:#B8860B;--line:#E4CB84;--bg:#FEFAF0;">
+      <div class="rail"><i>一</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>客户端与接入层</h2>
+          <p>用户面 + 流式通道 · 身份透传的起点</p>
+          <span class="pin">全部入口强制鉴权 · 身份穿透传递</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-amber">
+            <h3>PyQt6 桌面端</h3>
+            <div class="tech">桌面客户端</div>
+            <div class="desc">会话交互<br>审批操作 · 运行监控</div>
+          </div>
+          <div class="card c-amber">
+            <h3>Vue3 Web 端</h3>
+            <div class="tech">Web 客户端</div>
+            <div class="desc">配置管理<br>轨迹查看 · 审批工作台</div>
+          </div>
+          <div class="card c-amber">
+            <h3>流式通道</h3>
+            <div class="tech">SSE / WebSocket</div>
+            <div class="desc">逐 token 推送<br>断线重连 · 转发不改语义</div>
+          </div>
+          <div class="card c-amber">
+            <h3>会话与鉴权入口</h3>
+            <div class="tech">接入收口</div>
+            <div class="desc">令牌校验 · 限流<br><b>不在此层做权限语义</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">流向</span>
+      <span class="fl" style="--c:#B8860B">客户端 <b>→</b> MainLoop（发起 run）</span>
+      <span class="fl dash" style="--c:#B8860B">审批裁决 / 流式增量 <b>⇠</b> 客户端</span>
+    </div>
+
+    <!-- ================= 二 · 主循环与编排层（核心） ================= -->
+    <div class="band" style="--rail:#2C6FBE;--line:#A9C9EA;--bg:#F3F8FE;">
+      <div class="rail"><i>二</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>主循环与编排层</h2>
+          <p>Harness 的心脏 · 五阶段推进与出口判定</p>
+          <span class="pin">判定依据不是模型自评，是确定性规则</span>
+        </div>
+        <div class="row c4b">
+          <div class="card c-blue has-tag">
+            <span class="lang core">核心</span>
+            <h3>MainLoop 编排</h3>
+            <div class="tech">五阶段循环</div>
+            <div class="desc">感知 → 规划 → 行动<br>观察 → 判定（出口）</div>
+          </div>
+          <div class="card c-blue has-tag">
+            <span class="lang core">核心</span>
+            <h3>终止判定闸门</h3>
+            <div class="tech">四道硬闸门</div>
+            <div class="desc">步数上限 · 预算上限<br>墙钟超时 · <b>重复检测</b></div>
+          </div>
+          <div class="card c-blue">
+            <h3>工具调度</h3>
+            <div class="tech">串行 / 并行调用</div>
+            <div class="desc">tool_calls 解析<br>回灌按 tool_call_id 关联</div>
+          </div>
+          <div class="card c-blue">
+            <h3>上下文组装</h3>
+            <div class="tech">消息拼装</div>
+            <div class="desc">历史原样回放<br>预算裁剪 · 快照引用</div>
+          </div>
+        </div>
+        <div class="bar c-blue">
+          <h3 style="color:#2C6FBE">循环四条铁律</h3>
+          <p>带 tool_calls 的 assistant 消息必须原样回放 <i>│</i> N 个调用必须回 N 条结果 <i>│</i> 工具失败也回灌、不抛异常中断循环 <i>│</i> <b>终止原因必须透出，绝不静默结束</b></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">协作</span>
+      <span class="fl" style="--c:#2C6FBE">编排层 <b>⇄</b> 工具层（发起调用 / 收取结果）</span>
+      <span class="fl" style="--c:#2C6FBE">编排层 <b>→</b> 状态层（每步落检查点）</span>
+      <span class="fl dash" style="--c:#2C6FBE">治理层 <b>→</b> 编排层（拦截 / 挂起 / 放行）</span>
+    </div>
+
+    <!-- ================= 三 · 工具与能力层 ================= -->
+    <div class="band" style="--rail:#7C5CBF;--line:#C6B6E6;--bg:#F8F5FE;">
+      <div class="rail"><i>三</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>工具与能力层</h2>
+          <p>动作空间 · 分级白名单 · 可插拔接入</p>
+          <span class="pin">危险等级由工具提供方声明，不由调用方推断</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-purple has-tag">
+            <span class="lang cfg">配置</span>
+            <h3>工具注册表</h3>
+            <div class="tech">分级白名单</div>
+            <div class="desc">只读 / 写 / 高危 三级<br>工具注解声明危险等级</div>
+          </div>
+          <div class="card c-purple">
+            <h3>参数校验</h3>
+            <div class="tech">JSON Schema</div>
+            <div class="desc">结构校验 · 数值校验<br>金额与影响面阈值判定</div>
+          </div>
+          <div class="card c-purple">
+            <h3>本地工具</h3>
+            <div class="tech">函数 / HTTP</div>
+            <div class="desc">检索 · 生成 · 落库<br>发消息 · 状态更新</div>
+          </div>
+          <div class="card c-purple has-tag">
+            <span class="lang gw">接入</span>
+            <h3>MCP 客户端</h3>
+            <div class="tech">外部工具接入</div>
+            <div class="desc">tools/list · tools/call<br>中途要输入走 MRTR</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">落盘</span>
+      <span class="fl" style="--c:#7C5CBF">工具执行结果 <b>→</b> 状态层（任务态落库）</span>
+      <span class="fl dash" style="--c:#7C5CBF">MCP 客户端 <b>⇄</b> 外部 MCP Server</span>
+    </div>
+
+    <!-- ================= 四 · 状态与恢复层 ================= -->
+    <div class="band" style="--rail:#2E9E8F;--line:#9FD4CB;--bg:#F1FAF8;">
+      <div class="rail"><i>四</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>状态与恢复层</h2>
+          <p>三条状态线 · 检查点 · 四层恢复链</p>
+          <span class="pin">能丢的放内存，不能丢的放外置存储</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-teal">
+            <h3>三条状态线</h3>
+            <div class="tech">会话 / 任务 / 上下文</div>
+            <div class="desc">会话态跨请求、任务态单 run<br>上下文态可随时重建</div>
+          </div>
+          <div class="card c-teal">
+            <h3>检查点与快照</h3>
+            <div class="tech">断点续跑</div>
+            <div class="desc">resume_token 凭据<br><b>恢复时比对 turn 防重复执行</b></div>
+          </div>
+          <div class="card c-teal">
+            <h3>幂等键</h3>
+            <div class="tech">trace_id + turn + 工具名</div>
+            <div class="desc">写操作服务端去重<br>重试必须带同一个键</div>
+          </div>
+          <div class="card c-teal">
+            <h3>四层恢复链</h3>
+            <div class="tech">重试 → 降级 → 补偿 → 熔断</div>
+            <div class="desc">业务层错误作为正常结果回灌<br><b>所有降级朝更确定的方向走</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">挂起</span>
+      <span class="fl" style="--c:#2E9E8F">治理层判定高危 <b>→</b> 状态层持久化检查点</span>
+      <span class="fl dash" style="--c:#2E9E8F">裁决回灌 <b>⇠</b> 恢复循环</span>
+    </div>
+
+    <!-- ================= 五 · 治理与安全层 ================= -->
+    <div class="band" style="--rail:#C0504D;--line:#EBC0BE;--bg:#FEF7F6;">
+      <div class="rail"><i>五</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>治理与安全层</h2>
+          <p>权限收口 · 人工卡点 · 审计留痕 · 成本护栏</p>
+          <span class="pin">鉴权跟用户走，不跟 Agent 走</span>
+        </div>
+        <div class="row c4b">
+          <div class="card c-red has-tag">
+            <span class="lang core">核心</span>
+            <h3>权限骨架</h3>
+            <div class="tech">身份穿透 + 工具分级</div>
+            <div class="desc">校验永远在业务中台侧<br><b>不把数据过滤交给 Prompt</b></div>
+          </div>
+          <div class="card c-red has-tag">
+            <span class="lang core">核心</span>
+            <h3>人工介入 HITL</h3>
+            <div class="tech">唯一安全插入点</div>
+            <div class="desc">模型响应后、工具执行前<br>此刻尚无任何副作用</div>
+          </div>
+          <div class="card c-red">
+            <h3>审批与裁决</h3>
+            <div class="tech">approve / edit / reject</div>
+            <div class="desc">改参须说明真实执行值<br><b>拒绝也要回灌并写"请勿重试"</b></div>
+          </div>
+          <div class="card c-red">
+            <h3>审计与成本</h3>
+            <div class="tech">append-only + 预算闸门</div>
+            <div class="desc">越权事件告警 · 全量可回溯<br>分租户计量与限额</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">兜底</span>
+      <span class="fl" style="--c:#C0504D">高危工具 / 超阈值 / 连续失败 / 无进展 <b>→</b> 挂起转人工</span>
+      <span class="fl dash" style="--c:#C0504D">审计日志 <b>→</b> 观测层（trace 关联）</span>
+    </div>
+
+    <!-- ================= 六 · 观测与外部层 ================= -->
+    <div class="band" style="--rail:#6B7280;--line:#CFD4DB;--bg:#F5F6F8;">
+      <div class="rail"><i>六</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>观测层与外部依赖</h2>
+          <p>trace 全链路 · 三层评测 · 外部只经受控通道</p>
+          <span class="pin">没有评测集，调参就是盲人摸象</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-grey">
+            <h3>trace 全链路</h3>
+            <div class="tech">一个 ID 串起全流程</div>
+            <div class="desc">模型调用 / 工具调用 / 业务操作<br>关联 turn 与 tool_call_id</div>
+          </div>
+          <div class="card c-grey">
+            <h3>三层评测</h3>
+            <div class="tech">检索 / 生成 / 端到端</div>
+            <div class="desc">离线评测集前后对跑<br>线上 badcase 回流</div>
+          </div>
+          <div class="card c-grey">
+            <h3>成本护栏</h3>
+            <div class="tech">预算与路由</div>
+            <div class="desc">上下文预算 · 小模型路由<br>循环预算止损</div>
+          </div>
+          <div class="card c-grey has-tag">
+            <span class="lang ext">外部</span>
+            <h3>外部依赖</h3>
+            <div class="tech">模型 API / MCP Server</div>
+            <div class="desc">非我方资产<br><b>只经受控工具通道访问</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= 页脚注 ================= -->
+  <div class="notes">
+    <p><b>① 口径声明：</b>本图为 Agent Harness 的<b>个人技术储备</b>形态（Python + FastAPI 承载 MainLoop，客户端 PyQt6 / Vue3）<i>│</i>它<b>不属于公司平台技术栈</b>（公司侧为 Java 微服务业务中台 + C 语言单线程内存撮合引擎）。</p>
+    <p><b>② 分层原则：</b>二 · 编排层是心脏，决定"走到哪一步"<i>│</i>三 · 工具层定义"能做什么"<i>│</i>四 · 状态层保证"能断能续"<i>│</i>五 · 治理层保证"不越权、可停"<i>│</i>六 · 观测层保证"看得见"。</p>
+    <p><b>③ 一条主轴：</b>模型只吐 <b>tool_calls</b>（一段 JSON）<i>│</i>解析、校验、审批、执行、回灌<b>全在 Harness</b>——模型从头到尾不知道 MCP 是什么。</p>
+  </div>
+
+</div>
+</body>
+</html>

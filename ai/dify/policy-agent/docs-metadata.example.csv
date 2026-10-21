@@ -1,0 +1,9 @@
+﻿doc_id,title,doc_number,issuer,doc_type,level,jurisdiction,publish_date,effective_date,expire_date,status,supersedes,superseded_by,confidentiality,acl_scope,source_url
+A001,优化营商环境条例,国令第722号,国务院,条例,行政法规,国家,2019-10-22,2020-01-01,,现行有效,,,公开,*,https://www.gov.cn/zhengce/content/2019-10/23/content_5443963.htm
+A002,XX领域管理办法,某部令第X号,某部,办法,部门规章,国家,2023-03-01,2023-05-01,2028-04-30,现行有效,,,公开,,https://example.gov.cn/rule/A002
+A003,XX市促进XX产业发展若干措施,XX府规〔2024〕5号,XX市人民政府,措施,规范性文件,XX市,2024-06-01,2024-07-01,2029-06-30,现行有效,,,公开,,https://example.gov.cn/rule/A003
+A004,XX市XX管理暂行办法,XX府规〔2022〕8号,XX市人民政府,暂行办法,规范性文件,XX市,2022-01-01,2022-02-01,2025-01-31,已废止,,A005,公开,,https://example.gov.cn/rule/A004
+A005,XX市XX管理规定,XX府规〔2024〕9号,XX市人民政府,规定,规范性文件,XX市,2024-12-01,2025-02-01,2030-01-31,现行有效,A004,,公开,,https://example.gov.cn/rule/A005
+A006,XX市XX工作实施方案,XX府办〔2025〕1号,XX市人民政府办公室,方案,非规范性文件,XX市,2025-01-10,2025-01-10,,现行有效,,,公开,,https://example.gov.cn/rule/A006
+A007,XX市XX实施细则（征求意见稿）,XX局〔2025〕征1号,XX市XX局,细则,规范性文件,XX市,2025-09-01,,,征求意见稿,,,内部,XX局;发改委,https://example.gov.cn/rule/A007
+A008,XX市XX数据接口技术规范,XX局〔2024〕22号,XX市XX局,技术规范,非规范性文件,XX市,2024-03-01,2024-03-01,,现行有效,,,内部,XX局,https://example.gov.cn/rule/A008

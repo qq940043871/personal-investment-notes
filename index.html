@@ -2241,6 +2241,33 @@
         </div>
       </div>
 
+      <div class="prep-category" onclick="toggleMockDetail(this)">
+        <div class="prep-cat-header">
+          <div class="prep-cat-icon" style="background:rgba(16,185,129,0.12);color:#10b981">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <div class="prep-cat-body">
+            <div class="prep-cat-title">RAG 面试实战 · 25 题 × 项目对照</div>
+            <div class="prep-cat-meta">2 份 + 293 篇语料 · 25 题骨架逐题对接 MinerU / Dify / 电力政策 Agent（`ai/rag-interview/`）</div>
+          </div>
+          <div class="prep-cat-arrow open">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+        <div class="prep-cat-list open">
+          <div class="prep-item tap" onclick="openFile('ai/rag-interview/00-RAG面试实战手册.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">RAG 面试实战手册（25 题 × 项目对照）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/rag-interview/01-语料索引.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">RAG 语料索引（293 篇 · 分桶正文见 corpus/）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+        </div>
+      </div>
+
     </section>
 
     <!-- ========== 页面：案例 · 场景（桌面侧边栏入口） ========== -->
@@ -2806,6 +2833,7 @@ var PREP_CATEGORIES = [
       { name: '13-超聚变面试准备.md', type: 'md', path: '06-面试准备/13-超聚变面试准备.md' },
       { name: '15-AI工程能力补强手册.md', type: 'md', path: '06-面试准备/15-AI工程能力补强手册.md' },
       { name: '16-简历知识补强清单.md', type: 'md', path: '06-面试准备/16-简历知识补强清单.md' },
+      { name: '17-JavaGuide四周计划压缩版-14天执行表.md', type: 'md', path: '06-面试准备/17-JavaGuide四周计划压缩版-14天执行表.md' },
       { name: '14-面试介绍PPT · 放映站点', type: 'html', path: '06-面试准备/14-面试介绍PPT/index.html' },
       { name: '14-面试介绍PPT · 模板与排版规范.md', type: 'md', path: '06-面试准备/14-面试介绍PPT/PPT模板与排版规范.md' },
       { name: '14-面试介绍PPT · 面试自我介绍-haswhere.pptx', type: 'pptx', path: '06-面试准备/14-面试介绍PPT/面试自我介绍-haswhere.pptx' },
