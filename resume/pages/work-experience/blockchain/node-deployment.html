@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>节点部署与运维 · 区块链项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .code-block { background: #1e293b; color: #e2e8f0; font-family: Consolas, Monaco, monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+        .mod-card { transition: all .25s ease; }
+        .mod-card:hover { box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-link mr-1"></i>区块链项目</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/node-deployment.html')" class="px-3 py-1 rounded-full bg-orange-600 text-white font-medium">节点部署</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/wallet-integration.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">钱包与充提</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/reconciliation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">余额对账</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-server mr-3 text-orange-600"></i>节点部署与运维
+                </h1>
+                <p class="text-gray-500 mb-4">Node Deployment — 从源码把 BTC 编出来、把 ETH 跑起来，先在测试网验证，再上主网</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-orange-50 text-orange-700 px-3 py-1 rounded-full"><i class="fab fa-linux mr-1"></i>Ubuntu / CentOS</span>
+                    <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full"><i class="fas fa-database mr-1"></i>Berkeley DB 4.8</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-code mr-1"></i>JSON-RPC</span>
+                    <span class="bg-purple-50 text-purple-700 px-3 py-1 rounded-full"><i class="fas fa-flask mr-1"></i>测试网先行</span>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                <p class="text-amber-800 text-sm">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>场景背景：</strong>要让平台能收发链上资产，第一步不是写业务代码，而是<strong>先有一台自己能完全掌控的节点</strong>。这一步的坑几乎全在环境上：BTC 的钱包功能依赖 <strong>Berkeley DB 4.8</strong>（系统源里的版本太新，必须单独编译），编译参数、依赖包、Qt / 无界面模式的选择都会决定后面能不能正常开钱包；ETH 侧则是 Geth 的同步模式与 RPC 开放范围。这些都不是「写代码」的问题，但任何一步错了，后面所有业务逻辑都无从谈起。
+                </p>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800 text-sm">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong>节点的<strong>编译、部署与 RPC 封装</strong>。方法论很简单但很有效：<strong>测试网跑通再上主网</strong>——测试网可以随便发币、随便失败，主网一次错误的地址生成就是真金白银。RPC 层我封成一个薄客户端，业务代码只调方法名、不关心 HTTP 细节，换币种只换配置。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-orange-600"></i>四个模块
+            </h2>
+
+            <div class="space-y-6 mb-8">
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-orange-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-hammer text-orange-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">1. BTC 源码编译</h3>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            准备 build-essential / libtool / autoconf / libssl / boost / Qt 等依赖，单独编译 BDB 4.8 到独立 prefix，再用它作为钱包数据库编译 BTC 本体。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong><strong>BDB 必须是 4.8 且装在独立 prefix</strong>，编译时用 <code class="bg-gray-100 px-1 rounded">--with-incompatible-bdb --with-gui=no</code> 指过去。不这么做，要么编不过，要么编过了但钱包功能不可用——而「钱包不可用」在启动时才暴露，排查成本远高于一开始就配对。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-network-wired text-blue-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">2. 服务端模式常驻</h3>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            生产环境跑无图形界面的服务端模式（daemon），配 <code class="bg-gray-100 px-1 rounded">bitcoin.conf</code> 的 RPC 用户密码、数据目录与监听端口；本机开发时可用图形界面模式排查。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>RPC 端口<strong>绝不暴露到公网</strong>——节点 RPC 一旦可被外部调用，等于把钱包交出去。只允许本地或内网访问，跨机访问走 SSH 隧道或内网网关，这是一条不需要讨论的红线。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-code text-purple-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">3. JSON-RPC 封装</h3>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            统一的 <code class="bg-gray-100 px-1 rounded">rpcClient.invoke(method, params, Type)</code> 入口，业务侧只关心「查余额」「发交易」这类语义，不写 HTTP 与序列化。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>封装层要<strong>统一超时与错误语义</strong>。节点在同步、钱包在加密锁定时返回的都是不同错误码，如果业务侧各自 catch，很快就会演变成「有的地方重试、有的地方直接失败」。重试策略收敛在封装层，上层只管拿结果。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-emerald-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-flask text-emerald-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">4. 测试网验证与节点健康检查</h3>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            上线前在测试网完整走一遍：建地址、领测试币、发交易、查确认、查余额；上线后用 getinfo / getmininginfo 之类的接口做节点健康探活。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>健康检查要<strong>看「区块高度有没有在涨」而不是「进程还在不在」</strong>。节点进程活着但停止同步（磁盘满、对等节点掉光）是最常见的故障形态，只看进程存活会把这种「假活」判成正常。</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-orange-600"></i>实现：BDB 4.8 与 RPC 封装
+            </h2>
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    左边是那段「必须先做对」的编译步骤，右边是业务代码真正会碰到的那一层封装。前者决定节点能不能用，后者决定业务代码写起来干不干净。
+                </p>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                    <pre><code class="language-bash"># 1) 单独编译 Berkeley DB 4.8（系统源里的版本过新，钱包不能用）
+BDB_PREFIX=$(pwd)/db4 &amp;&amp; mkdir -p $BDB_PREFIX
+wget https://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz
+tar -xzvf db-4.8.30.NC.tar.gz &amp;&amp; cd db-4.8.30.NC/build_unix
+../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
+make &amp;&amp; make install
+
+# 2) 用这份 BDB 编译 BTC（无图形界面，服务端模式）
+./autogen.sh
+./configure --with-gui=no --with-incompatible-bdb \
+            BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8" \
+            BDB_CFLAGS="-I${BDB_PREFIX}/include"
+make -j$(nproc)
+
+# 3) 服务端起节点（RPC 只监听内网/本地）
+./src/bitcoind -daemon -conf=/etc/bitcoin/bitcoin.conf</code></pre>
+                </div>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto mt-4">
+                    <pre><code class="language-java">/** RPC 薄封装：业务侧只关心「查余额 / 发交易」，超时与重试收敛在这里 */
+public class RpcClient {
+
+    public &lt;T&gt; T invoke(String method, Object[] params, Class&lt;T&gt; type) {
+        for (int i = 0; i &lt; 3; i++) {
+            try {
+                JsonNode resp = post(buildRequest(method, params));   // HTTP Basic Auth
+                if (resp.has("error") &amp;&amp; !resp.get("error").isNull()) {
+                    throw new RpcException(resp.get("error").toString());
+                }
+                return mapper.convertValue(resp.get("result"), type);
+            } catch (IOException e) {
+                if (i == 2) throw new RpcException("RPC 连续失败: " + method, e);
+                sleepQuietly(1000L &lt;&lt; i);                            // 1s / 2s / 4s
+            }
+        }
+        return null;
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-circle-nodes mr-2 text-orange-600"></i>闭环：从源码到可被业务调用
+            </h2>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-6">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div class="bg-slate-600 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-download text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">依赖与 BDB 4.8</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-orange-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-hammer text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">编译节点</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-amber-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-flask text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">测试网验证</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-blue-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-terminal text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">RPC 封装</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-green-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-heart-pulse text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">健康探活</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    这条链上真正花时间的不是「编译成功」，而是<strong>把环境差异消掉</strong>：Ubuntu 与 CentOS 的依赖包名不同、Java 路径不同、libtool 缺失的报错方式也不同。我把这些差异整理成了步骤化笔记（见侧边栏「技术笔记」），下次换机器照着走，而不是重新踩一遍。
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                    <li><strong>编译：</strong>BDB 4.8 独立 prefix，钱包能力才可用；</li>
+                    <li><strong>运行：</strong>daemon 模式常驻，RPC 只对内网开放；</li>
+                    <li><strong>验证：</strong>测试网走完建址 / 发币 / 确认 / 查余量全流程；</li>
+                    <li><strong>运维：</strong>以「区块高度是否推进」作为健康判据。</li>
+                </ul>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-2">
+                    <i class="fas fa-industry mr-2"></i>行业背景（一句话）
+                </h3>
+                <p class="text-gray-600 text-sm">
+                    自建节点的门槛几乎全在「环境」而不是「代码」：同一条链，不同发行版、不同依赖版本编出来的节点行为可能不一样。所以行业里做节点运维的团队，沉淀下来的从来不是代码，而是<strong>一份逐条验证过的部署清单</strong>。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-orange-600"></i>关键点与结果
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-database text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">钱包能力可用</h4>
+                    <p class="text-sm opacity-90">BDB 4.8 独立编译，不用系统自带新版</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-flask text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">测试网先行</h4>
+                    <p class="text-sm opacity-90">建址 / 发币 / 确认全流程先在测试网验证</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-code text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">RPC 一层收口</h4>
+                    <p class="text-sm opacity-90">超时与退避重试收敛在封装层，业务不受影响</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-lock text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">RPC 不暴露</h4>
+                    <p class="text-sm opacity-90">只监听本地 / 内网，跨机走隧道</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-heart-pulse text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">看得见「假活」</h4>
+                    <p class="text-sm opacity-90">以区块高度推进判定，而不是进程存活</p>
+                </div>
+                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-book text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">部署可复制</h4>
+                    <p class="text-sm opacity-90">Ubuntu / CentOS 差异整理成步骤化清单</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/wallet-integration.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">钱包与充提</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/reconciliation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">余额对账</a>
+        </div>
+    </nav>
+</body>
+</html>

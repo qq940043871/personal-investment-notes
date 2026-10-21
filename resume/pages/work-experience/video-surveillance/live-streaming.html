@@ -3,462 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>直播功能 - 视频监控项目</title>
+    <title>实时直播 · 视频监控项目</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        .code-block {
-            background: #1e293b;
-            color: #e2e8f0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            overflow-x: auto;
-        }
+        .code-block { background: #1e293b; color: #e2e8f0; font-family: Consolas, Monaco, monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+        .mod-card { transition: all .25s ease; }
+        .mod-card:hover { box-shadow: 0 10px 24px rgba(0,0,0,.08); }
     </style>
 </head>
 <body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-video mr-1"></i>视频监控项目</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/live-streaming.html')" class="px-3 py-1 rounded-full bg-red-600 text-white font-medium">实时直播</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/playback.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">录像回放</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/download.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">视频下载</a>
+        </div>
+    </nav>
+
     <div class="max-w-6xl mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">
-                <i class="fas fa-broadcast-tower mr-3 text-red-500"></i>直播功能
-            </h1>
-            <p class="text-gray-500 mb-6">Live Streaming - 实时视频流传输与播放</p>
-            
-            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-8">
-                <p class="text-red-700">
+
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-broadcast-tower mr-3 text-red-600"></i>实时直播
+                </h1>
+                <p class="text-gray-500 mb-4">Live Streaming — 多路同屏预览、云台可控、协议可降级，值班室与手机端看到的是同一路流</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-red-50 text-red-700 px-3 py-1 rounded-full"><i class="fas fa-desktop mr-1"></i>1/4/9/16 分屏</span>
+                    <span class="bg-orange-50 text-orange-700 px-3 py-1 rounded-full"><i class="fas fa-mouse-pointer mr-1"></i>ONVIF 云台</span>
+                    <span class="bg-purple-50 text-purple-700 px-3 py-1 rounded-full"><i class="fas fa-bolt mr-1"></i>WebRTC &lt; 500ms</span>
+                    <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded-full"><i class="fas fa-random mr-1"></i>三级降级</span>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                <p class="text-amber-800 text-sm">
                     <i class="fas fa-lightbulb mr-2"></i>
-                    <strong>核心功能：</strong>支持多路摄像头同时预览，多协议（WebRTC/HLS/FLV）自适应播放，PC 和手机同时访问，分屏显示、云台控制、截图等功能。
+                    <strong>场景背景：</strong>监控室值班的基本动作只有三个——<strong>同时盯住几十路画面</strong>、<strong>发现异常时把镜头转过去看清</strong>、<strong>把看到的那一刻截下来</strong>。这三件事对技术的要求完全不同：多路同屏考验的是分发与解码资源，云台考验的是和摄像头的控制协议，截图考验的是前端能不能拿到未跨域的原始帧。把它们塞进一个页面，才是「能用」和「能演示」的区别。
+                </p>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800 text-sm">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong>直播链路的<strong>方案设计与实现</strong>。核心决策有两个：① 分屏不做「N 个摄像头 N 条拉流」，改为<strong>服务端一路输入、多客户端分发</strong>；② 云台不接厂商私有 SDK，改走 <strong>ONVIF 标准</strong>，让设备可替换。播放器侧我负责协议降级与实例生命周期治理——这是浏览器端最容易出内存泄漏的地方。
                 </p>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-th-large mr-2 text-red-500"></i>功能概览
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="feature-card bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-video text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">多路预览</h4>
-                    <p class="text-sm opacity-90">1/4/9/16 分屏显示</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-mouse-pointer text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">云台控制</h4>
-                    <p class="text-sm opacity-90">PTZ 上下左右缩放</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-camera text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">实时截图</h4>
-                    <p class="text-sm opacity-90">Canvas 截图保存</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-mobile-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">多端播放</h4>
-                    <p class="text-sm opacity-90">PC/手机自适应</p>
-                </div>
-            </div>
-
-            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-project-diagram mr-2 text-red-500"></i>直播流架构
-            </h2>
-
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-                <div class="space-y-4">
-                    <div class="flex items-center">
-                        <div class="bg-red-100 text-red-700 px-4 py-2 rounded-lg font-semibold">
-                            <i class="fas fa-video mr-2"></i>摄像头 (RTSP)
-                        </div>
-                        <i class="fas fa-arrow-right text-gray-400 mx-4"></i>
-                        <div class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-semibold">
-                            <i class="fas fa-film mr-2"></i>FFmpeg 转码
-                        </div>
-                        <i class="fas fa-arrow-right text-gray-400 mx-4"></i>
-                        <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg font-semibold">
-                            <i class="fas fa-server mr-2"></i>ZLMediaKit
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <i class="fas fa-sort-down text-gray-400 text-3xl"></i>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-green-100 text-green-700 p-4 rounded-lg text-center">
-                            <i class="fas fa-bolt text-2xl mb-2"></i>
-                            <div class="font-semibold">WebRTC</div>
-                            <div class="text-sm">&lt; 500ms 延迟</div>
-                            <div class="text-xs text-gray-600 mt-1">PC 端优先</div>
-                        </div>
-                        <div class="bg-teal-100 text-teal-700 p-4 rounded-lg text-center">
-                            <i class="fas fa-play-circle text-2xl mb-2"></i>
-                            <div class="font-semibold">FLV.js</div>
-                            <div class="text-sm">1-2s 延迟</div>
-                            <div class="text-xs text-gray-600 mt-1">PC 端降级</div>
-                        </div>
-                        <div class="bg-cyan-100 text-cyan-700 p-4 rounded-lg text-center">
-                            <i class="fas fa-mobile text-2xl mb-2"></i>
-                            <div class="font-semibold">HLS</div>
-                            <div class="text-sm">3-5s 延迟</div>
-                            <div class="text-xs text-gray-600 mt-1">手机端优先</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-code mr-2 text-red-500"></i>核心代码示例
+                <i class="fas fa-th-large mr-2 text-red-600"></i>四个模块
             </h2>
 
             <div class="space-y-6 mb-8">
-                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
-                        <span class="text-sm font-semibold"><i class="fab fa-js mr-2"></i>分屏播放器</span>
-                        <span class="text-xs text-gray-400">MultiScreenPlayer.vue</span>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-th text-red-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">1. 多路分屏预览</h3>
                     </div>
-                    <div class="code-block p-4">
-<pre><span class="text-gray-500">// 分屏播放器组件 - 支持 1/4/9/16 分屏</span>
-&lt;<span class="text-pink-400">template</span>&gt;
-  &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"multi-screen-player"</span>&gt;
-    &lt;<span class="text-pink-400">div</span> <span class="text-green-400">:class</span>=<span class="text-yellow-300">"screenClass"</span>&gt;
-      &lt;<span class="text-pink-400">div</span> 
-        <span class="text-green-400">v-for</span>=<span class="text-yellow-300">"(stream, index) in displayStreams"</span> 
-        <span class="text-green-400">:key</span>=<span class="text-yellow-300">"index"</span>
-        <span class="text-green-400">class</span>=<span class="text-yellow-300">"screen-item"</span>
-      &gt;
-        &lt;<span class="text-pink-400">VideoPlayer</span> 
-          <span class="text-green-400">:streamInfo</span>=<span class="text-yellow-300">"stream"</span>
-          <span class="text-green-400">@screenshot</span>=<span class="text-yellow-300">handleScreenshot"</span>
-        /&gt;
-        &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"stream-info"</span>&gt;
-          &lt;<span class="text-pink-400">span</span>&gt;{{ stream.name }}&lt;/<span class="text-pink-400">span</span>&gt;
-          &lt;<span class="text-pink-400">button</span> @<span class="text-green-400">click</span>=<span class="text-yellow-300">"toggleFullscreen(index)"</span>&gt;
-            &lt;<span class="text-pink-400">i</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"fas fa-expand"</span>&gt;&lt;/<span class="text-pink-400">i</span>&gt;
-          &lt;/<span class="text-pink-400">button</span>&gt;
-        &lt;/<span class="text-pink-400">div</span>&gt;
-      &lt;/<span class="text-pink-400">div</span>&gt;
-    &lt;/<span class="text-pink-400">div</span>&gt;
-    
-    &lt;<span class="text-pink-400">div</span> <span class="text-green-400">class</span>=<span class="text-yellow-300">"screen-controls"</span>&gt;
-      &lt;<span class="text-pink-400">button</span> 
-        <span class="text-green-400">v-for</span>=<span class="text-yellow-300">"mode in screenModes"</span>
-        <span class="text-green-400">:key</span>=<span class="text-yellow-300">"mode.count"</span>
-        <span class="text-green-400">:class</span>=<span class="text-yellow-300">['btn', { active: currentMode === mode.count }]</span>
-        @<span class="text-green-400">click</span>=<span class="text-yellow-300">"currentMode = mode.count"</span>
-      &gt;
-        {{ mode.label }}
-      &lt;/<span class="text-pink-400">button</span>&gt;
-    &lt;/<span class="text-pink-400">div</span>&gt;
-  &lt;/<span class="text-pink-400">div</span>&gt;
-&lt;/<span class="text-pink-400">template</span>&gt;
-
-&lt;<span class="text-pink-400">script</span>&gt;
-<span class="text-pink-400">import</span> { computed, ref } <span class="text-pink-400">from</span> <span class="text-yellow-300">'vue'</span>;
-<span class="text-pink-400">import</span> VideoPlayer <span class="text-pink-400">from</span> <span class="text-yellow-300">'./VideoPlayer.vue'</span>;
-
-<span class="text-pink-400">export default</span> {
-  <span class="text-green-400">name</span>: <span class="text-yellow-300">'MultiScreenPlayer'</span>,
-  <span class="text-green-400">components</span>: { VideoPlayer },
-  <span class="text-green-400">props</span>: {
-    <span class="text-green-400">streams</span>: Array
-  },
-  <span class="text-pink-400">setup</span>(props) {
-    <span class="text-pink-400">const</span> currentMode = ref(<span class="text-pink-400">4</span>);
-    <span class="text-pink-400">const</span> screenModes = [
-      { <span class="text-green-400">count</span>: <span class="text-pink-400">1</span>, <span class="text-green-400">label</span>: <span class="text-yellow-300">'1屏'</span> },
-      { <span class="text-green-400">count</span>: <span class="text-pink-400">4</span>, <span class="text-green-400">label</span>: <span class="text-yellow-300">'4屏'</span> },
-      { <span class="text-green-400">count</span>: <span class="text-pink-400">9</span>, <span class="text-green-400">label</span>: <span class="text-yellow-300">'9屏'</span> },
-      { <span class="text-green-400">count</span>: <span class="text-pink-400">16</span>, <span class="text-green-400">label</span>: <span class="text-yellow-300">'16屏'</span> }
-    ];
-
-    <span class="text-pink-400">const</span> screenClass = <span class="text-pink-400">computed</span>(() =&gt; {
-      <span class="text-pink-400">return</span> <span class="text-yellow-300">`grid grid-cols-</span>${Math.sqrt(currentMode.value)}<span class="text-yellow-300"> gap-2</span><span class="text-yellow-300">`</span>;
-    });
-
-    <span class="text-pink-400">const</span> displayStreams = <span class="text-pink-400">computed</span>(() =&gt; {
-      <span class="text-pink-400">return</span> props.streams.slice(<span class="text-pink-400">0</span>, currentMode.value);
-    });
-
-    <span class="text-pink-400">const</span> <span class="text-blue-300">handleScreenshot</span> = (stream) =&gt; {
-      <span class="text-gray-500">// 保存截图到本地</span>
-    };
-
-    <span class="text-pink-400">const</span> <span class="text-blue-300">toggleFullscreen</span> = (index) =&gt; {
-      currentMode.value = <span class="text-pink-400">1</span>;
-    };
-
-    <span class="text-pink-400">return</span> {
-      currentMode,
-      screenModes,
-      screenClass,
-      displayStreams,
-      handleScreenshot,
-      toggleFullscreen
-    };
-  }
-};
-&lt;/<span class="text-pink-400">script</span>&gt;</pre>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            1 / 4 / 9 / 16 分屏自由切换，双击某一路放大到单屏，缩略图与主画面联动。值班员靠一屏扫完一个区域，不用来回切页签。
+                        </p>
                     </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>分屏不是「开 16 个播放器」，而是<strong>按可见区域按需装载</strong>——切到 4 屏时立刻卸载另外 12 路的解码器，否则 16 路同时硬解会把中低端显卡直接打满。这一条是把「演示能跑」变成「值班能盯 8 小时」的关键。</p>
                 </div>
 
-                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
-                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>云台控制服务</span>
-                        <span class="text-xs text-gray-400">PTZControlService.java</span>
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-orange-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-mouse-pointer text-orange-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">2. 云台 PTZ 控制</h3>
                     </div>
-                    <div class="code-block p-4">
-<pre><span class="text-gray-500">/**
- * 云台控制服务 - 通过 ONVIF 协议控制摄像头 PTZ
- */</span>
-<span class="text-purple-400">@Service</span>
-<span class="text-purple-400">@Slf4j</span>
-<span class="text-pink-400">public class</span> <span class="text-blue-300">PTZControlService</span> {
-
-    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">controlPTZ</span>(PTZControlRequest request) {
-        String cameraIp = request.getCameraIp();
-        PTZCommand command = request.getCommand();
-        <span class="text-pink-400">float</span> speed = request.getSpeed();
-
-        <span class="text-pink-400">switch</span> (command) {
-            <span class="text-pink-400">case</span> UP:
-                moveUp(cameraIp, speed);
-                <span class="text-pink-400">break</span>;
-            <span class="text-pink-400">case</span> DOWN:
-                moveDown(cameraIp, speed);
-                <span class="text-pink-400">break</span>;
-            <span class="text-pink-400">case</span> LEFT:
-                moveLeft(cameraIp, speed);
-                <span class="text-pink-400">break</span>;
-            <span class="text-pink-400">case</span> RIGHT:
-                moveRight(cameraIp, speed);
-                <span class="text-pink-400">break</span>;
-            <span class="text-pink-400">case</span> ZOOM_IN:
-                zoomIn(cameraIp, speed);
-                <span class="text-pink-400">break</span>;
-            <span class="text-pink-400">case</span> ZOOM_OUT:
-                zoomOut(cameraIp, speed);
-                <span class="text-pink-400">break</span>;
-            <span class="text-pink-400">case</span> STOP:
-                stop(cameraIp);
-                <span class="text-pink-400">break</span>;
-        }
-    }
-
-    <span class="text-pink-400">private</span> <span class="text-pink-400">void</span> <span class="text-blue-300">moveUp</span>(String ip, <span class="text-pink-400">float</span> speed) {
-        <span class="text-gray-500">// 使用 ONVIF 协议发送向上移动指令</span>
-        sendOnvifCommand(ip, <span class="text-yellow-300">"ContinuousMove"</span>, 
-            <span class="text-yellow-300">"PanTilt"</span>, <span class="text-yellow-300">"x=0,y="</span> + speed);
-    }
-
-    <span class="text-pink-400">private</span> <span class="text-pink-400">void</span> <span class="text-blue-300">zoomIn</span>(String ip, <span class="text-pink-400">float</span> speed) {
-        <span class="text-gray-500">// 使用 ONVIF 协议发送缩放指令</span>
-        sendOnvifCommand(ip, <span class="text-yellow-300">"ContinuousMove"</span>, 
-            <span class="text-yellow-300">"Zoom"</span>, <span class="text-yellow-300">"x="</span> + speed);
-    }
-}</pre>
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            上下左右转动、镜头拉近拉远、速度可调、松手即停。发现画面里有异常，不用跑现场就能把镜头对准。
+                        </p>
                     </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>控制指令走 <strong>ONVIF 的 ContinuousMove / Stop</strong>，而不是各厂商私有 HTTP 接口——换句话说，<strong>换一个牌子的摄像头不用改代码</strong>。另外「松手即停」必须真的发一条 Stop，否则网络抖动丢了停止指令，镜头就会一直转到限位。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-amber-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-camera text-amber-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">3. 实时截图</h3>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            看到问题的瞬间一键截图，直接落到本地，不用装截图工具再裁剪。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>Canvas 取帧要求视频源<strong>同源或允许 CORS</strong>，否则 <code class="bg-gray-100 px-1 rounded">toDataURL</code> 会抛安全异常、拿到一张空白图——这是流媒体播放器接截图功能时最常见的坑，服务端必须在响应头放开流地址的跨域策略。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-random text-purple-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">4. 多端协议自适应</h3>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            PC 优先 WebRTC（&lt;500ms），不支持则 FLV（1–2s），再不行 HLS（3–5s）；手机端直接 HLS 保证兼容。同一份代码，同一套 URL。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>降级链要有<strong>终点</strong>，不能无限尝试。HLS 是最后一道兜底——它延迟最高但几乎什么浏览器都认，只要它还在，用户就不会看到黑屏。</p>
                 </div>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-tachometer-alt mr-2 text-red-500"></i>性能优化
+                <i class="fas fa-code mr-2 text-red-600"></i>实现：分屏容器的按需装载
             </h2>
-            
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                    <i class="fas fa-cogs mr-2 text-red-500"></i>FFmpeg 转码优化
-                </h3>
-                
-                <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
-                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
-                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>FFmpeg 推流命令</span>
-                        <span class="text-xs text-gray-400">StreamService.java</span>
-                    </div>
-                    <div class="code-block p-4">
-<pre><span class="text-gray-500">// 构建高性能 FFmpeg 推流命令</span>
-<span class="text-pink-400">private</span> String <span class="text-blue-300">buildFFmpegCommand</span>(String rtspUrl, String rtmpUrl, String resolution, <span class="text-pink-400">int</span> bitrate) {
-    <span class="text-pink-400">return</span> String.<span class="text-blue-300">format</span>(
-        <span class="text-yellow-300">"ffmpeg -re -rtsp_transport tcp -i %s "</span> +
-        <span class="text-yellow-300">"-c:v libx264 -preset ultrafast -tune zerolatency "</span> +
-        <span class="text-yellow-300">"-s %s -b:v %dk -g 25 -sc_threshold 0 "</span> +
-        <span class="text-yellow-300">"-c:a aac -b:a 64k -ar 44100 "</span> +
-        <span class="text-yellow-300">"-f flv %s"</span>,
-        rtspUrl, resolution, bitrate, rtmpUrl
-    );
-}</pre>
-                    </div>
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    分屏的核心不是布局，而是<strong>「布局变了，解码器要跟着增删」</strong>。下面的实现让分屏数量成为唯一状态源：数量一变，播放器实例就同步对齐，多出来的销毁、缺的补上。
+                </p>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                    <pre><code class="language-js">// 分屏播放器：以 screenCount 为唯一状态源，实例数量与之严格对齐
+const screenCount = ref(4);                     // 1 / 4 / 9 / 16
+const visible = computed(() =&gt; streams.value.slice(0, screenCount.value));
+
+// 布局列数由分屏数推导，不写死四套 CSS 类
+const gridClass = computed(() =&gt; `grid gap-2 cols-${Math.sqrt(screenCount.value)}`);
+
+// 关键：屏幕数变化时同步销毁多余实例，避免解码器泄漏
+watch(screenCount, async (n) =&gt; {
+  await nextTick();
+  playerPool.resize(n);                          // 内部对多出的实例 close()
+});
+
+// 双击放大：只是把分屏数切成 1，不新建播放器
+const focusOne = (idx) =&gt; {
+  activeStream.value = visible.value[idx];
+  screenCount.value = 1;
+};</code></pre>
                 </div>
-                
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                    <i class="fas fa-server mr-2 text-red-500"></i>ZLMediaKit 配置优化
-                </h3>
-                
-                <div class="space-y-3 mb-4">
-                    <div class="flex items-center">
-                        <div class="w-48 font-medium text-gray-700">连接复用</div>
-                        <div class="flex-1">
-                            <div class="bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-red-500 h-2.5 rounded-full" style="width: 90%"></div>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-1">启用连接复用，减少服务器资源占用</p>
-                        </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-circle-nodes mr-2 text-red-600"></i>闭环：一路输入，三段分发
+            </h2>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-6">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div class="bg-slate-600 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-video text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">摄像头 RTSP</p>
                     </div>
-                    <div class="flex items-center">
-                        <div class="w-48 font-medium text-gray-700">缓存优化</div>
-                        <div class="flex-1">
-                            <div class="bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-red-500 h-2.5 rounded-full" style="width: 85%"></div>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-1">合理设置缓存大小，平衡延迟和稳定性</p>
-                        </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-purple-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-film text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">FFmpeg 转码</p>
                     </div>
-                    <div class="flex items-center">
-                        <div class="w-48 font-medium text-gray-700">线程池配置</div>
-                        <div class="flex-1">
-                            <div class="bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-red-500 h-2.5 rounded-full" style="width: 80%"></div>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-1">根据服务器CPU核心数配置线程池</p>
-                        </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-indigo-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-server text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">ZLMediaKit</p>
                     </div>
-                </div>
-                
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                    <i class="fas fa-chart-line mr-2 text-red-500"></i>服务器性能指标
-                </h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div class="bg-white border border-gray-200 rounded-lg p-4">
-                        <div class="text-2xl font-bold text-red-500 mb-2">50-100</div>
-                        <div class="text-sm text-gray-600">普通4C8G服务器支持路数</div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-red-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-bolt text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">WebRTC / FLV / HLS</p>
                     </div>
-                    <div class="bg-white border border-gray-200 rounded-lg p-4">
-                        <div class="text-2xl font-bold text-red-500 mb-2">1-2Mbps</div>
-                        <div class="text-sm text-gray-600">单路视频推荐码率</div>
-                    </div>
-                    <div class="bg-white border border-gray-200 rounded-lg p-4">
-                        <div class="text-2xl font-bold text-red-500 mb-2">720p</div>
-                        <div class="text-sm text-gray-600">推荐视频分辨率</div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-green-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-desktop text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">分屏 / 手机端</p>
                     </div>
                 </div>
             </div>
-            
-            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-mobile-alt mr-2 text-red-500"></i>多端访问实现
-            </h2>
-            
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-                <div class="border border-gray-200 rounded-lg overflow-hidden mb-4">
-                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
-                        <span class="text-sm font-semibold"><i class="fab fa-js mr-2"></i>设备检测与协议适配</span>
-                        <span class="text-xs text-gray-400">StreamPlayer.vue</span>
-                    </div>
-                    <div class="code-block p-4">
-<pre><span class="text-gray-500">// 设备检测与协议自适应</span>
-<span class="text-pink-400">const</span> <span class="text-blue-300">detectDeviceAndSelectProtocol</span> = () =&gt; {
-    <span class="text-pink-400">const</span> userAgent = navigator.userAgent;
-    <span class="text-pink-400">const</span> isMobile = /Android|iPhone|iPad|iPod/i.test(userAgent);
-    
-    <span class="text-pink-400">if</span> (!isMobile) {
-        <span class="text-pink-400">// PC 端优先使用 WebRTC</span>
-        <span class="text-pink-400">if</span> (checkWebRTCSupport()) {
-            <span class="text-pink-400">return</span> { <span class="text-green-400">protocol</span>: <span class="text-yellow-300">'webrtc'</span>, <span class="text-green-400">url</span>: streamInfo.webrtcUrl };
-        } <span class="text-pink-400">else</span> {
-            <span class="text-pink-400">// 降级使用 FLV</span>
-            <span class="text-pink-400">return</span> { <span class="text-green-400">protocol</span>: <span class="text-yellow-300">'flv'</span>, <span class="text-green-400">url</span>: streamInfo.flvUrl };
-        }
-    } <span class="text-pink-400">else</span> {
-        <span class="text-pink-400">// 手机端使用 HLS</span>
-        <span class="text-pink-400">return</span> { <span class="text-green-400">protocol</span>: <span class="text-yellow-300">'hls'</span>, <span class="text-green-400">url</span>: streamInfo.hlsUrl };
-    }
-};</pre>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-white border border-gray-200 rounded-lg p-4">
-                        <h4 class="font-semibold text-gray-800 mb-2">
-                            <i class="fas fa-desktop mr-2 text-red-500"></i>PC 端
-                        </h4>
-                        <ul class="text-sm text-gray-600 space-y-2">
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>WebRTC：延迟 &lt; 500ms</li>
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>FLV.js：延迟 1-2s（降级方案）</li>
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>支持 16 路分屏</li>
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>支持云台控制</li>
-                        </ul>
-                    </div>
-                    <div class="bg-white border border-gray-200 rounded-lg p-4">
-                        <h4 class="font-semibold text-gray-800 mb-2">
-                            <i class="fas fa-mobile-alt mr-2 text-red-500"></i>手机端
-                        </h4>
-                        <ul class="text-sm text-gray-600 space-y-2">
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>HLS：延迟 3-5s（广泛兼容）</li>
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>自适应分辨率</li>
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>支持 4 路分屏</li>
-                            <li><i class="fas fa-check-circle text-green-500 mr-2"></i>触摸控制</li>
-                        </ul>
-                    </div>
-                </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    这条链上只有一个地方会「放大」资源：观看端。<strong>摄像头侧永远只有一路连接</strong>，转码侧靠复用进程摊平，分发侧靠 ZLM 的多协议输出。所以 100 个人看同一路，代价是 100 个播放连接，不是 100 次拉流。
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                    <li><strong>接入：</strong>RTSP over TCP，避免 UDP 丢包造成的花屏与卡顿；</li>
+                    <li><strong>转码：</strong>zerolatency + GOP 25，GOP 缓存让新观众秒出画；</li>
+                    <li><strong>分发：</strong>一次输入产出三档出口，按终端能力选；</li>
+                    <li><strong>观看：</strong>分屏数即实例数，切换时同步回收解码器。</li>
+                </ul>
             </div>
-            
+
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-2">
+                    <i class="fas fa-industry mr-2"></i>行业背景（一句话）
+                </h3>
+                <p class="text-gray-600 text-sm">
+                    「实时看画面」在安防行业是刚需但极少被自研：主流做法是买 NVR 厂商的客户端或平台，代价是按路授权 + 只能在特定网络环境使用。自研实时直播的真正门槛，不在播放器，而在<strong>把并发观看的成本从摄像头和 CPU 上挪走</strong>。
+                </p>
+            </div>
+
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-list-check mr-2 text-red-500"></i>核心优势
+                <i class="fas fa-list-check mr-2 text-red-600"></i>关键点与结果
             </h2>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
                     <i class="fas fa-bolt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">低延迟</h4>
-                    <p class="text-sm opacity-90">WebRTC 延迟 &lt; 500ms</p>
+                    <h4 class="font-bold mb-1">三档延迟可选</h4>
+                    <p class="text-sm opacity-90">WebRTC &lt;500ms / FLV 1–2s / HLS 3–5s</p>
                 </div>
                 <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
                     <i class="fas fa-th text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">多分屏</h4>
-                    <p class="text-sm opacity-90">1/4/9/16 分屏自由切换</p>
+                    <h4 class="font-bold mb-1">分屏自由切换</h4>
+                    <p class="text-sm opacity-90">1/4/9/16 屏，PC 与手机分别适配</p>
                 </div>
                 <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
                     <i class="fas fa-mouse-pointer text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">PTZ控制</h4>
-                    <p class="text-sm opacity-90">ONVIF 标准云台控制</p>
+                    <h4 class="font-bold mb-1">设备可替换</h4>
+                    <p class="text-sm opacity-90">ONVIF 标准控制，不绑厂商私有 SDK</p>
                 </div>
-                <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-camera text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">实时截图</h4>
-                    <p class="text-sm opacity-90">Canvas 快速截图</p>
-                </div>
-                <div class="bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-mobile text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">多端兼容</h4>
-                    <p class="text-sm opacity-90">PC/手机自动适配</p>
-                </div>
-                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-random text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">协议降级</h4>
-                    <p class="text-sm opacity-90">WebRTC → FLV → HLS</p>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-memory text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">不炸客户端</h4>
+                    <p class="text-sm opacity-90">分屏数即实例数，切换同步回收解码器</p>
                 </div>
                 <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-server text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">高性能</h4>
-                    <p class="text-sm opacity-90">普通服务器支持 50-100 路</p>
+                    <i class="fas fa-random text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">永不黑屏</h4>
+                    <p class="text-sm opacity-90">WebRTC → FLV → HLS 三级降级，HLS 兜底</p>
                 </div>
-                <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-cogs text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">易扩展</h4>
-                    <p class="text-sm opacity-90">支持集群部署</p>
-                </div>
-                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">安全可靠</h4>
-                    <p class="text-sm opacity-90">RTSP 密码认证</p>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-camera text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">一键留证</h4>
+                    <p class="text-sm opacity-90">Canvas 取原始帧，服务端放开流地址跨域</p>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/playback.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">录像回放</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/download.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">视频下载</a>
+        </div>
+    </nav>
 </body>
 </html>

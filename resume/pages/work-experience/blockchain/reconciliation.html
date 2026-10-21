@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>余额对账 · 区块链项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .code-block { background: #1e293b; color: #e2e8f0; font-family: Consolas, Monaco, monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+        .mod-card { transition: all .25s ease; }
+        .mod-card:hover { box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+        .tbl th { background: #f1f5f9; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-link mr-1"></i>区块链项目</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/node-deployment.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">节点部署</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/wallet-integration.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">钱包与充提</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/reconciliation.html')" class="px-3 py-1 rounded-full bg-purple-600 text-white font-medium">余额对账</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-scale-balanced mr-3 text-purple-600"></i>余额对账
+                </h1>
+                <p class="text-gray-500 mb-4">Balance Reconciliation — 用明细重算一遍系统余额，再跟链上余额比，差额要能落到具体那笔交易</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-purple-50 text-purple-700 px-3 py-1 rounded-full"><i class="fas fa-layer-group mr-1"></i>地址 + 高度记账</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-calculator mr-1"></i>期初 + 充值 − 提现 − 手续费</span>
+                    <span class="bg-red-50 text-red-700 px-3 py-1 rounded-full"><i class="fas fa-equals mr-1"></i>差值必须为 0</span>
+                    <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full"><i class="fas fa-wrench mr-1"></i>历史数据修复</span>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                <p class="text-amber-800 text-sm">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>场景背景：</strong>数字资产的对账比法币难得多，因为<strong>「账」有两本，而且其中一本不受你控制</strong>：一本是平台按业务流水累加出来的余额，另一本是节点返回的链上真实余额。两本账只要有一条记录错位，差额就会永远存在——而差额不会自己说明原因。更麻烦的是链上余额<strong>随时间变化</strong>（有手续费、有归集、有待确认），不比同一时刻的数据，比出来的差额毫无意义。
+                </p>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800 text-sm">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong>对账模型的<strong>设计与实现</strong>。两个关键设计：① <strong>余额带高度维度</strong>——记成「地址 + 区块高度 → 余额」，这样任何一笔对账都能说清「比的是哪个时刻的链上状态」；② <strong>对账分两层</strong>——先比总额（快、能发现问题），再用明细逐笔重算系统余额（慢、能定位问题）。只做第一层等于只知道「账不对」，做不了第二层等于永远修不好。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-purple-600"></i>四个模块
+            </h2>
+
+            <div class="space-y-6 mb-8">
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-layer-group text-purple-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">1. 余额快照（地址 + 高度）</h3>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            链上余额按「地址 + 区块高度」落快照，例如某地址在高度 1003 时余额为 220。对账时取同一高度的两侧数据比，而不是「现在」跟「昨天」比。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>没有高度维度的余额是<strong>不可对账的余额</strong>——链上余额每几分钟就变一次，你拿今天 10:00 的链上余额和昨天 23:59 的系统余额比，差额里混着「时间差」而不是「差错」。这是对账做不准的第一个根因。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-list-ul text-blue-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">2. 按明细重算系统余额</h3>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            拉出「币种 / 地址 / 交易 hash / 高度 / 收支类型 / 金额 / 手续费」的明细，从零累加一遍，得到「系统本该是多少」。这一步不信任任何缓存余额。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>明细里<strong>必须有手续费字段</strong>，而且必须是链上真实值。缺这一列，重算结果就永远比链上多出「手续费之和」——这不是差错，是模型缺陷，但表现出来和差错一模一样，会浪费大量排查时间。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-equals text-red-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">3. 平衡关系校验</h3>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            每个币种每天一行：期初 → 充值 → 提现 → 手续费 → 期末 → 链上余额 → 差值 → 平衡结果。差值不为 0 直接判「不通过」，并锁定该币种当天的明细。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>公式要写死成一条：<code class="bg-gray-100 px-1 rounded">期末 = 期初 + 充值 − 提现 − 手续费</code>，<code class="bg-gray-100 px-1 rounded">差值 = 链上余额 − 期末</code>。<strong>「平衡结果」是一列显式字段而不是靠人看</strong>——对账的价值就在于把判断交给规则，而不是交给盯着表格的眼睛。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-amber-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-wrench text-amber-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">4. 差额定位与历史修复</h3>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            对不平时先看差额形态：等于某几笔手续费之和 → 手续费没回写；等于某笔金额 → 漏记或重复记。历史差额用「独立线程重查所有提现状态 → 回写核心 → 修正状态与手续费」的方式补齐。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>修复<strong>绝不能直接改余额</strong>。正确做法是补齐缺失的明细记录（尤其手续费与最终状态），让「重算」自然算出正确结果——直接改余额会把差错从「可解释」变成「不可解释」，下次对账更查不清。</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-table mr-2 text-purple-600"></i>对账表长什么样
+            </h2>
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    一张表就是一套校验规则。下面用一组示意数据说明结构（真实数据按币种、按日跑）：
+                </p>
+                <div class="overflow-x-auto mb-4">
+                    <table class="tbl min-w-full text-xs border border-gray-200 rounded-lg overflow-hidden">
+                        <thead class="text-gray-700">
+                            <tr>
+                                <th class="px-3 py-2 text-left font-semibold border-b">币种</th>
+                                <th class="px-3 py-2 text-left font-semibold border-b">期初</th>
+                                <th class="px-3 py-2 text-left font-semibold border-b">充值</th>
+                                <th class="px-3 py-2 text-left font-semibold border-b">提现</th>
+                                <th class="px-3 py-2 text-left font-semibold border-b">手续费</th>
+                                <th class="px-3 py-2 text-left font-semibold border-b">期末（算）</th>
+                                <th class="px-3 py-2 text-left font-semibold border-b">链上余额</th>
+                                <th class="px-3 py-2 text-left font-semibold border-b">差值</th>
+                                <th class="px-3 py-2 text-left font-semibold border-b">结果</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-gray-600">
+                            <tr class="bg-green-50/40">
+                                <td class="px-3 py-2 font-medium text-gray-800">ETH</td>
+                                <td class="px-3 py-2">300</td>
+                                <td class="px-3 py-2">0</td>
+                                <td class="px-3 py-2">50</td>
+                                <td class="px-3 py-2">0.3</td>
+                                <td class="px-3 py-2 font-semibold">249.7</td>
+                                <td class="px-3 py-2 font-semibold">249.7</td>
+                                <td class="px-3 py-2 text-green-600 font-semibold">0</td>
+                                <td class="px-3 py-2"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded">通过</span></td>
+                            </tr>
+                            <tr class="bg-red-50/40">
+                                <td class="px-3 py-2 font-medium text-gray-800">BTC</td>
+                                <td class="px-3 py-2">2.0</td>
+                                <td class="px-3 py-2">0.5</td>
+                                <td class="px-3 py-2">0.2</td>
+                                <td class="px-3 py-2">0.0004</td>
+                                <td class="px-3 py-2 font-semibold">2.2996</td>
+                                <td class="px-3 py-2 font-semibold">2.2990</td>
+                                <td class="px-3 py-2 text-red-600 font-semibold">-0.0006</td>
+                                <td class="px-3 py-2"><span class="bg-red-100 text-red-700 px-2 py-0.5 rounded">不通过</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <p class="text-gray-600 text-sm">
+                        <i class="fas fa-magnifying-glass-chart text-purple-500 mr-2"></i>
+                        BTC 那行的差额 −0.0006 <strong>大于本日手续费 0.0004</strong>，说明除了「手续费漏回写」之外还有别的缺口（例如某笔提现的状态未更新）。差额的<strong>绝对值与形态</strong>本身就是线索：和手续费同量级先查回写，和某笔金额同量级先查重复入账。
+                    </p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-purple-600"></i>实现：一次对账就是一次重算
+            </h2>
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    对账代码刻意不读「余额表」，只读<strong>明细</strong>：明细是真事实，余额表是派生物。派生物出错可以重建，事实出错才是事故。
+                </p>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                    <pre><code class="language-java">/**
+ * 日终对账：期初 + 充值 - 提现 - 手续费 = 期末，再与同高度链上余额比
+ * 注意：手续费取自「链上真实值」，不是平台预估值
+ */
+public ReconciliationRow reconcile(String coin, LocalDate day, long height) {
+    BigDecimal opening  = snapshotRepo.balanceAt(coin, day.minusDays(1), height);
+    BigDecimal deposits = detailRepo.sumIn(coin, day);       // 类型 = 入
+    BigDecimal withdraw = detailRepo.sumOut(coin, day);      // 类型 = 出
+    BigDecimal fee      = detailRepo.sumFee(coin, day);      // 链上真实手续费
+
+    BigDecimal closing = opening.add(deposits).subtract(withdraw).subtract(fee);
+    BigDecimal onChain = chainRepo.balanceAt(coin, height);   // 同一高度，可比
+    BigDecimal diff    = onChain.subtract(closing);
+
+    return ReconciliationRow.builder()
+        .coin(coin).day(day).height(height)
+        .opening(opening).deposits(deposits).withdraw(withdraw).fee(fee)
+        .closing(closing).onChain(onChain).diff(diff)
+        .passed(diff.signum() == 0)                            // 结果由规则判定，不由人看
+        .build();
+}
+
+/** 历史差额修复：补齐明细，而不是直接改余额 */
+public void repair(String coin) {
+    for (Withdraw w : withdrawRepo.findAllUncertain(coin)) {
+        ChainTx tx = rpc.call("gettransaction", ChainTx.class, w.getTxid());
+        withdrawRepo.updateStatusAndFee(w.getId(), tx.getStatus(), tx.getFee());  // 回写真相
+    }
+    // 下一轮对账会自然算出正确余额
+}</code></pre>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-circle-nodes mr-2 text-purple-600"></i>闭环：快照 → 重算 → 比对 → 修复
+            </h2>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-6">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div class="bg-slate-600 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-camera text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">同高度快照</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-blue-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-calculator text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">明细重算</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-red-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-equals text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">比对定差值</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-amber-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-magnifying-glass text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">差额下钻</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-green-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-wrench text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">补明细 / 再对账</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    这条闭环的终点不是「差额清零」，而是<strong>「每一笔差额都能被解释」</strong>。人工改平余额可以骗过当天的报表，但会让下一次对账失去所有线索——所以修复动作永远只做在明细层。
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                    <li><strong>快照：</strong>按地址 + 高度取链上余额，保证两侧同一时刻；</li>
+                    <li><strong>重算：</strong>只信明细，不读余额表（余额是派生物，可重建）；</li>
+                    <li><strong>比对：</strong>一条公式 + 一列显式结论，差值非 0 即拦截；</li>
+                    <li><strong>修复：</strong>补齐缺失的手续费与状态，让重算自然回到平衡。</li>
+                </ul>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-2">
+                    <i class="fas fa-industry mr-2"></i>行业背景（一句话）
+                </h3>
+                <p class="text-gray-600 text-sm">
+                    在资金类系统里，<strong>对账不是财务的收尾动作，而是系统的最后一道正确性验证</strong>：它用一条独立的路径（明细累加）去校验主路径（余额更新）的结果。凡是不能对账的资金系统，本质上都只是「看起来在正常跑」。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-purple-600"></i>关键点与结果
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-layer-group text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">两侧同一时刻</h4>
+                    <p class="text-sm opacity-90">地址 + 高度快照，剔除时间差干扰</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-calculator text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">只信明细</h4>
+                    <p class="text-sm opacity-90">从零累加重算，不信任缓存余额</p>
+                </div>
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-gavel text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">结论由规则给</h4>
+                    <p class="text-sm opacity-90">差值非 0 即不通过，不靠人眼判断</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-magnifying-glass-chart text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">差额有形态</h4>
+                    <p class="text-sm opacity-90">按量级反推：手续费未回写 / 重复入账</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-wrench text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">修复在明细层</h4>
+                    <p class="text-sm opacity-90">补真相不改余额，下次对账自然平</p>
+                </div>
+                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-coins text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">多币种一套口径</h4>
+                    <p class="text-sm opacity-90">BTC / Omni / ETH 共用同一张校验表</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">回到总览</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/b2b-project/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">B2B 大宗贸易</a>
+        </div>
+    </nav>
+</body>
+</html>

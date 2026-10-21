@@ -3,409 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>客服管理 - 客服系统</title>
+    <title>客服管理 · 客服聊天项目</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        .code-block {
-            background: #1e293b;
-            color: #e2e8f0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            overflow-x: auto;
-        }
+        .code-block { background: #1e293b; color: #e2e8f0; font-family: Consolas, Monaco, monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+        .mod-card { transition: all .25s ease; }
+        .mod-card:hover { box-shadow: 0 10px 24px rgba(0,0,0,.08); }
     </style>
 </head>
 <body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-headset mr-1"></i>客服聊天项目</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/customer-service/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/customer-service/chat-reception.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">接待客户</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/customer-service/queue-mechanism.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">排队机制</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/customer-service/cs-management.html')" class="px-3 py-1 rounded-full bg-purple-600 text-white font-medium">客服管理</a>
+        </div>
+    </nav>
+
     <div class="max-w-6xl mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">
-                <i class="fas fa-headset mr-3 text-purple-600"></i>客服管理
-            </h1>
-            <p class="text-gray-500 mb-6">CS Management - 客服人员管理与服务能力配置</p>
-            
-            <div class="bg-purple-50 border-l-4 border-purple-600 p-4 mb-8">
-                <p class="text-purple-700">
+
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-users-cog mr-3 text-purple-600"></i>客服管理
+                </h1>
+                <p class="text-gray-500 mb-4">CS Management — 客服不建账号体系，只做「身份接入 + 能力配置 + 记录留存」三件事</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-purple-50 text-purple-700 px-3 py-1 rounded-full"><i class="fas fa-user-shield mr-1"></i>LDAP / OAuth / SSO</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-chart-line mr-1"></i>能力 + 技能 + 状态</span>
+                    <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded-full"><i class="fas fa-history mr-1"></i>会话记录 30 天</span>
+                    <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full"><i class="fas fa-chart-bar mr-1"></i>服务统计</span>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                <p class="text-amber-800 text-sm">
                     <i class="fas fa-lightbulb mr-2"></i>
-                    <strong>核心功能：</strong>支持第三方认证系统对接、客服服务能力评估、会话记录保存、技能标签管理、在线状态监控。
+                    <strong>场景背景：</strong>客服是最难「系统化」的一类使用者：<strong>他们已经在企业里有一套账号</strong>（OA / 域账号），再让他们记一套客服系统密码，结果一定是密码贴在显示器上；<strong>他们的能力是动态的</strong>（临时下线吃饭、技能新加了一项、今天最多接 5 个），这些变化必须实时影响派单；<strong>他们的服务过程要被复盘</strong>（时长、满意度、处理量），否则没法考核也没法改进。
+                </p>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800 text-sm">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong>客服域模型的<strong>设计与实现</strong>。三个判断：① <strong>不新建账号体系</strong>，用 Provider 模式适配企业现有认证（LDAP / OAuth / SSO），新增一种认证只加一个实现类；② <strong>能力不用一个数字表示</strong>，而是「在线 + 有空位 + 技能匹配」三条件，交给排队侧判断；③ <strong>记录不放在线库</strong>，会话结束后落 Redis 记录并设 30 天 TTL，在线态与历史态彻底分开。
                 </p>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-th-large mr-2 text-purple-600"></i>功能概览
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="feature-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-user-shield text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">第三方认证</h4>
-                    <p class="text-sm opacity-90">多认证系统对接</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-chart-line text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">服务能力</h4>
-                    <p class="text-sm opacity-90">客服能力评估</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-history text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">会话记录</h4>
-                    <p class="text-sm opacity-90">服务记录保存</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-tags text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">技能标签</h4>
-                    <p class="text-sm opacity-90">技能标签管理</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-circle text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">在线状态</h4>
-                    <p class="text-sm opacity-90">实时在线监控</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-user-plus text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">手动接入</h4>
-                    <p class="text-sm opacity-90">手动接入排队用户</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-lime-500 to-lime-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-handshake text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">第三方派单</h4>
-                    <p class="text-sm opacity-90">外部系统派单</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-chart-bar text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">数据统计</h4>
-                    <p class="text-sm opacity-90">服务数据统计</p>
-                </div>
-            </div>
-
-            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-project-diagram mr-2 text-purple-600"></i>管理流程
-            </h2>
-
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-                <div class="relative">
-                    <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
-                    <div class="space-y-8">
-                        <div class="relative pl-12">
-                            <div class="absolute left-0 top-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">1</div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <h4 class="font-semibold text-gray-800">第三方认证</h4>
-                                <p class="text-sm text-gray-600">对接企业认证系统，实现客服身份统一认证</p>
-                            </div>
-                        </div>
-                        <div class="relative pl-12">
-                            <div class="absolute left-0 top-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">2</div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <h4 class="font-semibold text-gray-800">服务能力配置</h4>
-                                <p class="text-sm text-gray-600">设置客服最大接待数、技能标签、在线状态</p>
-                            </div>
-                        </div>
-                        <div class="relative pl-12">
-                            <div class="absolute left-0 top-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">3</div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <h4 class="font-semibold text-gray-800">服务监控</h4>
-                                <p class="text-sm text-gray-600">实时监控客服在线状态、会话数量、服务质量</p>
-                            </div>
-                        </div>
-                        <div class="relative pl-12">
-                            <div class="absolute left-0 top-0 w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">4</div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <h4 class="font-semibold text-gray-800">记录保存</h4>
-                                <p class="text-sm text-gray-600">所有客服服务记录保存到Redis，支持查询和统计</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-code mr-2 text-purple-600"></i>核心代码示例
+                <i class="fas fa-th-large mr-2 text-purple-600"></i>四个模块
             </h2>
 
             <div class="space-y-6 mb-8">
-                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
-                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>第三方认证服务</span>
-                        <span class="text-xs text-gray-400">ThirdPartyAuthService.java</span>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-user-shield text-purple-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">1. 第三方认证接入</h3>
                     </div>
-                    <div class="code-block p-4">
-<pre><span class="text-gray-500">/**
- * 第三方认证服务 - 支持多认证系统对接
- */</span>
-<span class="text-purple-400">@Service</span>
-<span class="text-purple-400">@Slf4j</span>
-<span class="text-pink-400">public class</span> <span class="text-blue-300">ThirdPartyAuthService</span> {
-
-    <span class="text-purple-400">@Autowired</span>
-    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
-    
-    <span class="text-pink-400">private</span> Map&lt;String, AuthProvider&gt; authProviders;
-
-    <span class="text-pink-400">public</span> <span class="text-blue-300">ThirdPartyAuthService</span>() {
-        authProviders = <span class="text-pink-400">new</span> HashMap&lt;&gt;();
-        authProviders.put(<span class="text-yellow-300">"ldap"</span>, <span class="text-pink-400">new</span> LdapAuthProvider());
-        authProviders.put(<span class="text-yellow-300">"oauth"</span>, <span class="text-pink-400">new</span> OAuthAuthProvider());
-        authProviders.put(<span class="text-yellow-300">"sso"</span>, <span class="text-pink-400">new</span> SsoAuthProvider());
-    }
-
-    <span class="text-pink-400">public</span> CsUser <span class="text-blue-300">authenticate</span>(String provider, String username, String password) <span class="text-pink-400">throws</span> Exception {
-        AuthProvider authProvider = authProviders.get(provider);
-        <span class="text-pink-400">if</span> (authProvider == <span class="text-pink-400">null</span>) {
-            <span class="text-pink-400">throw</span> <span class="text-pink-400">new</span> IllegalArgumentException(<span class="text-yellow-300">"不支持的认证方式: "</span> + provider);
-        }
-
-        <span class="text-gray-500">// 调用第三方认证</span>
-        AuthResult result = authProvider.authenticate(username, password);
-        <span class="text-pink-400">if</span> (!result.isSuccess()) {
-            <span class="text-pink-400">throw</span> <span class="text-pink-400">new</span> AuthenticationException(<span class="text-yellow-300">"认证失败"</span>);
-        }
-
-        <span class="text-gray-500">// 获取客服信息</span>
-        CsUser csUser = getCsUserInfo(result.getUserId());
-        
-        <span class="text-gray-500">// 保存到Redis</span>
-        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csUser.getCsId();
-        redisTemplate.opsForHash().putAll(csKey, BeanUtils.beanToMap(csUser));
-        redisTemplate.expire(csKey, <span class="text-pink-400">24</span>, TimeUnit.HOURS);
-
-        <span class="text-gray-500">// 生成会话token</span>
-        String sessionToken = UUID.randomUUID().toString();
-        redisTemplate.opsForValue().set(<span class="text-yellow-300">"cs_session:"</span> + sessionToken, csUser.getCsId(), <span class="text-pink-400">12</span>, TimeUnit.HOURS);
-        
-        csUser.setSessionToken(sessionToken);
-        <span class="text-pink-400">return</span> csUser;
-    }
-
-    <span class="text-pink-400">private</span> CsUser <span class="text-blue-300">getCsUserInfo</span>(String userId) {
-        <span class="text-gray-500">// 从企业系统获取客服详细信息</span>
-        <span class="text-pink-400">return</span> CsUser.builder()
-            .csId(userId)
-            .name(<span class="text-yellow-300">"客服"</span> + userId)
-            .capacity(<span class="text-pink-400">5</span>)
-            .skills(Arrays.asList(<span class="text-yellow-300">"通用"</span>, <span class="text-yellow-300">"技术"</span>))
-            .status(CsStatus.ONLINE)
-            .build();
-    }
-}</pre>
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            客服直接用工号 / 域账号 / 企业 SSO 登录，认证成功即拿会话 token（12 小时），不额外维护密码与找回流程。
+                        </p>
                     </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>用 <strong>Provider 模式</strong>把认证方式做成可插拔的 Map：<code class="bg-gray-100 px-1 rounded">ldap / oauth / sso</code> 各一个实现。这样「客户换成了 ADFS」这种需求，改的是配置和一个类，不是整个登录流程——这是多客户交付里最省事的一层抽象。</p>
                 </div>
 
-                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
-                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>客服服务能力管理</span>
-                        <span class="text-xs text-gray-400">CsCapacityService.java</span>
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-chart-line text-blue-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">2. 服务能力与在线状态</h3>
                     </div>
-                    <div class="code-block p-4">
-<pre><span class="text-gray-500">/**
- * 客服服务能力管理服务
- */</span>
-<span class="text-purple-400">@Service</span>
-<span class="text-purple-400">@Slf4j</span>
-<span class="text-pink-400">public class</span> <span class="text-blue-300">CsCapacityService</span> {
-
-    <span class="text-purple-400">@Autowired</span>
-    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
-
-    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">updateCapacity</span>(String csId, <span class="text-pink-400">int</span> capacity) {
-        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csId;
-        redisTemplate.opsForHash().put(csKey, <span class="text-yellow-300">"capacity"</span>, capacity);
-        log.info(<span class="text-yellow-300">"客服 {} 服务能力更新为 {}"</span>, csId, capacity);
-    }
-
-    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">updateStatus</span>(String csId, CsStatus status) {
-        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csId;
-        redisTemplate.opsForHash().put(csKey, <span class="text-yellow-300">"status"</span>, status.name());
-        
-        <span class="text-gray-500">// 离线时自动将会话转接</span>
-        <span class="text-pink-400">if</span> (status == CsStatus.OFFLINE) {
-            transferSessions(csId);
-        }
-    }
-
-    <span class="text-pink-400">public</span> <span class="text-pink-400">boolean</span> <span class="text-blue-300">hasAvailableCapacity</span>(String csId) {
-        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csId;
-        Integer capacity = (Integer) redisTemplate.opsForHash().get(csKey, <span class="text-yellow-300">"capacity"</span>);
-        Integer currentSessions = (Integer) redisTemplate.opsForHash().get(csKey, <span class="text-yellow-300">"current_sessions"</span>);
-        
-        <span class="text-pink-400">return</span> currentSessions != <span class="text-pink-400">null</span> &amp;&amp; capacity != <span class="text-pink-400">null</span> &amp;&amp; currentSessions &lt; capacity;
-    }
-
-    <span class="text-pink-400">public</span> List&lt;CsUser&gt; <span class="text-blue-300">getAvailableCs</span>(String skill) {
-        <span class="text-gray-500">// 获取所有在线且有剩余能力的客服</span>
-        Set&lt;String&gt; csKeys = redisTemplate.keys(<span class="text-yellow-300">"cs_info:*"</span>);
-        List&lt;CsUser&gt; availableCs = <span class="text-pink-400">new</span> ArrayList&lt;&gt;();
-        
-        <span class="text-pink-400">for</span> (String key : csKeys) {
-            Map&lt;Object, Object&gt; csData = redisTemplate.opsForHash().entries(key);
-            CsUser csUser = BeanUtils.mapToBean(csData, CsUser.<span class="text-pink-400">class</span>);
-            
-            <span class="text-pink-400">if</span> (csUser.getStatus() == CsStatus.ONLINE 
-                &amp;&amp; hasAvailableCapacity(csUser.getCsId())
-                &amp;&amp; csUser.getSkills().contains(skill)) {
-                availableCs.add(csUser);
-            }
-        }
-        
-        <span class="text-gray-500">// 按当前会话数排序，优先分配给会话少的客服</span>
-        availableCs.sort(Comparator.comparingInt(CsUser::getCurrentSessions));
-        <span class="text-pink-400">return</span> availableCs;
-    }
-
-    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">incrementSession</span>(String csId) {
-        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csId;
-        redisTemplate.opsForHash().increment(csKey, <span class="text-yellow-300">"current_sessions"</span>, <span class="text-pink-400">1</span>);
-    }
-
-    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">decrementSession</span>(String csId) {
-        String csKey = <span class="text-yellow-300">"cs_info:"</span> + csId;
-        redisTemplate.opsForHash().increment(csKey, <span class="text-yellow-300">"current_sessions"</span>, -<span class="text-pink-400">1</span>);
-    }
-}</pre>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            每人配最大接待数（默认 5）、技能标签、在线 / 离线状态；剩余能力 = 上限 − 当前会话数，会话增减时同步加减。
+                        </p>
                     </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>能力判断必须是<strong>「读时判定」而不是「写时缓存」</strong>——<code class="bg-gray-100 px-1 rounded">current_sessions &lt; capacity</code> 每次现算。把「还有没有空位」缓存成一个布尔值，必然在并发派单时出现两个用户同时抢最后一个位置，最后客服被塞爆。</p>
                 </div>
 
-                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
-                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>会话记录服务</span>
-                        <span class="text-xs text-gray-400">SessionRecordService.java</span>
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-power-off text-red-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">3. 下线自动转接</h3>
                     </div>
-                    <div class="code-block p-4">
-<pre><span class="text-gray-500">/**
- * 会话记录服务 - 保存客服服务记录
- */</span>
-<span class="text-purple-400">@Service</span>
-<span class="text-purple-400">@Slf4j</span>
-<span class="text-pink-400">public class</span> <span class="text-blue-300">SessionRecordService</span> {
-
-    <span class="text-purple-400">@Autowired</span>
-    <span class="text-pink-400">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;
-
-    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">createSessionRecord</span>(SessionRecord record) {
-        record.setSessionId(UUID.randomUUID().toString());
-        record.setStartTime(LocalDateTime.now());
-        
-        <span class="text-gray-500">// 保存到Redis Hash</span>
-        String recordKey = <span class="text-yellow-300">"session_record:"</span> + record.getSessionId();
-        redisTemplate.opsForHash().putAll(recordKey, BeanUtils.beanToMap(record));
-        redisTemplate.expire(recordKey, <span class="text-pink-400">30</span>, TimeUnit.DAYS);
-        
-        <span class="text-gray-500">// 添加到客服会话列表</span>
-        String csSessionsKey = <span class="text-yellow-300">"cs_sessions:"</span> + record.getCsId();
-        redisTemplate.opsForList().rightPush(csSessionsKey, record.getSessionId());
-        redisTemplate.expire(csSessionsKey, <span class="text-pink-400">30</span>, TimeUnit.DAYS);
-        
-        log.info(<span class="text-yellow-300">"会话记录创建: {}"</span>, record.getSessionId());
-    }
-
-    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">updateSessionRecord</span>(String sessionId, Map&lt;String, Object&gt; updates) {
-        String recordKey = <span class="text-yellow-300">"session_record:"</span> + sessionId;
-        redisTemplate.opsForHash().putAll(recordKey, updates);
-    }
-
-    <span class="text-pink-400">public</span> <span class="text-pink-400">void</span> <span class="text-blue-300">endSession</span>(String sessionId, String satisfaction) {
-        String recordKey = <span class="text-yellow-300">"session_record:"</span> + sessionId;
-        Map&lt;String, Object&gt; updates = <span class="text-pink-400">new</span> HashMap&lt;&gt;();
-        updates.put(<span class="text-yellow-300">"endTime"</span>, LocalDateTime.now());
-        updates.put(<span class="text-yellow-300">"satisfaction"</span>, satisfaction);
-        updates.put(<span class="text-yellow-300">"status"</span>, <span class="text-yellow-300">"ENDED"</span>);
-        
-        updateSessionRecord(sessionId, updates);
-        log.info(<span class="text-yellow-300">"会话结束: {}"</span>, sessionId);
-    }
-
-    <span class="text-pink-400">public</span> List&lt;SessionRecord&gt; <span class="text-blue-300">getCsSessionRecords</span>(String csId, LocalDate date) {
-        String csSessionsKey = <span class="text-yellow-300">"cs_sessions:"</span> + csId;
-        List&lt;String&gt; sessionIds = (List&lt;String&gt;) redisTemplate.opsForList().range(csSessionsKey, <span class="text-pink-400">0</span>, -<span class="text-pink-400">1</span>);
-        
-        List&lt;SessionRecord&gt; records = <span class="text-pink-400">new</span> ArrayList&lt;&gt;();
-        <span class="text-pink-400">for</span> (String sessionId : sessionIds) {
-            String recordKey = <span class="text-yellow-300">"session_record:"</span> + sessionId;
-            Map&lt;Object, Object&gt; data = redisTemplate.opsForHash().entries(recordKey);
-            SessionRecord record = BeanUtils.mapToBean(data, SessionRecord.<span class="text-pink-400">class</span>);
-            
-            <span class="text-gray-500">// 按日期过滤</span>
-            <span class="text-pink-400">if</span> (record.getStartTime().toLocalDate().equals(date)) {
-                records.add(record);
-            }
-        }
-        
-        <span class="text-pink-400">return</span> records;
-    }
-
-    <span class="text-pink-400">public</span> SessionStats <span class="text-blue-300">getCsStats</span>(String csId, LocalDate date) {
-        List&lt;SessionRecord&gt; records = getCsSessionRecords(csId, date);
-        
-        <span class="text-pink-400">long</span> totalSessions = records.size();
-        <span class="text-pink-400">long</span> avgDuration = records.stream()
-            .filter(r -&gt; r.getEndTime() != <span class="text-pink-400">null</span>)
-            .mapToLong(r -&gt; Duration.between(r.getStartTime(), r.getEndTime()).getSeconds())
-            .average()
-            .orElse(<span class="text-pink-400">0</span>);
-        <span class="text-pink-400">double</span> avgSatisfaction = records.stream()
-            .filter(r -&gt; r.getSatisfaction() != <span class="text-pink-400">null</span>)
-            .mapToInt(r -&gt; Integer.parseInt(r.getSatisfaction()))
-            .average()
-            .orElse(<span class="text-pink-400">0</span>);
-        
-        <span class="text-pink-400">return</span> SessionStats.builder()
-            .csId(csId)
-            .date(date)
-            .totalSessions(totalSessions)
-            .avgDuration(avgDuration)
-            .avgSatisfaction(avgSatisfaction)
-            .build();
-    }
-}</pre>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            客服点「离线」时，系统先把名下进行中的会话转给其他可用客服，再把人置为离线。
+                        </p>
                     </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>这个动作不能只是「改个状态」——<strong>先转接、后离线</strong>的顺序决定了有没有用户被挂在空气里。反过来做，会话就永远停在「已分配但没有人在看」的状态，用户等到自己放弃。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-teal-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-chart-bar text-teal-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">4. 会话记录与统计</h3>
+                    </div>
+                    <div class="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            每个会话记一条记录（起止时间、满意度、归属客服），保留 30 天；按人按天可算出会话量、平均时长、平均满意度。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>记录用<strong>「客服 → 会话 ID 列表」的 List + 单条 Hash</strong> 两层结构，查某人某天的记录只扫这个人的列表，不做全表扫描。统计口径必须在写入时就固定（时长 = endTime − startTime，只算已结束的），否则事后统计会出现「同一个数字三种算法」。</p>
                 </div>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-list-check mr-2 text-purple-600"></i>核心优势
+                <i class="fas fa-code mr-2 text-purple-600"></i>实现：能力判定与转接
             </h2>
-            
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    能力判定的本质是<strong>三条件交集</strong>，这段代码量很小但被调用得最频繁（每次派单、每次手动接入都会走一遍），所以它必须无副作用、可并发。
+                </p>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                    <pre><code class="language-java">@Service
+public class CsCapacityService {
+
+    /** 剩余能力：读时现算，不缓存布尔值（否则并发派单会抢爆最后一个位） */
+    public boolean hasRoom(String csId) {
+        Map&lt;Object, Object&gt; info = redisTemplate.opsForHash().entries("cs_info:" + csId);
+        Integer cap = (Integer) info.get("capacity");
+        Integer cur = (Integer) info.get("current_sessions");
+        return cap != null &amp;&amp; cur != null &amp;&amp; cur &lt; cap;
+    }
+
+    /** 可派单客服 = 在线 ∩ 有空位 ∩ 技能匹配，按当前会话数升序（最不忙的优先） */
+    public List&lt;CsUser&gt; available(String skill) {
+        List&lt;CsUser&gt; list = new ArrayList&lt;&gt;();
+        for (String key : redisTemplate.keys("cs_info:*")) {
+            CsUser u = toUser(redisTemplate.opsForHash().entries(key));
+            if (u.getStatus() == CsStatus.ONLINE
+                &amp;&amp; hasRoom(u.getCsId())
+                &amp;&amp; u.getSkills().contains(skill)) {
+                list.add(u);
+            }
+        }
+        list.sort(Comparator.comparingInt(CsUser::getCurrentSessions));
+        return list;
+    }
+
+    /** 下线：先转接名下会话，再置离线——顺序反了就会有人被挂在空气里 */
+    public void offline(String csId) {
+        transferSessions(csId);
+        redisTemplate.opsForHash().put("cs_info:" + csId, "status", CsStatus.OFFLINE.name());
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-circle-nodes mr-2 text-purple-600"></i>闭环：从登录到可被派单
+            </h2>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-6">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div class="bg-purple-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-sign-in-alt text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">企业认证登录</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-blue-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-sliders-h text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">配能力 / 技能</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-green-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-toggle-on text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">置为在线</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-orange-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-inbox text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">进入可派单池</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-teal-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-box-archive text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">会话结束留记录</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    这条链上有两个「顺序敏感点」，也是这套系统真正区别于「能跑通」的地方：<strong>登录后必须先配能力再置在线</strong>（否则会以 0 能力上线、永远接不到单，看起来人是在线的）；<strong>下线必须先转接再置离线</strong>（否则有人被挂在空气里）。
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                    <li><strong>身份：</strong>Provider 模式接企业认证，不另建账号；</li>
+                    <li><strong>能力：</strong>读时判定，三条件交集，会话数升序派单；</li>
+                    <li><strong>状态：</strong>上线 / 下线都带副作用，不是一个孤立字段；</li>
+                    <li><strong>复盘：</strong>会话记录 30 天留存，口径写入时固定。</li>
+                </ul>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-2">
+                    <i class="fas fa-industry mr-2"></i>行业背景（一句话）
+                </h3>
+                <p class="text-gray-600 text-sm">
+                    客服管理的行业共识是「<strong>能用组织架构解决的，就不要在业务系统里再造一套</strong>」。账号、组织、角色这些企业已有的事实，重复维护一次就多一处不一致——这也是后来把客服系统接进统一认证的直接原因。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-purple-600"></i>关键点与结果
+            </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
                     <i class="fas fa-user-shield text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">第三方认证</h4>
-                    <p class="text-sm opacity-90">多认证系统灵活对接</p>
-                </div>
-                <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-chart-line text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">能力评估</h4>
-                    <p class="text-sm opacity-90">智能服务能力管理</p>
+                    <h4 class="font-bold mb-1">认证可插拔</h4>
+                    <p class="text-sm opacity-90">LDAP / OAuth / SSO 三种 Provider，换认证只加一个类</p>
                 </div>
                 <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-history text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">记录保存</h4>
-                    <p class="text-sm opacity-90">全量会话记录持久化</p>
+                    <i class="fas fa-gauge-high text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">能力读时判定</h4>
+                    <p class="text-sm opacity-90">不缓存布尔值，并发派单不会抢爆最后一位</p>
                 </div>
-                <div class="bg-gradient-to-br from-cyan-500 to-cyan-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-tags text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">技能匹配</h4>
-                    <p class="text-sm opacity-90">技能标签智能匹配</p>
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-power-off text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">下线不甩客</h4>
+                    <p class="text-sm opacity-90">先转接后离线，没有用户被挂在空气里</p>
                 </div>
                 <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-handshake text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">第三方派单</h4>
-                    <p class="text-sm opacity-90">外部系统派单支持</p>
+                    <i class="fas fa-history text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">记录可复盘</h4>
+                    <p class="text-sm opacity-90">会话量 / 时长 / 满意度，30 天留存</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-tags text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">技能驱动派单</h4>
+                    <p class="text-sm opacity-90">技能标签直接参与队列与分配</p>
                 </div>
                 <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-chart-bar text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">数据统计</h4>
-                    <p class="text-sm opacity-90">服务数据全面统计</p>
+                    <i class="fas fa-server text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">在线态自过期</h4>
+                    <p class="text-sm opacity-90">Redis + TTL，不写清理任务</p>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/customer-service/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">回到总览</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">下一个项目：区块链</a>
+        </div>
+    </nav>
 </body>
 </html>

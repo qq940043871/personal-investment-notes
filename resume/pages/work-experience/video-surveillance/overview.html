@@ -3,488 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>视频监控项目 - 架构师学习笔记</title>
+    <title>视频监控项目 · 项目总览</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .feature-card {
-            transition: all 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        .code-block {
-            background: #1e293b;
-            color: #e2e8f0;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            overflow-x: auto;
-        }
+        .code-block { background: #1e293b; color: #e2e8f0; font-family: Consolas, Monaco, monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+        .mod-card { transition: all .25s ease; }
+        .mod-card:hover { box-shadow: 0 10px 24px rgba(0,0,0,.08); }
     </style>
 </head>
 <body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-video mr-1"></i>视频监控项目</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/overview.html')" class="px-3 py-1 rounded-full bg-blue-600 text-white font-medium">总览</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/live-streaming.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">实时直播</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/playback.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">录像回放</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/download.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">视频下载</a>
+        </div>
+    </nav>
+
     <div class="max-w-6xl mx-auto p-6">
         <div class="bg-white rounded-lg shadow-md p-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">
-                <i class="fas fa-video mr-3 text-blue-500"></i>视频监控项目
-            </h1>
-            <p class="text-gray-500 mb-6">Video Surveillance System - FFmpeg + ZLM4J 技术方案</p>
-            
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
-                <p class="text-blue-700">
+
+            <!-- Hero -->
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-video mr-3 text-blue-600"></i>视频监控平台 · 项目总览
+                </h1>
+                <p class="text-gray-500 mb-4">Video Surveillance Platform — 用 FFmpeg + ZLMediaKit 搭一层流媒体底座，把存量 RTSP 摄像头变成 Web 端「可看、可回、可取证」的能力。</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-user-tie mr-1"></i>流媒体方案负责人</span>
+                    <span class="bg-green-50 text-green-700 px-3 py-1 rounded-full"><i class="fas fa-server mr-1"></i>单机 50–100 路</span>
+                    <span class="bg-purple-50 text-purple-700 px-3 py-1 rounded-full"><i class="fas fa-bolt mr-1"></i>WebRTC &lt; 500ms</span>
+                    <span class="bg-orange-50 text-orange-700 px-3 py-1 rounded-full"><i class="fas fa-mobile-alt mr-1"></i>PC / 手机同源</span>
+                </div>
+            </div>
+
+            <!-- 项目背景 -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                <p class="text-amber-800 text-sm">
                     <i class="fas fa-lightbulb mr-2"></i>
-                    <strong>技术方案：</strong>采用 FFmpeg + ZLMediaKit (ZLM4J) 流媒体服务器，支持 RTSP/RTMP/HLS/WebRTC 多协议，实现 PC 和手机同时访问，普通服务器支持大并发多路拉流。
+                    <strong>项目背景：</strong>客户现场已经装了几十上百个 RTSP 摄像头，但看画面还得回机房打开 NVR 客户端——装软件、配 IP、只能在局域网。手机看不了、领导远程看不了、出事调录像只能按文件名一个个拖。自研一套 Web 端监控，真正的难点不在「能播」，而在四件事：<strong>一路摄像头要被 N 个人同时看</strong>（直连摄像头必死）、<strong>浏览器不认 RTSP</strong>、<strong>弱网 / 手机 / 大屏三类终端对延迟与兼容的要求互相打架</strong>、<strong>录像要按事件回溯而不是按文件翻</strong>。我用 FFmpeg + ZLMediaKit 搭了一层流媒体底座，把这四件事收敛成一套入口。
+                </p>
+            </div>
+
+            <!-- 我的角色 -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800 text-sm">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong>流媒体方案的<strong>技术负责人（选型 + 落地）</strong>。选型上否决了「商用 NVR 厂商 SDK 按路授权」和「海外 SaaS 中转」两条路——前者按路收费、绑死客户端，后者把视频流交给第三方且延迟不可控；最终定下<strong>开源底座 + 自建分发</strong>。负责推流 / 录制链路设计、多协议降级策略，并把「摄像头侧、流媒体侧、业务库侧」三条线的边界划清。下文先讲四个能力模块，再讲它们如何汇入「接入 → 分发 → 观看 → 回溯 → 取证」这一条闭环。
                 </p>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-th-large mr-2 text-blue-500"></i>功能概览
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="feature-card bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-broadcast-tower text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">实时直播</h4>
-                    <p class="text-sm opacity-90">多路摄像头同时预览</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-history text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">录像回放</h4>
-                    <p class="text-sm opacity-90">按时间轴检索回放</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-download text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">视频下载</h4>
-                    <p class="text-sm opacity-90">录像文件下载</p>
-                </div>
-                <div class="feature-card bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-mobile-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">多端适配</h4>
-                    <p class="text-sm opacity-90">PC 和手机同时访问</p>
-                </div>
-            </div>
-
-            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-sitemap mr-2 text-blue-500"></i>系统架构
-            </h2>
-            
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                    <div class="text-center p-4 bg-blue-50 rounded-lg border border-blue-200">
-                        <i class="fas fa-video text-4xl text-blue-500 mb-2"></i>
-                        <h5 class="font-semibold text-gray-800">摄像头</h5>
-                        <p class="text-xs text-gray-500">RTSP/ONVIF</p>
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <i class="fas fa-arrow-right text-gray-400 text-2xl"></i>
-                    </div>
-                    <div class="text-center p-4 bg-purple-50 rounded-lg border border-purple-200">
-                        <i class="fas fa-server text-4xl text-purple-500 mb-2"></i>
-                        <h5 class="font-semibold text-gray-800">流媒体服务器</h5>
-                        <p class="text-xs text-gray-500">ZLMediaKit</p>
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <i class="fas fa-arrow-right text-gray-400 text-2xl"></i>
-                    </div>
-                    <div class="text-center p-4 bg-green-50 rounded-lg border border-green-200">
-                        <i class="fas fa-users text-4xl text-green-500 mb-2"></i>
-                        <h5 class="font-semibold text-gray-800">客户端</h5>
-                        <p class="text-xs text-gray-500">PC/手机</p>
-                    </div>
-                </div>
-            </div>
-
-            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-cogs mr-2 text-blue-500"></i>核心技术栈
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="border border-gray-200 rounded-lg p-5">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <i class="fas fa-server mr-3 text-purple-500"></i>后端技术
-                    </h3>
-                    <div class="space-y-3">
-                        <div class="flex items-center bg-gray-50 p-3 rounded-lg">
-                            <span class="w-8 h-8 bg-orange-100 text-orange-600 rounded flex items-center justify-center mr-3">
-                                <i class="fas fa-java"></i>
-                            </span>
-                            <div>
-                                <div class="font-semibold text-gray-800">Spring Boot</div>
-                                <div class="text-sm text-gray-500">业务服务层</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center bg-gray-50 p-3 rounded-lg">
-                            <span class="w-8 h-8 bg-blue-100 text-blue-600 rounded flex items-center justify-center mr-3">
-                                <i class="fas fa-film"></i>
-                            </span>
-                            <div>
-                                <div class="font-semibold text-gray-800">FFmpeg</div>
-                                <div class="text-sm text-gray-500">视频转码、拉流推流</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center bg-gray-50 p-3 rounded-lg">
-                            <span class="w-8 h-8 bg-green-100 text-green-600 rounded flex items-center justify-center mr-3">
-                                <i class="fas fa-broadcast-tower"></i>
-                            </span>
-                            <div>
-                                <div class="font-semibold text-gray-800">ZLMediaKit (ZLM4J)</div>
-                                <div class="text-sm text-gray-500">高性能流媒体服务器</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="border border-gray-200 rounded-lg p-5">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                        <i class="fas fa-code mr-3 text-blue-500"></i>前端技术
-                    </h3>
-                    <div class="space-y-3">
-                        <div class="flex items-center bg-gray-50 p-3 rounded-lg">
-                            <span class="w-8 h-8 bg-purple-100 text-purple-600 rounded flex items-center justify-center mr-3">
-                                <i class="fas fa-bolt"></i>
-                            </span>
-                            <div>
-                                <div class="font-semibold text-gray-800">WebRTC</div>
-                                <div class="text-sm text-gray-500">超低延迟直播预览</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center bg-gray-50 p-3 rounded-lg">
-                            <span class="w-8 h-8 bg-pink-100 text-pink-600 rounded flex items-center justify-center mr-3">
-                                <i class="fas fa-play-circle"></i>
-                            </span>
-                            <div>
-                                <div class="font-semibold text-gray-800">HLS / FLV.js</div>
-                                <div class="text-sm text-gray-500">多端兼容播放</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center bg-gray-50 p-3 rounded-lg">
-                            <span class="w-8 h-8 bg-teal-100 text-teal-600 rounded flex items-center justify-center mr-3">
-                                <i class="fas fa-mobile-alt"></i>
-                            </span>
-                            <div>
-                                <div class="font-semibold text-gray-800">响应式设计</div>
-                                <div class="text-sm text-gray-500">PC 和手机自适应</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-project-diagram mr-2 text-blue-500"></i>数据流设计
-            </h2>
-
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-                <h3 class="font-semibold text-gray-800 mb-4">直播流数据流</h3>
-                <div class="code-block rounded-lg p-4">
-<pre><span class="text-yellow-400">// 摄像头 → ZLMediaKit → 客户端</span>
-<span class="text-blue-400">1. FFmpeg</span> 从摄像头拉取 RTSP 流
-<span class="text-blue-400">2. FFmpeg</span> 转码为 H.264/H.265 + AAC
-<span class="text-blue-400">3. 推流</span> 到 ZLMediaKit (RTMP 协议)
-<span class="text-blue-400">4. ZLMediaKit</span> 分发多种协议流
-   ├─ WebRTC (PC 低延迟)
-   ├─ HLS (手机兼容)
-   └─ FLV (PC 低延迟)
-<span class="text-blue-400">5. 客户端</span> 按需拉取对应协议流</pre>
-                </div>
-            </div>
-
-            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-code mr-2 text-blue-500"></i>核心代码示例
+                <i class="fas fa-th-large mr-2 text-blue-600"></i>四个能力模块
             </h2>
 
             <div class="space-y-6 mb-8">
-                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
-                        <span class="text-sm font-semibold"><i class="fab fa-java mr-2"></i>ZLM4J 推流服务</span>
-                        <span class="text-xs text-gray-400">StreamPushService.java</span>
+
+                <!-- 实时直播 -->
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-broadcast-tower text-red-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">1. 实时直播</h3>
                     </div>
-                    <div class="code-block p-4">
-<pre><span class="text-gray-500">/**
- * ZLM4J 推流服务 - 使用 FFmpeg 拉取 RTSP 并推送到 ZLMediaKit
- */</span>
-<span class="text-purple-400">@Service</span>
-<span class="text-purple-400">@Slf4j</span>
-<span class="text-pink-400">public class</span> <span class="text-blue-300">StreamPushService</span> {
-
-    <span class="text-purple-400">@Autowired</span>
-    <span class="text-pink-400">private</span> ZLMediaKitClient zlMediaKitClient;
-
-    <span class="text-green-400">/**
-     * 开始推流
-     */</span>
-    <span class="text-pink-400">public</span> StreamPushResult <span class="text-blue-300">startPush</span>(StreamPushRequest request) {
-        String app = <span class="text-yellow-300">"live"</span>;
-        String streamId = UUID.randomUUID().toString();
-
-        <span class="text-gray-500">// 1. 在 ZLMediaKit 上注册流</span>
-        zlMediaKitClient.registerStream(app, streamId);
-
-        <span class="text-gray-500">// 2. 构建 FFmpeg 推流命令</span>
-        String ffmpegCmd = buildFFmpegCommand(
-            request.getRtspUrl(),
-            request.getRtmpUrl(),
-            request.getResolution(),
-            request.getBitrate()
-        );
-
-        <span class="text-gray-500">// 3. 启动 FFmpeg 进程</span>
-        Process process = Runtime.getRuntime().exec(ffmpegCmd);
-
-        <span class="text-gray-500">// 4. 监控推流状态</span>
-        monitorStream(process, app, streamId);
-
-        <span class="text-pink-400">return</span> StreamPushResult.builder()
-            .app(app)
-            .streamId(streamId)
-            .webrtcUrl(zlMediaKitClient.getWebRtcUrl(app, streamId))
-            .hlsUrl(zlMediaKitClient.getHlsUrl(app, streamId))
-            .flvUrl(zlMediaKitClient.getFlvUrl(app, streamId))
-            .build();
-    }
-
-    <span class="text-green-400">/**
-     * 构建 FFmpeg 推流命令
-     */</span>
-    <span class="text-pink-400">private</span> String <span class="text-blue-300">buildFFmpegCommand</span>(String rtspUrl, String rtmpUrl, 
-            String resolution, <span class="text-pink-400">int</span> bitrate) {
-        <span class="text-pink-400">return</span> String.format(
-            <span class="text-yellow-300">"ffmpeg -re -rtsp_transport tcp -i %s "</span> +
-            <span class="text-yellow-300">"-c:v libx264 -preset ultrafast -tune zerolatency "</span> +
-            <span class="text-yellow-300">"-s %s -b:v %dk -g 25 -sc_threshold 0 "</span> +
-            <span class="text-yellow-300">"-c:a aac -b:a 64k -ar 44100 "</span> +
-            <span class="text-yellow-300">"-f flv %s"</span>,
-            rtspUrl, resolution, bitrate, rtmpUrl
-        );
-    }
-}</pre>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            值班室盯屏的核心场景：多路画面同时预览（1/4/9/16 分屏）、云台 PTZ 上下左右与缩放、一键截图留证，PC 与手机都能看。看的是「此刻正在发生什么」。
+                        </p>
                     </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>一路 RTSP 只拉一次，由 ZLMediaKit 向多客户端分发——否则 10 个人看同一路摄像头就会把摄像头的并发连接打满甚至拖死。云台控制走 <strong>ONVIF 标准指令</strong>而不是厂商私有 SDK，换品牌不用重写。协议按终端能力自动选：PC 走 WebRTC，手机走 HLS。</p>
                 </div>
 
-                <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="bg-gray-800 text-white px-4 py-2 flex items-center justify-between">
-                        <span class="text-sm font-semibold"><i class="fab fa-js mr-2"></i>前端播放器 (多端兼容)</span>
-                        <span class="text-xs text-gray-400">VideoPlayer.vue</span>
+                <!-- 录像回放 -->
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-history text-blue-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">2. 录像回放</h3>
                     </div>
-                    <div class="code-block p-4">
-<pre><span class="text-gray-500">// 多端兼容视频播放器 - 自动选择最优播放协议</span>
-&lt;<span class="text-pink-400">template</span>&gt;
-  &lt;<span class="text-pink-400">div</span>&gt;
-    &lt;<span class="text-pink-400">video</span> <span class="text-green-400">id</span>=<span class="text-yellow-300">"videoPlayer"</span> <span class="text-green-400">autoplay</span> <span class="text-green-400">muted</span> <span class="text-green-400">playsinline</span> 
-           <span class="text-green-400">class</span>=<span class="text-yellow-300">"w-full h-full"</span>&gt;&lt;/<span class="text-pink-400">video</span>&gt;
-  &lt;/<span class="text-pink-400">div</span>&gt;
-&lt;/<span class="text-pink-400">template</span>&gt;
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            事情发生之后要「倒回去看」：按日期与时间轴定位、0.5x–8x 倍速、快进快退 30 秒、告警片段在时间轴上高亮，随时截图。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>录像「文件」与录像「记录」分开存——<strong>元数据（设备、起止时间、存储路径、是否告警）进 MySQL，MP4 文件进 NAS / OSS</strong>。检索永远查元数据，绝不去扫目录。播放地址用 OSS <strong>预签名 URL（1 小时有效）</strong>，不把存储桶直接暴露给前端。</p>
+                </div>
 
-&lt;<span class="text-pink-400">script</span>&gt;
-<span class="text-pink-400">import</span> { onMounted, ref } <span class="text-pink-400">from</span> <span class="text-yellow-300">'vue'</span>;
-<span class="text-pink-400">import</span> Hls <span class="text-pink-400">from</span> <span class="text-yellow-300">'hls.js'</span>;
-<span class="text-pink-400">import</span> FlvJs <span class="text-pink-400">from</span> <span class="text-yellow-300">'flv.js'</span>;
+                <!-- 视频下载 -->
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-download text-green-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">3. 视频下载</h3>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            取证与上报要「把文件拿走」：单个录像下载、多段录像打包成 ZIP、格式转换（MP4 / AVI / MKV）、断点续传、任务进度实时可见。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>转码和打包都是<strong>分钟级长任务</strong>，全部丢进异步线程池 + 任务表，HTTP 线程绝不等 FFmpeg 跑完；大文件下载走 <code class="bg-gray-100 px-1 rounded">Accept-Ranges: bytes</code> + Range 分块，手机断网重连能接着下，而不是从头再来一遍。</p>
+                </div>
 
-<span class="text-pink-400">export default</span> {
-  <span class="text-green-400">name</span>: <span class="text-yellow-300">'VideoPlayer'</span>,
-  <span class="text-green-400">props</span>: {
-    <span class="text-green-400">streamInfo</span>: Object
-  },
-  <span class="text-pink-400">setup</span>(props) {
-    <span class="text-pink-400">const</span> videoElement = ref(<span class="text-pink-400">null</span>);
-    <span class="text-pink-400">let</span> player = <span class="text-pink-400">null</span>;
+                <!-- 流媒体底座 -->
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-server text-purple-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">4. 流媒体底座（FFmpeg + ZLMediaKit）</h3>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            不做业务、只做「把流搬对」：FFmpeg 从摄像头拉 RTSP 并转码，ZLMediaKit 一次输入产出 WebRTC / FLV / HLS 三种出口，业务层只拿 URL。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>转码参数定死 <code class="bg-gray-100 px-1 rounded">-preset ultrafast -tune zerolatency -g 25</code>，牺牲一点压缩率换实时性；开启 <strong>GOP 缓存</strong>让新观众一秒内出画（而不是等下一个关键帧）；码率与分辨率相同的流<strong>复用同一个转码进程</strong>，避免每来一个观看者就复制一份 CPU 开销。</p>
+                </div>
+            </div>
 
-    <span class="text-pink-400">const</span> <span class="text-blue-300">isMobile</span> = () =&gt; {
-      <span class="text-pink-400">return</span> /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    };
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-blue-600"></i>实现：一套代码三档协议，按终端自动降级
+            </h2>
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    四类终端的兼容性差异是最大的坑：Safari 不认 FLV、部分安卓浏览器 WebRTC 不可用、老设备只吃 HLS。与其做四套播放器，不如把「选协议」做成一条<strong>能力探测 + 逐级降级</strong>的链：能 WebRTC 就用 WebRTC，不能就 FLV，再不能就 HLS，手机直接 HLS。
+                </p>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                    <pre><code class="language-js">/**
+ * 协议选择器：按「终端类型 + 浏览器能力」逐级降级
+ * 手机：HLS（兼容优先，延迟 3-5s 可接受）
+ * PC  ：WebRTC（&lt;500ms）→ FLV（1-2s）→ HLS（兜底）
+ */
+const pickProtocol = (stream, ua = navigator.userAgent) =&gt; {
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+  if (isMobile) return { protocol: 'hls', url: stream.hlsUrl };
 
-    <span class="text-pink-400">const</span> <span class="text-blue-300">initPlayer</span> = () =&gt; {
-      <span class="text-pink-400">const</span> { webrtcUrl, hlsUrl, flvUrl } = props.streamInfo;
-      
-      <span class="text-gray-500">// 手机端优先使用 HLS</span>
-      <span class="text-pink-400">if</span> (isMobile()) {
-        playHLS(hlsUrl);
-      } <span class="text-pink-400">else</span> {
-        <span class="text-gray-500">// PC 端优先 WebRTC，降级 FLV，再降级 HLS</span>
-        <span class="text-pink-400">if</span> (webrtcUrl) {
-          playWebRTC(webrtcUrl);
-        } <span class="text-pink-400">else if</span> (flvUrl &amp;&amp; FlvJs.isSupported()) {
-          playFLV(flvUrl);
-        } <span class="text-pink-400">else</span> {
-          playHLS(hlsUrl);
-        }
-      }
-    };
-
-    <span class="text-pink-400">const</span> <span class="text-blue-300">playHLS</span> = (url) =&gt; {
-      <span class="text-pink-400">if</span> (Hls.isSupported()) {
-        player = <span class="text-pink-400">new</span> Hls();
-        player.loadSource(url);
-        player.attachMedia(videoElement.value);
-      } <span class="text-pink-400">else if</span> (videoElement.value.canPlayType(<span class="text-yellow-300">'application/vnd.apple.mpegurl'</span>)) {
-        videoElement.value.src = url;
-      }
-    };
-
-    <span class="text-pink-400">const</span> <span class="text-blue-300">playFLV</span> = (url) =&gt; {
-      player = FlvJs.createPlayer({
-        <span class="text-green-400">type</span>: <span class="text-yellow-300">'flv'</span>,
-        <span class="text-green-400">url</span>: url,
-        <span class="text-green-400">isLive</span>: <span class="text-pink-400">true</span>,
-        <span class="text-green-400">cors</span>: <span class="text-pink-400">true</span>
-      });
-      player.attachMediaElement(videoElement.value);
-      player.load();
-    };
-
-    onMounted(() =&gt; {
-      initPlayer();
-    });
-
-    <span class="text-pink-400">return</span> { videoElement };
-  }
+  if (window.RTCPeerConnection) return { protocol: 'webrtc', url: stream.webrtcUrl };
+  if (flvjs.isSupported())      return { protocol: 'flv',    url: stream.flvUrl };
+  return { protocol: 'hls', url: stream.hlsUrl };   // 最后一道兜底
 };
-&lt;/<span class="text-pink-400">script</span>&gt;</pre>
-                    </div>
+
+/**
+ * 播放器挂载：一次只持有一个实例，切协议前必须销毁旧实例
+ * 否则同一个 &lt;video&gt; 上会叠加多个解码器，表现为内存暴涨 / 画面花屏
+ */
+const mount = (el, stream) =&gt; {
+  destroyPlayer();                       // 幂等清理
+  const { protocol, url } = pickProtocol(stream);
+  if (protocol === 'webrtc') return playWebRTC(el, url);
+  if (protocol === 'flv')    return playFLV(el, url);
+  return playHLS(el, url);
+};</code></pre>
                 </div>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-chart-line mr-2 text-blue-500"></i>性能优化方案
+                <i class="fas fa-circle-nodes mr-2 text-blue-600"></i>闭环：接入 → 分发 → 观看 → 回溯 → 取证
             </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white border border-gray-200 rounded-lg p-5">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-                        <i class="fas fa-broadcast-tower mr-3 text-green-500"></i>服务器端优化
-                    </h3>
-                    <div class="space-y-2 text-sm text-gray-600">
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                            <span><strong>ZLMediaKit 高效转发：</strong>单路 RTSP 输入，多路协议输出</span>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                            <span><strong>GOP 缓存：</strong>缓存关键帧，新用户秒开</span>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                            <span><strong>自适应码率：</strong>根据网络自动切换清晰度</span>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-green-500 mt-0.5 mr-2"></i>
-                            <span><strong>连接复用：</strong>相同流复用同一转码进程</span>
-                        </div>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-6">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div class="bg-slate-600 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-video text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">摄像头接入</p>
                     </div>
-                </div>
-                <div class="bg-white border border-gray-200 rounded-lg p-5">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-                        <i class="fas fa-film mr-3 text-purple-500"></i>FFmpeg 转码优化
-                    </h3>
-                    <div class="space-y-2 text-sm text-gray-600">
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-purple-500 mt-0.5 mr-2"></i>
-                            <span><strong>ultrafast 预设：</strong>降低编码复杂度，提升转码速度</span>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-purple-500 mt-0.5 mr-2"></i>
-                            <span><strong>zerolatency tune：</strong>优化实时性，降低延迟</span>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-purple-500 mt-0.5 mr-2"></i>
-                            <span><strong>硬件加速：</strong>支持 NVIDIA NVENC / Intel QSV</span>
-                        </div>
-                        <div class="flex items-start">
-                            <i class="fas fa-check-circle text-purple-500 mt-0.5 mr-2"></i>
-                            <span><strong>合理 GOP：</strong>GOP=25，平衡画质与延迟</span>
-                        </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-purple-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-film text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">FFmpeg 拉流 / 转码</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-indigo-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-broadcast-tower text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">ZLMediaKit 分发</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-blue-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-play-circle text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">观看（三档协议）</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-teal-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-hdd text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">录制归档</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-green-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-file-export text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">回放 / 下载取证</p>
                     </div>
                 </div>
             </div>
 
-            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-tachometer-alt mr-2 text-blue-500"></i>性能指标
-            </h2>
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    闭环的关键在于：<strong>「看直播」和「看录像」共用同一份归档</strong>。录像不是直播之外的另一条链路，而是同一条流的落盘结果，所以回放和下载永远不会「和刚才看到的不一样」。
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                    <li><strong>接入 → 分发：</strong>RTSP 只拉一次，分发给 N 个观看者，摄像头连接数恒定；</li>
+                    <li><strong>分发 → 观看：</strong>按终端能力选 WebRTC / FLV / HLS，失败自动降级不黑屏；</li>
+                    <li><strong>观看 → 归档：</strong>录制按时间段切片成 MP4，元数据入库并打上告警标记；</li>
+                    <li><strong>归档 → 取证：</strong>回放按时间轴定位，下载可打包、转码、断点续传，链接带签名有效期。</li>
+                </ul>
+            </div>
 
-            <div class="overflow-x-auto mb-8">
-                <table class="min-w-full bg-white border border-gray-200 rounded-lg">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">指标项</th>
-                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">普通服务器 (4C8G)</th>
-                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700 border-b">说明</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-4 py-3 text-sm font-medium text-gray-900">支持摄像头路数</td>
-                            <td class="px-4 py-3 text-sm text-green-600 font-semibold">50-100 路</td>
-                            <td class="px-4 py-3 text-sm text-gray-600">取决于码率和分辨率</td>
-                        </tr>
-                        <tr class="bg-gray-50">
-                            <td class="px-4 py-3 text-sm font-medium text-gray-900">并发观看人数</td>
-                            <td class="px-4 py-3 text-sm text-green-600 font-semibold">1000+ 人</td>
-                            <td class="px-4 py-3 text-sm text-gray-600">ZLMediaKit 高效转发</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 text-sm font-medium text-gray-900">WebRTC 延迟</td>
-                            <td class="px-4 py-3 text-sm text-blue-600 font-semibold">&lt; 500ms</td>
-                            <td class="px-4 py-3 text-sm text-gray-600">PC 端低延迟预览</td>
-                        </tr>
-                        <tr class="bg-gray-50">
-                            <td class="px-4 py-3 text-sm font-medium text-gray-900">HLS 延迟</td>
-                            <td class="px-4 py-3 text-sm text-blue-600 font-semibold">3-5s</td>
-                            <td class="px-4 py-3 text-sm text-gray-600">手机端兼容播放</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3 text-sm font-medium text-gray-900">CPU 使用率</td>
-                            <td class="px-4 py-3 text-sm text-orange-600 font-semibold">60-80%</td>
-                            <td class="px-4 py-3 text-sm text-gray-600">100 路 720P 转码</td>
-                        </tr>
-                        <tr class="bg-gray-50">
-                            <td class="px-4 py-3 text-sm font-medium text-gray-900">内存占用</td>
-                            <td class="px-4 py-3 text-sm text-orange-600 font-semibold">5-6G</td>
-                            <td class="px-4 py-3 text-sm text-gray-600">包含 GOP 缓存</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-2">
+                    <i class="fas fa-industry mr-2"></i>行业背景（一句话）
+                </h3>
+                <p class="text-gray-600 text-sm">
+                    园区、工地、仓储、门店的存量摄像头几乎全是 RTSP / ONVIF，出厂配套的客户端只在局域网能用，商用监控平台大多按路授权——几十上百路就是一笔持续的授权成本。开源自建的价值，就是把这笔「按路付费」变成「一台服务器的固定成本」。
+                </p>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
-                <i class="fas fa-list-check mr-2 text-blue-500"></i>核心优势
+                <i class="fas fa-list-check mr-2 text-blue-600"></i>关键点与结果
             </h2>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-hands-helping text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">开源方案</h4>
-                    <p class="text-sm opacity-90">FFmpeg + ZLMediaKit 完全开源</p>
-                </div>
-                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-bolt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">高性能</h4>
-                    <p class="text-sm opacity-90">单服务器支持 100+ 路摄像头</p>
+                    <i class="fas fa-hand-holding-usd text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">零授权成本</h4>
+                    <p class="text-sm opacity-90">FFmpeg + ZLMediaKit 全开源，摄像头路数不额外计费</p>
                 </div>
                 <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-mobile-alt text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">多端兼容</h4>
-                    <p class="text-sm opacity-90">PC 和手机同时访问</p>
+                    <i class="fas fa-server text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">单机 50–100 路</h4>
+                    <p class="text-sm opacity-90">4C8G 普通服务器，720P / 1–2Mbps 码率档</p>
                 </div>
-                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-random text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">多协议支持</h4>
-                    <p class="text-sm opacity-90">RTSP/RTMP/HLS/WebRTC</p>
-                </div>
-                <div class="bg-gradient-to-br from-pink-500 to-pink-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-clock text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">低延迟</h4>
-                    <p class="text-sm opacity-90">WebRTC 延迟 &lt; 500ms</p>
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-bolt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">WebRTC &lt; 500ms</h4>
+                    <p class="text-sm opacity-90">PC 端实时预览；FLV 1–2s 兜底、HLS 3–5s 兼容手机</p>
                 </div>
                 <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
-                    <i class="fas fa-cogs text-3xl mb-2 opacity-80"></i>
-                    <h4 class="font-bold mb-1">可扩展</h4>
-                    <p class="text-sm opacity-90">支持集群和负载均衡</p>
+                    <i class="fas fa-users text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">1000+ 并发观看</h4>
+                    <p class="text-sm opacity-90">一路输入多协议分发，不放大摄像头侧连接</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-mobile-alt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">一套代码多端</h4>
+                    <p class="text-sm opacity-90">协议按能力自动选，PC 16 分屏、手机 4 分屏</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-clock-rotate-left text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">录像可回溯</h4>
+                    <p class="text-sm opacity-90">元数据入库 + 告警标记，按时间轴定位而非翻文件</p>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/live-streaming.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">实时直播</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/playback.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">录像回放</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/video-surveillance/download.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">视频下载</a>
+        </div>
+    </nav>
 </body>
 </html>

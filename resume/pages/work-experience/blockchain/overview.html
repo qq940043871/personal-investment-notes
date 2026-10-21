@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>区块链项目 · 项目总览</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .code-block { background: #1e293b; color: #e2e8f0; font-family: Consolas, Monaco, monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+        .mod-card { transition: all .25s ease; }
+        .mod-card:hover { box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-link mr-1"></i>区块链项目</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/overview.html')" class="px-3 py-1 rounded-full bg-emerald-600 text-white font-medium">总览</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/node-deployment.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">节点部署</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/wallet-integration.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">钱包与充提</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/reconciliation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">余额对账</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <!-- Hero -->
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-cubes mr-3 text-emerald-600"></i>数字资产充提与对账 · 项目总览
+                </h1>
+                <p class="text-gray-500 mb-4">Crypto Deposit &amp; Withdrawal — 自建 BTC / ETH 节点 + 钱包对接 + 日终余额校合，让平台能安全地收发数字资产并算得清账。</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full"><i class="fas fa-user-tie mr-1"></i>后端开发（节点与钱包）</span>
+                    <span class="bg-orange-50 text-orange-700 px-3 py-1 rounded-full"><i class="fas fa-bitcoin-sign mr-1"></i>BTC / Omni / ETH</span>
+                    <span class="bg-purple-50 text-purple-700 px-3 py-1 rounded-full"><i class="fas fa-code mr-1"></i>JSON-RPC</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-scale-balanced mr-1"></i>按区块高度对账</span>
+                </div>
+            </div>
+
+            <!-- 项目背景 -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                <p class="text-amber-800 text-sm">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>项目背景：</strong>平台要支持数字资产充值 / 提币，但当时既没有现成的托管服务，也找不到能覆盖「多币种 + 对账」的通用组件。自建这套东西真正的难点是三处：<strong>① 币种异构</strong>——BTC、Omni-USDT、ETH 是三套完全不同的 RPC 与地址 / 私钥格式，余额语义也不一样（UTXO vs 账户模型）；<strong>② 到账语义</strong>——链上「已广播」不等于「已到账」，必须等确认数，还要考虑分叉回滚；<strong>③ 账要算得平</strong>——系统里的余额是按业务流水累加出来的，链上余额是节点给的，两者必须每天对得上，对不上要能定位到哪一笔。
+                </p>
+            </div>
+
+            <!-- 我的角色 -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800 text-sm">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong><strong>后端开发，负责节点侧与钱包侧的全部对接</strong>：节点编译部署与运维、JSON-RPC 封装、地址与私钥处理、区块监听与入账、提币广播与状态回写、日终余额校合。关键判断有两个：① <strong>不依赖第三方托管接口</strong>，自己跑全节点——托管方一旦停服，用户的币就取不出来，这是不能接受的单点；② <strong>账务推进只认「区块高度游标」</strong>，不认「轮询时的时间窗」——按时间窗扫会漏块，按高度推进才能保证「一块都不丢」，且重启后能精确续扫。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-emerald-600"></i>四个能力模块
+            </h2>
+
+            <div class="space-y-6 mb-8">
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-orange-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-server text-orange-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">1. 节点部署与运维</h3>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            BTC 从源码编译（依赖 Berkeley DB 4.8 单独编译、指定 prefix），ETH 用 Geth，都先在测试网跑通再上主网；节点以无图形界面的服务端模式常驻。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>BTC 编译最容易卡在 <strong>BDB 4.8</strong> 上——系统自带的是 5.x/6.x，钱包功能必须用 4.8，所以要单独下载编译并用 <code class="bg-gray-100 px-1 rounded">--with-incompatible-bdb</code> 指定。这类环境问题在文档里往往一句带过，但实际会卡掉一整天。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-emerald-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-wallet text-emerald-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">2. 地址、私钥与钱包</h3>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            为每个用户生成独立充值地址；私钥以 <strong>WIF（Base58Check）</strong> 形式保存，兼容压缩 / 非压缩公钥；ETH 侧对应用户地址与 keystore。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>地址与私钥的<strong>版本前缀决定一切</strong>：<code class="bg-gray-100 px-1 rounded">0x00</code> 是主网地址（1 开头）、<code class="bg-gray-100 px-1 rounded">0x05</code> 是 P2SH（3 开头）、<code class="bg-gray-100 px-1 rounded">0x6F</code> 是测试网（m/n 开头）、<code class="bg-gray-100 px-1 rounded">0x80</code> 是私钥 WIF（5 / K / L 开头）。测试网私钥误用于主网、或压缩标记漏写，产出的地址就是「钱打进去取不出来」的地址。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-arrow-down-wide-short text-blue-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">3. 充值监听与提币</h3>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            监听线程按区块高度逐块扫描，命中平台地址即生成充值流水；确认数达标后才上账。提币走节点广播，状态与手续费回写核心系统。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>监听线程必须<strong>带 while 循环重试</strong>——调 JSON-RPC 取区块时网络抖动很常见，一次失败就退出的话，这个高度就永远漏了。另外 <strong>Omni 与 BTC 共用同一条链</strong>，扫块时如果不把 Omni 的交易过滤掉，会被误判成一笔普通 BTC 充值。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-scale-balanced text-purple-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">4. 日终余额校合</h3>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            账户余额按「地址 + 区块高度」记账；每天用「期初 + 充值 − 提现 − 手续费 = 期末」对链上余额校一遍，差额不为 0 即不通过，再按明细逐笔定位。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>余额必须<strong>带高度维度</strong>，否则「多少高度时的余额」说不清，链上一回滚就对不上。对账不是「跑个总账看平不平」，而是<strong>用明细重算一遍系统余额，再和链上余额比</strong>——只有这样才能在差额出现时直接指到具体交易。</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-emerald-600"></i>实现：按高度推进的区块游标
+            </h2>
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    整个系统的「正确性锚点」就是一件事：<strong>扫到哪个高度了，必须持久化</strong>。有了这个游标，重启能续扫、漏块能补扫、对账能复算——所有后续逻辑都建立在它上面。
+                </p>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                    <pre><code class="language-java">/**
+ * 区块监听：从游标高度逐块推进，RPC 失败不退出、只重试
+ * 关键约束：游标只在「本块处理完」之后才前移，否则会漏块
+ */
+public void listen(String chain) {
+    long cursor = cursorRepo.get(chain);          // 已处理到的区块高度，持久化
+
+    while (running) {
+        try {
+            long tip = rpc.call("getblockcount", Long.class);
+            while (cursor &lt; tip) {
+                String hash  = rpc.call("getblockhash", String.class, cursor + 1);
+                Block  block = rpc.call("getblock", Block.class, hash, 2);
+
+                for (Tx tx : block.getTx()) {
+                    // Omni 与 BTC 同链：先按协议层过滤，避免把 Omni 交易当成 BTC 充值
+                    if (isOmniTx(tx) &amp;&amp; !"OMNI".equals(chain)) continue;
+                    for (Out out : tx.getVout()) {
+                        if (isPlatformAddress(out.getScriptPubKey())) {
+                            depositService.record(chain, out, cursor + 1);   // 幂等：按 txid + vout 去重
+                        }
+                    }
+                }
+
+                cursorRepo.save(chain, ++cursor);      // 本块处理完才前移
+            }
+        } catch (Exception e) {
+            log.warn("区块拉取失败，稍后重试: {}", e.getMessage());
+        }
+        sleepQuietly(3000);                            // 不退出循环，避免该高度永久丢失
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-circle-nodes mr-2 text-emerald-600"></i>闭环：地址 → 到账 → 上账 → 提币 → 对账
+            </h2>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-6">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div class="bg-slate-600 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-key text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">生成充值地址</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-orange-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-cubes text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">扫块监听入账</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-amber-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-check-double text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">确认数达标</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-emerald-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-arrow-up text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">提币广播</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-blue-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-rotate text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">状态与手续费回写</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-purple-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-scale-balanced text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">日终校合</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    闭环里最容易漏掉的是<strong>倒数第二环：状态与手续费的「回写」</strong>。提币的最终状态（成功 / 失败）与真实手续费都不是平台自己算出来的，而是从链上查回来的——不回写，系统余额就会和链上余额慢慢裂开一条缝，最后变成对不上账的差额。
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                    <li><strong>地址：</strong>一用户一地址，私钥 WIF 加密保存，版本前缀严格区分网络；</li>
+                    <li><strong>到账：</strong>按高度逐块扫，txid + vout 幂等去重，确认数达标才上账；</li>
+                    <li><strong>提币：</strong>广播后起独立线程查状态，把 results 与 fee 回写核心；</li>
+                    <li><strong>对账：</strong>明细重算系统余额，按高度与链上余额比对，差额落到交易级。</li>
+                </ul>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-2">
+                    <i class="fas fa-industry mr-2"></i>行业背景（一句话）
+                </h3>
+                <p class="text-gray-600 text-sm">
+                    数字资产充提在这个行业里的地位很微妙：它<strong>不是核心业务，但一旦出错就是「钱」的事故</strong>。所以主流方案只有两条——接第三方托管（省事但受制于人）或自建节点（可控但要自己扛运维与对账）。我这段经历走的是后者。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-emerald-600"></i>关键点与结果
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-coins text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">三类资产打通</h4>
+                    <p class="text-sm opacity-90">BTC / Omni-USDT / ETH 三套 RPC 统一封装</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-server text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">不依赖托管方</h4>
+                    <p class="text-sm opacity-90">自建全节点，没有「第三方停服币取不出」的单点</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-list-ol text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">一块不丢</h4>
+                    <p class="text-sm opacity-90">高度游标持久化 + 失败重试，重启可精确续扫</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-scale-balanced text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">对账能定位</h4>
+                    <p class="text-sm opacity-90">明细重算 + 差额下钻到 txid 级</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-filter text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">同链不混淆</h4>
+                    <p class="text-sm opacity-90">Omni 与 BTC 共链，扫块时按协议层过滤</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-key text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">私钥可控</h4>
+                    <p class="text-sm opacity-90">WIF 版本前缀 + 压缩标记严格校验</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/node-deployment.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">节点部署</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/wallet-integration.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">钱包与充提</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/reconciliation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">余额对账</a>
+        </div>
+    </nav>
+</body>
+</html>

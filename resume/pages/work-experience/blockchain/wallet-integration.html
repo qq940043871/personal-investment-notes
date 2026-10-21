@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>钱包与充提 · 区块链项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .code-block { background: #1e293b; color: #e2e8f0; font-family: Consolas, Monaco, monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+        .mod-card { transition: all .25s ease; }
+        .mod-card:hover { box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-link mr-1"></i>区块链项目</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/node-deployment.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">节点部署</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/wallet-integration.html')" class="px-3 py-1 rounded-full bg-emerald-600 text-white font-medium">钱包与充提</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/reconciliation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">余额对账</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-wallet mr-3 text-emerald-600"></i>钱包与充提
+                </h1>
+                <p class="text-gray-500 mb-4">Wallet &amp; Deposit/Withdraw — 一用户一地址、私钥严格编码、扫块入账、确认数达标才上账</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full"><i class="fas fa-key mr-1"></i>WIF / Base58Check</span>
+                    <span class="bg-orange-50 text-orange-700 px-3 py-1 rounded-full"><i class="fas fa-bitcoin-sign mr-1"></i>Omni 代币</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-arrow-down mr-1"></i>充值监听</span>
+                    <span class="bg-purple-50 text-purple-700 px-3 py-1 rounded-full"><i class="fas fa-arrow-up mr-1"></i>提币广播</span>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                <p class="text-amber-800 text-sm">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>场景背景：</strong>钱包这一层看起来只是「生成地址、发交易」，但它<strong>是整个系统里一旦出错就不可逆的地方</strong>。地址生成错一个字节，用户打进去的币就永远取不出来；私钥编码时压缩标记漏写，导出的 WIF 在别的钱包里会推导出另一个地址；扫块时没做好去重，同一笔充值会重复上账。这些错误都不会立刻报错，只会在几周后的对账里变成一个查不清的差额。
+                </p>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800 text-sm">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong>钱包与充提链路的<strong>设计与实现</strong>。三条硬约束：① <strong>地址与私钥的编码必须显式带网络参数</strong>，不做「默认主网」这种隐式假设；② <strong>入账幂等键是 txid + vout</strong>，同一笔输出只允许上账一次；③ <strong>提币状态与手续费以链上结果为准回写</strong>，平台自己算的手续费只能当预估值。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-emerald-600"></i>四个模块
+            </h2>
+
+            <div class="space-y-6 mb-8">
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-emerald-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-key text-emerald-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">1. 地址与私钥（WIF 编码）</h3>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            每个用户分配一个独立充值地址；私钥以 <strong>WIF</strong>（Base58Check）形式导出，兼容压缩公钥（末尾补 <code class="bg-gray-100 px-1 rounded">0x01</code>）。ETH 侧对应 keystore 与地址。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>Base58Check 的结果由<strong>版本前缀决定</strong>：<code class="bg-gray-100 px-1 rounded">0x00</code> → 主网地址（1 开头）、<code class="bg-gray-100 px-1 rounded">0x05</code> → P2SH（3 开头）、<code class="bg-gray-100 px-1 rounded">0x6F</code> → 测试网（m/n 开头）、<code class="bg-gray-100 px-1 rounded">0x80</code> → 私钥 WIF（5 / K / L 开头）、<code class="bg-gray-100 px-1 rounded">0x0142</code> → BIP38 加密私钥（6P 开头）。<strong>前缀错了不会报错，只会生成一个别的网络上的合法地址。</strong></p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-orange-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-bitcoin-sign text-orange-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">2. Omni 代币（USDT 那一类）</h3>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            代币发行、查询属性、查余额、发起转账都通过 Omni 的 RPC 完成（如 <code class="bg-gray-100 px-1 rounded">omni_sendissuancefixed</code>、<code class="bg-gray-100 px-1 rounded">omni_getbalance</code>、<code class="bg-gray-100 px-1 rounded">omni_listproperties</code>），底层仍是 BTC 交易。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>Omni 的资产靠 <strong>property id</strong> 区分：<code class="bg-gray-100 px-1 rounded">1</code> 是 Omni 本体、<code class="bg-gray-100 px-1 rounded">2</code> 是测试 Omni，<code class="bg-gray-100 px-1 rounded">2147483651</code> 对应 BTC，自建测试代币用的是 <code class="bg-gray-100 px-1 rounded">2147483652</code>。<strong>查余额必须同时给地址和 property id</strong>——只给地址会拿到默认资产，看起来「余额是对的」，其实查错了币。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-arrow-down text-blue-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">3. 充值监听与入账</h3>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            扫块时把输出脚本与平台地址表比对，命中即生成「待确认」充值；确认数达到阈值再转为「已上账」，用户余额才变。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>「广播成功」和「到账」必须<strong>分成两个状态</strong>。0 确认就上账，遇到链上重组（回滚）时用户已经拿这笔钱去交易了，平台只能自担损失。确认数阈值就是用来买这段时间的安全边际的。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-arrow-up text-purple-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">4. 提币、归集与状态回写</h3>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            提币签名并广播后写回 txid；散落在各用户地址上的币按策略归集到主钱包；最终状态与真实手续费从链上查回来再更新。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>回写是<strong>一个独立线程干的事，不能挂在提币请求里等</strong>。一笔提币从广播到确认可能几分钟也可能几小时，请求线程等不起；而状态不回写，系统余额就会和链上余额慢慢裂开。</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-emerald-600"></i>实现：私钥编码与幂等入账
+            </h2>
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    两段代码对应两个最容易出错的点：私钥编码（压缩标记不能漏）与入账幂等（同一 txid + vout 只能成功一次）。
+                </p>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                    <pre><code class="language-java">/** WIF 编码：32 字节私钥 + 压缩标记(0x01) + 版本前缀(0x80)，再做 Base58Check */
+private static byte[] encode(byte[] keyBytes, boolean compressed) {
+    Preconditions.checkArgument(keyBytes.length == 32, "私钥必须是 32 字节");
+    if (!compressed) return keyBytes;               // 非压缩：原样 32 字节
+
+    byte[] out = new byte[33];                      // 压缩：末尾补 0x01
+    System.arraycopy(keyBytes, 0, out, 0, 32);
+    out[32] = 1;
+    return out;
+}
+
+/** 导出 WIF：网络参数显式传入，绝不用「默认主网」 */
+public DumpedPrivateKey exportWif(ECKey key, NetworkParameters params) {
+    return new DumpedPrivateKey(params, key.getPrivKeyBytes(), key.isCompressed());
+}</code></pre>
+                </div>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto mt-4">
+                    <pre><code class="language-java">/**
+ * 充值入账：幂等键 = txid + vout
+ * 同一笔输出无论被扫到几次（重扫、补扫、重启后重叠），只会成功一次
+ */
+public void record(String chain, TxOut out, long height) {
+    String key = chain + ":" + out.getTxid() + ":" + out.getN();
+
+    if (!dedupRepo.tryLock(key)) return;             // 已处理过，直接跳过
+
+    Deposit d = Deposit.builder()
+        .chain(chain).txid(out.getTxid()).vout(out.getN())
+        .address(out.getAddress()).amount(out.getValue())
+        .height(height).status(DepositStatus.PENDING)   // 待确认，不是已到账
+        .build();
+    depositRepo.save(d);
+}</code></pre>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-circle-nodes mr-2 text-emerald-600"></i>闭环：一笔充值从链上到账上
+            </h2>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-6">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div class="bg-slate-600 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-qrcode text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">用户充值到专属地址</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-orange-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-magnifying-glass text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">扫块命中地址</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-amber-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-hourglass-half text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">待确认（等 N 个块）</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-emerald-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-check text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">确认达标上账</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-blue-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-boxes-stacked text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">归集到主钱包</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    这条链上「待确认」这个状态不是多余的中间态，而是<strong>整条资金链路的安全垫</strong>：它把「链上已经发生但还可能被回滚」的时间窗，和「平台已经认账」这件事严格隔开。
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                    <li><strong>地址：</strong>一用户一址，私钥 WIF 加密存储，网络参数显式；</li>
+                    <li><strong>入账：</strong>txid + vout 幂等，重复扫到不重复记；</li>
+                    <li><strong>确认：</strong>PENDING → CREDITED 由确认数驱动，不由时间驱动；</li>
+                    <li><strong>归集：</strong>零散余额汇入主钱包，为提币提供流动性。</li>
+                </ul>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-2">
+                    <i class="fas fa-industry mr-2"></i>行业背景（一句话）
+                </h3>
+                <p class="text-gray-600 text-sm">
+                    钱包对接在行业里的分工很明确：<strong>能自己控制的只有私钥，其余的都要以链上为准</strong>。平台算的余额、预估的手续费、以为的状态，都只是「本地视图」，最终解释权在链上——这也是所有对账工作存在的原因。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-emerald-600"></i>关键点与结果
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-key text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">编码显式化</h4>
+                    <p class="text-sm opacity-90">网络前缀 + 压缩标记都传参，不吃默认值</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-coins text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">代币按 ID 认</h4>
+                    <p class="text-sm opacity-90">地址 + property id 才查得对余额</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-fingerprint text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">入账幂等</h4>
+                    <p class="text-sm opacity-90">txid + vout 唯一，重扫不会重复上账</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-hourglass-half text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">确认才算数</h4>
+                    <p class="text-sm opacity-90">防链上回滚，把安全边际做成状态</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-rotate text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">状态以链上为准</h4>
+                    <p class="text-sm opacity-90">结果与手续费查回来回写，不自算自认</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-boxes-stacked text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">归集保流动性</h4>
+                    <p class="text-sm opacity-90">零散余额汇主钱包，提币不断供</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/reconciliation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">余额对账</a>
+            <a href="#" onclick="parent.loadPage('pages/work-experience/blockchain/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">回到总览</a>
+        </div>
+    </nav>
+</body>
+</html>
