@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多层连接池配置流程图 - B2B 大宗商品交易平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        svg text { font-family: ui-sans-serif, system-ui, "Microsoft YaHei", sans-serif; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+<div class="max-w-7xl mx-auto p-6">
+
+    <!-- 头部 -->
+    <div class="bg-white rounded-lg shadow-md p-8 mb-6">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">
+            <i class="fas fa-diagram-project mr-3 text-blue-600"></i>多层连接池配置流程图
+        </h1>
+        <p class="text-gray-500 mb-4">每一层连接池的「参数 / 建议值 / 容量公式 / 达到效果」，标注在请求链路的对应位置上。</p>
+        <div class="flex flex-wrap gap-4 text-sm">
+            <span><span class="legend-dot bg-blue-500"></span> 网关层</span>
+            <span><span class="legend-dot bg-purple-500"></span> 数据中心层</span>
+            <span><span class="legend-dot bg-green-500"></span> 后端层</span>
+            <span><span class="legend-dot bg-orange-500"></span> 数据层</span>
+            <span class="text-gray-400 ml-auto"><i class="fas fa-arrows-down mr-1"></i>箭头旁 = 该跳的连接池配置</span>
+        </div>
+    </div>
+
+    <!-- 流程图 -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-6 overflow-x-auto">
+        <svg viewBox="0 0 1160 920" width="100%" xmlns="http://www.w3.org/2000/svg" style="min-width: 860px;">
+            <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                    <path d="M0,0 L8,3 L0,6 Z" fill="#64748b" />
+                </marker>
+            </defs>
+
+            <!-- ============ 连线（先画，节点后盖） ============ -->
+            <!-- 客户端 → 网关 -->
+            <line x1="580" y1="84" x2="580" y2="148" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+            <text x="592" y="120" font-size="12" fill="#334155" text-anchor="start">HTTP · Tomcat maxThreads=300</text>
+
+            <!-- 网关 → dataShare -->
+            <line x1="380" y1="340" x2="380" y2="438" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+            <text x="392" y="394" font-size="12" fill="#334155" text-anchor="start">DS 协议 · DS 池 maxCon=200~300</text>
+
+            <!-- 网关 → 直连后端 -->
+            <line x1="880" y1="340" x2="880" y2="438" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+            <text x="892" y="394" font-size="12" fill="#334155" text-anchor="start">直连 · 21 后端池 maxCon=50~200</text>
+
+            <!-- dataShare → C撮合 -->
+            <line x1="190" y1="640" x2="190" y2="708" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+            <text x="202" y="678" font-size="12" fill="#334155" text-anchor="start">socket · SOCKET_MAX=200~300</text>
+
+            <!-- dataShare → 微服务 -->
+            <line x1="430" y1="640" x2="430" y2="708" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+            <text x="442" y="678" font-size="12" fill="#334155" text-anchor="start">Hessian · http.maxConnections=200</text>
+
+            <!-- dataShare → Redis -->
+            <line x1="650" y1="640" x2="650" y2="708" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+            <text x="662" y="678" font-size="12" fill="#334155" text-anchor="start">Redis · MaxTotal=300</text>
+
+            <!-- 微服务 → DB -->
+            <line x1="430" y1="794" x2="430" y2="858" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)" />
+            <text x="442" y="830" font-size="12" fill="#334155" text-anchor="start">JDBC · DB 连接池（按需）</text>
+
+            <!-- ============ 节点 ============ -->
+            <!-- 客户端 -->
+            <rect x="430" y="20" width="300" height="64" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5" />
+            <text x="580" y="46" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle">客户端 / 压测端</text>
+            <text x="580" y="68" font-size="12" fill="#475569" text-anchor="middle">App · 小程序 · JMeter</text>
+
+            <!-- 网关 -->
+            <rect x="150" y="150" width="860" height="190" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" />
+            <text x="580" y="178" font-size="16" font-weight="bold" fill="#1e40af" text-anchor="middle">网关 midservice（Tomcat）</text>
+            <text x="174" y="206" font-size="13" fill="#1e3a8a" text-anchor="start">◆ DS 客户端池　maxCon = 200~300　（并发 = maxCon，TPS = maxCon / RT）</text>
+            <text x="174" y="232" font-size="13" fill="#1e3a8a" text-anchor="start">◆ 21 个后端池　maxCon = 50~200　（撮合/资金 100~200，查询 50）</text>
+            <text x="174" y="258" font-size="13" fill="#1e3a8a" text-anchor="start">◆ 本地 Redis　（无独立池参数，走 RedisClient）</text>
+            <text x="174" y="284" font-size="12" fill="#64748b" text-anchor="start">◆ Tomcat maxThreads = 300（同步模型下的第 1 跳硬顶，异步化后可释放）</text>
+            <text x="174" y="306" font-size="12" fill="#b91c1c" text-anchor="start">⚠ 裸 Integer 无默认值的池（Cxgp/Xht/Plzg 等）必须显式配置，否则 NPE</text>
+
+            <!-- dataShare -->
+            <rect x="90" y="440" width="580" height="200" rx="10" fill="#faf5ff" stroke="#a855f7" stroke-width="2" />
+            <text x="380" y="468" font-size="16" font-weight="bold" fill="#6b21a8" text-anchor="middle">dataShare 数据中心（NIO）</text>
+            <text x="114" y="496" font-size="13" fill="#581c87" text-anchor="start">◆ 后端 socket 池　SOCKET_MAX = 200~300（撮合）</text>
+            <text x="114" y="522" font-size="13" fill="#581c87" text-anchor="start">◆ Hessian 连接　http.maxConnections = 200（默认仅 5！）</text>
+            <text x="114" y="548" font-size="13" fill="#581c87" text-anchor="start">◆ Redis 池　MaxTotal = 300 / MaxIdle = 50</text>
+            <text x="114" y="574" font-size="12" fill="#64748b" text-anchor="start">◆ SOCKET_INIT = MAX 的 20%（预热）；maxWaitMillis ≥ 后端 RT P99</text>
+            <text x="114" y="600" font-size="12" fill="#b91c1c" text-anchor="start">⚠ Redis 参数默认空字符串，漏配即 Integer.valueOf("") NPE</text>
+
+            <!-- 直连后端 -->
+            <rect x="750" y="440" width="260" height="130" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" />
+            <text x="880" y="470" font-size="14" font-weight="bold" fill="#1e40af" text-anchor="middle">直连后端</text>
+            <text x="880" y="500" font-size="12" fill="#1e3a8a" text-anchor="middle">T9 / 资金 / 存管</text>
+            <text x="880" y="530" font-size="12" fill="#1e3a8a" text-anchor="middle">（midservice 直连，不经 DS）</text>
+
+            <!-- 后端三节点 -->
+            <rect x="90" y="710" width="200" height="84" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" />
+            <text x="190" y="746" font-size="15" font-weight="bold" fill="#166534" text-anchor="middle">C 撮合引擎</text>
+            <text x="190" y="770" font-size="12" fill="#15803d" text-anchor="middle">内存撮合（CPU 密集）</text>
+
+            <rect x="330" y="710" width="200" height="84" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" />
+            <text x="430" y="746" font-size="15" font-weight="bold" fill="#166534" text-anchor="middle">微服务（Hessian）</text>
+            <text x="430" y="770" font-size="12" fill="#15803d" text-anchor="middle">内部查 DB（长 RT）</text>
+
+            <rect x="570" y="710" width="160" height="84" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2" />
+            <text x="650" y="746" font-size="15" font-weight="bold" fill="#166534" text-anchor="middle">Redis</text>
+            <text x="650" y="770" font-size="12" fill="#15803d" text-anchor="middle">共享缓存 / 锁</text>
+
+            <!-- DB -->
+            <rect x="330" y="860" width="200" height="56" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2" />
+            <text x="430" y="894" font-size="15" font-weight="bold" fill="#9a3412" text-anchor="middle">MySQL</text>
+        </svg>
+    </div>
+
+    <!-- 配置对照 + 效果 -->
+    <div class="bg-white rounded-lg shadow-md p-8 mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-sliders mr-2 text-blue-600"></i>连接池配置对照表与达到效果</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-600">
+                        <th class="text-left px-4 py-2">跳（层 → 层）</th>
+                        <th class="text-left px-4 py-2">连接池</th>
+                        <th class="text-left px-4 py-2">参数</th>
+                        <th class="text-left px-4 py-2">建议值</th>
+                        <th class="text-left px-4 py-2">容量公式</th>
+                        <th class="text-left px-4 py-2">达到效果</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                    <tr class="border-t">
+                        <td class="px-4 py-3 font-medium">客户端 → 网关</td>
+                        <td class="px-4 py-3">Tomcat 线程池</td>
+                        <td class="px-4 py-3">maxThreads</td>
+                        <td class="px-4 py-3">300</td>
+                        <td class="px-4 py-3">并发 = 线程数</td>
+                        <td class="px-4 py-3">同步模型 300 并发；异步化后线程只做收发</td>
+                    </tr>
+                    <tr class="border-t bg-blue-50/40">
+                        <td class="px-4 py-3 font-medium">网关 → dataShare</td>
+                        <td class="px-4 py-3">DS 客户端池</td>
+                        <td class="px-4 py-3">maxCon / initCon / timeOut</td>
+                        <td class="px-4 py-3">200~300 / 20 / 3000</td>
+                        <td class="px-4 py-3">并发 = maxCon</td>
+                        <td class="px-4 py-3">网关对 dataShare 200~300 并发（第 2 跳硬顶）</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-3 font-medium">网关 → 直连后端</td>
+                        <td class="px-4 py-3">21 个后端池</td>
+                        <td class="px-4 py-3">maxCon / initCon / timeOut</td>
+                        <td class="px-4 py-3">50~200 / 10~20 / 1000~5000</td>
+                        <td class="px-4 py-3">并发 = 每池 maxCon</td>
+                        <td class="px-4 py-3">每池 50~200，合计 1050+（受 Tomcat 封顶）</td>
+                    </tr>
+                    <tr class="border-t bg-purple-50/40">
+                        <td class="px-4 py-3 font-medium">dataShare → C 撮合</td>
+                        <td class="px-4 py-3">后端 socket 池</td>
+                        <td class="px-4 py-3">SOCKET_MAX / SOCKET_INIT</td>
+                        <td class="px-4 py-3">200~300 / MAX×20%</td>
+                        <td class="px-4 py-3">并发 = SOCKET_MAX</td>
+                        <td class="px-4 py-3">撮合 200~300 并发（第 4 跳硬顶）</td>
+                    </tr>
+                    <tr class="border-t bg-purple-50/40">
+                        <td class="px-4 py-3 font-medium">dataShare → 微服务</td>
+                        <td class="px-4 py-3">Hessian HTTP 连接</td>
+                        <td class="px-4 py-3">http.maxConnections</td>
+                        <td class="px-4 py-3">200（默认仅 5）</td>
+                        <td class="px-4 py-3">并发 = 连接数（受 RT 拖累）</td>
+                        <td class="px-4 py-3">查 DB 长 RT 场景的头号瓶颈，先放开连接数</td>
+                    </tr>
+                    <tr class="border-t bg-purple-50/40">
+                        <td class="px-4 py-3 font-medium">dataShare → Redis</td>
+                        <td class="px-4 py-3">Redis 池</td>
+                        <td class="px-4 py-3">MaxTotal / MaxIdle</td>
+                        <td class="px-4 py-3">300 / 50</td>
+                        <td class="px-4 py-3">并发 = MaxTotal</td>
+                        <td class="px-4 py-3">Redis 300 连接（全局锁内借连接，耗尽归零）</td>
+                    </tr>
+                    <tr class="border-t">
+                        <td class="px-4 py-3 font-medium">微服务 → DB</td>
+                        <td class="px-4 py-3">DB 连接池</td>
+                        <td class="px-4 py-3">pool size</td>
+                        <td class="px-4 py-3">按并发×RT 评估</td>
+                        <td class="px-4 py-3">并发 = 池大小</td>
+                        <td class="px-4 py-3">DB 容量（第 5 跳，不在本次源码范围）</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 结论 -->
+    <div class="bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-3"><i class="fas fa-lightbulb mr-2 text-amber-500"></i>配置目标与效果总结</h2>
+        <ul class="text-sm text-gray-700 space-y-2">
+            <li><i class="fas fa-check text-green-500 mr-2"></i><strong>配置目标</strong>：让「连接池」不再是瓶颈——每一跳的池容量都 ≥ 该跳的「峰值并发 × RT」，把瓶颈从"池耗尽"转移到"后端真实处理能力"。</li>
+            <li><i class="fas fa-check text-green-500 mr-2"></i><strong>全链路并发</strong> = min(各跳容量)。配置到上述建议值后，理论瓶颈变为 dataShare 单 IO 线程（待实测）与 per-user 锁，而非连接池。</li>
+            <li><i class="fas fa-exclamation-triangle text-amber-500 mr-2"></i><strong>两个易漏项</strong>：① Hessian 的 <code class="bg-gray-100 px-1 rounded">http.maxConnections</code> 默认 5，查 DB 场景必须先调 200；② 裸 Integer 后端池 + Redis 参数无默认值，漏配直接 NPE 崩。</li>
+            <li><i class="fas fa-exclamation-triangle text-amber-500 mr-2"></i><strong>maxWaitMillis 原则</strong>：不盲目改小，取值 ≥ 后端 RT P99，作为「异常快速失败护栏」，正常流量靠 maxCon 匹配容量。</li>
+        </ul>
+    </div>
+
+</div>
+</body>
+</html>

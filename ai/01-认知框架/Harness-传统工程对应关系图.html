@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>传统工程 ↔ Harness 机制 · 对应关系图</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #EEF1F5;
+    font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", system-ui, sans-serif;
+    color: #243043;
+    -webkit-font-smoothing: antialiased;
+    padding: 26px 20px 40px;
+  }
+  .sheet {
+    width: 1740px; margin: 0 auto; background: #fff; border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(24,39,65,.10), 0 2px 6px rgba(24,39,65,.06);
+    padding: 26px 28px 22px;
+  }
+
+  .hd { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding-bottom: 14px; border-bottom: 2px solid #E7EBF1; }
+  .hd h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: .5px; color: #1B2739; }
+  .hd h1 em { font-style: normal; color: #2C6FBE; }
+  .hd .sub { margin-top: 8px; font-size: 13px; color: #5B6878; letter-spacing: .2px; }
+  .hd .sub i { font-style: normal; color: #98A3B2; padding: 0 5px; }
+
+  .legend { flex: 0 0 auto; border: 1px solid #E1E6ED; border-radius: 10px; background: #FAFBFD; padding: 10px 14px; }
+  .legend .lg-title { font-size: 11px; font-weight: 700; color: #8B96A5; letter-spacing: 1px; margin-bottom: 7px; }
+  .legend .lg-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .legend .k { font-size: 11.5px; color: #5B6878; }
+  .sw { display: inline-block; width: 26px; height: 13px; border-radius: 4px; }
+  .sw.grey { background: #F7F8FA; border: 1.4px solid #C9CED6; }
+  .sw.blue { background: #F3F8FE; border: 1.4px solid #7FAADC; }
+  .sw.amber { background: #FEFAF0; border: 1.4px solid #D8A94A; }
+
+  .band { display: flex; border: 1.6px solid var(--line); background: var(--bg); border-radius: 14px; padding: 13px 16px 14px 0; margin-top: 18px; }
+  .rail { flex: 0 0 54px; display: flex; align-items: center; justify-content: center; }
+  .rail i { font-style: normal; writing-mode: vertical-rl; font-size: 15px; font-weight: 800; color: #fff; background: var(--rail); border-radius: 8px; padding: 14px 8px; letter-spacing: 3px; box-shadow: 0 2px 6px rgba(0,0,0,.14); }
+  .bd { flex: 1; min-width: 0; }
+  .bd-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 11px; }
+  .bd-head h2 { margin: 0; font-size: 14.5px; font-weight: 800; color: var(--rail); letter-spacing: .3px; }
+  .bd-head p { margin: 0; font-size: 12px; color: #6B7787; }
+  .bd-head .pin { margin-left: auto; font-size: 11px; color: #8B96A5; border: 1px dashed var(--line); border-radius: 6px; padding: 3px 9px; background: #fff; }
+
+  .row { display: grid; gap: 12px; }
+  .c5 { grid-template-columns: repeat(5, 1fr); }
+  .c3 { grid-template-columns: repeat(3, 1fr); }
+
+  .card { position: relative; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 13px 14px 14px; }
+  .card h3 { margin: 0 0 9px; font-size: 15px; font-weight: 800; color: var(--ct); letter-spacing: .3px; }
+  .card .lbl { font-size: 10.5px; font-weight: 700; letter-spacing: .6px; }
+  .card .lbl.t { color: #8B96A5; }
+  .card .lbl.a { color: #2C6FBE; }
+  .card .txt { margin-top: 3px; font-size: 12.5px; color: #3C4959; line-height: 1.6; }
+  .card .txt.agent { color: #1B4E87; font-weight: 700; }
+  .card .gap { height: 9px; }
+
+  .c-grey  { --c:#C9CED6; --cbg:#FBFCFD; --ct:#48545F; }
+  .c-blue  { --c:#7FAADC; --cbg:#F3F8FE; --ct:#1B4E87; }
+  .c-amber { --c:#D8A94A; --cbg:#FEFAF0; --ct:#8A6208; }
+
+  /* 第二层：映射表 */
+  .map { display: grid; grid-template-columns: 1.02fr 44px 1.06fr 1fr; gap: 9px 12px; align-items: stretch; }
+  .mh { font-size: 11px; font-weight: 800; color: #8B96A5; letter-spacing: 1px; padding-bottom: 2px; }
+  .mh.r { color: #2C6FBE; }
+  .cell { border-radius: 8px; padding: 9px 12px; font-size: 12.5px; line-height: 1.45; display: flex; align-items: center; }
+  .cell.trad { background: #F7F8FA; border: 1.4px solid #DDE1E8; color: #3C4959; font-weight: 700; }
+  .cell.trad b { color: #1B2739; }
+  .cell.har { background: #F3F8FE; border: 1.4px solid #B5D4F4; color: #1B4E87; font-weight: 700; }
+  .arrow { display: flex; align-items: center; justify-content: center; color: #AEB9C7; font-size: 16px; }
+  .cell.risk { color: #6B7787; font-size: 12px; padding-left: 4px; }
+  .cell.risk b { color: #A8443F; font-weight: 700; }
+
+  .bar { margin-top: 14px; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; gap: 20px; }
+  .bar h3 { margin: 0; font-size: 14px; font-weight: 800; color: var(--ct); white-space: nowrap; letter-spacing: .3px; }
+  .bar p { margin: 0; font-size: 12.5px; color: #3C4959; line-height: 1.7; }
+  .bar p b { color: #8A6208; }
+
+  .notes { margin-top: 20px; border-top: 2px solid #E7EBF1; padding-top: 14px; }
+  .notes p { margin: 0 0 8px; font-size: 12px; color: #56626F; line-height: 1.85; }
+  .notes p:last-child { margin-bottom: 0; }
+  .notes b { color: #1B2739; font-weight: 800; }
+  .notes i { font-style: normal; color: #98A3B2; padding: 0 4px; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="hd">
+    <div>
+      <h1>传统工程 <em>↔</em> Harness 机制 · 对应关系图</h1>
+      <div class="sub">
+        成熟度阶梯 <i>·</i> 十维逐项对照 <i>·</i> 六机制具名映射 <i>·</i> <b style="color:#8A6208">★ 三处对不上（传统工程里没有对应物的部分）</b>
+      </div>
+    </div>
+    <div class="legend">
+      <div class="lg-title">图 例</div>
+      <div class="lg-row"><span class="sw grey"></span><span class="k">传统工程已有实践</span></div>
+      <div class="lg-row"><span class="sw blue"></span><span class="k">对应的 Harness 机制</span></div>
+      <div class="lg-row"><span class="sw amber"></span><span class="k">传统工程里没有对应物</span></div>
+    </div>
+  </div>
+
+  <div class="band" style="--rail:#7C8CA0;--line:#DAE0E8;--bg:#FBFCFD;">
+    <div class="rail"><i>一</i></div>
+    <div class="bd">
+      <div class="bd-head">
+        <h2>成熟度阶梯 · 两边爬的是同一道 5 级梯</h2>
+        <p>L1 与 L2 之间那道缝，就是「Demo」和「系统」的分水岭</p>
+        <span class="pin">Harness 的使命：把 Agent 从 L1 推到 L4 / L5</span>
+      </div>
+      <div class="row c5">
+        <div class="card c-grey">
+          <h3>L1 · 能跑</h3>
+          <div class="lbl t">传统工程</div>
+          <div class="txt">功能跑通，本地能演示</div>
+          <div class="gap"></div>
+          <div class="lbl a">Agent 工程</div>
+          <div class="txt agent">Prompt 调通，能答、能调工具</div>
+        </div>
+        <div class="card c-grey">
+          <h3>L2 · 能测</h3>
+          <div class="lbl t">传统工程</div>
+          <div class="txt">单元测试 · 断言 · CI 门禁</div>
+          <div class="gap"></div>
+          <div class="lbl a">Agent 工程</div>
+          <div class="txt agent">评测集 · 回归 · 双跑比对</div>
+        </div>
+        <div class="card c-grey">
+          <h3>L3 · 能运维</h3>
+          <div class="lbl t">传统工程</div>
+          <div class="txt">日志 · 监控 · 告警 · 重试</div>
+          <div class="gap"></div>
+          <div class="lbl a">Agent 工程</div>
+          <div class="txt agent">trace 全链路 · 四层恢复链</div>
+        </div>
+        <div class="card c-grey">
+          <h3>L4 · 能审计</h3>
+          <div class="lbl t">传统工程</div>
+          <div class="txt">权限 · 留痕 · 等保合规</div>
+          <div class="gap"></div>
+          <div class="lbl a">Agent 工程</div>
+          <div class="txt agent">鉴权跟用户走 · 工具分级 · 留存</div>
+        </div>
+        <div class="card c-grey">
+          <h3>L5 · 能扩展</h3>
+          <div class="lbl t">传统工程</div>
+          <div class="txt">分层解耦 · 水平扩容</div>
+          <div class="gap"></div>
+          <div class="lbl a">Agent 工程</div>
+          <div class="txt agent">状态外置 · 工具注册表 · 实例无状态</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="band" style="--rail:#2C6FBE;--line:#B5D4F4;--bg:#F6FAFE;">
+    <div class="rail"><i>二</i></div>
+    <div class="bd">
+      <div class="bd-head">
+        <h2>十维逐项对照 · 传统工程在做的事 → Harness 机制</h2>
+        <p>前七维是「能直接对上的」；后三维是 Agent 工程新暴露出来的治理面</p>
+        <span class="pin">不做会怎样 —— 每一行都是一个真实事故</span>
+      </div>
+      <div class="map">
+        <div class="mh">传统工程在做的事</div>
+        <div></div>
+        <div class="mh r">对应的 Harness 机制</div>
+        <div class="mh">不做会怎样</div>
+
+        <div class="cell trad"><b>1</b>&nbsp;&nbsp;等保 / 合规：权限、审计、留痕</div>
+        <div class="arrow">→</div>
+        <div class="cell har">鉴权跟用户走 · 工具三级分类 · 审计留痕</div>
+        <div class="cell risk">AI 成为系统里的<b>新权限旁路</b></div>
+
+        <div class="cell trad"><b>2</b>&nbsp;&nbsp;健壮性：超时 / 重试 / 熔断 / 降级</div>
+        <div class="arrow">→</div>
+        <div class="cell har">四层恢复链（重试 → 降级 → 补偿 → 熔断）</div>
+        <div class="cell risk">一次超时毁掉整个任务</div>
+
+        <div class="cell trad"><b>3</b>&nbsp;&nbsp;一致性 / 事务：幂等、Saga、对账</div>
+        <div class="arrow">→</div>
+        <div class="cell har">幂等键 · 检查点 · 补偿动作</div>
+        <div class="cell risk">重试一次 = 多扣一次钱</div>
+
+        <div class="cell trad"><b>4</b>&nbsp;&nbsp;可观测：监控 / 日志 / 链路追踪</div>
+        <div class="arrow">→</div>
+        <div class="cell har">trace_id 全链路 + 三层评测</div>
+        <div class="cell risk">分不清是模型选错工具，还是工具挂了</div>
+
+        <div class="cell trad"><b>5</b>&nbsp;&nbsp;可扩展：分层 / 解耦 / 水平扩容</div>
+        <div class="arrow">→</div>
+        <div class="cell har">状态外置 · 工具注册表</div>
+        <div class="cell risk">请求必须回到同一实例，扩不了容</div>
+
+        <div class="cell trad"><b>6</b>&nbsp;&nbsp;审批流：双人复核 / 灰度发布</div>
+        <div class="arrow">→</div>
+        <div class="cell har">HITL 人工卡点（唯一插入点）</div>
+        <div class="cell risk">不可逆动作被模型自主执行</div>
+
+        <div class="cell trad"><b>7</b>&nbsp;&nbsp;成本控制：容量规划 / 限流</div>
+        <div class="arrow">→</div>
+        <div class="cell har">预算闸门 · token 护栏 · 小模型路由</div>
+        <div class="cell risk">成本失控，而且是<b>悄悄失控</b></div>
+
+        <div class="cell trad"><b>8</b>&nbsp;&nbsp;配置与版本管理</div>
+        <div class="arrow">→</div>
+        <div class="cell har">Prompt 版本化 · 工具 schema 版本化 · 参数外置</div>
+        <div class="cell risk">改一处 Prompt 悄悄影响十条链路，还回滚不了</div>
+
+        <div class="cell trad"><b>9</b>&nbsp;&nbsp;契约与兼容性：IDL / 接口版本</div>
+        <div class="arrow">→</div>
+        <div class="cell har">工具 schema 即契约 · 新旧版本并存期</div>
+        <div class="cell risk">字段对不上，运行期才炸</div>
+
+        <div class="cell trad"><b>10</b>&nbsp;&nbsp;变更安全：灰度 / 回滚 / 演练</div>
+        <div class="arrow">→</div>
+        <div class="cell har">评测门禁 · 双跑比对 · 故障注入演练</div>
+        <div class="cell risk">改好了 A 场景、改坏了 B 场景，你永远不知道</div>
+      </div>
+      <div class="bar c-blue">
+        <h3>第三层 · 具名映射</h3>
+        <p>六机制在传统工程里全都有「前世」，经验可直接迁移：<b style="color:#1B4E87">机制一 → Saga 编排器 / 状态机（Temporal、Camunda）</b>　·　<b style="color:#1B4E87">机制二 → outbox 事件表 / 断点续传</b>　·　<b style="color:#1B4E87">机制三 → 网关鉴权 + RBAC / ABAC</b>　·　<b style="color:#1B4E87">机制四 → 退避重试 / 熔断（Hystrix、Resilience4j）</b>　·　<b style="color:#1B4E87">机制五 → 审批流 / 双人复核</b>　·　<b style="color:#1B4E87">机制六 → 链路追踪（Jaeger、SkyWalking）/ 对账</b></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="band" style="--rail:#C2803A;--line:#E8C98F;--bg:#FEFAF0;">
+    <div class="rail"><i>三</i></div>
+    <div class="bd">
+      <div class="bd-head">
+        <h2>★ 有三处对不上 —— 这才是 Harness 真正不可替代的部分</h2>
+        <p>只记住「一一对应」，你就会在技术评审里说错话</p>
+        <span class="pin">前 80% 可迁移 · 后 20% 是全新的</span>
+      </div>
+      <div class="row c3">
+        <div class="card c-amber">
+          <h3>① 核验（防说谎）</h3>
+          <div class="txt">传统工程的组件是<b>确定性的</b>：函数返回什么就是什么，接口不会编造字段。而模型会<b>自信地编造</b>工具名、参数、引用来源。</div>
+          <div class="gap"></div>
+          <div class="txt">→ 必须新增<b>输出核验</b>：引用核验 · schema 校验 · 事实一致性检查。项目对应 = 强制逐字引用 + 引用核验。</div>
+        </div>
+        <div class="card c-amber">
+          <h3>② 语义级幂等（防绕圈）</h3>
+          <div class="txt">传统工程幂等靠主键：同一个 request_id 重放，唯一约束就挡住了。</div>
+          <div class="gap"></div>
+          <div class="txt">但模型「重试」时会把 <b>{"amount":300}</b> 顺手改写成 <b>{"amount":300,"note":"确认"}</b> —— 参数变了、意图没变，主键拦不住 → 必须按「工具 + 业务键 + 时间窗」判重。</div>
+        </div>
+        <div class="card c-amber">
+          <h3>③ 评测（因为失去了断言）</h3>
+          <div class="txt">传统工程：assert f(3) == 6，输入确定、输出确定。</div>
+          <div class="gap"></div>
+          <div class="txt">Agent：同输入两次输出不同，<b>没有唯一正确答案，只有可接受分布</b> → 断言换成评测集 + 评分器 + 双跑比对 + 人工抽检。<b>这是 Agent 工程更难的物理原因。</b></div>
+        </div>
+      </div>
+      <div class="bar c-amber">
+        <h3>修正版一句话</h3>
+        <p><b>Harness 之于 Agent ≈ 工程化之于能跑的代码，但多出三样传统工程里没有的东西：核验（防说谎）· 语义级幂等（防绕圈）· 评测（因为失去了断言）。</b>　前 80% 你可以用传统工程的经验直接迁移 —— 这省下大量试错；后 20% 是全新的 —— 这决定了你会不会在评审时说错话。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="notes">
+    <p><b>① 口径声明：</b>本图为 Agent Harness（<b>个人技术储备</b>）的认知对照图。<i>│</i>技术形态 = Python + FastAPI 承载 MainLoop，客户端 PyQt6 / Vue3。<i>│</i><b>不属于公司平台技术栈</b>。</p>
+    <p><b>② 四层结构：</b>一 · 成熟度阶梯（L1–L5）<i>│</i>二 · 十维逐项对照 + 六机制具名映射<i>│</i>三 · 三处「对不上」= 核验 · 语义级幂等 · 评测。</p>
+    <p><b>③ 详版见：</b><b>ai/01-认知框架/LLM-Agent-Harness-三层认知深度解读.md §4.1</b>（四层映射全文）<i>│</i>机制细节见 <b>ai/01-认知框架/Harness-详细设计与项目落地.md §2 / §4.5</b>。</p>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG与解析 · AI 智能服务平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tier-card { transition: all .25s ease; }
+        .tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.10); }
+        .flow-arrow { animation: flowPulse 2s infinite; }
+        @keyframes flowPulse { 0%,100% { opacity:.45; } 50% { opacity:1; } }
+        .step-node { transition: all .25s ease; }
+        .step-node:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,.10); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-robot mr-1"></i>AI 开发项目</span>
+            <a href="#" onclick="parent.loadPage('ai-project/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('ai-project/customer-service.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能客服</a>
+            <a href="#" onclick="parent.loadPage('ai-project/knowledge-base.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">知识库检索</a>
+            <a href="#" onclick="parent.loadPage('ai-project/policy-interpretation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">政策解读</a>
+            <a href="#" onclick="parent.loadPage('ai-project/rag-system.html')" class="px-3 py-1 rounded-full bg-violet-600 text-white font-medium">RAG与解析</a>
+            <a href="#" onclick="parent.loadPage('ai-project/model-management.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">大模型管理</a>
+            <a href="#" onclick="parent.loadPage('ai-project/model-finetuning.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">模型微调</a>
+            <a href="#" onclick="parent.loadPage('ai-project/data-annotation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">数据标注</a>
+            <a href="#" onclick="parent.loadPage('ai-project/agent-development.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能体开发</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <!-- Hero -->
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-magnifying-glass mr-3 text-violet-600"></i>RAG 与文档解析
+                </h1>
+                <p class="text-gray-500 mb-4">RAG Pipeline &amp; Document Parsing — 索引侧决定天花板，检索侧决定命中率，解析侧决定源头是否干净</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-violet-50 text-violet-700 px-3 py-1 rounded-full"><i class="fas fa-magnifying-glass mr-1"></i>全平台共用底座</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-file-pdf mr-1"></i>MinerU 四层增强解析</span>
+                    <span class="bg-green-50 text-green-700 px-3 py-1 rounded-full"><i class="fas fa-user-tie mr-1"></i>★ 个人主责环节</span>
+                    <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full"><i class="fas fa-ruler mr-1"></i>16 个卡点清单</span>
+                </div>
+            </div>
+
+            <!-- 边界 -->
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-8">
+                <p class="text-green-900 text-sm"><i class="fas fa-user-tie mr-2"></i><strong>本页是个人参与最深的一环：</strong>MinerU 复杂 PDF 解析改造（PDF → Markdown）+ 批量解析调度与失败兜底 + 多格式文档落向量库的格式与元数据衔接。检索策略与工作流编排由团队推进。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-circle-question mr-2 text-violet-600"></i>一、RAG 的四段链路：谁决定天花板</h2>
+            <p class="text-gray-600 mb-5 text-sm">RAG 效果不好，90% 的人第一反应是「换个更好的模型」。但从链路看，模型只在最后一段：</p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white border-2 border-blue-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-blue-600 font-semibold mb-1">索引侧（离线）</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">解析 · 分块 · 索引</div>
+                    <p class="text-xs text-gray-500">决定<strong>天花板</strong>：源文档没解析对，后面全白搭。</p>
+                </div>
+                <div class="bg-white border-2 border-violet-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-violet-600 font-semibold mb-1">检索侧（在线）</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">混合检索 · Rerank · 过滤</div>
+                    <p class="text-xs text-gray-500">决定<strong>命中率</strong>：该召回的有没有进候选池。</p>
+                </div>
+                <div class="bg-white border-2 border-amber-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-amber-600 font-semibold mb-1">生成侧</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">上下文注入 · 溯源 · 空结果</div>
+                    <p class="text-xs text-gray-500">决定<strong>可不可信</strong>：能不能给出处，没依据时敢不敢不说话。</p>
+                </div>
+                <div class="bg-white border-2 border-rose-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-rose-600 font-semibold mb-1">运维侧</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">召回测试 · 静默故障 · 成本</div>
+                    <p class="text-xs text-gray-500">决定<strong>能不能持续变好</strong>：升级完悄悄失效最要命。</p>
+                </div>
+            </div>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-10">
+                <p class="text-blue-800 text-sm"><i class="fas fa-circle-info mr-2"></i><strong>一句话：</strong>索引侧决定天花板，检索侧决定命中率，生成侧决定敢不敢用，运维侧决定能不能变好。换模型通常排在最后一位。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-file-pdf mr-2 text-violet-600"></i>二、★ 我负责的那一环：把复杂 PDF 变成干净的 Markdown</h2>
+            <p class="text-gray-600 mb-4 text-sm">平台的知识来源里有大量复杂 PDF：政策文件（多栏 + 嵌套表 + 红头版式）、合同标书（跨页续表）、技术手册（图文混排）、扫描件（低分辨率、倾斜）。MinerU 是当前开源 PDF 解析的标杆，但面对这五类仍会出错：</p>
+            <div class="overflow-x-auto mb-6">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-36">难点类型</th>
+                            <th class="px-4 py-3 text-left font-semibold">典型表现</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">多栏排版</td><td class="px-4 py-3">双栏/三栏阅读顺序错乱（左右栏串行）、跨栏大图切断文流、页眉页脚混入正文</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">嵌套表格</td><td class="px-4 py-3">多层嵌套表头语义丢失、合并单元格错位、跨页续表被拆断、无边框三线表结构猜错</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">图文混排</td><td class="px-4 py-3">图注与图片配对错乱、嵌图内文字丢失、图片插入位置漂移</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">公式</td><td class="px-4 py-3">长公式/多行公式识别出错、行内公式与正文切分边界不准、模糊印刷件符号错认（α→a、上标丢失）</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">扫描件</td><td class="px-4 py-3">低分辨率、摩尔纹、噪声、页面倾斜导致 OCR 错误率飙升、版面检测框漂移</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-gray-600 mb-3 text-sm"><strong>结论：换一个更大的模型解决不了一切。</strong>误差源分布在这条链路的每一环（图像质量 → 版面检测 → 元素识别 → 顺序还原），所以必须分层增强：</p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-violet-600 font-semibold mb-1">第 1 层</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">图像预处理</div>
+                    <p class="text-xs text-gray-500">超分重建 · 去噪 · 倾斜矫正</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-blue-600 font-semibold mb-1">第 2 层</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">双后端页级路由</div>
+                    <p class="text-xs text-gray-500">原生电子版走 pipeline（快）· 扫描件/复杂版式走 VLM</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-amber-600 font-semibold mb-1">第 3 层</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">专项增强</div>
+                    <p class="text-xs text-gray-500">表格二次识别 · 公式增强 · 多栏顺序修复（XY-cut + 规则），低置信度回填</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-emerald-600 font-semibold mb-1">第 4 层</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">统一中间态</div>
+                    <p class="text-xs text-gray-500">输出 Markdown（图存对象存储、表格转 HTML 表），交给下游分块入库</p>
+                </div>
+            </div>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-10">
+                <p class="text-sm text-gray-700"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i><strong>为什么坚持「统一 Markdown 中间态」？</strong>解析器是可替换的（MinerU / RAGFlow / 自研），但<strong>下游入库只认一种格式</strong>。中间态一层隔离，换解析器不需要动向量库和分块逻辑——这和 C 与 Java 之间放一层 DS 数据中心是同一个思路：<strong>用一层协议把两侧解耦</strong>。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-list-check mr-2 text-violet-600"></i>三、解析之外，我另外交付的三件事</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-gray-800 mb-2"><i class="fas fa-layer-group text-violet-500 mr-2"></i>批量解析调度</h3>
+                    <p class="text-sm text-gray-600">按队列分批、按页数与类型估时长、控制并发避免把机器打满；大批量导入时能续跑、能重入。</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-gray-800 mb-2"><i class="fas fa-shield-halved text-violet-500 mr-2"></i>失败兜底</h3>
+                    <p class="text-sm text-gray-600">解析失败不能静默丢文档：失败入待办表 + 告警，按类型降级（换后端 / 转 OCR / 人工处理），保留原文件可重跑。</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-gray-800 mb-2"><i class="fas fa-arrows-turn-to-dots text-violet-500 mr-2"></i>入库格式衔接</h3>
+                    <p class="text-sm text-gray-600">分块边界与元数据字段（来源、文号、章节路径、页码、有效期）与向量库对齐，保证下游能按元数据过滤、能回溯到原文位置。</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-magnifying-glass-chart mr-2 text-violet-600"></i>四、检索侧：两级过滤，别把顺序搞反</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="border-2 border-blue-200 bg-blue-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-blue-900 mb-2"><i class="fas fa-1 mr-2"></i>第一层 · 知识库级</h3>
+                    <p class="text-sm text-gray-600">决定初步候选池长什么样：用向量、关键词，还是两者混合。</p>
+                    <p class="text-xs text-gray-500 mt-2">中文场景特别注意：产品型号（BGE-M3）、缩写（EBITDA）、化学式，纯向量大概率漏——<strong>混合检索在某些场景是必需项，不是优化项</strong>。</p>
+                </div>
+                <div class="border-2 border-violet-200 bg-violet-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-violet-900 mb-2"><i class="fas fa-2 mr-2"></i>第二层 · 节点级</h3>
+                    <p class="text-sm text-gray-600">在这个池子上做 Rerank、元数据过滤、TopK 截断。</p>
+                    <p class="text-xs text-gray-500 mt-2"><strong>顺序反了就救不回来</strong>：知识库级选错，节点级再调 Rerank 也没用——正确文档压根没进池子。</p>
+                </div>
+            </div>
+            <div class="bg-rose-50 border border-rose-200 rounded-lg p-4 mb-10">
+                <p class="text-sm text-gray-700 mb-1"><i class="fas fa-triangle-exclamation text-rose-500 mr-2"></i><strong>Rerank 的三个坑（不知道就等于白配）：</strong></p>
+                <ul class="text-sm text-gray-600 space-y-1">
+                    <li>① <strong>TopK 与 Score 阈值只在 Rerank 阶段生效</strong>——不开 Rerank，这两个参数基本不落地，调半天毫无变化。</li>
+                    <li>② Rerank 默认关闭，需自己配；多模态知识库必须配多模态 Rerank，否则图片被排除。</li>
+                    <li>③ 默认 TopK=3 / 阈值 0.5 只适合「先跑起来看看」，生产要以召回测试的实际 score 分布为准。</li>
+                </ul>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-chart-simple mr-2 text-violet-600"></i>五、验收口径</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                <div class="bg-gradient-to-br from-violet-500 to-violet-600 text-white rounded-lg p-5">
+                    <i class="fas fa-file-circle-check text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">解析成功率（分类型）</div>
+                    <p class="text-sm opacity-90 mt-1">按电子版/扫描件/表格密集/多栏四桶统计；失败必须可告警可重跑。实测值待采集。</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg p-5">
+                    <i class="fas fa-bullseye text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">召回率基线</div>
+                    <p class="text-sm opacity-90 mt-1">50–100 条真实问题跑召回测试取基线，作为一切调优的对照。</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-lg p-5">
+                    <i class="fas fa-link text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">可溯源率</div>
+                    <p class="text-sm opacity-90 mt-1">答案能回到「文件 + 页码 + 段落」的比例，目标口径 100%。</p>
+                </div>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <p class="text-sm text-gray-700"><i class="fas fa-triangle-exclamation text-amber-500 mr-2"></i><strong>诚实清单：</strong>Dify 没替你解决的部分包括——权限最小化（要中台做）、知识治理流程（要业务做）、静默故障排查（要专人盯）、评测集建设（要标注做）。把这些当成「平台自带」，是 RAG 项目最常见的幻觉。</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('ai-project/model-management.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">大模型管理</a>
+            <a href="#" onclick="parent.loadPage('ai-project/data-annotation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">数据标注</a>
+            <a href="#" onclick="parent.loadPage('ai-project/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+        </div>
+    </nav>
+</body>
+</html>

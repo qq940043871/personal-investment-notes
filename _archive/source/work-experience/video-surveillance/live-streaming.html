@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时直播 · 视频监控项目</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .code-block { background: #1e293b; color: #e2e8f0; font-family: Consolas, Monaco, monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; }
+        .mod-card { transition: all .25s ease; }
+        .mod-card:hover { box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-video mr-1"></i>视频监控项目</span>
+            <a href="#" onclick="parent.loadPage('video-surveillance/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('video-surveillance/live-streaming.html')" class="px-3 py-1 rounded-full bg-red-600 text-white font-medium">实时直播</a>
+            <a href="#" onclick="parent.loadPage('video-surveillance/playback.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">录像回放</a>
+            <a href="#" onclick="parent.loadPage('video-surveillance/download.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">视频下载</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-broadcast-tower mr-3 text-red-600"></i>实时直播
+                </h1>
+                <p class="text-gray-500 mb-4">Live Streaming — 多路同屏预览、云台可控、协议可降级，值班室与手机端看到的是同一路流</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-red-50 text-red-700 px-3 py-1 rounded-full"><i class="fas fa-desktop mr-1"></i>1/4/9/16 分屏</span>
+                    <span class="bg-orange-50 text-orange-700 px-3 py-1 rounded-full"><i class="fas fa-mouse-pointer mr-1"></i>ONVIF 云台</span>
+                    <span class="bg-purple-50 text-purple-700 px-3 py-1 rounded-full"><i class="fas fa-bolt mr-1"></i>WebRTC &lt; 500ms</span>
+                    <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded-full"><i class="fas fa-random mr-1"></i>三级降级</span>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                <p class="text-amber-800 text-sm">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    <strong>场景背景：</strong>监控室值班的基本动作只有三个——<strong>同时盯住几十路画面</strong>、<strong>发现异常时把镜头转过去看清</strong>、<strong>把看到的那一刻截下来</strong>。这三件事对技术的要求完全不同：多路同屏考验的是分发与解码资源，云台考验的是和摄像头的控制协议，截图考验的是前端能不能拿到未跨域的原始帧。把它们塞进一个页面，才是「能用」和「能演示」的区别。
+                </p>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8">
+                <p class="text-blue-800 text-sm">
+                    <i class="fas fa-user-tie mr-2"></i>
+                    <strong>我的角色：</strong>直播链路的<strong>方案设计与实现</strong>。核心决策有两个：① 分屏不做「N 个摄像头 N 条拉流」，改为<strong>服务端一路输入、多客户端分发</strong>；② 云台不接厂商私有 SDK，改走 <strong>ONVIF 标准</strong>，让设备可替换。播放器侧我负责协议降级与实例生命周期治理——这是浏览器端最容易出内存泄漏的地方。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-th-large mr-2 text-red-600"></i>四个模块
+            </h2>
+
+            <div class="space-y-6 mb-8">
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-red-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-th text-red-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">1. 多路分屏预览</h3>
+                    </div>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            1 / 4 / 9 / 16 分屏自由切换，双击某一路放大到单屏，缩略图与主画面联动。值班员靠一屏扫完一个区域，不用来回切页签。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>分屏不是「开 16 个播放器」，而是<strong>按可见区域按需装载</strong>——切到 4 屏时立刻卸载另外 12 路的解码器，否则 16 路同时硬解会把中低端显卡直接打满。这一条是把「演示能跑」变成「值班能盯 8 小时」的关键。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-orange-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-mouse-pointer text-orange-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">2. 云台 PTZ 控制</h3>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            上下左右转动、镜头拉近拉远、速度可调、松手即停。发现画面里有异常，不用跑现场就能把镜头对准。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>控制指令走 <strong>ONVIF 的 ContinuousMove / Stop</strong>，而不是各厂商私有 HTTP 接口——换句话说，<strong>换一个牌子的摄像头不用改代码</strong>。另外「松手即停」必须真的发一条 Stop，否则网络抖动丢了停止指令，镜头就会一直转到限位。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-amber-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-camera text-amber-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">3. 实时截图</h3>
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            看到问题的瞬间一键截图，直接落到本地，不用装截图工具再裁剪。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>Canvas 取帧要求视频源<strong>同源或允许 CORS</strong>，否则 <code class="bg-gray-100 px-1 rounded">toDataURL</code> 会抛安全异常、拿到一张空白图——这是流媒体播放器接截图功能时最常见的坑，服务端必须在响应头放开流地址的跨域策略。</p>
+                </div>
+
+                <div class="mod-card bg-white border border-gray-200 rounded-lg p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                            <i class="fas fa-random text-purple-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">4. 多端协议自适应</h3>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-4">
+                        <p class="text-gray-700 text-sm">
+                            PC 优先 WebRTC（&lt;500ms），不支持则 FLV（1–2s），再不行 HLS（3–5s）；手机端直接 HLS 保证兼容。同一份代码，同一套 URL。
+                        </p>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-0"><strong>我的关注点：</strong>降级链要有<strong>终点</strong>，不能无限尝试。HLS 是最后一道兜底——它延迟最高但几乎什么浏览器都认，只要它还在，用户就不会看到黑屏。</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-code mr-2 text-red-600"></i>实现：分屏容器的按需装载
+            </h2>
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    分屏的核心不是布局，而是<strong>「布局变了，解码器要跟着增删」</strong>。下面的实现让分屏数量成为唯一状态源：数量一变，播放器实例就同步对齐，多出来的销毁、缺的补上。
+                </p>
+                <div class="bg-gray-900 text-gray-100 p-3 rounded-lg text-sm overflow-x-auto">
+                    <pre><code class="language-js">// 分屏播放器：以 screenCount 为唯一状态源，实例数量与之严格对齐
+const screenCount = ref(4);                     // 1 / 4 / 9 / 16
+const visible = computed(() =&gt; streams.value.slice(0, screenCount.value));
+
+// 布局列数由分屏数推导，不写死四套 CSS 类
+const gridClass = computed(() =&gt; `grid gap-2 cols-${Math.sqrt(screenCount.value)}`);
+
+// 关键：屏幕数变化时同步销毁多余实例，避免解码器泄漏
+watch(screenCount, async (n) =&gt; {
+  await nextTick();
+  playerPool.resize(n);                          // 内部对多出的实例 close()
+});
+
+// 双击放大：只是把分屏数切成 1，不新建播放器
+const focusOne = (idx) =&gt; {
+  activeStream.value = visible.value[idx];
+  screenCount.value = 1;
+};</code></pre>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-circle-nodes mr-2 text-red-600"></i>闭环：一路输入，三段分发
+            </h2>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-6">
+                <div class="flex items-center justify-between flex-wrap gap-3">
+                    <div class="bg-slate-600 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-video text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">摄像头 RTSP</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-purple-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-film text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">FFmpeg 转码</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-indigo-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-server text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">ZLMediaKit</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-red-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-bolt text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">WebRTC / FLV / HLS</p>
+                    </div>
+                    <i class="fas fa-arrow-right text-gray-400"></i>
+                    <div class="bg-green-500 text-white p-3 rounded-lg text-center">
+                        <i class="fas fa-desktop text-2xl mb-2"></i>
+                        <p class="text-xs font-medium">分屏 / 手机端</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg p-5 mb-8">
+                <p class="text-gray-600 text-sm mb-4">
+                    这条链上只有一个地方会「放大」资源：观看端。<strong>摄像头侧永远只有一路连接</strong>，转码侧靠复用进程摊平，分发侧靠 ZLM 的多协议输出。所以 100 个人看同一路，代价是 100 个播放连接，不是 100 次拉流。
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-gray-600 text-sm">
+                    <li><strong>接入：</strong>RTSP over TCP，避免 UDP 丢包造成的花屏与卡顿；</li>
+                    <li><strong>转码：</strong>zerolatency + GOP 25，GOP 缓存让新观众秒出画；</li>
+                    <li><strong>分发：</strong>一次输入产出三档出口，按终端能力选；</li>
+                    <li><strong>观看：</strong>分屏数即实例数，切换时同步回收解码器。</li>
+                </ul>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-8">
+                <h3 class="text-lg font-semibold text-slate-700 mb-2">
+                    <i class="fas fa-industry mr-2"></i>行业背景（一句话）
+                </h3>
+                <p class="text-gray-600 text-sm">
+                    「实时看画面」在安防行业是刚需但极少被自研：主流做法是买 NVR 厂商的客户端或平台，代价是按路授权 + 只能在特定网络环境使用。自研实时直播的真正门槛，不在播放器，而在<strong>把并发观看的成本从摄像头和 CPU 上挪走</strong>。
+                </p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4">
+                <i class="fas fa-list-check mr-2 text-red-600"></i>关键点与结果
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-red-500 to-red-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-bolt text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">三档延迟可选</h4>
+                    <p class="text-sm opacity-90">WebRTC &lt;500ms / FLV 1–2s / HLS 3–5s</p>
+                </div>
+                <div class="bg-gradient-to-br from-orange-500 to-orange-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-th text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">分屏自由切换</h4>
+                    <p class="text-sm opacity-90">1/4/9/16 屏，PC 与手机分别适配</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-mouse-pointer text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">设备可替换</h4>
+                    <p class="text-sm opacity-90">ONVIF 标准控制，不绑厂商私有 SDK</p>
+                </div>
+                <div class="bg-gradient-to-br from-purple-500 to-purple-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-memory text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">不炸客户端</h4>
+                    <p class="text-sm opacity-90">分屏数即实例数，切换同步回收解码器</p>
+                </div>
+                <div class="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-random text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">永不黑屏</h4>
+                    <p class="text-sm opacity-90">WebRTC → FLV → HLS 三级降级，HLS 兜底</p>
+                </div>
+                <div class="bg-gradient-to-br from-green-500 to-green-600 text-white p-4 rounded-lg">
+                    <i class="fas fa-camera text-3xl mb-2 opacity-80"></i>
+                    <h4 class="font-bold mb-1">一键留证</h4>
+                    <p class="text-sm opacity-90">Canvas 取原始帧，服务端放开流地址跨域</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('video-surveillance/playback.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">录像回放</a>
+            <a href="#" onclick="parent.loadPage('video-surveillance/download.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">视频下载</a>
+        </div>
+    </nav>
+</body>
+</html>

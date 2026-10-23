@@ -378,6 +378,8 @@
     display: grid; grid-template-columns: repeat(4, 1fr);
     gap: 8px; margin-bottom: 8px;
   }
+  /* 首页资料入口：6 项 → 手机 3 列 × 2 行 */
+  .quick-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
   .quick-item {
     display: flex; flex-direction: column; align-items: center;
     gap: 6px; padding: 12px 4px;
@@ -463,6 +465,92 @@
   .task-tag.mock { background: rgba(251, 191, 36, 0.12); color: var(--warning); }
   .task-arrow { color: var(--text-3); flex: none; }
   .task-arrow svg { width: 18px; height: 18px; }
+
+  /* ===== 面试计划页 ===== */
+  .plan-hero {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    padding: 18px;
+    border-radius: var(--radius-l);
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.14) 0%, rgba(129, 140, 248, 0.10) 100%);
+    border: 1px solid rgba(34, 211, 238, 0.18);
+    margin-bottom: 10px;
+  }
+  .plan-hero-title { font-size: 17px; font-weight: 800; letter-spacing: -0.01em; }
+  .plan-hero-desc { font-size: 11.5px; color: var(--text-2); margin-top: 6px; line-height: 1.6; }
+  .plan-hero-side { text-align: right; flex: none; }
+  .plan-hero-num { font-size: 22px; font-weight: 800; color: var(--primary); line-height: 1.1; }
+  .plan-hero-label { font-size: 10.5px; color: var(--text-3); margin-top: 2px; }
+  .plan-progress-track {
+    height: 6px; border-radius: 3px;
+    background: var(--surface-2); overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .plan-progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 3px;
+    transition: width .3s ease;
+  }
+
+  /* 首页「面试计划」入口条 */
+  .plan-entry {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px; margin-bottom: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-l);
+  }
+  .plan-entry-icon {
+    width: 38px; height: 38px; flex: none; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(34, 211, 238, 0.15); color: var(--primary);
+  }
+  .plan-entry-icon svg { width: 20px; height: 20px; }
+  .plan-entry-body { flex: 1; min-width: 0; }
+  .plan-entry-title { font-size: 14px; font-weight: 700; }
+  .plan-entry-desc { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+  .plan-entry-arrow { color: var(--text-3); flex: none; }
+  .plan-entry-arrow svg { width: 18px; height: 18px; }
+
+  /* 14 天排期行 */
+  .plan-day-badge {
+    width: 34px; height: 34px; flex: none; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800;
+    background: var(--surface-2); color: var(--text-2);
+  }
+  .task-item.plan-day.key .plan-day-badge {
+    background: rgba(251, 191, 36, 0.16); color: var(--warning);
+  }
+  .task-item.plan-day.done .plan-day-badge {
+    background: rgba(52, 211, 153, 0.16); color: var(--success);
+  }
+  .plan-day-target {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--primary); margin-top: 4px;
+  }
+  .plan-day-accept { font-size: 11px; color: var(--text-3); margin-top: 4px; line-height: 1.55; }
+
+  /* 三条硬规则 */
+  .plan-rules {
+    margin-top: 6px; padding: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-l);
+  }
+  .plan-rules-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+  .plan-rule {
+    display: flex; gap: 8px;
+    font-size: 11.5px; color: var(--text-2);
+    line-height: 1.65; margin-bottom: 8px;
+  }
+  .plan-rule:last-child { margin-bottom: 0; }
+  .plan-rule-num {
+    flex: none; width: 18px; height: 18px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800;
+    background: rgba(34, 211, 238, 0.12); color: var(--primary);
+  }
 
   /* ===== Hero 标签行 ===== */
   .hero-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
@@ -675,95 +763,6 @@
   .prep-item-badge.md { background: rgba(59, 130, 246, 0.12); color: #60A5FA; }
   .prep-item-badge.html { background: rgba(249, 115, 22, 0.12); color: #FB923C; }
   .prep-item-badge.pptx { background: rgba(220, 38, 38, 0.12); color: #F87171; }
-
-  /* ===== 模拟面试页 ===== */
-  .mock-hero {
-    background: var(--accent-warm);
-    border-radius: var(--radius-xl);
-    padding: 22px;
-    color: #0B1220;
-    position: relative; overflow: hidden;
-    margin-bottom: 16px;
-  }
-  .mock-hero::before {
-    content: '';
-    position: absolute; top: -30%; right: -10%;
-    width: 140px; height: 140px;
-    background: var(--glass-1);
-    border-radius: 50%;
-  }
-  .mock-hero-content { position: relative; z-index: 1; }
-  .mock-hero-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
-  .mock-hero-sub { font-size: 13px; opacity: 0.85; margin-bottom: 14px; }
-  .mock-hero-action {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 10px 20px;
-    background: #0B1220; color: var(--warning);
-    border-radius: 999px;
-    font-size: 13px; font-weight: 700;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-  }
-  .mock-hero-action svg { width: 16px; height: 16px; }
-
-  .feature-grid {
-    display: grid; grid-template-columns: repeat(2, 1fr);
-    gap: 10px; margin-bottom: 8px;
-  }
-  .feature-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-l);
-    padding: 16px;
-    min-height: 110px;
-    display: flex; flex-direction: column; justify-content: space-between;
-  }
-  .feature-icon {
-    width: 40px; height: 40px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 10px;
-  }
-  .feature-icon svg { width: 22px; height: 22px; }
-  .feature-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
-  .feature-desc { font-size: 11px; color: var(--text-3); line-height: 1.4; }
-
-  .interview-flow {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-l);
-    padding: 16px;
-    margin-bottom: 8px;
-  }
-  .flow-steps { display: flex; flex-direction: column; gap: 0; position: relative; }
-  .flow-step {
-    display: flex; gap: 12px;
-    position: relative;
-    padding-bottom: 14px;
-  }
-  .flow-step:last-child { padding-bottom: 0; }
-  .flow-step:not(:last-child)::after {
-    content: '';
-    position: absolute; left: 15px; top: 32px; bottom: 0;
-    width: 2px; background: var(--border);
-  }
-  .flow-num {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--surface-2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700;
-    flex: none;
-    position: relative; z-index: 1;
-  }
-  .flow-step.active .flow-num {
-    background: var(--accent);
-    color: #0B1220;
-  }
-  .flow-step.done .flow-num {
-    background: rgba(52, 211, 153, 0.15);
-    color: var(--success);
-  }
-  .flow-content { flex: 1; padding-top: 5px; }
-  .flow-title { font-size: 14px; font-weight: 600; }
-  .flow-desc { font-size: 12px; color: var(--text-3); margin-top: 3px; }
 
   /* ===== 我的页 ===== */
   .profile-header {
@@ -1207,6 +1206,8 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
     }
+    /* 首页资料入口 6 项：桌面一行排开 */
+    .quick-grid.cols-3 { grid-template-columns: repeat(6, 1fr); }
     .quick-item {
       padding: 14px 6px;
       min-height: 80px;
@@ -1271,20 +1272,6 @@
     .prep-item { padding: 9px 14px 9px 44px; }
     .prep-item-title { font-size: 13.5px; }
 
-    /* 模拟面试页 */
-    .mock-hero { padding: 28px 32px; }
-    .mock-hero-title { font-size: 24px; }
-    .feature-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .feature-card {
-      padding: 18px;
-      min-height: 120px;
-      transition: all .2s;
-    }
-    .feature-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(251, 191, 36, 0.2);
-    }
-
     /* 我的页 */
     .profile-header { padding: 22px; }
     .profile-avatar { width: 68px; height: 68px; border-radius: 20px; font-size: 26px; }
@@ -1327,7 +1314,6 @@
     .bank-grid { grid-template-columns: repeat(4, 1fr); }
     .quick-grid { grid-template-columns: repeat(4, 1fr); }
     .stat-grid { grid-template-columns: repeat(4, 1fr); }
-    .feature-grid { grid-template-columns: repeat(4, 1fr); }
 
     .reader-layout { grid-template-columns: 240px 1fr; }
     .reader-content-wrap { max-width: 880px; }
@@ -1349,9 +1335,13 @@
      ============================================================ */
   .reader-toolbar {
     display: flex; align-items: center; gap: 10px;
-    padding: 10px 0 16px;
+    padding: 12px 0 12px;
     margin-bottom: 16px;
     border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: var(--bg);
   }
   .reader-back-btn {
     display: flex; align-items: center; gap: 6px;
@@ -1653,23 +1643,37 @@
 
     <div class="sidebar-nav-item active" data-page="page-home" onclick="switchTab('page-home')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21h-6v-6h-6v6H3z"/></svg>
-      <span>首页仪表盘</span>
+      <span>首页</span>
+    </div>
+
+    <div class="sidebar-nav-item" data-page="page-plan" onclick="switchTab('page-plan')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+      <span>面试计划</span>
+    </div>
+
+    <div class="sidebar-section-label">资料</div>
+
+    <div class="sidebar-nav-item" onclick="openResume()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>个人简历</span>
+    </div>
+
+    <div class="sidebar-nav-item" data-page="page-drafts" onclick="switchTab('page-drafts')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      <span>项目底稿</span>
     </div>
 
     <div class="sidebar-nav-item" data-page="page-bank" onclick="switchTab('page-bank')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-      <span>技术题库</span>
+      <span>技术真题</span>
     </div>
 
     <div class="sidebar-nav-item" onclick="openPrepIndex()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
       <span>备战手册</span>
     </div>
 
-    <div class="sidebar-nav-item" data-page="page-mock" onclick="switchTab('page-mock')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12z"/><path d="M12 2a10 10 0 0 1 10 10h-7.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
-      <span>模拟面试</span>
-    </div>
+    <div class="sidebar-section-label">更多</div>
 
     <div class="sidebar-nav-item" data-page="page-ai" onclick="switchTab('page-ai')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
@@ -1677,30 +1681,13 @@
     </div>
 
     <div class="sidebar-nav-item" data-page="page-cases" onclick="switchTab('page-cases')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       <span>案例 · 场景</span>
     </div>
 
     <div class="sidebar-nav-item" data-page="page-me" onclick="switchTab('page-me')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       <span>我的</span>
-    </div>
-
-    <div class="sidebar-section-label">快捷工具</div>
-
-    <div class="sidebar-nav-item" onclick="openInterviewFramework()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-      <span>面试框架</span>
-    </div>
-
-    <div class="sidebar-nav-item" onclick="openBanksIndex()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-      <span>全部真题</span>
-    </div>
-
-    <div class="sidebar-nav-item" onclick="openResume()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-      <span>简历中心</span>
     </div>
   </nav>
 
@@ -1772,169 +1759,101 @@
         </div>
       </div>
 
-      <!-- 统计卡 4列 -->
-      <div class="stat-grid">
-        <div class="stat-card cyan">
-          <div class="stat-icon cyan">
+      <!-- 今日任务：首页核心 -->
+      <div class="section-header">
+        <div class="section-title"><span class="section-title-bar"></span>今日任务</div>
+        <div class="section-more tap" onclick="showToast('已刷新任务列表')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          刷新
+        </div>
+      </div>
+
+      <div class="task-list" id="todayTaskList">
+        <!-- 由 JS 渲染 -->
+      </div>
+
+      <!-- 资料入口（与侧边栏导航一一对应） -->
+      <div class="section-header">
+        <div class="section-title"><span class="section-title-bar"></span>资料入口</div>
+      </div>
+
+      <div class="quick-grid cols-3">
+        <div class="quick-item tap" onclick="openResume()">
+          <div class="quick-icon" style="background:rgba(251,146,60,0.15);color:#FB923C">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <span class="quick-label">个人简历</span>
+        </div>
+        <div class="quick-item tap" onclick="switchTab('page-drafts')">
+          <div class="quick-icon" style="background:rgba(129,140,248,0.15);color:var(--secondary)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <span class="quick-label">项目底稿</span>
+        </div>
+        <div class="quick-item tap" onclick="switchTab('page-bank')">
+          <div class="quick-icon" style="background:rgba(34,211,238,0.15);color:var(--primary)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
           </div>
-          <div class="stat-value" id="statBanks">26</div>
-          <div class="stat-label">技术题库</div>
-          <div class="stat-trend up">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-            Java/Redis/MySQL
-          </div>
+          <span class="quick-label">技术真题</span>
         </div>
-        <div class="stat-card purple">
-          <div class="stat-icon purple">
+        <div class="quick-item tap" onclick="openPrepIndex()">
+          <div class="quick-icon" style="background:rgba(52,211,153,0.15);color:var(--success)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           </div>
-          <div class="stat-value" id="statPrep">6</div>
-          <div class="stat-label">备战主题</div>
-          <div class="stat-trend up">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-            策略·架构·业务
-          </div>
+          <span class="quick-label">备战手册</span>
         </div>
-        <div class="stat-card warm">
-          <div class="stat-icon warm">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12z"/><path d="M12 2a10 10 0 0 1 10 10h-7.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
+        <div class="quick-item tap" onclick="switchTab('page-ai')">
+          <div class="quick-icon" style="background:rgba(167,139,250,0.15);color:var(--purple)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
           </div>
-          <div class="stat-value" id="statMock">5</div>
-          <div class="stat-label">模拟场景</div>
-          <div class="stat-trend up">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-            框架·速记·话术
-          </div>
+          <span class="quick-label">AI 方案集</span>
         </div>
-        <div class="stat-card pink">
-          <div class="stat-icon pink">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div class="quick-item tap" onclick="switchTab('page-cases')">
+          <div class="quick-icon" style="background:rgba(244,114,182,0.15);color:var(--pink)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
           </div>
-          <div class="stat-value" id="statCases">16</div>
-          <div class="stat-label">客户案例</div>
-          <div class="stat-trend up">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-            能源·煤炭·金属
-          </div>
+          <span class="quick-label">案例 · 场景</span>
         </div>
       </div>
 
-      <!-- 开场三击：前 5 分钟定生死 -->
-      <div class="section-header">
-        <div class="section-title"><span class="section-title-bar"></span>开场前 5 分钟</div>
-        <div class="section-more tap" onclick="openInterviewFramework()">
-          完整框架
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-      </div>
-      <div class="strike-list" id="strikeList"><!-- 由 JS 渲染 --></div>
+    </section>
 
-      <!-- 叙事框架 7 步 -->
-      <div class="section-header">
-        <div class="section-title"><span class="section-title-bar"></span>叙事框架 7 步</div>
-        <div class="section-more tap" onclick="openInterviewFramework()">
-          展开全文
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-      </div>
-      <div class="fw-list" id="frameworkList"><!-- 由 JS 渲染 --></div>
+    <!-- ========== 页面：面试计划（源自 00-面试计划） ========== -->
+    <section class="page" id="page-plan">
 
-      <!-- 最有冲击力的数字 -->
-      <div class="section-header">
-        <div class="section-title"><span class="section-title-bar"></span>最有冲击力的数字</div>
-        <div class="section-more tap" onclick="openQuickCard()">
-          速记卡
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </div>
-      </div>
-      <div class="num-grid" id="numberGrid"><!-- 由 JS 渲染 --></div>
-
-      <!-- 桌面端双栏布局容器 -->
-      <div class="desktop-two-col">
+      <div class="plan-hero">
         <div>
-          <!-- 禁用语录对照 -->
-          <div class="section-header">
-            <div class="section-title"><span class="section-title-bar"></span>禁用语录对照</div>
-            <div class="section-more tap" onclick="openForbiddenWords()">
-              全部雷区
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-            </div>
-          </div>
-          <div class="no-list" id="forbiddenList"><!-- 由 JS 渲染 --></div>
-
-          <!-- 今日学习进度 -->
-          <div class="section-header">
-            <div class="section-title"><span class="section-title-bar"></span>学习进度</div>
-            <div class="section-more tap" onclick="openPrepIndex()">
-              全部
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-            </div>
-          </div>
-
-          <div class="progress-card tap" onclick="openPrepIndex()">
-            <div class="progress-ring-wrap">
-              <svg viewBox="0 0 72 72">
-                <circle class="progress-ring-bg" cx="36" cy="36" r="30"/>
-                <circle class="progress-ring-fg" cx="36" cy="36" r="30" stroke-dasharray="188.5" stroke-dashoffset="188.5" id="mainProgressRing"/>
-              </svg>
-              <div class="progress-text">
-                <div class="progress-pct" id="mainProgressPct">0%</div>
-              </div>
-            </div>
-            <div class="progress-info">
-              <div class="progress-title">面试备战总进度</div>
-              <div class="progress-desc" id="progressDesc">B2B 大宗贸易技术经理</div>
-              <div class="progress-meta">
-                <span class="progress-chip" id="progressDoneChip">已完成 0 项</span>
-                <span class="progress-chip" id="progressTotalChip">共 51 份</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- 快捷工具（与侧边栏一致，仅收录导航之外的工具入口） -->
-          <div class="section-header">
-            <div class="section-title"><span class="section-title-bar"></span>快捷工具</div>
-          </div>
-
-          <div class="quick-grid">
-            <div class="quick-item tap" onclick="openInterviewFramework()">
-              <div class="quick-icon" style="background:rgba(52,211,153,0.15);color:var(--success)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-              </div>
-              <span class="quick-label">面试框架</span>
-            </div>
-            <div class="quick-item tap" onclick="openBanksIndex()">
-              <div class="quick-icon" style="background:rgba(167,139,250,0.15);color:var(--purple)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-              </div>
-              <span class="quick-label">全部真题</span>
-            </div>
-            <div class="quick-item tap" onclick="openResume()">
-              <div class="quick-icon" style="background:rgba(251,146,60,0.15);color:#FB923C">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              </div>
-              <span class="quick-label">简历中心</span>
-            </div>
-          </div>
-
+          <div class="plan-hero-title">14 天主线执行</div>
+          <div class="plan-hero-desc">9 份主线件 · 一天只开一份 · 每天 ≥5 个问题能脱稿答到第二层</div>
         </div>
-        <!-- 右栏：今日任务 -->
-        <div>
-          <div class="section-header">
-            <div class="section-title"><span class="section-title-bar"></span>今日任务</div>
-            <div class="section-more tap" onclick="showToast('已刷新任务列表')">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-              刷新
-            </div>
-          </div>
-
-          <div class="task-list" id="todayTaskList">
-            <!-- 由 JS 渲染 -->
-          </div>
+        <div class="plan-hero-side">
+          <div class="plan-hero-num"><span id="planDoneDays">0</span>/14</div>
+          <div class="plan-hero-label">天已完成</div>
         </div>
       </div>
+      <div class="plan-progress-track"><div class="plan-progress-bar" id="planProgressBar"></div></div>
 
+      <div class="section-header" style="margin-top:0">
+        <div class="section-title"><span class="section-title-bar"></span>九份主线件</div>
+        <div class="section-more tap" onclick="openFriendly('00-面试计划/00-主线索引.md')">
+          主线索引
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+      <div class="bank-grid" id="planMainlineGrid"><!-- 由 JS 渲染 --></div>
+
+      <div class="section-header">
+        <div class="section-title"><span class="section-title-bar"></span>14 天排期</div>
+        <div class="section-more tap" onclick="resetPlanProgress()">重置打卡</div>
+      </div>
+      <div id="planDayList"><!-- 由 JS 渲染 --></div>
+
+      <div class="plan-rules">
+        <div class="plan-rules-title">三条硬规则</div>
+        <div class="plan-rule"><span class="plan-rule-num">1</span><span>每天只打开当天那一份主线件，验收标准是「该件里 ≥5 个问题能脱稿答到第二层」；读了多少页不算数。</span></div>
+        <div class="plan-rule"><span class="plan-rule-num">2</span><span>达不到就砍掉明天的次要项，<b>不砍睡眠</b>。只有 1.5–2 小时时按此砍序：D13 → D11 第 2 题 → D10 MyBatis 细节 → D4 集合与类加载。</span></div>
+        <div class="plan-rule"><span class="plan-rule-num">3</span><span>绝不砍的四项：D2–D3（项目）、D7（网关/故障）、D9（AI 口径）、D14（总演练）；口径冲突一律以主线件为准。</span></div>
+      </div>
     </section>
 
     <!-- ========== 页面2：题库 ========== -->
@@ -1962,144 +1881,28 @@
       </div>
     </section>
 
-    <!-- ========== 页面3：模拟面试 ========== -->
-    <section class="page" id="page-mock">
+    <!-- ========== 页面：项目底稿（resume/ 项目页 + 主线底稿） ========== -->
+    <section class="page" id="page-drafts">
 
-      <div class="mock-hero">
-        <div class="mock-hero-content">
-          <div class="mock-hero-title">模拟面试训练</div>
-          <div class="mock-hero-sub">掌握面试框架，30 秒抓住面试官注意力</div>
-          <div class="mock-hero-action tap" onclick="openInterviewFramework()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            开始 7 步框架
-          </div>
-        </div>
+      <div class="section-header" style="margin-top:0">
+        <div class="section-title"><span class="section-title-bar"></span>核心底稿</div>
+        <span class="setting-value" id="draftCoreCount">-- 份</span>
+      </div>
+
+      <div class="bank-grid" id="draftCoreGrid">
+        <!-- 由 JS 渲染 -->
       </div>
 
       <div class="section-header">
-        <div class="section-title"><span class="section-title-bar"></span>核心能力</div>
-      </div>
-
-      <div class="feature-grid">
-        <div class="feature-card tap" onclick="openInterviewFramework()">
-          <div>
-            <div class="feature-icon" style="background:rgba(34,211,238,0.15);color:var(--primary)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-            </div>
-            <div class="feature-title">面试叙事框架</div>
-            <div class="feature-desc">7 个问题一条线讲完你的故事</div>
-          </div>
-        </div>
-        <div class="feature-card tap" onclick="openSelfIntro()">
-          <div>
-            <div class="feature-icon" style="background:rgba(129,140,248,0.15);color:var(--secondary)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"/><path d="M12 6v6l4 2"/></svg>
-            </div>
-            <div class="feature-title">30秒自我介绍</div>
-            <div class="feature-desc">一句话抓住面试官注意力</div>
-          </div>
-        </div>
-        <div class="feature-card tap" onclick="openQuickCard()">
-          <div>
-            <div class="feature-icon" style="background:rgba(251,191,36,0.15);color:var(--warning)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            </div>
-            <div class="feature-title">面试速记卡</div>
-            <div class="feature-desc">关键数字与金句随时查阅</div>
-          </div>
-        </div>
-        <div class="feature-card tap" onclick="openForbiddenWords()">
-          <div>
-            <div class="feature-icon" style="background:rgba(248,113,113,0.15);color:var(--danger)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
-            </div>
-            <div class="feature-title">禁用语录</div>
-            <div class="feature-desc">面试中绝对不能说的话</div>
-          </div>
+        <div class="section-title"><span class="section-title-bar"></span>项目详情页</div>
+        <div class="section-more tap" onclick="openResume()">
+          简历站点
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
       </div>
 
-      <div class="section-header">
-        <div class="section-title"><span class="section-title-bar"></span>面试流程</div>
-      </div>
-
-      <div class="interview-flow">
-        <div class="flow-steps">
-          <div class="flow-step done">
-            <div class="flow-num">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div class="flow-content">
-              <div class="flow-title">自我介绍</div>
-              <div class="flow-desc">30 秒讲清身份 + 核心亮点</div>
-            </div>
-          </div>
-          <div class="flow-step done">
-            <div class="flow-num">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div class="flow-content">
-              <div class="flow-title">项目介绍</div>
-              <div class="flow-desc">产品做什么 → 客户是谁 → 凭什么卖</div>
-            </div>
-          </div>
-          <div class="flow-step active">
-            <div class="flow-num">3</div>
-            <div class="flow-content">
-              <div class="flow-title">技术深度</div>
-              <div class="flow-desc">架构选型 + 难点解决 + 数据支撑</div>
-            </div>
-          </div>
-          <div class="flow-step">
-            <div class="flow-num">4</div>
-            <div class="flow-content">
-              <div class="flow-title">管理能力</div>
-              <div class="flow-desc">团队建设 + 流程机制 + 技术债治理</div>
-            </div>
-          </div>
-          <div class="flow-step">
-            <div class="flow-num">5</div>
-            <div class="flow-content">
-              <div class="flow-title">反问环节</div>
-              <div class="flow-desc">展示思考深度 + 匹配度确认</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-header">
-        <div class="section-title"><span class="section-title-bar"></span>模拟方案</div>
-      </div>
-
-      <div class="prep-category" onclick="toggleMockDetail(this)">
-        <div class="prep-cat-header">
-          <div class="prep-cat-icon" style="background:rgba(52,211,153,0.12);color:var(--success)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          </div>
-          <div class="prep-cat-body">
-            <div class="prep-cat-title">模拟面试对练</div>
-            <div class="prep-cat-meta">对练底稿 + 追问库 + 话术背诵</div>
-          </div>
-          <div class="prep-cat-arrow">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          </div>
-        </div>
-        <div class="prep-cat-list">
-          <div class="prep-item tap" onclick="openPrepFile('06-面试准备/12-面试自证与训练手册.md')">
-            <div class="prep-item-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            </div>
-            <span class="prep-item-title">面试自证与训练手册（对练底稿）</span>
-            <span class="prep-item-badge md">MD</span>
-          </div>
-          <div class="prep-item tap" onclick="openPrepFile('06-面试准备/06-面试话术与背诵手册.md')">
-            <div class="prep-item-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            </div>
-            <span class="prep-item-title">面试话术与背诵手册</span>
-            <span class="prep-item-badge md">MD</span>
-          </div>
-        </div>
+      <div id="draftGroupList">
+        <!-- 由 JS 渲染 -->
       </div>
 
     </section>
@@ -2109,52 +1912,52 @@
 
       <div class="section-header" style="margin-top:0">
         <div class="section-title"><span class="section-title-bar"></span>AI 工程方案集</div>
-        <div class="section-more tap" onclick="openFile('ai/LLM-Agent-Harness-三层认知深度解读.md')">
-          认知总纲
+        <div class="section-more tap" onclick="openFile('ai/00-导航.md')">
+          目录导航
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
       </div>
 
-      <div class="prep-category" onclick="toggleMockDetail(this)">
+      <div class="prep-category" onclick="togglePrepCat(this)">
         <div class="prep-cat-header">
           <div class="prep-cat-icon" style="background:rgba(139,92,246,0.12);color:#8b5cf6">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/><path d="M4 14h16"/><path d="M6 14v3a6 6 0 0 0 12 0v-3"/></svg>
           </div>
           <div class="prep-cat-body">
             <div class="prep-cat-title">Agent / Harness 核心设计</div>
-            <div class="prep-cat-meta">6 份 · 认知总纲 + 详细设计 + 两张架构图（`ai/`，不在 prep 文件树内）</div>
+            <div class="prep-cat-meta">6 份 · 认知总纲 + 两份详细设计 + 报文拆解 + 两张架构图（`ai/01-认知框架/`）</div>
           </div>
           <div class="prep-cat-arrow open">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
         <div class="prep-cat-list open">
-          <div class="prep-item tap" onclick="openFile('ai/LLM-Agent-Harness-三层认知深度解读.md')">
+          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/LLM-Agent-Harness-三层认知深度解读.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">★ LLM / Agent / Harness 三层认知深度解读（总纲）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/Agent-详细设计与项目落地.md')">
+          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/Agent-详细设计与项目落地.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Agent 详细设计与项目落地（政策解读）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/Harness-详细设计与项目落地.md')">
+          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/Harness-详细设计与项目落地.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Harness 详细设计与项目落地（六机制）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/Harness-功能架构图.html')">
+          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/Harness-功能架构图.html')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Harness 功能架构图（六层 · 可导出 PNG）</span>
             <span class="prep-item-badge html">HTML</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/Harness-传统工程对应关系图.html')">
+          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/Harness-传统工程对应关系图.html')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">传统工程 ↔ Harness 对应关系图（四层 · 可导出 PNG）</span>
             <span class="prep-item-badge html">HTML</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/Agent-Harness-LLM报文全链路拆解.md')">
+          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/Agent-Harness-LLM报文全链路拆解.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Agent / Harness / LLM 报文全链路拆解</span>
             <span class="prep-item-badge md">MD</span>
@@ -2162,56 +1965,56 @@
         </div>
       </div>
 
-      <div class="prep-category" onclick="toggleMockDetail(this)">
+      <div class="prep-category" onclick="togglePrepCat(this)">
         <div class="prep-cat-header">
           <div class="prep-cat-icon" style="background:rgba(59,130,246,0.12);color:#3b82f6">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
           </div>
           <div class="prep-cat-body">
             <div class="prep-cat-title">Dify 平台与 RAG</div>
-            <div class="prep-cat-meta">8 份 · 平台接入手册 + RAG 16 卡点 + Agent 流程设计（`ai/dify/`）</div>
+            <div class="prep-cat-meta">8 份 · 平台接入手册 + RAG 16 卡点 + 三个业务 Agent 设计（`ai/02-平台工程/`、`ai/03-业务设计/`）</div>
           </div>
           <div class="prep-cat-arrow open">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
         <div class="prep-cat-list open">
-          <div class="prep-item tap" onclick="openFile('ai/dify/AI智能体企业级应用平台-定位与项目价值.md')">
+          <div class="prep-item tap" onclick="openFile('ai/03-业务设计/AI智能体企业级应用平台-定位与项目价值.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">★ AI 智能体企业级应用平台 · 定位与项目价值</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/dify/Dify快速深入指南.md')">
+          <div class="prep-item tap" onclick="openFile('ai/02-平台工程/Dify快速深入指南.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Dify 快速深入指南（平台接入手册）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/dify/Dify-RAG关键点详解.md')">
+          <div class="prep-item tap" onclick="openFile('ai/02-平台工程/Dify-RAG关键点详解.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Dify RAG 16 卡点与解法</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/dify/Dify速读.html')">
+          <div class="prep-item tap" onclick="openFile('ai/02-平台工程/Dify速读.html')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Dify 速读（HTML 速览版）</span>
             <span class="prep-item-badge html">HTML</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/dify/policy-agent/README.md')">
+          <div class="prep-item tap" onclick="openFile('ai/03-业务设计/政策解读Agent-通用设计.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">政策解读 Agent 通用设计（六层 + 两道闸门）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/dify/电力政策解读Agent-完整设计.md')">
+          <div class="prep-item tap" onclick="openFile('ai/03-业务设计/电力政策解读Agent-完整设计.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">电力政策解读 Agent 落地设计</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/dify/智能客服-完整流程设计.md')">
+          <div class="prep-item tap" onclick="openFile('ai/03-业务设计/智能客服-完整流程设计.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">智能客服完整流程设计</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/dify/rag-cases/README.md')">
+          <div class="prep-item tap" onclick="openFile('ai/03-业务设计/RAG直击库-方案与治理.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">RAG 直击库（Q&A 命中直返）方案</span>
             <span class="prep-item-badge md">MD</span>
@@ -2219,21 +2022,21 @@
         </div>
       </div>
 
-      <div class="prep-category" onclick="toggleMockDetail(this)">
+      <div class="prep-category" onclick="togglePrepCat(this)">
         <div class="prep-cat-header">
           <div class="prep-cat-icon" style="background:rgba(245,158,11,0.12);color:#f59e0b">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2"/><rect x="2" y="7" width="20" height="13" rx="2"/><path d="M8 12h8"/></svg>
           </div>
           <div class="prep-cat-body">
             <div class="prep-cat-title">文档解析 · MinerU</div>
-            <div class="prep-cat-meta">1 份 · RAG 入口的复杂 PDF 解析改造（`ai/`，面试锚点见 06-面试准备/15）</div>
+            <div class="prep-cat-meta">1 份 · RAG 入口的复杂 PDF 解析改造（`ai/02-平台工程/`，面试锚点见 06-面试准备/15）</div>
           </div>
           <div class="prep-cat-arrow open">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
         <div class="prep-cat-list open">
-          <div class="prep-item tap" onclick="openFile('ai/minerU复杂PDF识别优化方案与选型分析.md')">
+          <div class="prep-item tap" onclick="openFile('ai/02-平台工程/minerU复杂PDF识别优化方案与选型分析.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">MinerU 复杂 PDF 解析优化方案与选型</span>
             <span class="prep-item-badge md">MD</span>
@@ -2241,28 +2044,38 @@
         </div>
       </div>
 
-      <div class="prep-category" onclick="toggleMockDetail(this)">
+      <div class="prep-category" onclick="togglePrepCat(this)">
         <div class="prep-cat-header">
           <div class="prep-cat-icon" style="background:rgba(16,185,129,0.12);color:#10b981">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
           </div>
           <div class="prep-cat-body">
             <div class="prep-cat-title">RAG 面试实战 · 25 题 × 项目对照</div>
-            <div class="prep-cat-meta">2 份 + 293 篇语料 · 25 题骨架逐题对接 MinerU / Dify / 电力政策 Agent（`ai/rag-interview/`）</div>
+            <div class="prep-cat-meta">4 份 + 293 篇语料 · 25 题骨架 + 政策 Agent 问答 + 吴师兄题库（`ai/04-面试/`）</div>
           </div>
           <div class="prep-cat-arrow open">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
         <div class="prep-cat-list open">
-          <div class="prep-item tap" onclick="openFile('ai/rag-interview/00-RAG面试实战手册.md')">
+          <div class="prep-item tap" onclick="openFile('ai/04-面试/00-RAG面试实战手册.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">RAG 面试实战手册（25 题 × 项目对照）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/rag-interview/01-语料索引.md')">
+          <div class="prep-item tap" onclick="openFile('ai/04-面试/政策解读Agent-面试问题与回答要点.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-            <span class="prep-item-title">RAG 语料索引（293 篇 · 分桶正文见 corpus/）</span>
+            <span class="prep-item-title">政策解读 Agent 面试问答（A–J 组 55 题）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/04-面试/wushixiong-agent/00-索引.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">吴师兄 Agent 题库（主树 5 篇 · 另 20 篇已归档）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('ai/04-面试/语料/01-语料索引.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">RAG 语料索引（293 篇 · 正文 01 在主树，02–13 已归档）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
         </div>
@@ -2450,17 +2263,17 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21h-6v-6h-6v6H3z"/></svg>
     <span>首页</span>
   </button>
-  <button class="tabbar-item tap" data-page="page-bank" aria-label="题库" onclick="switchTab('page-bank')">
+  <button class="tabbar-item tap" data-page="page-plan" aria-label="面试计划" onclick="switchTab('page-plan')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+    <span>计划</span>
+  </button>
+  <button class="tabbar-item tap" data-page="page-bank" aria-label="真题" onclick="switchTab('page-bank')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-    <span>题库</span>
+    <span>真题</span>
   </button>
   <button class="tabbar-item tap" aria-label="备战手册" onclick="openPrepIndex()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
     <span>备战</span>
-  </button>
-  <button class="tabbar-item tap" data-page="page-mock" aria-label="模拟" onclick="switchTab('page-mock')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12z"/><path d="M12 2a10 10 0 0 1 10 10h-7.5a2.5 2.5 0 0 1-2.5-2.5z"/></svg>
-    <span>模拟</span>
   </button>
   <button class="tabbar-item tap" data-page="page-ai" aria-label="AI 方案集" onclick="switchTab('page-ai')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
@@ -2674,93 +2487,104 @@ var WorkbenchDB = (function () {
 
 /* ===== 业务数据 ===== */
 
-// 题库分类数据（prep/05-八股题库/01-八股文与深度整理，13 组 md + 13 组 html）
+// 题库分类数据（03-技术真题/01-八股文与深度整理，13 组 md + 13 组 html）
 var BANK_CATEGORIES = [
   { key: 'java', title: 'Java 面试题', desc: 'JVM/并发/集合/Spring', count: 4, icon: 'code', color: 'cyan',
     files: [
-      { name: '01-Java面试题深度整理.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/01-Java面试题深度整理.md' },
-      { name: '01-Java面试题深度整理.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/01-Java面试题深度整理.html' },
-      { name: '02-Java深度八股文.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/02-Java深度八股文.md' },
-      { name: '02-Java深度八股文.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/02-Java深度八股文.html' }
+      { name: '01-Java面试题深度整理.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/01-Java面试题深度整理.md' },
+      { name: '01-Java面试题深度整理.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/01-Java面试题深度整理.html' },
+      { name: '02-Java深度八股文.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/02-Java深度八股文.md' },
+      { name: '02-Java深度八股文.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/02-Java深度八股文.html' }
     ]
   },
   { key: 'mysql', title: 'MySQL 面试题', desc: '索引/事务/锁/优化', count: 4, icon: 'database', color: 'purple',
     files: [
-      { name: '03-MySQL面试题深度整理.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/03-MySQL面试题深度整理.md' },
-      { name: '03-MySQL面试题深度整理.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/03-MySQL面试题深度整理.html' },
-      { name: '04-MySQL八股文追问链.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/04-MySQL八股文追问链.md' },
-      { name: '04-MySQL八股文追问链.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/04-MySQL八股文追问链.html' }
+      { name: '03-MySQL面试题深度整理.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/03-MySQL面试题深度整理.md' },
+      { name: '03-MySQL面试题深度整理.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/03-MySQL面试题深度整理.html' },
+      { name: '04-MySQL八股文追问链.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/04-MySQL八股文追问链.md' },
+      { name: '04-MySQL八股文追问链.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/04-MySQL八股文追问链.html' }
     ]
   },
   { key: 'redis', title: 'Redis 面试题', desc: '数据结构/缓存/持久化', count: 4, icon: 'zap', color: 'warm',
     files: [
-      { name: '05-Redis面试题深度整理.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/05-Redis面试题深度整理.md' },
-      { name: '05-Redis面试题深度整理.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/05-Redis面试题深度整理.html' },
-      { name: '06-Redis八股文追问链.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/06-Redis八股文追问链.md' },
-      { name: '06-Redis八股文追问链.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/06-Redis八股文追问链.html' }
+      { name: '05-Redis面试题深度整理.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/05-Redis面试题深度整理.md' },
+      { name: '05-Redis面试题深度整理.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/05-Redis面试题深度整理.html' },
+      { name: '06-Redis八股文追问链.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/06-Redis八股文追问链.md' },
+      { name: '06-Redis八股文追问链.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/06-Redis八股文追问链.html' }
     ]
   },
   { key: 'nginx', title: 'Nginx 面试题', desc: '反向代理/负载均衡', count: 4, icon: 'server', color: 'green',
     files: [
-      { name: '07-Nginx面试题深度整理.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/07-Nginx面试题深度整理.md' },
-      { name: '07-Nginx面试题深度整理.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/07-Nginx面试题深度整理.html' },
-      { name: '08-Nginx深度八股文.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/08-Nginx深度八股文.md' },
-      { name: '08-Nginx深度八股文.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/08-Nginx深度八股文.html' }
+      { name: '07-Nginx面试题深度整理.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/07-Nginx面试题深度整理.md' },
+      { name: '07-Nginx面试题深度整理.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/07-Nginx面试题深度整理.html' },
+      { name: '08-Nginx深度八股文.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/08-Nginx深度八股文.md' },
+      { name: '08-Nginx深度八股文.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/08-Nginx深度八股文.html' }
     ]
   },
   { key: 'linux', title: 'Linux 面试题', desc: '命令/运维/性能调优', count: 2, icon: 'terminal', color: 'orange',
     files: [
-      { name: '10-Linux面试题深度整理.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/10-Linux面试题深度整理.md' },
-      { name: '10-Linux面试题深度整理.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/10-Linux面试题深度整理.html' }
+      { name: '10-Linux面试题深度整理.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/10-Linux面试题深度整理.md' },
+      { name: '10-Linux面试题深度整理.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/10-Linux面试题深度整理.html' }
     ]
   },
   { key: 'middleware', title: '中间件 & 网络', desc: 'Kafka/Tomcat/网络', count: 8, icon: 'layers', color: 'pink',
     files: [
-      { name: '09-KafkaZookeeper深度八股文.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/09-KafkaZookeeper深度八股文.md' },
-      { name: '09-KafkaZookeeper深度八股文.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/09-KafkaZookeeper深度八股文.html' },
-      { name: '11-Tomcat面试题深度整理.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/11-Tomcat面试题深度整理.md' },
-      { name: '11-Tomcat面试题深度整理.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/11-Tomcat面试题深度整理.html' },
-      { name: '12-网络连接类型面试题深度整理.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/12-网络连接类型面试题深度整理.md' },
-      { name: '12-网络连接类型面试题深度整理.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/12-网络连接类型面试题深度整理.html' },
-      { name: '13-网络连接类型八股文.md', type: 'md', path: 'prep/05-八股题库/01-八股文与深度整理/13-网络连接类型八股文.md' },
-      { name: '13-网络连接类型八股文.html', type: 'html', path: 'prep/05-八股题库/01-八股文与深度整理/13-网络连接类型八股文.html' }
+      { name: '09-KafkaZookeeper深度八股文.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/09-KafkaZookeeper深度八股文.md' },
+      { name: '09-KafkaZookeeper深度八股文.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/09-KafkaZookeeper深度八股文.html' },
+      { name: '11-Tomcat面试题深度整理.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/11-Tomcat面试题深度整理.md' },
+      { name: '11-Tomcat面试题深度整理.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/11-Tomcat面试题深度整理.html' },
+      { name: '12-网络连接类型面试题深度整理.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/12-网络连接类型面试题深度整理.md' },
+      { name: '12-网络连接类型面试题深度整理.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/12-网络连接类型面试题深度整理.html' },
+      { name: '13-网络连接类型八股文.md', type: 'md', path: '03-技术真题/01-八股文与深度整理/13-网络连接类型八股文.md' },
+      { name: '13-网络连接类型八股文.html', type: 'html', path: '03-技术真题/01-八股文与深度整理/13-网络连接类型八股文.html' }
     ]
   }
 ];
 
-// 面试真题分类（prep/05-八股题库/02-面试真题）
+// 面试真题分类（03-技术真题/02-面试真题）
 var FACE_EXP_CATEGORIES = [
   { key: 'arch', title: '架构师真题', desc: '系统设计/架构决策', count: 1, icon: 'layout', color: 'cyan',
-    files: [{ name: '03-架构师面试真题.md', type: 'md', path: 'prep/05-八股题库/02-面试真题/03-架构师面试真题.md' }]
+    files: [{ name: '03-架构师面试真题.md', type: 'md', path: '03-技术真题/02-面试真题/03-架构师面试真题.md' }]
   },
   { key: 'java-senior', title: '高级 Java 真题', desc: '全栈技术深度考察', count: 1, icon: 'code', color: 'purple',
-    files: [{ name: '04-高级Java开发全栈面试真题.md', type: 'md', path: 'prep/05-八股题库/02-面试真题/04-高级Java开发全栈面试真题.md' }]
+    files: [{ name: '04-高级Java开发全栈面试真题.md', type: 'md', path: '03-技术真题/02-面试真题/04-高级Java开发全栈面试真题.md' }]
   },
   { key: 'ops', title: '高级运维真题', desc: '运维/监控/故障处理', count: 1, icon: 'server', color: 'warm',
-    files: [{ name: '05-高级运维面试真题.md', type: 'md', path: 'prep/05-八股题库/02-面试真题/05-高级运维面试真题.md' }]
+    files: [{ name: '05-高级运维面试真题.md', type: 'md', path: '03-技术真题/02-面试真题/05-高级运维面试真题.md' }]
   },
   { key: 'pm', title: '项目经理真题', desc: '管理/沟通/项目推进', count: 1, icon: 'users', color: 'green',
-    files: [{ name: '06-项目经理面试真题.md', type: 'md', path: 'prep/05-八股题库/02-面试真题/06-项目经理面试真题.md' }]
+    files: [{ name: '06-项目经理面试真题.md', type: 'md', path: '03-技术真题/02-面试真题/06-项目经理面试真题.md' }]
   },
   { key: 'app', title: '高级应用工程师真题', desc: '应用层深度与实战问答', count: 1, icon: 'user', color: 'orange',
-    files: [{ name: '07-高级应用工程师面试题真题.md', type: 'md', path: 'prep/05-八股题库/02-面试真题/07-高级应用工程师面试题真题.md' }]
+    files: [{ name: '07-高级应用工程师面试题真题.md', type: 'md', path: '03-技术真题/02-面试真题/07-高级应用工程师面试题真题.md' }]
+  },
+  { key: 'ai', title: 'AI 开发工程师真题', desc: 'AI / 大模型工程实战', count: 1, icon: 'zap', color: 'pink',
+    files: [{ name: '08-AI开发工程师面试真题.md', type: 'md', path: '03-技术真题/02-面试真题/08-AI开发工程师面试真题.md' }]
   }
 ];
 
-// 备战主题数据（prep/ 下除八股题库外的分类；05-八股题库见题库页）
+// 备战主题数据（04-备战手册/ 下除八股题库外的分类；03-技术真题见题库页）
 var PREP_CATEGORIES = [
+  { key: 'main', title: '00 面试计划（10 件）', icon: 'layers', color: 'warm',
+    files: [
+      { name: '00-主线索引.md', type: 'md', path: '00-面试计划/00-主线索引.md' },
+      { name: '01-简历与自我定位.md', type: 'md', path: '00-面试计划/01-简历与自我定位.md' },
+      { name: '02-项目叙事-B2B.md', type: 'md', path: '00-面试计划/02-项目叙事-B2B.md' },
+      { name: '03-项目叙事-AI.md', type: 'md', path: '00-面试计划/03-项目叙事-AI.md' },
+      { name: '04-业务与客户价值.md', type: 'md', path: '00-面试计划/04-业务与客户价值.md' },
+      { name: '05-网关与高并发.md', type: 'md', path: '00-面试计划/05-网关与高并发.md' },
+      { name: '06-一致性与异构.md', type: 'md', path: '00-面试计划/06-一致性与异构.md' },
+      { name: '07-JVM与线上排查.md', type: 'md', path: '00-面试计划/07-JVM与线上排查.md' },
+      { name: '08-技术问答速查.md', type: 'md', path: '00-面试计划/08-技术问答速查.md' },
+      { name: '09-待复习与复盘.md', type: 'md', path: '00-面试计划/09-待复习与复盘.md' }
+    ]
+  },
   { key: 'product', title: '01 产品定位', icon: 'target', color: 'cyan',
     files: [
-      { name: '01-B2B平台功能全景分析.md', type: 'md', path: '01-产品定位/01-B2B平台功能全景分析.md' },
       { name: '02-平台定位与客户分析.html', type: 'html', path: '01-产品定位/02-平台定位与客户分析.html' },
       { name: '03-平台角色与业务动作全景手册.md', type: 'md', path: '01-产品定位/03-平台角色与业务动作全景手册.md' },
       { name: '04-B2B大宗贸易平台-产品三维度分析.md', type: 'md', path: '01-产品定位/04-B2B大宗贸易平台-产品三维度分析.md' },
-      { name: '05-建设背景与必要性分析.html', type: 'html', path: '01-产品定位/05-建设背景与必要性分析.html' },
-      { name: '06-平台设计规范手册.md', type: 'md', path: '01-产品定位/06-平台设计规范手册.md' },
-      { name: '07-原型与事故审查方法论手册.md', type: 'md', path: '01-产品定位/07-原型与事故审查方法论手册.md' },
-      { name: '08-B2B客户价值分析.md', type: 'md', path: '01-产品定位/08-B2B客户价值分析.md' },
-      { name: '09-期现结合业务实现思路.md', type: 'md', path: '01-产品定位/09-期现结合业务实现思路.md' },
-      { name: '10-供应链B2B与供应链金融方案深度分析.html', type: 'html', path: '01-产品定位/10-供应链B2B与供应链金融方案深度分析.html' }
+      { name: '09-期现结合业务实现思路.md', type: 'md', path: '01-产品定位/09-期现结合业务实现思路.md' }
     ]
   },
   { key: 'biz', title: '02 业务价值', icon: 'briefcase', color: 'green',
@@ -2774,7 +2598,6 @@ var PREP_CATEGORIES = [
   },
   { key: 'cases', title: '03 客户案例', icon: 'presentation', color: 'orange',
     files: [
-      { name: '01-数字产业链服务平台-全量分析.md', type: 'md', path: '03-客户案例/01-数字产业链服务平台-全量分析.md' },
       { name: '02-数字产业链服务平台-含痛点方案.pptx', type: 'pptx', path: '03-客户案例/02-数字产业链服务平台-含痛点方案.pptx' },
       { name: '04-B2B技术经理-能力全景介绍.pptx', type: 'pptx', path: '03-客户案例/04-B2B技术经理-能力全景介绍.pptx' },
       { name: '05-B2B产品服务客户案例.slides.pptx', type: 'pptx', path: '03-客户案例/05-B2B产品服务客户案例.slides.pptx' },
@@ -2785,7 +2608,7 @@ var PREP_CATEGORIES = [
   },
   { key: 'arch', title: '04 架构决策', icon: 'layout', color: 'warm',
     files: [
-      { name: '01-架构方法论与选型设计手册.md', type: 'md', path: '04-架构决策/01-架构方法论与选型设计手册.md' },
+      { name: '01-架构方法论与选型设计手册.md（上篇方法论 · 中篇建设框架 · 下篇技术选型）', type: 'md', path: '04-架构决策/01-架构方法论与选型设计手册.md' },
       { name: '02-异构架构策略与真实系统叙事手册.md', type: 'md', path: '04-架构决策/02-异构架构策略与真实系统叙事手册.md' },
       { name: '03-平台化治理与多租户架构手册.md', type: 'md', path: '04-架构决策/03-平台化治理与多租户架构手册.md' },
       { name: '04-现货交易供应链-难点与解决方案速查手册.md', type: 'md', path: '04-架构决策/04-现货交易供应链-难点与解决方案速查手册.md' },
@@ -2794,8 +2617,7 @@ var PREP_CATEGORIES = [
       { name: '07-Cookie认证失败-5Why根因分析.slides.pptx', type: 'pptx', path: '04-架构决策/生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx' },
       { name: '07-B2B合同中心vsB2C订单中心-区别分析.md', type: 'md', path: '04-架构决策/07-B2B合同中心vsB2C订单中心-区别分析.md' },
       { name: '08-Dify与自研业务中台-技术选型复盘.md', type: 'md', path: '04-架构决策/08-Dify与自研业务中台-技术选型复盘.md' },
-      { name: '09-B2B系统从原型到优秀平台的建设框架.md', type: 'md', path: '04-架构决策/09-B2B系统从原型到优秀平台的建设框架.md' },
-      { name: '10-优秀B2B系统完整技术选型与设计方案.md', type: 'md', path: '04-架构决策/10-优秀B2B系统完整技术选型与设计方案.md' },
+      /* 09-建设框架、10-技术选型方案 已合并进 01-架构方法论与选型设计手册（中篇/下篇） */
       { name: '08-多机房多线路网络故障-排查实录.md', type: 'md', path: '04-架构决策/生产问题排查/08-多机房多线路网络故障-排查实录.md' },
       { name: '09-竞价页面突然变慢-排查实录.md', type: 'md', path: '04-架构决策/生产问题排查/09-竞价页面突然变慢-排查实录.md' },
       { name: '10-下载PDF致JVM进程消失-排查实录.md', type: 'md', path: '04-架构决策/生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
@@ -2818,25 +2640,33 @@ var PREP_CATEGORIES = [
       { name: '15-图-DS数据交换中心双通道流水线.html', type: 'html', path: '04-架构决策/15-图-DS数据交换中心双通道流水线.html' }
     ]
   },
+  { key: 'mgmt', title: '05 技术管理', icon: 'users', color: 'purple',
+    files: [
+      { name: '00-技术管理索引.md', type: 'md', path: '05-技术管理/00-技术管理索引.md' },
+      { name: '01-技术整改十一项与落地.html', type: 'html', path: '05-技术管理/01-技术整改十一项与落地.html' },
+      { name: '12-面试自证与训练手册.md（§八 研发管理自证素材）', type: 'md', path: '06-面试准备/12-面试自证与训练手册.md' },
+      { name: '06-面试话术与背诵手册.md（管理类高频题 6 问）', type: 'md', path: '06-面试准备/06-面试话术与背诵手册.md' },
+      { name: 'CI-CD建设方案与CodeReview规范.md（研发效能）', type: 'md', path: '../02-项目底稿/研发效能/CI-CD建设方案与CodeReview规范.md' },
+      { name: '05-6个月从救火队长到技术操盘手.md（管理转型）', type: 'md', path: '../01-个人简历/简历资料/05-6个月从救火队长到技术操盘手.md' },
+      { name: '03-技术情报收集与跨部门沟通手册.md', type: 'md', path: '../01-个人简历/简历资料/03-技术情报收集与跨部门沟通手册.md' },
+      { name: '06-项目经理面试真题.md（管理类真题）', type: 'md', path: '../03-技术真题/02-面试真题/06-项目经理面试真题.md' }
+    ]
+  },
   { key: 'strategy', title: '06 面试准备', icon: 'zap', color: 'green',
     files: [
       { name: '01-面试核心策略手册.md', type: 'md', path: '06-面试准备/01-面试核心策略手册.md' },
-      { name: '02-技术栈全景图.md', type: 'md', path: '06-面试准备/02-技术栈全景图.md' },
-      { name: '03-技术栈深度面试题库.md', type: 'md', path: '06-面试准备/03-技术栈深度面试题库.md' },
-      { name: '04-技术复习综合手册.md', type: 'md', path: '06-面试准备/04-技术复习综合手册.md' },
+      { name: '02-技术栈全景图.md（全景图 · 面试题库 · 复习手册）', type: 'md', path: '06-面试准备/02-技术栈全景图.md' },
+      /* 03-技术栈深度面试题库、04-技术复习综合手册 已合并进 02-技术栈全景图（第二/第三部分） */
       { name: '06-面试话术与背诵手册.md', type: 'md', path: '06-面试准备/06-面试话术与背诵手册.md' },
       { name: '06-面试话术与背诵手册.html', type: 'html', path: '06-面试准备/06-面试话术与背诵手册.html' },
       { name: '07-国企面试焦点分析.md', type: 'md', path: '06-面试准备/07-国企面试焦点分析.md' },
-      { name: '08-技术整改十项与落地.html', type: 'html', path: '06-面试准备/08-技术整改十项与落地.html' },
       { name: '12-面试自证与训练手册.md', type: 'md', path: '06-面试准备/12-面试自证与训练手册.md' },
       { name: '12-面试自证与训练手册.visual.html', type: 'html', path: '06-面试准备/12-面试自证与训练手册.visual.html' },
       { name: '13-超聚变面试准备.md', type: 'md', path: '06-面试准备/13-超聚变面试准备.md' },
       { name: '15-AI工程能力补强手册.md', type: 'md', path: '06-面试准备/15-AI工程能力补强手册.md' },
       { name: '16-简历知识补强清单.md', type: 'md', path: '06-面试准备/16-简历知识补强清单.md' },
       { name: '17-JavaGuide四周计划压缩版-14天执行表.md', type: 'md', path: '06-面试准备/17-JavaGuide四周计划压缩版-14天执行表.md' },
-      { name: '18-项目底稿-B2B大宗商品现货交易平台.md', type: 'md', path: '06-面试准备/18-项目底稿-B2B大宗商品现货交易平台.md' },
-      { name: '19-项目底稿-AI智能体平台.md', type: 'md', path: '06-面试准备/19-项目底稿-AI智能体平台.md' },
-      { name: '20-待复习问题清单-双项目.md', type: 'md', path: '06-面试准备/20-待复习问题清单-双项目.md' },
+      { name: '18-系统架构叙事手册.md', type: 'md', path: '06-面试准备/18-系统架构叙事手册.md' },
       { name: '14-面试介绍PPT · 放映站点', type: 'html', path: '06-面试准备/14-面试介绍PPT/index.html' },
       { name: '14-面试介绍PPT · 模板与排版规范.md', type: 'md', path: '06-面试准备/14-面试介绍PPT/PPT模板与排版规范.md' },
       { name: '14-面试介绍PPT · 面试自我介绍-haswhere.pptx', type: 'pptx', path: '06-面试准备/14-面试介绍PPT/面试自我介绍-haswhere.pptx' },
@@ -2845,21 +2675,7 @@ var PREP_CATEGORIES = [
       { name: '14-面试介绍PPT · 个人简历介绍-24页.pdf', type: 'pdf', path: '06-面试准备/14-面试介绍PPT/render/个人简历介绍-24页.pdf' }
     ]
   },
-  { key: 'resume', title: '09 个人简历', icon: 'rocket', color: 'purple',
-    files: [
-      { name: '02-职业发展进阶路线图手册.md', type: 'md', path: '09-个人简历/02-职业发展进阶路线图手册.md' },
-      { name: '03-技术情报收集与跨部门沟通手册.md', type: 'md', path: '09-个人简历/03-技术情报收集与跨部门沟通手册.md' },
-      { name: '04-L2到L4晋级路线图.print.html', type: 'html', path: '09-个人简历/04-L2到L4晋级路线图.print.html' },
-      { name: '08-简历与自我介绍脚本.md', type: 'md', path: '09-个人简历/08-简历与自我介绍脚本.md' },
-      { name: '15-快速通览一页纸简报.html', type: 'html', path: '09-个人简历/15-快速通览一页纸简报.html' },
-      { name: '02-面试背诵集合.html', type: 'html', path: '09-个人简历/01-工具与速查/02-面试背诵集合.html' },
-      { name: '03-RICE优先级决策矩阵.html', type: 'html', path: '09-个人简历/01-工具与速查/03-RICE优先级决策矩阵.html' },
-      { name: '04-5Whys与业务技术映射速查卡.html', type: 'html', path: '09-个人简历/01-工具与速查/04-5Whys与业务技术映射速查卡.html' },
-      { name: '05-B2B微服务系统架构图-手绘版.html', type: 'html', path: '09-个人简历/01-工具与速查/05-B2B微服务系统架构图-手绘版.html' },
-      { name: '06-五类客户运营模式速查卡.html', type: 'html', path: '09-个人简历/01-工具与速查/06-五类客户运营模式速查卡.html' },
-      { name: '07-五类客户运营模式深度拆解.html', type: 'html', path: '09-个人简历/01-工具与速查/07-五类客户运营模式深度拆解.html' }
-    ]
-  }
+  /* 个人简历资料已独立为 01-个人简历/ 菜单，不再计入备战主题 */
 ];
 
 /* ===== 案例 · 场景页数据（五类客户 / 十个业务场景 / 资料清单） ===== */
@@ -2898,94 +2714,31 @@ var CASE_GROUPS = [
   { key: 'cases', title: '01 客户案例材料', files: [
     { name: '13-客户深度复盘与面试亮点.md', type: 'md', path: '03-客户案例/13-客户深度复盘与面试亮点.md' },
     { name: '13-客户深度复盘与面试亮点.visual.html', type: 'html', path: '03-客户案例/13-客户深度复盘与面试亮点.visual.html' },
-    { name: '01-数字产业链服务平台-全量分析.md', type: 'md', path: '03-客户案例/01-数字产业链服务平台-全量分析.md' },
     { name: '02-数字产业链服务平台-含痛点方案.pptx', type: 'pptx', path: '03-客户案例/02-数字产业链服务平台-含痛点方案.pptx' },
     { name: '04-B2B技术经理-能力全景介绍.pptx', type: 'pptx', path: '03-客户案例/04-B2B技术经理-能力全景介绍.pptx' },
     { name: '05-B2B产品服务客户案例.slides.pptx', type: 'pptx', path: '03-客户案例/05-B2B产品服务客户案例.slides.pptx' },
     { name: '05-B2B产品服务客户案例.pdf', type: 'pdf', path: '03-客户案例/05-B2B产品服务客户案例.pdf' },
-    { name: '06-客户案例与行业对标手册.md', type: 'md', path: '03-客户案例/06-客户案例与行业对标手册.md' },
-    { name: '10-供应链B2B与供应链金融方案深度分析.html', type: 'html', path: '01-产品定位/10-供应链B2B与供应链金融方案深度分析.html' }
+    { name: '06-客户案例与行业对标手册.md', type: 'md', path: '03-客户案例/06-客户案例与行业对标手册.md' }
   ] },
   { key: 'scenes', title: '02 业务场景材料', files: [
     { name: '02-业务全链路场景手册.md', type: 'md', path: '02-业务价值/02-业务全链路场景手册.md' },
     { name: '09-业务-技术映射地图.md', type: 'md', path: '02-业务价值/09-业务-技术映射地图.md' },
     { name: '05-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-业务价值/05-业务痛点与系统解决方案-架构详解.md' },
     { name: '03-平台角色与业务动作全景手册.md', type: 'md', path: '01-产品定位/03-平台角色与业务动作全景手册.md' },
-    { name: '15-快速通览一页纸简报.html', type: 'html', path: '09-个人简历/15-快速通览一页纸简报.html' }
+    { name: '15-快速通览一页纸简报.html', type: 'html', path: '01-个人简历/简历资料/15-快速通览一页纸简报.html' }
   ] }
 ];
 
-/* ===== 首页内容素材（来源 prep/06-面试准备 与 prep/01-产品定位、02-业务价值）===== */
-
-// 开场三击：前 5 分钟定生死（01-面试核心策略手册 2.2）
-var OPENING_STRIKES = [
-  { tone: 'cyan', no: '第一击', dur: '30 秒', title: '一句话定位',
-    desc: '背到肌肉记忆。身份 + 一个差异化标签 + 一个数字，别寒暄、别复述简历。',
-    raw: '我是 XX，B2B 大宗贸易平台技术经理，管 X 人团队，负责 Java 业务中台 + DS 数据中心。我们系统最大的特点是 C 语言撮合引擎 + Java 微服务的异构四层架构，我用自研的 DS 桥接层管住了两者间的通信。我深度参与的模块是交易模式、履约保证、数据服务和规则配置。',
-    path: 'prep/06-面试准备/06-面试话术与背诵手册.md' },
-  { tone: 'purple', no: '第二击', dur: '2 分钟', title: '边画边讲四层架构',
-    desc: '架构必须能脱手画出来。边画边讲，让面试官跟着你的图走。',
-    raw: '接入层（大屏/PC/移动）→ 网关层（midservice 自研）→ 业务中台（Java 微服务 + DS 数据中心）→ 撮合层（C 语言内存撮合 + 异步落库）',
-    path: 'prep/06-面试准备/06-面试话术与背诵手册.md' },
-  { tone: 'warm', no: '第三击', dur: '反问 1 个', title: '反抛问题制造互动',
-    desc: '把面试从"答题"变成"对话"。好问题让面试官愿意跟你多聊十分钟。',
-    raw: '差问题：这个系统最复杂的部分在哪？\n好问题：如果这个系统明天交给你，你最担心的是哪一块？\n好问题：您刚才提到最看重候选人的落地能力，那在您团队里，"落地"是怎么被验收的？',
-    path: 'prep/06-面试准备/01-面试核心策略手册.md' }
-];
-
-// 叙事框架 7 步：七个问题一条线讲完（prep/面试框架）
-var FRAMEWORK_STEPS = [
-  { n: 1, tone: 'blue', title: '我们的产品是做什么的',
-    point: 'B2B 大宗商品在线交易与供应链服务平台。电子交易撮合买卖双方、现代物流保障货权清晰、供应链金融把交易数据变信用资产。七种交易模式。',
-    quote: 'C 负责快，Java 负责稳，DS 负责翻译。', path: 'prep/06-面试准备/06-面试话术与背诵手册.md' },
-  { n: 2, tone: 'blue', title: '目标客户是谁',
-    point: '钢铁、煤炭、化工、农产品、有色金属，正式客户 16 家覆盖五大板块。客户带着明确任务来：采购比价、财务对账、风控查货、老板算回报。',
-    quote: '客户是带着明确任务来的，不是来"逛"平台的。', path: 'prep/06-面试准备/06-面试话术与背诵手册.md' },
-  { n: 3, tone: 'blue', title: '产品有什么特点',
-    point: '全链路线上化（询价到开票全程在线）、多租户深度定制（规则引擎适配每个客户行规）、金融级可靠性。',
-    quote: '把大宗贸易从"靠人脉、靠电话、靠运气"，变成"靠数据、靠系统、靠信用"。', path: 'prep/01-产品定位/03-平台角色与业务动作全景手册.md' },
-  { n: 4, tone: 'blue', title: '客户为什么要购买',
-    point: '四个"怎么都搞不定"的死结，每个痛点就是一个买单理由：信任壁垒、信息不对称、交易效率、资金约束。价值按效率→风险→增长三层递进。',
-    quote: '没有交易数据的人做金融是在猜，我们是在算。', path: 'prep/02-业务价值/05-业务痛点与系统解决方案-架构详解.md' },
-  { n: 5, tone: 'emerald', title: '我在其中扮演什么角色',
-    point: '技术经理 = 业务翻译官 + 技术操盘手 + 流程守护者。深度区直接掌控，治理区契约管理。',
-    quote: '管"连线"不管"黑盒内部"——守住接口、SLA、爆炸半径。', path: 'prep/06-面试准备/06-面试话术与背诵手册.md' },
-  { n: 6, tone: 'emerald', title: '我解决了什么问题、拿到什么结果',
-    point: '五个成果挑 2–3 个讲，统一用"问题 → 方案 → 结果"三段式：DS 桥接层、多租户配置化、跨月长事务一致性、管理三件套、场景化工作台。',
-    quote: '技术经理的价值不在写了多少代码，而在正确的边界上做了正确的架构决策。', path: 'prep/06-面试准备/06-面试话术与背诵手册.md' },
-  { n: 7, tone: 'amber', title: '面试速记卡',
-    point: '30 秒自我介绍 + 四层架构 + 关键数字 + 禁用语录，面试前 10 分钟只看这一页。',
-    quote: '不变的部分写死，可变的部分配出来。', path: 'prep/06-面试准备/06-面试话术与背诵手册.md' }
-];
-
-// 最有冲击力的数字（10-背诵版 / 面试框架 Step 7）
-var KEY_NUMBERS = [
-  { from: '5~7 天', to: '1.5 天', label: '一笔交易周期' },
-  { from: '3 人 × 3 天', to: '2 小时', label: '对账工作量' },
-  { from: '2 个月', to: '1 周', label: '新客户上线' },
-  { from: '45%', to: '15%', label: '被动响应占比' },
-  { from: '半天', to: '30 分钟', label: '客户培训时长' },
-  { from: '月均 8 次', to: '2 次', label: '凌晨故障叫起' },
-  { from: '0 次', to: '', label: '多年资金差错' },
-  { from: '99.95%', to: '', label: '系统可用率' }
-];
-
-// 禁用语录对照（面试框架 Step 7）
-var FORBIDDEN_WORDS = [
-  { bad: '我们用了 Spring Cloud', good: '12+ 微服务按业务垂直拆分，交易是核心域' },
-  { bad: '我用 Redis 做缓存', good: '高峰期热数据命中率 95%，响应降到 50ms' },
-  { bad: '我们系统挺稳定的', good: '多年零资金差错，冬储高峰期零 P0 事故' },
-  { bad: '我技术挺好的', good: '异构架构下的通信治理是我的深度领域' }
-];
+/* 首页已精简：开场三击 / 叙事框架 7 步 / 关键数字 / 禁用语录 的素材与渲染逻辑已移除 */
 
 // 今日任务种子数据
 var TODAY_TASKS_SEED = [
-  { title: '背熟 30 秒自我介绍（第一击）', category: 'mock', tag: '模拟', path: 'prep/06-面试准备/06-面试话术与背诵手册.md', done: false },
-  { title: '脱手画四层架构，讲 2 分钟（第二击）', category: 'mock', tag: '模拟', path: 'prep/06-面试准备/06-面试话术与背诵手册.md', done: false },
-  { title: '复述第 4 步：客户买单的四个死结', category: 'prep', tag: '备战', path: 'prep/02-业务价值/05-业务痛点与系统解决方案-架构详解.md', done: false },
-  { title: '默写关键数字 6 个', category: 'prep', tag: '备战', path: 'prep/06-面试准备/06-面试话术与背诵手册.md', done: false },
-  { title: '口述一个成果：问题→方案→结果', category: 'mock', tag: '模拟', path: 'prep/06-面试准备/06-面试话术与背诵手册.md', done: false },
-  { title: '自查 4 条禁用语录，说了就改口', category: 'mock', tag: '模拟', path: 'prep/06-面试准备/06-面试话术与背诵手册.md', done: false }
+  { title: '背熟 30 秒自我介绍（第一击）', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
+  { title: '脱手画四层架构，讲 2 分钟（第二击）', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
+  { title: '复述第 4 步：客户买单的四个死结', category: 'prep', tag: '备战', path: '04-备战手册/02-业务价值/05-业务痛点与系统解决方案-架构详解.md', done: false },
+  { title: '默写关键数字 6 个', category: 'prep', tag: '备战', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
+  { title: '口述一个成果：问题→方案→结果', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
+  { title: '自查 4 条禁用语录，说了就改口', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false }
 ];
 
 /* ===== SVG 图标库 ===== */
@@ -3055,8 +2808,9 @@ function updateGreeting() {
 /* ===== Tab 切换 ===== */
 var pageTitles = {
   'page-home': '面试工作台',
-  'page-bank': '技术题库',
-  'page-mock': '模拟面试',
+  'page-plan': '面试计划',
+  'page-drafts': '项目底稿',
+  'page-bank': '技术真题',
   'page-ai': 'AI 方案集',
   'page-cases': '案例 · 场景',
   'page-me': '我的'
@@ -3203,127 +2957,6 @@ function countFiles(categories) {
 }
 
 var TOTAL_PREP_FILES = countFiles(PREP_CATEGORIES);
-var TOTAL_BANK_FILES = countFiles(BANK_CATEGORIES);
-
-/* ===== 首页内容渲染 ===== */
-
-// 复制到剪贴板；浏览器拒绝时改为选中原文，由用户手动 Ctrl+C
-function copyText(text, sourceId) {
-  var selectFallback = function () {
-    var el = sourceId ? document.getElementById(sourceId) : null;
-    if (!el) { showToast('复制失败，请手动选择文本'); return; }
-    try {
-      var range = document.createRange();
-      range.selectNodeContents(el);
-      var sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-      showToast('已选中原文，按 Ctrl+C 复制');
-    } catch (e) {
-      showToast('复制失败，请手动选择文本');
-    }
-  };
-  var onOk = function () { showToast('已复制到剪贴板'); };
-
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(onOk).catch(function () {
-      if (!legacyCopy(text)) selectFallback(); else onOk();
-    });
-  } else if (!legacyCopy(text)) {
-    selectFallback();
-  } else {
-    onOk();
-  }
-}
-
-function legacyCopy(text) {
-  try {
-    var ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    var ok = document.execCommand('copy');
-    document.body.removeChild(ta);
-    return ok;
-  } catch (e) { return false; }
-}
-
-// 渲染开场三击
-function renderStrikes() {
-  var html = '';
-  for (var i = 0; i < OPENING_STRIKES.length; i++) {
-    var s = OPENING_STRIKES[i];
-    html += '<div class="strike-card ' + s.tone + '">';
-    html += '<div class="strike-body">';
-    html += '<div class="strike-head">';
-    html += '<span class="strike-no">' + escapeHtml(s.no) + '</span>';
-    html += '<span class="strike-dur">' + escapeHtml(s.dur) + '</span>';
-    html += '<span class="strike-title">' + escapeHtml(s.title) + '</span>';
-    html += '</div>';
-    html += '<div class="strike-desc">' + escapeHtml(s.desc) + '</div>';
-    html += '<div class="strike-quote" id="strikeQuote' + i + '">' + escapeHtml(s.raw).replace(/\n/g, '<br>') + '</div>';
-    html += '<div class="strike-actions">';
-    html += '<div class="mini-btn tap" onclick="copyStrike(' + i + ')">复制这段</div>';
-    html += '<div class="mini-btn tap" onclick="openFile(\'' + s.path + '\')">展开全文</div>';
-    html += '</div>';
-    html += '</div></div>';
-  }
-  $('strikeList').innerHTML = html;
-}
-
-function copyStrike(index) {
-  copyText(OPENING_STRIKES[index].raw, 'strikeQuote' + index);
-}
-
-// 渲染叙事框架 7 步
-function renderFramework() {
-  var html = '';
-  for (var i = 0; i < FRAMEWORK_STEPS.length; i++) {
-    var f = FRAMEWORK_STEPS[i];
-    html += '<div class="fw-item ' + f.tone + ' tap" onclick="openFile(\'' + f.path + '\')">';
-    html += '<div class="fw-num">' + f.n + '</div>';
-    html += '<div class="fw-body">';
-    html += '<div class="fw-title">' + escapeHtml(f.title) + '</div>';
-    html += '<div class="fw-point">' + escapeHtml(f.point) + '</div>';
-    html += '<div class="fw-quote">「' + escapeHtml(f.quote) + '」</div>';
-    html += '</div></div>';
-  }
-  $('frameworkList').innerHTML = html;
-}
-
-// 渲染关键数字
-function renderNumbers() {
-  var html = '';
-  for (var i = 0; i < KEY_NUMBERS.length; i++) {
-    var n = KEY_NUMBERS[i];
-    html += '<div class="num-card tap" onclick="openQuickCard()">';
-    html += '<div class="num-val">';
-    if (n.to) {
-      html += escapeHtml(n.from) + '<span class="num-arrow">→</span><span class="num-to">' + escapeHtml(n.to) + '</span>';
-    } else {
-      html += '<span class="num-to">' + escapeHtml(n.from) + '</span>';
-    }
-    html += '</div>';
-    html += '<div class="num-label">' + escapeHtml(n.label) + '</div>';
-    html += '</div>';
-  }
-  $('numberGrid').innerHTML = html;
-}
-
-// 渲染禁用语录对照
-function renderForbidden() {
-  var html = '';
-  for (var i = 0; i < FORBIDDEN_WORDS.length; i++) {
-    var w = FORBIDDEN_WORDS[i];
-    html += '<div class="no-item">';
-    html += '<div class="no-row bad"><span class="no-mark">✕</span><span class="no-text">「' + escapeHtml(w.bad) + '」</span></div>';
-    html += '<div class="no-row good"><span class="no-mark">✓</span><span class="no-text">「' + escapeHtml(w.good) + '」</span></div>';
-    html += '</div>';
-  }
-  $('forbiddenList').innerHTML = html;
-}
 
 // 打开任意路径的本地资料（md 走内置阅读器）
 function openFile(path) {
@@ -3393,7 +3026,6 @@ function updateHomeStats() {
 
   $('heroDone').textContent = doneCount;
 
-  // 进度环
   var total = TOTAL_PREP_FILES;
   var progressCount = WorkbenchDB.list('progress', function (r) { return r.done; }).length;
   var pct = total > 0 ? Math.round((progressCount / total) * 100) : 0;
@@ -3401,13 +3033,6 @@ function updateHomeStats() {
   var offset = circumference * (1 - pct / 100);
 
   $('heroTotal').textContent = total;
-  $('progressDesc').textContent = 'B2B 大宗贸易技术经理 · ' + PREP_CATEGORIES.length + ' 大主题 ' + total + ' 份资料';
-  $('statPrep').textContent = PREP_CATEGORIES.length;
-  $('statBanks').textContent = TOTAL_BANK_FILES;
-  $('mainProgressRing').style.strokeDashoffset = offset;
-  $('mainProgressPct').textContent = pct + '%';
-  $('progressDoneChip').textContent = '已完成 ' + progressCount + ' 项';
-  $('progressTotalChip').textContent = '共 ' + total + ' 份';
 
   // 我的页也更新
   $('meTotal').textContent = total;
@@ -3426,41 +3051,51 @@ function updateHomeStats() {
   $('meDays').textContent = streak;
 }
 
-// 渲染题库网格
-function renderBankGrid() {
+// 平铺渲染：把分类数组下的所有题目直接列成卡片（md+html 合并为一张，点开即看）
+function renderFlatCategoryCards(categories) {
   var html = '';
-  for (var i = 0; i < BANK_CATEGORIES.length; i++) {
-    var cat = BANK_CATEGORIES[i];
-    html += '<div class="bank-card ' + cat.color + ' tap" data-key="' + cat.key + '" onclick="openBankCategory(\'' + cat.key + '\')">';
-    html += '<div class="bank-top">';
-    html += '<div class="bank-icon ' + cat.color + '">' + getIcon(cat.icon) + '</div>';
-    html += '<span class="bank-count">' + cat.files.length + ' 份</span>';
-    html += '</div>';
-    html += '<div class="bank-info">';
-    html += '<div class="bank-title">' + escapeHtml(cat.title) + '</div>';
-    html += '<div class="bank-desc">' + escapeHtml(cat.desc) + '</div>';
-    html += '</div></div>';
+  var total = 0;
+  for (var i = 0; i < categories.length; i++) {
+    var cat = categories[i];
+    var seen = {};
+    for (var j = 0; j < cat.files.length; j++) {
+      var f = cat.files[j];
+      var base = f.name.replace(/\.(md|html)$/i, '');
+      if (seen[base]) continue;
+      seen[base] = true;
+      // 优先打开 md（走内置阅读器）
+      var path = f.path;
+      for (var k = 0; k < cat.files.length; k++) {
+        var g = cat.files[k];
+        if (g.name.replace(/\.(md|html)$/i, '') === base && g.type === 'md') { path = g.path; break; }
+      }
+      var title = base.replace(/^\d+[-_]\s*/, '');
+      html += '<div class="bank-card ' + cat.color + ' tap" onclick="openFriendly(\'' + path.replace(/'/g, "\\'") + '\')">';
+      html += '<div class="bank-top">';
+      html += '<div class="bank-icon ' + cat.color + '">' + getIcon(cat.icon) + '</div>';
+      html += '<span class="bank-count wrap">' + escapeHtml(cat.title) + '</span>';
+      html += '</div>';
+      html += '<div class="bank-info">';
+      html += '<div class="bank-title">' + escapeHtml(title) + '</div>';
+      html += '<div class="bank-desc">' + escapeHtml(cat.desc) + '</div>';
+      html += '</div></div>';
+      total++;
+    }
   }
-  $('bankGrid').innerHTML = html;
-  $('bankCount').textContent = BANK_CATEGORIES.length + ' 个分类';
+  return { html: html, total: total };
 }
 
-// 渲染真题网格
+// 渲染题库网格：平铺所有题目
+function renderBankGrid() {
+  var r = renderFlatCategoryCards(BANK_CATEGORIES);
+  $('bankGrid').innerHTML = r.html;
+  $('bankCount').textContent = r.total + ' 份';
+}
+
+// 渲染真题网格：平铺所有题目
 function renderFaceExpGrid() {
-  var html = '';
-  for (var i = 0; i < FACE_EXP_CATEGORIES.length; i++) {
-    var cat = FACE_EXP_CATEGORIES[i];
-    html += '<div class="bank-card ' + cat.color + ' tap" data-key="' + cat.key + '" onclick="openFaceExpCategory(\'' + cat.key + '\')">';
-    html += '<div class="bank-top">';
-    html += '<div class="bank-icon ' + cat.color + '">' + getIcon(cat.icon) + '</div>';
-    html += '<span class="bank-count">' + cat.files.length + ' 份</span>';
-    html += '</div>';
-    html += '<div class="bank-info">';
-    html += '<div class="bank-title">' + escapeHtml(cat.title) + '</div>';
-    html += '<div class="bank-desc">' + escapeHtml(cat.desc) + '</div>';
-    html += '</div></div>';
-  }
-  $('faceExpGrid').innerHTML = html;
+  var r = renderFlatCategoryCards(FACE_EXP_CATEGORIES);
+  $('faceExpGrid').innerHTML = r.html;
 }
 
 // 打开题库分类
@@ -3527,28 +3162,253 @@ function closeFilePicker() {
   $('pickerModal').classList.remove('open');
 }
 
-// 搜索过滤题库
+/* ===== 项目底稿页数据 ===== */
+var DRAFT_CORE = [
+  { title: 'B2B 项目底稿 · 七栏', desc: '业务背景 / 个人职责 / 主链路与失败链路 / 选型对照 / 难点与故障 / 指标口径 / 边界',
+    icon: 'layers', color: 'cyan', badge: '主线', path: '00-面试计划/02-项目叙事-B2B.md' },
+  { title: 'AI 项目底稿 · 收窄口径', desc: '主动收窄 / 三条物理约束 / RAG 排查树 / Agent 六机制',
+    icon: 'zap', color: 'purple', badge: '主线', path: '00-面试计划/03-项目叙事-AI.md' },
+  { title: '一致性与异构 · 追问底稿', desc: '送达 / 补偿 / 内存 / 互译四类选型 + 三套追问链 + 口径数字',
+    icon: 'database', color: 'warm', badge: '主线', path: '00-面试计划/06-一致性与异构.md' },
+  { title: '问题清单 · 待复习与复盘', desc: 'P0 / P1 / P2 清单 + 每日验收 + 复盘五列（活清单）',
+    icon: 'target', color: 'pink', badge: '主线', path: '00-面试计划/09-待复习与复盘.md' }
+];
+
+var DRAFT_GROUPS = [
+  { title: 'B2B 现货交易平台', icon: 'briefcase', files: [
+    { name: '项目总览', type: 'html', path: '02-项目底稿/b2b-project/overview.html' },
+    { name: 'DS 数据中心（防腐层）', type: 'html', path: '02-项目底稿/b2b-project/data-exchange.html' },
+    { name: '中间件网关', type: 'html', path: '02-项目底稿/b2b-project/middleware-gateway.html' },
+    { name: '公共服务模块', type: 'html', path: '02-项目底稿/b2b-project/common-services.html' },
+    { name: '认证与权限', type: 'html', path: '02-项目底稿/b2b-project/auth-module.html' },
+    { name: '业务模块（合同中心）', type: 'html', path: '02-项目底稿/b2b-project/business-modules.html' },
+    { name: '外联网关', type: 'html', path: '02-项目底稿/b2b-project/external-gateway.html' },
+    { name: '交易模式（大宗贸易）', type: 'html', path: '02-项目底稿/b2b-project/大宗贸易场景.html' },
+    { name: '合同履约与资金', type: 'html', path: '02-项目底稿/b2b-project/付款发货场景.html' }
+  ] },
+  { title: 'AI 智能体平台', icon: 'zap', files: [
+    { name: '项目总览', type: 'html', path: '02-项目底稿/ai-project/overview.html' },
+    { name: '智能客服', type: 'html', path: '02-项目底稿/ai-project/customer-service.html' },
+    { name: '知识库与智能检索', type: 'html', path: '02-项目底稿/ai-project/knowledge-base.html' },
+    { name: '政策解读（含电力垂直）', type: 'html', path: '02-项目底稿/ai-project/policy-interpretation.html' },
+    { name: 'RAG 与文档解析', type: 'html', path: '02-项目底稿/ai-project/rag-system.html' },
+    { name: '大模型管理', type: 'html', path: '02-项目底稿/ai-project/model-management.html' },
+    { name: '模型微调', type: 'html', path: '02-项目底稿/ai-project/model-finetuning.html' },
+    { name: '数据标注', type: 'html', path: '02-项目底稿/ai-project/data-annotation.html' },
+    { name: '智能体开发', type: 'html', path: '02-项目底稿/ai-project/agent-development.html' }
+  ] },
+  { title: '大模型企业落地', icon: 'layers', files: [
+    { name: '00 总览', type: 'md', path: '02-项目底稿/大模型企业落地/00_大模型企业落地总览.md' },
+    { name: '01 智能客服与商机转化', type: 'md', path: '02-项目底稿/大模型企业落地/01_智能客服与商机转化.md' },
+    { name: '02 商品知识库与智能检索', type: 'md', path: '02-项目底稿/大模型企业落地/02_商品知识库与智能检索.md' },
+    { name: '03 供应链智能', type: 'md', path: '02-项目底稿/大模型企业落地/03_供应链智能.md' },
+    { name: '04 智能合同风控', type: 'md', path: '02-项目底稿/大模型企业落地/04_智能合同风控.md' },
+    { name: '05 贸易数据分析', type: 'md', path: '02-项目底稿/大模型企业落地/05_贸易数据分析.md' },
+    { name: '06 流程自动化 RPA', type: 'md', path: '02-项目底稿/大模型企业落地/06_流程自动化RPA.md' },
+    { name: '07 大宗商品专项场景', type: 'md', path: '02-项目底稿/大模型企业落地/07_大宗商品专项场景.md' },
+    { name: '08 电商平台专项场景', type: 'md', path: '02-项目底稿/大模型企业落地/08_电商平台专项场景.md' },
+    { name: '09 技术选型复盘', type: 'md', path: '02-项目底稿/大模型企业落地/09_技术选型总览.md' }
+  ] },
+  { title: '专题资料', icon: 'server', files: [
+    { name: '电商 / 交易系统问题指南', type: 'md', path: '02-项目底稿/电商项目问题指南/README.md' },
+    { name: '研发效能 · CI/CD 与 CodeReview', type: 'md', path: '02-项目底稿/研发效能/CI-CD建设方案与CodeReview规范.md' }
+  ] }
+];
+
+// 渲染「项目底稿」页
+function renderDraftPage() {
+  var html = '';
+  for (var i = 0; i < DRAFT_CORE.length; i++) {
+    var d = DRAFT_CORE[i];
+    html += '<div class="bank-card ' + d.color + ' tap" onclick="openFriendly(\'' + d.path + '\')">';
+    html += '<div class="bank-top">';
+    html += '<div class="bank-icon ' + d.color + '">' + getIcon(d.icon) + '</div>';
+    html += '<span class="bank-count">' + escapeHtml(d.badge) + '</span>';
+    html += '</div>';
+    html += '<div class="bank-info">';
+    html += '<div class="bank-title">' + escapeHtml(d.title) + '</div>';
+    html += '<div class="bank-desc">' + escapeHtml(d.desc) + '</div>';
+    html += '</div></div>';
+  }
+  $('draftCoreGrid').innerHTML = html;
+  $('draftCoreCount').textContent = DRAFT_CORE.length + ' 份';
+
+  var gHtml = '';
+  for (var g = 0; g < DRAFT_GROUPS.length; g++) {
+    var grp = DRAFT_GROUPS[g];
+    var open = g === 0;
+    gHtml += '<div class="prep-category">';
+    gHtml += '<div class="prep-cat-header tap" onclick="togglePrepCategory(this)">';
+    gHtml += '<div class="prep-cat-icon" style="background:var(--surface-2);color:var(--text-2)">' + getIcon(grp.icon) + '</div>';
+    gHtml += '<div class="prep-cat-body">';
+    gHtml += '<div class="prep-cat-title">' + escapeHtml(grp.title) + '</div>';
+    gHtml += '<div class="prep-cat-meta">' + grp.files.length + ' 份资料</div>';
+    gHtml += '</div>';
+    gHtml += '<div class="prep-cat-arrow' + (open ? ' open' : '') + '">' + getIcon('chevron-right') + '</div>';
+    gHtml += '</div>';
+    gHtml += '<div class="prep-cat-list' + (open ? ' open' : '') + '">';
+    for (var m = 0; m < grp.files.length; m++) {
+      var f = grp.files[m];
+      gHtml += '<div class="prep-item tap" onclick="openFriendly(\'' + f.path.replace(/'/g, "\\'") + '\')">';
+      gHtml += '<div class="prep-item-icon">' + getIcon('file') + '</div>';
+      gHtml += '<span class="prep-item-title">' + escapeHtml(f.name) + '</span>';
+      gHtml += '<span class="prep-item-badge ' + f.type + '">' + f.type.toUpperCase() + '</span>';
+      gHtml += '</div>';
+    }
+    gHtml += '</div></div>';
+  }
+  $('draftGroupList').innerHTML = gHtml;
+}
+
+/* ===== 面试计划页数据（源自 00-面试计划） ===== */
+var PLAN_DIR = '00-面试计划/';
+var PLAN_STORE_KEY = 'wb_plan_done';
+
+var PLAN_MAINLINES = [
+  { title: '01 · 简历与自我定位', desc: '四个风险处置 + 三版自我介绍 + 三标签 + 开场追问',
+    icon: 'user', color: 'cyan', badge: 'D1 / D14', path: PLAN_DIR + '01-简历与自我定位.md' },
+  { title: '02 · 项目叙事 B2B', desc: '七栏底稿 + 技术骨架一图 + 22 问速查 + 避坑十条',
+    icon: 'layers', color: 'purple', badge: 'D2 / D3', path: PLAN_DIR + '02-项目叙事-B2B.md' },
+  { title: '03 · 项目叙事 AI', desc: 'AI 段主动收窄 + 三条物理约束 + RAG 排查树 + Agent 六机制',
+    icon: 'zap', color: 'green', badge: 'D9', path: PLAN_DIR + '03-项目叙事-AI.md' },
+  { title: '04 · 业务与客户价值', desc: '七角色 × 三类客户 + 26 痛点 → 三种信任 + 价值四账',
+    icon: 'users', color: 'orange', badge: 'D2 / D11', path: PLAN_DIR + '04-业务与客户价值.md' },
+  { title: '05 · 网关与高并发', desc: '十道关 + 限流数值推导 + 扩容打穿 DB 的根治闭环',
+    icon: 'server', color: 'pink', badge: 'D7', path: PLAN_DIR + '05-网关与高并发.md' },
+  { title: '06 · 一致性与异构', desc: '送达 / 补偿 / 内存 / 互译四类选型 + 三套追问链',
+    icon: 'database', color: 'warm', badge: 'D8', path: PLAN_DIR + '06-一致性与异构.md' },
+  { title: '07 · JVM 与线上排查', desc: '六步 SOP + 四篇实录 + 三类排查顺序',
+    icon: 'terminal', color: 'cyan', badge: 'D12', path: PLAN_DIR + '07-JVM与线上排查.md' },
+  { title: '08 · 技术问答速查', desc: 'Java / JVM / 并发 / MySQL / Redis / Spring / 网络 / Kafka 共 55 题',
+    icon: 'search', color: 'purple', badge: 'D4–D6 · D10 · D13', path: PLAN_DIR + '08-技术问答速查.md' },
+  { title: '09 · 待复习与复盘', desc: 'P0/P1/P2 清单 + 每日验收 + 复盘五列（活清单）',
+    icon: 'target', color: 'green', badge: '全程', path: PLAN_DIR + '09-待复习与复盘.md' }
+];
+
+var PLAN_DAYS = [
+  { d: 'D1', theme: '定范围 + 简历收口', tag: '定位', tagClass: 'prep', key: false,
+    target: '01-简历与自我定位', path: PLAN_DIR + '01-简历与自我定位.md',
+    accept: '3 份 JD 对照表 · 精通词收敛到 1 个 · 自我介绍 60 秒脱稿' },
+  { d: 'D2', theme: '项目脱稿 · 链路与职责', tag: '项目', tagClass: 'prep', key: true,
+    target: '02-项目叙事 B2B + 04-业务与客户价值', path: PLAN_DIR + '02-项目叙事-B2B.md',
+    accept: '3 个项目各有 30 秒 + 3 分钟两版稿 · DS 是什么能答到第三层' },
+  { d: 'D3', theme: '项目脱稿 · 难点与指标', tag: '项目', tagClass: 'prep', key: true,
+    target: '02-项目叙事 B2B', path: PLAN_DIR + '02-项目叙事-B2B.md',
+    accept: '撮合 / 数据层两问不慌（含「你不懂 C 怎么管」）· 2 个难点有证据支撑' },
+  { d: 'D4', theme: 'Java 核心（JVM + 并发 + 集合）', tag: '八股', tagClass: 'bank', key: false,
+    target: '08-技术问答速查', path: PLAN_DIR + '08-技术问答速查.md',
+    accept: '每章 ≥3 题脱稿 · 线程池 / JMM / ThreadLocal 能串成一条线' },
+  { d: 'D5', theme: 'MySQL', tag: '八股', tagClass: 'bank', key: false,
+    target: '08-技术问答速查', path: PLAN_DIR + '08-技术问答速查.md',
+    accept: '索引不停在最左匹配 · 能说出 Spring 事务失效的 3 种情况' },
+  { d: 'D6', theme: 'Redis', tag: '八股', tagClass: 'bank', key: false,
+    target: '08-技术问答速查', path: PLAN_DIR + '08-技术问答速查.md',
+    accept: '一条真实缓存链路一口气讲完 · 穿透 / 击穿 / 雪崩各有处置' },
+  { d: 'D7', theme: '网关 + 高并发 + 故障根治（P0 主场）', tag: '主场', tagClass: 'mock', key: true,
+    target: '05-网关与高并发', path: PLAN_DIR + '05-网关与高并发.md',
+    accept: '能画熔断状态机 · 讲清分布式限流 · 一个完整故障根治闭环' },
+  { d: 'D8', theme: '跨系统一致性 + 分布式事务', tag: '主场', tagClass: 'mock', key: false,
+    target: '06-一致性与异构', path: PLAN_DIR + '06-一致性与异构.md',
+    accept: '批次号原子认领讲清楚 · Saga vs 本地消息表能选型 · 幂等口径一致' },
+  { d: 'D9', theme: 'AI 段定稿（改口供，不是学）', tag: 'AI', tagClass: 'mock', key: true,
+    target: '03-项目叙事 AI', path: PLAN_DIR + '03-项目叙事-AI.md',
+    accept: 'AI 参与边界一句话说清 · RAG 排查树能答 · 主动收窄不硬撑' },
+  { d: 'D10', theme: 'Spring + MyBatis + 鉴权', tag: '八股', tagClass: 'bank', key: false,
+    target: '08-技术问答速查', path: PLAN_DIR + '08-技术问答速查.md',
+    accept: '事务边界能结合项目 · AOP 用在哪能举例 · Token 失效 / 越权 / 重复提交三问' },
+  { d: 'D11', theme: '系统设计口述', tag: '口述', tagClass: 'mock', key: false,
+    target: '04-业务与客户价值', path: PLAN_DIR + '04-业务与客户价值.md',
+    accept: '订单 / 库存 / 支付 / 秒杀四选二各口述 8 分钟 · 加流量后能调整方案' },
+  { d: 'D12', theme: 'JVM + 线上排查（真实实录主场）', tag: '主场', tagClass: 'mock', key: false,
+    target: '07-JVM 与线上排查', path: PLAN_DIR + '07-JVM与线上排查.md',
+    accept: 'CPU 飙高 / Full GC / OOM 三类各有排查顺序 · 能说出哪些操作会扩大故障' },
+  { d: 'D13', theme: '补缺口 + 加分项', tag: '补缺', tagClass: 'bank', key: false,
+    target: '08-技术问答速查 + 09-待复习与复盘', path: PLAN_DIR + '09-待复习与复盘.md',
+    accept: '算法 5 类各会 1 题（有笔试才补）· 网络高频 5 题 · 域词典一页' },
+  { d: 'D14', theme: '总演练 + 收口', tag: '收口', tagClass: 'prep', key: true,
+    target: '01-简历与自我定位 + 09-待复习与复盘', path: PLAN_DIR + '09-待复习与复盘.md',
+    accept: '简历从第一行读到最后一行，无一句答不到第二层 · 设备已测' }
+];
+
+function getPlanDoneDays() {
+  try {
+    var raw = window.localStorage.getItem(PLAN_STORE_KEY);
+    var arr = raw ? JSON.parse(raw) : [];
+    return Object.prototype.toString.call(arr) === '[object Array]' ? arr : [];
+  } catch (e) { return []; }
+}
+
+function savePlanDoneDays(list) {
+  try { window.localStorage.setItem(PLAN_STORE_KEY, JSON.stringify(list)); } catch (e) {}
+}
+
+function togglePlanDay(day) {
+  var list = getPlanDoneDays();
+  var idx = list.indexOf(day);
+  if (idx === -1) { list.push(day); } else { list.splice(idx, 1); }
+  savePlanDoneDays(list);
+  renderPlanPage();
+}
+
+function resetPlanProgress() {
+  if (!window.confirm('确认清空 14 天打卡记录？')) { return; }
+  savePlanDoneDays([]);
+  renderPlanPage();
+  showToast('已重置面试计划打卡');
+}
+
+// 渲染「面试计划」页
+function renderPlanPage() {
+  var html = '', i;
+  for (i = 0; i < PLAN_MAINLINES.length; i++) {
+    var m = PLAN_MAINLINES[i];
+    html += '<div class="bank-card ' + m.color + ' tap" onclick="openFriendly(\'' + m.path + '\')">';
+    html += '<div class="bank-top">';
+    html += '<div class="bank-icon ' + m.color + '">' + getIcon(m.icon) + '</div>';
+    html += '<span class="bank-count">' + escapeHtml(m.badge) + '</span>';
+    html += '</div>';
+    html += '<div class="bank-info">';
+    html += '<div class="bank-title">' + escapeHtml(m.title) + '</div>';
+    html += '<div class="bank-desc">' + escapeHtml(m.desc) + '</div>';
+    html += '</div></div>';
+  }
+  if ($('planMainlineGrid')) { $('planMainlineGrid').innerHTML = html; }
+
+  var done = getPlanDoneDays();
+  var dHtml = '';
+  for (i = 0; i < PLAN_DAYS.length; i++) {
+    var p = PLAN_DAYS[i];
+    var isDone = done.indexOf(p.d) !== -1;
+    dHtml += '<div class="task-item plan-day' + (p.key ? ' key' : '') + (isDone ? ' done' : '') + '">';
+    dHtml += '<div class="plan-day-badge">' + escapeHtml(p.d) + '</div>';
+    dHtml += '<div class="task-body" onclick="openFriendly(\'' + p.path + '\')">';
+    dHtml += '<div class="task-title">' + escapeHtml(p.theme) + '</div>';
+    dHtml += '<div class="plan-day-target">';
+    dHtml += '<span class="task-tag ' + p.tagClass + '">' + escapeHtml(p.tag) + '</span>';
+    dHtml += '<span>→ ' + escapeHtml(p.target) + '</span>';
+    dHtml += '</div>';
+    dHtml += '<div class="plan-day-accept">验收：' + escapeHtml(p.accept) + '</div>';
+    dHtml += '</div>';
+    dHtml += '<div class="task-check tap' + (isDone ? ' done' : '') + '" onclick="togglePlanDay(\'' + p.d + '\')">' + getIcon('check') + '</div>';
+    dHtml += '</div>';
+  }
+  if ($('planDayList')) { $('planDayList').innerHTML = dHtml; }
+
+  var n = done.length;
+  if ($('planDoneDays')) { $('planDoneDays').textContent = n; }
+  if ($('planProgressBar')) { $('planProgressBar').style.width = Math.round((n / PLAN_DAYS.length) * 100) + '%'; }
+  if ($('homePlanDesc')) {
+    $('homePlanDesc').textContent = PLAN_MAINLINES.length + ' 份主线件 · 已完成 ' + n + '/' + PLAN_DAYS.length + ' 天';
+  }
+}
+
+// 搜索过滤题库（按卡片文本匹配，平铺后依旧可用）
 function filterBanks() {
   var q = $('bankSearch').value.toLowerCase().trim();
-  var cards = document.querySelectorAll('#bankGrid .bank-card');
-  var faceCards = document.querySelectorAll('#faceExpGrid .bank-card');
-
-  if (!q) {
-    cards.forEach(function (c) { c.style.display = ''; });
-    faceCards.forEach(function (c) { c.style.display = ''; });
-    return;
-  }
-
-  for (var i = 0; i < BANK_CATEGORIES.length; i++) {
-    var match = BANK_CATEGORIES[i].title.toLowerCase().indexOf(q) !== -1 ||
-                BANK_CATEGORIES[i].desc.toLowerCase().indexOf(q) !== -1;
-    if (cards[i]) cards[i].style.display = match ? '' : 'none';
-  }
-
-  for (var j = 0; j < FACE_EXP_CATEGORIES.length; j++) {
-    var match2 = FACE_EXP_CATEGORIES[j].title.toLowerCase().indexOf(q) !== -1 ||
-                 FACE_EXP_CATEGORIES[j].desc.toLowerCase().indexOf(q) !== -1;
-    if (faceCards[j]) faceCards[j].style.display = match2 ? '' : 'none';
+  var all = document.querySelectorAll('#bankGrid .bank-card, #faceExpGrid .bank-card');
+  for (var i = 0; i < all.length; i++) {
+    var t = (all[i].textContent || '').toLowerCase();
+    all[i].style.display = (!q || t.indexOf(q) !== -1) ? '' : 'none';
   }
 }
 
@@ -3624,11 +3484,11 @@ function togglePrepCategory(header) {
 
 // 打开备战文件（md 走内置阅读器，其余类型新窗口打开）
 function openPrepFile(path) {
-  openFriendly('prep/' + path);
+  openFriendly('04-备战手册/' + path);
   showToast('正在打开资料...');
 }
 
-/* ===== 模拟面试页功能 ===== */
+/* ===== 面试资料入口 ===== */
 // 统一入口：md 走内置阅读器（带大纲），其余类型新窗口打开
 function openFriendly(path) {
   if (/\.md$/i.test(path)) {
@@ -3639,27 +3499,7 @@ function openFriendly(path) {
   return false;
 }
 
-function openInterviewFramework() {
-  openFriendly('prep/06-面试准备/06-面试话术与背诵手册.md');
-  showToast('打开面试叙事框架');
-}
-
-function openSelfIntro() {
-  openFriendly('prep/09-个人简历/08-简历与自我介绍脚本.md');
-  showToast('打开自我介绍脚本');
-}
-
-function openQuickCard() {
-  openFriendly('prep/06-面试准备/06-面试话术与背诵手册.md');
-  showToast('打开面试速记卡');
-}
-
-function openForbiddenWords() {
-  openFriendly('prep/06-面试准备/06-面试话术与背诵手册.md');
-  showToast('查看禁用语录');
-}
-
-function toggleMockDetail(el) {
+function togglePrepCat(el) {
   var list = el.querySelector('.prep-cat-list');
   var arrow = el.querySelector('.prep-cat-arrow');
   if (list) {
@@ -3670,17 +3510,17 @@ function toggleMockDetail(el) {
 
 /* ===== 快捷入口 ===== */
 function openPrepIndex() {
-  window.open('prep/index.html', '_blank');
+  window.open('04-备战手册/index.html', '_blank');
   showToast('打开备战手册');
 }
 
 function openBanksIndex() {
-  window.open('prep/09-个人简历/01-工具与速查/02-面试背诵集合.html', '_blank');
+  window.open('01-个人简历/简历资料/01-工具与速查/02-面试背诵集合.html', '_blank');
   showToast('打开题库集合');
 }
 
 function openResume() {
-  window.open('resume/index.html', '_blank');
+  window.open('01-个人简历/index.html', '_blank');
   showToast('打开简历中心');
 }
 
@@ -3874,17 +3714,23 @@ function init() {
   applyTheme(getTheme());
   initDB();
   ensureTodayTasks();
-  renderStrikes();
-  renderFramework();
-  renderNumbers();
-  renderForbidden();
   renderTodayTasks();
   renderBankGrid();
   renderFaceExpGrid();
+  renderDraftPage();
+  renderPlanPage();
   renderCaseScenePage();
   updateHomeStats();
   updateGreeting();
   updateStatusTime();
+
+  // 支持 hash 直达页面（供 04-备战手册 等外部入口跳转，如 ../index.html#page-bank）
+  function applyHashPage() {
+    var hashPage = (location.hash || '').replace('#', '');
+    if (hashPage && document.getElementById(hashPage)) switchTab(hashPage);
+  }
+  applyHashPage();
+  window.addEventListener('hashchange', applyHashPage);
 
   // 每分钟更新时间
   setInterval(updateStatusTime, 60000);

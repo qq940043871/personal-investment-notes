@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>总览 · AI 智能服务平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tier-card { transition: all .25s ease; }
+        .tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.10); }
+        .flow-arrow { animation: flowPulse 2s infinite; }
+        @keyframes flowPulse { 0%,100% { opacity:.45; } 50% { opacity:1; } }
+        .step-node { transition: all .25s ease; }
+        .step-node:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,.10); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-robot mr-1"></i>AI 开发项目</span>
+            <a href="#" onclick="parent.loadPage('ai-project/overview.html')" class="px-3 py-1 rounded-full bg-violet-600 text-white font-medium">总览</a>
+            <a href="#" onclick="parent.loadPage('ai-project/customer-service.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能客服</a>
+            <a href="#" onclick="parent.loadPage('ai-project/knowledge-base.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">知识库检索</a>
+            <a href="#" onclick="parent.loadPage('ai-project/policy-interpretation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">政策解读</a>
+            <a href="#" onclick="parent.loadPage('ai-project/rag-system.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">RAG与解析</a>
+            <a href="#" onclick="parent.loadPage('ai-project/model-management.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">大模型管理</a>
+            <a href="#" onclick="parent.loadPage('ai-project/model-finetuning.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">模型微调</a>
+            <a href="#" onclick="parent.loadPage('ai-project/data-annotation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">数据标注</a>
+            <a href="#" onclick="parent.loadPage('ai-project/agent-development.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能体开发</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <!-- Hero -->
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-robot mr-3 text-violet-600"></i>AI 智能服务平台 · 项目总览
+                </h1>
+                <p class="text-gray-500 mb-4">AI Intelligent Service Platform — Dify 智能层 × 自研业务中台业务层 × 模型与知识能力层，统一输出智能客服、知识检索、政策解读三类应用</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-violet-50 text-violet-700 px-3 py-1 rounded-full"><i class="fas fa-user-tie mr-1"></i>技术选型 / 数据链路负责人</span>
+                    <span class="bg-green-50 text-green-700 px-3 py-1 rounded-full"><i class="fas fa-calendar-alt mr-1"></i>2024 至今</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-layer-group mr-1"></i>AI 能力底座</span>
+                    <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full"><i class="fas fa-sitemap mr-1"></i>3 层结构 · 8 个能力模块</span>
+                    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full"><i class="fas fa-map-marker-alt mr-1"></i>郑州</span>
+                </div>
+            </div>
+
+            <!-- 1. 项目背景 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-bullseye mr-2 text-violet-600"></i>一、项目背景：三个「管不住」的死结</h2>
+            <p class="text-gray-600 mb-5 text-sm">
+                平台建在已有的 B2B 大宗商品交易平台之上。业务侧的抱怨集中在三件事上，它们都不是「IT 系统不好用」，而是<strong>重复性脑力劳动没有人替人去做</strong>：
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                <div class="bg-rose-50 border border-rose-200 rounded-lg p-5">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-file-circle-xmark text-rose-500 text-xl mr-2"></i>
+                        <h3 class="font-semibold text-rose-800">死结一 · 政策看不懂、看错</h3>
+                    </div>
+                    <p class="text-sm text-gray-600">政策不是「追加新版本」，而是「失效 / 被替代」。自己上网找文件，极易抓到<strong>已废止的版本</strong>；更隐蔽的是效力位阶错、越权看内部稿。</p>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-5">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-phone-volume text-amber-500 text-xl mr-2"></i>
+                        <h3 class="font-semibold text-amber-800">死结二 · 同一个问题打三次电话</h3>
+                    </div>
+                    <p class="text-sm text-gray-600">「我的单子到哪一步了」「这个月用了多少」这类问题，答案<strong>因人而异的实时数据</strong>，问三个人得三个口径，7×24 更是无从谈起。</p>
+                </div>
+                <div class="bg-sky-50 border border-sky-200 rounded-lg p-5">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-brain text-sky-500 text-xl mr-2"></i>
+                        <h3 class="font-semibold text-sky-800">死结三 · 知识散在十几个人脑子里</h3>
+                    </div>
+                    <p class="text-sm text-gray-600">商品规格、业务流程、审批口径全在老员工经验里。<strong>人走知识走</strong>，新人靠师父带，口径永远不统一。</p>
+                </div>
+            </div>
+            <div class="bg-violet-50 border-l-4 border-violet-500 p-4 mb-10">
+                <p class="text-violet-900 text-sm">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <strong>平台定位：</strong>在 B2B 交易平台之上加一层<strong>企业级 AI 能力底座</strong>——Dify 承担「智能层」，自研业务中台承担「业务层」，统一输出智能客服、知识检索、政策解读三类应用。一句话记法：<strong>Dify 解决「AI 怎么做得快、怎么调得好」，自研中台解决「AI 怎么接得稳、怎么管得住」。</strong>
+                </p>
+            </div>
+
+            <!-- 2. 角色与边界 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-user-tie mr-2 text-violet-600"></i>二、我的角色与参与边界</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="bg-gray-50 rounded-lg p-5">
+                        <h3 class="font-semibold text-gray-800 mb-2"><i class="fas fa-sitemap text-violet-500 mr-2"></i>角色定位</h3>
+                        <p class="text-sm text-gray-600">项目<strong>前期技术选型与数据链路负责人</strong>。向上对齐业务目标与场景优先级；向下负责底座选型评审、文档解析改造、向量库入库链路与前期可行性验证。项目的智能体编排、上下文与执行循环、模型微调由团队继续推进。</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-5">
+                        <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-list-check text-violet-500 mr-2"></i>我实际交付的四件事</h3>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li><i class="fas fa-check text-green-500 mr-2"></i><strong>底座选型复盘</strong>：Dify / LangChain / 百炼 / FastGPT / RAGFlow / n8n 六路对比，定出「智能层 + 业务层」分工与 API 边界</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i><strong>MinerU 解析改造</strong>：复杂 PDF（多栏、嵌套表、图文混排、公式、扫描件）→ 统一 Markdown 中间态</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i><strong>批量解析调度与失败兜底</strong>：解析队列、重试与人工兜底，避免「静默丢文档」</li>
+                            <li><i class="fas fa-check text-green-500 mr-2"></i><strong>下游入库格式衔接</strong>：分块与元数据字段对齐向量库，供 RAG 侧直接消费</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-amber-900 mb-3"><i class="fas fa-triangle-exclamation text-amber-600 mr-2"></i>明确不做的部分</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><i class="fas fa-xmark text-amber-600 mr-2"></i>智能体编排与工作流细粒度调优</li>
+                        <li><i class="fas fa-xmark text-amber-600 mr-2"></i>上下文管理与执行循环工程</li>
+                        <li><i class="fas fa-xmark text-amber-600 mr-2"></i>模型微调训练执行</li>
+                        <li><i class="fas fa-xmark text-amber-600 mr-2"></i>业务中台的日常业务开发</li>
+                    </ul>
+                    <p class="text-xs text-amber-800 mt-3 leading-relaxed">口径纪律：本页讲的是<strong>平台整体方案</strong>，不代表个人独立完成；凡是「设计 / 构建」类表述均指项目方案。</p>
+                </div>
+            </div>
+
+            <!-- 3. 三层结构 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-project-diagram mr-2 text-violet-600"></i>三、整体架构：三层结构 + 一个能力层</h2>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 mb-6">
+                <div class="space-y-3 max-w-3xl mx-auto">
+                    <div class="tier-card bg-indigo-50 border-2 border-indigo-200 rounded-lg p-4 text-center">
+                        <div class="font-semibold text-indigo-800"><i class="fas fa-window-restore mr-2"></i>应用层（对外交付什么）</div>
+                        <div class="text-sm text-indigo-600 mt-1">智能客服 · 知识检索 · 政策解读（含电力垂直版） · 内部效率助手</div>
+                    </div>
+                    <div class="text-center text-gray-400 flow-arrow"><i class="fas fa-arrows-alt-v text-xl"></i><span class="text-xs ml-2">统一走中台暴露的 API / 工具</span></div>
+                    <div class="tier-card bg-violet-50 border-2 border-violet-300 rounded-lg p-4 text-center">
+                        <div class="font-semibold text-violet-800"><i class="fas fa-diagram-project mr-2"></i>智能层 = Dify（社区版 · 私有化二开）</div>
+                        <div class="text-sm text-violet-600 mt-1">Workflow 编排 · Agent · RAG 管道 · Prompt 管理 · 可观测</div>
+                        <div class="text-xs text-violet-500 mt-1">职责：把「模型能力」变成「可编排、可调、可回滚的应用」</div>
+                    </div>
+                    <div class="text-center text-gray-400 flow-arrow"><i class="fas fa-arrows-alt-v text-xl"></i><span class="text-xs ml-2">OpenAI-compatible / 本地推理 Runtime</span></div>
+                    <div class="tier-card bg-green-50 border-2 border-green-200 rounded-lg p-4 text-center">
+                        <div class="font-semibold text-green-800"><i class="fas fa-cubes mr-2"></i>业务层 = 自研业务中台（AI 的门禁与总线）</div>
+                        <div class="text-sm text-green-600 mt-1">统一身份 · 细粒度鉴权 · 工具网关 · 审计留痕 · token 计量 · 会话与单据关联</div>
+                        <div class="text-xs text-green-600 mt-1">职责：把「AI 应用」变成「能被组织管住的生产系统」</div>
+                    </div>
+                    <div class="text-center text-gray-400 flow-arrow"><i class="fas fa-arrows-alt-v text-xl"></i><span class="text-xs ml-2">模型调用 / 检索请求</span></div>
+                    <div class="tier-card bg-blue-50 border-2 border-blue-200 rounded-lg p-4 text-center">
+                        <div class="font-semibold text-blue-800"><i class="fas fa-microchip mr-2"></i>能力层 = 模型 + 知识资产</div>
+                        <div class="text-sm text-blue-600 mt-1">第三方模型 / 内网私有化模型 · 向量库 · 政策与产品知识库 · 直击库（已验证问答） · 解析产物</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-10">
+                <p class="text-sm text-gray-700">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                    <strong>设计哲学：</strong>不造大模型的轮子，也不把业务交给开源平台。<strong>Dify 不直连业务数据库</strong>，所有数据访问走中台受控工具；<strong>权限校验永远在中台侧执行</strong>，不把数据过滤责任交给 Prompt；<strong>工作流内不写复杂业务逻辑</strong>，只做路由、拼装、调用与格式化。这三条是写进架构规范的硬约束，不是建议。
+                </p>
+            </div>
+
+            <!-- 4. 选型决策 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-gavel mr-2 text-violet-600"></i>四、核心技术决策：一次选型复盘</h2>
+            <p class="text-gray-600 mb-4 text-sm">六个候选不在同一层级（框架库 / 云厂商 PaaS / 开源应用平台 / 通用自动化），混在一起比必然失焦。先分层，再逐个淘汰：</p>
+            <div class="overflow-x-auto mb-10">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-56">决策点</th>
+                            <th class="px-4 py-3 text-left font-semibold">背景 / 问题</th>
+                            <th class="px-4 py-3 text-left font-semibold">我的判断</th>
+                            <th class="px-4 py-3 text-left font-semibold w-52">收益 / 结果</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">① 否决「框架层纯自研」<br><span class="text-xs font-normal text-gray-400">LangChain / LlamaIndex</span></td>
+                            <td class="px-4 py-3">有人说「自己搭一套最可控」。</td>
+                            <td class="px-4 py-3">缺的是<strong>平台</strong>而不是<strong>库</strong>：可视化调试、Prompt 版本、知识库管理、召回测试、流式 API 网关全要自研，且与业务价值无关；MVP 到生产还要补重试、降级、限流、观测、权限注入，2–3 周起步。</td>
+                            <td class="px-4 py-3">省下数月基建，团队人力不押在框架兼容性上。</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">② 否决云厂商 PaaS<br><span class="text-xs font-normal text-gray-400">阿里云百炼</span></td>
+                            <td class="px-4 py-3">全生命周期管理、SLA、专属版隔离都很完备。</td>
+                            <td class="px-4 py-3">数据与模型绑同一厂商、按量计费有平台溢价、合规口径仍需自证「模型跑哪、数据落哪、密钥谁管」。留作二期备选，不做主底座。</td>
+                            <td class="px-4 py-3">避免一次性的迁移悬崖与线性增长的 TCO。</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">③ FastGPT / RAGFlow / n8n 逐个淘汰</td>
+                            <td class="px-4 py-3">各有杀手锏：知识库专精、文档理解最深、集成节点最多。</td>
+                            <td class="px-4 py-3">FastGPT 编排广度不足；RAGFlow 强在 RAG 弱在应用层，<strong>改当解析器插件</strong>用；n8n 协议非 OSI 开源（对外交付有合规不确定性）+ AI 只是附加项。</td>
+                            <td class="px-4 py-3">取其长不受其限：复杂文档走 RAGFlow/自研解析后再入库。</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">④ 定盘 Dify</td>
+                            <td class="px-4 py-3">需要私有化、模型中立、RAG 达生产门槛、还要能 API 交付。</td>
+                            <td class="px-4 py-3">唯一同时满足：Apache-2.0 修改版可私有化可二开 + OpenAI-compatible 模型完全中立 + RAG（分块/混合检索/Rerank/召回测试）齐备 + Workflow 与 Agent 双模 + 一键发布 REST/流式 API。</td>
+                            <td class="px-4 py-3">赢在「能力全面度 × 可控性 × 周期」的综合最优，不是单项第一。</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">⑤ 为什么还要自研业务层</td>
+                            <td class="px-4 py-3">Dify 社区版 RBAC 只到工作空间/应用级，无行级权限、无事务幂等补偿、无 SSO 与完整审计。</td>
+                            <td class="px-4 py-3">中台承接：细粒度鉴权、工具网关、审计与 trace_id 关联、按部门/租户的 token 计量、存量 ERP/OA/CRM 集成、多渠道前端。</td>
+                            <td class="px-4 py-3">AI 从「业务部门偷买的一个工具」变成「有审计、有配额、有退场路径」的生产系统。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 5. 能力模块 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-table-cells-large mr-2 text-violet-600"></i>五、八个能力模块：三个出口，五个底座</h2>
+            <div class="overflow-x-auto mb-6">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-12">#</th>
+                            <th class="px-4 py-3 text-left font-semibold w-48">能力模块</th>
+                            <th class="px-4 py-3 text-left font-semibold">解决什么</th>
+                            <th class="px-4 py-3 text-left font-semibold w-40">主要使用者</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-violet-50"><td class="px-4 py-3">1</td><td class="px-4 py-3 font-medium text-gray-800">智能客服</td><td class="px-4 py-3">7×24 咨询、多轮对话、情绪识别、该转人时转人</td><td class="px-4 py-3">外部客户 / 客服部门</td></tr>
+                        <tr class="hover:bg-violet-50"><td class="px-4 py-3">2</td><td class="px-4 py-3 font-medium text-gray-800">知识库与智能检索</td><td class="px-4 py-3">商品、规格、流程、制度「问得出来、答得一致」</td><td class="px-4 py-3">外部客户 / 内部全员</td></tr>
+                        <tr class="hover:bg-violet-50"><td class="px-4 py-3">3</td><td class="px-4 py-3 font-medium text-gray-800">政策解读（通用 + 电力）</td><td class="px-4 py-3">政策时效、效力位阶、条款级溯源、角色适配</td><td class="px-4 py-3">业务部门 / 法务 / 客户</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3">4</td><td class="px-4 py-3 font-medium text-gray-800">RAG 系统</td><td class="px-4 py-3">让答案「有依据」，可溯源到原文位置</td><td class="px-4 py-3">全平台共用底座</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3">5</td><td class="px-4 py-3 font-medium text-gray-800">智能体开发</td><td class="px-4 py-3">把多步骤流程（查数 → 判断 → 写回）串成可执行任务</td><td class="px-4 py-3">平台建设方</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3">6</td><td class="px-4 py-3 font-medium text-gray-800">大模型管理</td><td class="px-4 py-3">多模型接入、切换、监控，避免厂商锁定</td><td class="px-4 py-3">平台建设方 / IT</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3">7</td><td class="px-4 py-3 font-medium text-gray-800">模型微调</td><td class="px-4 py-3">垂直场景效果调优（非必选项）</td><td class="px-4 py-3">平台建设方</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3">8</td><td class="px-4 py-3 font-medium text-gray-800">数据标注</td><td class="px-4 py-3">效果评估与持续迭代的燃料（标注集 = 回归测试集）</td><td class="px-4 py-3">业务 + 平台</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-10">
+                <p class="text-blue-800 text-sm"><i class="fas fa-circle-info mr-2"></i>1、2、3 是<strong>看得见的价值出口</strong>，4–8 是让前三个能跑稳、能迭代的底座。对业务方只讲底座，等于自说自话。</p>
+            </div>
+
+            <!-- 6. 企业级 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-building-shield mr-2 text-violet-600"></i>六、「企业级」三个字意味着什么</h2>
+            <p class="text-gray-600 mb-4 text-sm">市面上自称企业级的平台，多数只是「能跑起来的 demo」。企业级是可检验的，用六条硬指标：</p>
+            <div class="overflow-x-auto mb-10">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-40">硬指标</th>
+                            <th class="px-4 py-3 text-left font-semibold">具体含义</th>
+                            <th class="px-4 py-3 text-left font-semibold w-72">平台对应机制</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">数据不出域</td><td class="px-4 py-3">敏感数据不进第三方，或按敏感度分级走不同通道</td><td class="px-4 py-3">内网私有化部署 + 敏感度划通道（通用走第三方、涉密走内网）</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">模型中立</td><td class="px-4 py-3">换模型不改业务代码、不影响业务连续性</td><td class="px-4 py-3">OpenAI-compatible 端点 + 中台网关抽象，保留「换编排引擎」的退出路径</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">权限收口</td><td class="px-4 py-3">越权访问在系统层被拦，不靠模型自觉</td><td class="px-4 py-3">统一身份 + 工具网关统一鉴权，<strong>校验永远在中台侧</strong></td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">可审计可计量</td><td class="px-4 py-3">每次 AI 调用可归因到人、到部门、到单据</td><td class="px-4 py-3">trace_id 关联业务操作日志与 AI 调用日志；token 按部门/租户计量分摊</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">可降级不崩</td><td class="px-4 py-3">模型挂了/超时了/答不准了，给「信息更少但更确定」的结果</td><td class="px-4 py-3">门控降级三档（完整解读 / 仅原文 / 未找到依据）；转人工是设计的一部分</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">可退出</td><td class="px-4 py-3">不被单一厂商路线图卡死</td><td class="px-4 py-3">协议宽松（Apache-2.0 修改版）+ 可二开 + 插件 / MCP 扩展</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 7. 能力边界 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-circle-minus mr-2 text-violet-600"></i>七、能力边界：它不解决什么</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                <div class="border border-gray-200 rounded-lg p-4"><p class="text-sm text-gray-600"><i class="fas fa-xmark text-rose-400 mr-2"></i><strong>不替代业务决策。</strong>它出草稿、给依据、标风险，决定权在人；合同、授信、定级一律「AI 建议 + 人确认」。</p></div>
+                <div class="border border-gray-200 rounded-lg p-4"><p class="text-sm text-gray-600"><i class="fas fa-xmark text-rose-400 mr-2"></i><strong>不做算法创新。</strong>定位是把成熟能力接进业务，不是训练新模型；微调只在效果瓶颈明确时才上。</p></div>
+                <div class="border border-gray-200 rounded-lg p-4"><p class="text-sm text-gray-600"><i class="fas fa-xmark text-rose-400 mr-2"></i><strong>不解决数据本身脏。</strong>源头解析错、版本乱，下游一律错——这是数据治理问题，不是 AI 问题。</p></div>
+                <div class="border border-gray-200 rounded-lg p-4"><p class="text-sm text-gray-600"><i class="fas fa-xmark text-rose-400 mr-2"></i><strong>不直连业务数据库。</strong>所有数据访问走中台受控工具/API，这是硬约束不是建议。</p></div>
+                <div class="border border-gray-200 rounded-lg p-4"><p class="text-sm text-gray-600"><i class="fas fa-xmark text-rose-400 mr-2"></i><strong>不承诺「零幻觉」。</strong>只能做到「无依据不开口 + 降级到原文 + 可溯源」，宣称零幻觉的材料一律不合格。</p></div>
+                <div class="border border-gray-200 rounded-lg p-4"><p class="text-sm text-gray-600"><i class="fas fa-xmark text-rose-400 mr-2"></i><strong>不承担合规责任主体。</strong>平台给的是辅助，最终合规责任仍在业务流程与责任人。</p></div>
+            </div>
+
+            <!-- 8. 子系统 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-sitemap mr-2 text-violet-600"></i>八、子系统详解</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+                <a href="#" onclick="parent.loadPage('ai-project/customer-service.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-violet-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-headset text-violet-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">智能客服</h3></div>
+                    <p class="text-sm text-gray-500">知识类走直击库、数据类走业务 API，命中校验四关 + 转人工六条件。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('ai-project/knowledge-base.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-blue-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-book text-blue-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">知识库与智能检索</h3></div>
+                    <p class="text-sm text-gray-500">采集 → 解析 → 分块 → 索引 → 发布，把口径变成唯一版本。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('ai-project/policy-interpretation.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-emerald-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-file-shield text-emerald-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">政策解读（通用 + 电力）</h3></div>
+                    <p class="text-sm text-gray-500">六层架构 + 两道纯代码闸门，时效与效力位阶用规则算。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('ai-project/rag-system.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-purple-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-magnifying-glass text-purple-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">RAG 与文档解析</h3></div>
+                    <p class="text-sm text-gray-500">MinerU 四层增强解析 + 两级检索过滤，我主责的数据链路。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('ai-project/model-management.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-amber-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-server text-amber-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">大模型管理</h3></div>
+                    <p class="text-sm text-gray-500">第三方 / 内网 vLLM / 轻量 Ollama 三通道，模型可换代码不动。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('ai-project/model-finetuning.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-rose-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-sliders text-rose-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">模型微调</h3></div>
+                    <p class="text-sm text-gray-500">非必选项：先证明瓶颈，再决定是否上微调。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('ai-project/data-annotation.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-teal-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-tags text-teal-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">数据标注</h3></div>
+                    <p class="text-sm text-gray-500">标注集即回归测试集，未命中样本回流成知识资产。</p>
+                </a>
+                <a href="#" onclick="parent.loadPage('ai-project/agent-development.html')" class="tier-card block border border-gray-200 rounded-lg p-5 hover:border-indigo-400">
+                    <div class="flex items-center mb-2"><i class="fas fa-diagram-project text-indigo-500 text-xl mr-3"></i><h3 class="font-semibold text-gray-800">智能体开发</h3></div>
+                    <p class="text-sm text-gray-500">Workflow 保确定性、Agent 补开放环节，工具一律过中台网关。</p>
+                </a>
+            </div>
+
+            <!-- 9. 技术栈 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-layer-group mr-2 text-violet-600"></i>九、技术栈</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold mb-3 text-gray-800"><i class="fas fa-diagram-project text-violet-500 mr-2"></i>智能层</h3>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Dify 社区版（私有化 + 二开）</li>
+                        <li>• Workflow / Agent 双模编排</li>
+                        <li>• 知识库：分块 · 混合检索 · Rerank · 召回测试</li>
+                        <li>• 应用一键发布 REST / 流式 API</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold mb-3 text-gray-800"><i class="fas fa-cubes text-green-500 mr-2"></i>业务层与数据链路</h3>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• Java 微服务业务中台（既有平台）</li>
+                        <li>• 统一身份 · 工具网关 · 审计 · 计量</li>
+                        <li>• MinerU（复杂 PDF → Markdown）</li>
+                        <li>• 解析队列 · 失败兜底 · 元数据对齐</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold mb-3 text-gray-800"><i class="fas fa-microchip text-blue-500 mr-2"></i>模型与存储</h3>
+                    <ul class="text-gray-600 text-sm space-y-1">
+                        <li>• 第三方模型（OpenAI-compatible）</li>
+                        <li>• 内网私有化：vLLM / Ollama</li>
+                        <li>• 向量库：Milvus / Qdrant</li>
+                        <li>• 对象存储：MinIO（解析产物）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 10. 落地节奏 -->
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-road mr-2 text-violet-600"></i>十、落地优先级</h2>
+            <div class="overflow-x-auto mb-6">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-44">阶段</th>
+                            <th class="px-4 py-3 text-left font-semibold">做什么</th>
+                            <th class="px-4 py-3 text-left font-semibold w-64">进入下一阶段的条件</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">一 · 打地基</td><td class="px-4 py-3">知识库 + 直击库 + 解析管道 + 权限收口 + 观测</td><td class="px-4 py-3">评测集建成；直击库覆盖率与命中准确率有基线</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">二 · 出价值</td><td class="px-4 py-3">智能客服（高频问答）+ 一个垂直政策场景做透</td><td class="px-4 py-3">自助解决率、首字延迟、转人工率有稳定周数据</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">三 · 接业务</td><td class="px-4 py-3">单据查询类客服（打通工具网关）、材料初筛</td><td class="px-4 py-3">token 成本可控；越权测试用例全绿</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">四 · 再扩展</td><td class="px-4 py-3">微调 / 多智能体 / 跨系统流程自动化</td><td class="px-4 py-3">前三阶段的价值已被度量并认可</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <p class="text-sm text-gray-700"><i class="fas fa-triangle-exclamation text-amber-500 mr-2"></i><strong>量化口径说明：</strong>本文涉及的效率、成本类指标在原型期<strong>尚未采集实测数据</strong>，一律不填数字、不编来源。各子页只给「度量口径 + 目标方向」，真实数字需在 POC 阶段用召回率、首字延迟、人工干预率、人日投入四个指标补齐。</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('ai-project/customer-service.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能客服</a>
+            <a href="#" onclick="parent.loadPage('ai-project/policy-interpretation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">政策解读</a>
+            <a href="#" onclick="parent.loadPage('ai-project/rag-system.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">RAG与解析</a>
+        </div>
+    </nav>
+</body>
+</html>
