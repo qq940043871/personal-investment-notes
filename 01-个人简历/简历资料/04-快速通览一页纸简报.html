@@ -351,7 +351,7 @@
             </div>
             <div class="quote-card mt-3"><strong>选型 Trade-off（⭐）</strong>："为什么不让 Java 直接做撮合？不是 Java 慢，是 <strong>GC 停顿不可控</strong>——撮合要的是延迟确定性，不是平均速度。代价是 C 可维护性差、内存要手工管，所以解法不是'换语言'，而是给 C 核心外面建三层护栏：① 只暴露指令/事件契约；② 所有调用必须过 Java 桥接层（DS）；③ 撮合 TPS / 积压队列 / P99 延迟结构化输出接入监控。更关键的是<strong>不把 Java 写进 C、也不让 C 逻辑外泄到 Java</strong>，C 团队与 Java 团队各自独立演进、互不阻塞。"</div>
             <div class="quote-card mt-3" style="background: linear-gradient(135deg, #ECFDF5, #D1FAE5); border-left-color: #10B981; color: #065F46;"><strong>管理抓手（⭐）</strong>："我不写 C 代码，但 <strong>DS 是 Java 写的，正好在我的技术栈覆盖范围内</strong>——用'接口契约治理 + DS 协议转换逻辑 review + 可观测性指标'三件套，管住一个我不写代码的 C 撮合引擎。<strong>你能管住的边界，就是你能负责的边界。</strong>"（§7 故事①河南能源双平台就建在这套底座上）</div>
-            <p class="mt-2 text-xs text-gray-400">详见：<a href="01-工具与速查/05-B2B微服务系统架构图-手绘版.html" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">异构四层架构图（需能脱手画）</a> · <a href="../../04-备战手册/04-架构决策/02-异构架构策略与真实系统叙事手册.md" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">异构架构叙事手册</a>（协议选型 / 桥接 SDK / 30 秒·2 分钟话术）</p>
+            <p class="mt-2 text-xs text-gray-400">详见：<a href="05-速查卡/03-B2B微服务系统架构图-手绘版.html" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">异构四层架构图（需能脱手画）</a> · <a href="../../04-备战手册/04-架构决策/02-异构架构策略与真实系统叙事手册.md" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">异构架构叙事手册</a>（协议选型 / 桥接 SDK / 30 秒·2 分钟话术）</p>
 
             <h3 class="sub-title">9.4 关键技术突破</h3>
             <ul>

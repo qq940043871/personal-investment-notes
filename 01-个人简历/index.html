@@ -185,7 +185,7 @@ body {
   transform: rotate(90deg);
 }
 
-/* 嵌套子分组（如 简历资料/01-工具与速查） */
+/* 嵌套子分组（如 简历资料/05-速查卡） */
 .folder.nested > .folder-header {
   padding-left: 32px;
   font-weight: 500;
@@ -722,7 +722,7 @@ body {
       <div class="welcome">
         <div class="welcome-icon">📄</div>
         <h2>个人简历</h2>
-        <p>16 份简历与速查资料：简历正文（home.html）、技术经理简历、职业发展路线、自我定位脚本与面试速查工具。</p>
+        <p>简历正文（home.html）、技术经理简历、技术经理成长手册、自我介绍脚本与面试速查卡。</p>
         <p style="margin-top:8px;font-size:13px;">技术真题见「📝 技术真题」，项目底稿见「💼 项目底稿」→</p>
       </div>
     </div>
@@ -735,24 +735,18 @@ const TREE = [
   {
     name: '简历资料', icon: '📋', open: true,
     files: [
-      '02-职业发展进阶路线图手册.md',
+      '01-简历与自我介绍脚本.md',
+      '02-技术经理成长手册.md',
       '03-技术情报收集与跨部门沟通手册.md',
-      '04-L2到L4晋级路线图.print.html',
-      '05-6个月从救火队长到技术操盘手.md',
-      '06-Π型人才进阶指南.md',
-      '08-简历与自我介绍脚本.md',
-      '15-快速通览一页纸简报.html'
+      '04-快速通览一页纸简报.html'
     ],
     children: [
       {
-        name: '01-工具与速查', icon: '🧰', open: true,
+        name: '05-速查卡', icon: '🧰', open: true,
         files: [
-          '02-面试背诵集合.html',
-          '03-RICE优先级决策矩阵.html',
-          '04-5Whys与业务技术映射速查卡.html',
-          '05-B2B微服务系统架构图-手绘版.html',
-          '06-五类客户运营模式速查卡.html',
-          '07-五类客户运营模式深度拆解.html'
+          '01-RICE优先级决策矩阵.html',
+          '02-5Whys与业务技术映射速查卡.html',
+          '03-B2B微服务系统架构图-手绘版.html'
         ]
       }
     ]
