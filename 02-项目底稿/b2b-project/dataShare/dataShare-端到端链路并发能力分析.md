@@ -1,6 +1,5 @@
 # 端到端链路最大并发分析：客户端 → midservice → dataShare → 具体服务
 
-> 配套文档：`dataShare-分布式服务能力与瓶颈分析.md`（能力盘点）、`dataShare-系统缺陷与并发能力分析.md`（缺陷清单）
 > 分析对象：`J_1018_midservice-v1.1.188.228.5` + `dataShare-2.6.2` + `dataShareClientAPI-1.3.4` + `dataShareCommon-1.1.3`
 > 全部结论附 `文件:行号` 证据。**代码可确定的标"事实"，需实测的标"推断"并给出方法。**
 

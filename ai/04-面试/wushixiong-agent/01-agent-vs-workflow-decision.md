@@ -1,8 +1,5 @@
 # LLM、Workflow 和 Agent 怎么选？什么任务根本不该做成 Agent
 
-> 来源：https://www.wushixiongai.com/questions/project/agent/agent-vs-workflow-decision  
-> 页面标题：Agent 和 Workflow 区别：大模型应用架构选型  
-> 模块：架构与规划 ｜ 阅读：14 分钟 ｜ 更新：2026-07-15 ｜ 追问：4 个
 > 摘要：从任务确定性、工具调用、风险、可审计性和失败恢复出发，讲清普通 LLM、固定 Workflow 与 Agent 的工程边界，以及什么任务不该交给 Agent。
 
 ## 30 秒先说结论

@@ -2,9 +2,6 @@
 
 > 分析对象：`dataShare-2.6.2`（服务端 159 个类） + `dataShareClientAPI-1.3.4` / `dataShareCommon-1.1.3`（SDK）
 > 消费方：`J_1018_midservice-v1.1.188.228.5`（188 个类 / 46943 行）
-> 源码路径：
-> - `d:/ai_work/p002_source_read/dataShare-2.6.2/`
-> - `D:/ai_work/p002_source_read/J_1018_midservice-v1.1.188.228.5.src/`
 >
 > 本文档所有结论均以源码为准，关键论断附 `文件:行号` 证据。SDK 侧能力清单见同目录 `dataShare-SDK网关能力解析.md`，本文不重复，只聚焦**服务端**与**端到端链路**。
 

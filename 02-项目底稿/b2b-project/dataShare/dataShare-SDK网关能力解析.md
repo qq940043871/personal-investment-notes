@@ -1,9 +1,5 @@
 # dataShare 数据交互网关 SDK — 功能与设计解析
 
-> 版本：`dataShareClientAPI-1.3.4` + `dataShareCommon-1.1.3`
-> 位置：`d:/ai_work/p002_source_read/dataShare-v1.1/`
-> 源码来源：反编译产物（JD-Core 0.6.0），文件末尾保留原始 jar 路径
-
 ---
 
 ## 目录

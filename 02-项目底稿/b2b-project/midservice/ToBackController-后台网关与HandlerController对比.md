@@ -2,9 +2,7 @@
 
 > **工程**：`midservice-1.1.188.228.5`（证券/金融行业中台，模块号 1018_S）
 > **类全名**：`com.ylsoft.mid.service.controller.ToBackController`
-> **源码**：`com/ylsoft/mid/service/controller/ToBackController.java`（1526 行，反编译自 `midservice-1.1.188.228.5.jar`，JD-Core 0.6.0）
 > **定位**：后台运营管理网关 —— 与 `HandlerController` 共享同一套协议路由框架，但权限模型与管控深度完全不同
-> **配套文档**：[`HandlerController-网关功能详解.md`](./HandlerController-网关功能详解.md)
 
 ---
 

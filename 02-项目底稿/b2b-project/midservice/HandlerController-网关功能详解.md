@@ -2,10 +2,8 @@
 
 > **工程**：`midservice-1.1.188.228.5`（证券/金融行业中台，模块号 1018_S）
 > **类全名**：`com.ylsoft.mid.service.controller.HandlerController`
-> **源码**：`com/ylsoft/mid/service/controller/HandlerController.java`（2581 行，反编译自 `midservice-1.1.188.228.5.jar`，JD-Core 0.6.0）
 > **定位**：前台/移动端 API 网关 —— 整个中台的唯一统一南北向入口
 > **文档用途**：架构理解 / 面试准备 / 安全审计参考
-> **关联文档**：[`ToBackController-后台网关与HandlerController对比.md`](./ToBackController-后台网关与HandlerController对比.md)（后台网关 `/toBack` 的实现与逐项差异对照）
 
 ---
 

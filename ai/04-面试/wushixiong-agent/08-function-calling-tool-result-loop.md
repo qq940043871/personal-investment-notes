@@ -1,8 +1,5 @@
 # Function Calling 到底怎么跑？模型不会执行函数，完整工具结果循环怎么实现
 
-> 来源：https://www.wushixiongai.com/questions/project/agent/function-calling-tool-result-loop  
-> 页面标题：Agent Function Calling：模型为何不执行函数  
-> 模块：工具调用与安全 ｜ 阅读：15 分钟 ｜ 更新：2026-07-15 ｜ 追问：4 个
 > 摘要：从 Tool Schema、tool call、参数校验、宿主程序执行到 tool result 回灌，完整拆解 Function Calling 循环、错误处理、安全边界与评估。
 
 ## 30 秒先说结论

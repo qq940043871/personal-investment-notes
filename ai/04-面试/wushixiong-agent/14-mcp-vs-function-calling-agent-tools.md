@@ -1,8 +1,5 @@
 # MCP 和 Function Calling 有什么区别？Agent 工具接入时两者怎样配合
 
-> 来源：https://www.wushixiongai.com/questions/project/agent/mcp-vs-function-calling-agent-tools  
-> 页面标题：Agent MCP 与 Function Calling 区别  
-> 模块：工具调用与安全 ｜ 阅读：15 分钟 ｜ 更新：2026-07-15 ｜ 追问：4 个
 > 摘要：从模型 Function Calling 到 MCP Host、Client、Server，讲清两者分层、组合调用链、安全边界、适用场景和渐进迁移方式。
 
 ## 30 秒先说结论

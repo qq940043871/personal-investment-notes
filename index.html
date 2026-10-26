@@ -1982,7 +1982,7 @@
 
     </section>
 
-    <!-- ========== 页面：AI 经验线（四幕十阶叙事 + 资料全集） ========== -->
+    <!-- ========== 页面：AI 经验线（四幕十一阶叙事 + 资料全集） ========== -->
     <section class="page" id="page-ai">
 
       <div class="plan-hero">
@@ -1998,7 +1998,7 @@
       <div class="plan-progress-track"><div class="plan-progress-bar" id="aiProgressBar"></div></div>
 
       <div class="section-header" style="margin-top:0">
-        <div class="section-title"><span class="section-title-bar"></span>四幕 · 十个台阶</div>
+        <div class="section-title"><span class="section-title-bar"></span>四幕 · 十一个台阶</div>
         <div class="section-more tap" onclick="openFriendly('00-面试计划/03-项目叙事-AI.md')">
           叙事主稿
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -3527,7 +3527,7 @@ function filterBanks() {
   }
 }
 
-/* ===== AI 经验叙事页数据（四幕十阶，源自 00-面试计划/03-项目叙事-AI.md） ===== */
+/* ===== AI 经验叙事页数据（四幕十一阶，源自 00-面试计划/03-项目叙事-AI.md） ===== */
 var AI_STORE_KEY = 'wb_ai_step_done';
 
 var AI_STEPS = [
@@ -3541,11 +3541,11 @@ var AI_STEPS = [
     chips: ['政策看错（时效 / 位阶）', '同一问题打三次电话', '知识散在人脑里', '文档 / 数据 / 混合三类'],
     src: '叙事主稿 §1 业务背景',
     path: '00-面试计划/03-项目叙事-AI.md', key: false },
-  { n: 3, act: '第一幕 · 说清我是谁', title: '三层架构 + 我交付的四件',
-    q: '「你到底做了什么」怎么答到第二层？',
-    chips: ['Dify 智能层', '自研中台业务层', '六路底座选型', '解析 / 调度 / 元数据'],
-    src: '平台定位与项目价值 · 叙事主稿 §2',
-    path: 'ai/03-业务设计/AI智能体企业级应用平台-定位与项目价值.md', key: false },
+  { n: 3, act: '第一幕 · 说清我是谁', title: '三层架构 + 它长在哪个业务上',
+    q: '「你到底做了什么」怎么答到第二层？这平台长在谁的生意上？',
+    chips: ['Dify 智能层 + 自研中台业务层', '长在 B2B 大宗商品现货平台', '平台规则 ≠ 法规', '撮合状态带时点', '写操作转工单'],
+    src: '平台定位与项目价值 §8.1 三条硬约束 · 叙事主稿 §2',
+    path: 'ai/03-业务设计/AI智能体企业级应用平台-定位与项目价值.md', key: true },
 
   { n: 4, act: '第二幕 · 拿得出手的活', title: 'MinerU 四层增强解析',
     q: '复杂 PDF 为什么不能靠「换个更强的模型」解决？',
@@ -3554,8 +3554,8 @@ var AI_STEPS = [
     path: 'ai/02-平台工程/minerU复杂PDF识别优化方案与选型分析.md', key: true },
   { n: 5, act: '第二幕 · 拿得出手的活', title: '两条失败链路',
     q: '解析失败、检索空结果，各自怎么兜？',
-    chips: ['不静默丢文档', '降级 + 待办 + 告警', '允许说「不知道」', '转人工带交接包'],
-    src: '叙事主稿 §3.2 失败链路',
+    chips: ['不静默丢文档', '降级 + 待办 + 告警', '允许说「不知道」', '转人工带交接包', '接口返回未知 → 建工单不猜'],
+    src: '叙事主稿 §3.2 失败链路 · 智能客服 §8.5.1',
     path: '00-面试计划/03-项目叙事-AI.md', key: false },
 
   { n: 6, act: '第三幕 · 能自己推导', title: '三条物理约束 → 所有手段的源头',
@@ -3583,7 +3583,12 @@ var AI_STEPS = [
     q: '被问「准确率多少」时，给什么才不被追问打穿？',
     chips: ['只给口径与方法', '绝不给 95% 这类数字', '标【实证】/【设计】/【待实测】'],
     src: '叙事主稿 §6 项目指标 · §10 诚实口径',
-    path: '00-面试计划/03-项目叙事-AI.md', key: true }
+    path: '00-面试计划/03-项目叙事-AI.md', key: true },
+  { n: 11, act: '第四幕 · 别踩雷', title: '落到 B2B 现货平台：三个要命的坑',
+    q: '「这 AI 平台跟你们的现货业务到底怎么咬合？」',
+    chips: ['平台规则 ≠ 法规，建库必须分开', '撮合状态必须带时点，中间态不是终态', '写操作不开放，一律转工单', '查数按风险由低到高放开'],
+    src: '平台定位 §8.1 · 智能客服 §8.5/§20 · 政策解读 §13.3',
+    path: 'ai/03-业务设计/智能客服-完整流程设计.md', key: true }
 ];
 
 function getAiDone() {
@@ -3613,7 +3618,7 @@ function resetAiProgress() {
   showToast('已重置 AI 叙事线打卡');
 }
 
-// 渲染「AI 经验线」页：四幕十阶（幕头 + 台阶行 + 打卡）
+// 渲染「AI 经验线」页：四幕十一阶（幕头 + 台阶行 + 打卡）
 function renderAiPage() {
   var done = getAiDone();
   var html = '', i, j, lastAct = '';

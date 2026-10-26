@@ -2,8 +2,6 @@
 
 > 把每一帧 JSON 报文摊开看：模型怎么发起 function call、Harness 怎么执行工具、MCP 报文长什么样。
 >
-> **版本基线：2026-10**。MCP 协议最新为 `2026-07-28`（无状态核心，已移除 `initialize` 握手）；存量服务端普遍仍在 `2025-06-18` / `2025-11-25`。OpenAI 主推面已从 Chat Completions 迁至 Responses API，但 Chat Completions 仍是存量代码主流，两套都写。
->
 > 适用场景：Agent Harness 架构设计、循环收敛与人工审批设计、面试技术追问、MCP 接入层排障。
 
 ---

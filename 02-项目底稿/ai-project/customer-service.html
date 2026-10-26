@@ -85,7 +85,7 @@
                 <p class="text-rose-900 text-sm"><i class="fas fa-circle-exclamation mr-2"></i>还有一条最容易被忽略的：客服有<strong>将近一半的问题根本不是「知识问题」</strong>。「我的工单到哪一步了」「这个月用了多少度电」——答案不存在于任何文档，只存在于业务系统。把它交给 RAG 是智能客服头号事故来源。</p>
             </div>
 
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-list-ol mr-2 text-violet-600"></i>二、八个独有约束</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-list-ol mr-2 text-violet-600"></i>二、十个独有约束</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-4"><p class="text-sm text-gray-600"><strong class="text-gray-800">① 服务属性</strong>——目标是解决问题，不是给出答案。答对了但没解决，客户照样不满意。</p></div>
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-4"><p class="text-sm text-gray-600"><strong class="text-gray-800">② 必须能转人工</strong>——转人工是设计的一部分，不是失败；做不成就死循环、升级投诉。</p></div>
@@ -95,6 +95,8 @@
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-4"><p class="text-sm text-gray-600"><strong class="text-gray-800">⑥ 一半问题要查业务数据</strong>——答案来自业务系统而非文档，RAG 永远答不对且会一本正经地编。</p></div>
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-4"><p class="text-sm text-gray-600"><strong class="text-gray-800">⑦ 话术有合规红线</strong>——不能乱承诺、不能报错价、不能给法律意见。</p></div>
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-4"><p class="text-sm text-gray-600"><strong class="text-gray-800">⑧ 必须闭环</strong>——会话结束只是开始，问题没真正解决客户会反复来。</p></div>
+                <div class="bg-rose-50 border border-rose-200 rounded-lg p-4"><p class="text-sm text-gray-600"><strong class="text-rose-800">⑨ 一个账号挂多个主体</strong>——B2B 场景下一个登录账号常关联母公司 / 子公司 / 多品类经营主体，串了主体就是商业机密泄露。</p></div>
+                <div class="bg-rose-50 border border-rose-200 rounded-lg p-4"><p class="text-sm text-gray-600"><strong class="text-rose-800">⑩ 金额与数量错一位就是事故</strong>——现货客单价数十万到上千万，数字被模型改写等于真实的货款争议。</p></div>
             </div>
 
             <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-code-branch mr-2 text-violet-600"></i>三、两个分岔决定整个架构</h2>

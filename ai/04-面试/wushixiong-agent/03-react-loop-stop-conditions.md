@@ -1,8 +1,5 @@
 # ReAct Agent 为什么会死循环？停止条件和步数上限怎么设计
 
-> 来源：https://www.wushixiongai.com/questions/project/agent/react-loop-stop-conditions  
-> 页面标题：ReAct Agent 死循环怎么解决？停止条件、最大步数与成本控制  
-> 模块：架构与规划 ｜ 阅读：14 分钟 ｜ 更新：2026-07-15 ｜ 追问：4 个
 > 摘要：从 Thought、Action、Observation 循环出发，拆解 ReAct 不收敛、重复工具调用、上下文膨胀和误判完成的原因，以及生产系统的停止与降级设计。
 
 ## 30 秒先说结论

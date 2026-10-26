@@ -1,8 +1,5 @@
 # Agent 调用写操作怎么防误执行？副作用分级、幂等、确认和审计怎样做
 
-> 来源：https://www.wushixiongai.com/questions/project/agent/agent-side-effect-safety-idempotency  
-> 页面标题：Agent 写操作怎么防误执行？幂等、确认与审计  
-> 模块：工具调用与安全 ｜ 阅读：15 分钟 ｜ 更新：2026-07-15 ｜ 追问：4 个
 > 摘要：从副作用分级、后端授权、Dry-run、参数绑定确认、稳定幂等键、执行台账到补偿审计，讲清 Agent 写工具如何防越权与重复执行。
 
 ## 30 秒先说结论
