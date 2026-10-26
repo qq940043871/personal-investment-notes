@@ -41,7 +41,7 @@
                     <i class="fas fa-scale-balanced mr-2"></i>技术选型与边界（如实说明）
                 </h3>
                 <ul class="list-disc list-inside space-y-1 text-amber-900 text-sm">
-                    <li><strong>采用：</strong>基于标准 Token（JWT / 服务端会话）的统一认证、网关集中校验、RBAC 角色权限、单点登录（SSO）；</li>
+                    <li><strong>采用：</strong>基于服务端会话式统一 Token（DS 中心化签发、Redis 存储与主动巡检失效）的统一认证、网关集中校验、RBAC 角色权限、登出全系统广播；</li>
                     <li><strong>不自研：</strong>不自行实现 OAuth2/OIDC 全套协议栈，认证协议、加密算法、密码存储走成熟标准与组件，平台只做集成与编排；</li>
                     <li><strong>边界：</strong>认证负责"身份可信"，权限负责"能否访问"，二者都在网关侧收口，业务微服务不再各自维护鉴权逻辑。</li>
                 </ul>

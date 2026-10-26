@@ -159,7 +159,7 @@
 
     <h2>专业技能</h2>
     <ul>
-        <li><strong>后端</strong>：Java（主力）、Spring Cloud、Hessian RPC、TCP 自定义二进制协议、Socket 长连接</li>
+        <li><strong>后端</strong>：Java（主力）、Spring MVC / MyBatis、自研 DS 数据中心服务治理（命令号路由与协议转换）、Hessian RPC、TCP 自定义二进制协议、Socket 长连接</li>
         <li><strong>数据存储</strong>：MySQL（分库分表）、Redis（缓存 / Redisson 分布式锁）、Elasticsearch、MinIO</li>
         <li><strong>中间件</strong>：Kafka（outbox 本地消息表 + 消费幂等）、Canal CDC、XXL-Job、Drools 规则引擎</li>
         <li><strong>架构能力</strong>：Saga + 状态机 + 事件溯源、多租户配置化（策略模式 + 规则引擎）、C + Java 异构防腐层、事件驱动数据同步</li>
@@ -201,7 +201,7 @@
         <span class="item-date">2020.01 — 至今</span>
     </div>
     <p class="kv"><strong>项目描述</strong>：面向大宗商品的在线交易平台，覆盖挂牌 / 竞价 / 询价 / 招标 / 基差点价多种交易模式，把交易、支付结算、合同履约、仓单、物流、税务打通为闭环，叠加供应链金融使资金不足的买方也能成交。底层为 C 内存撮合引擎，上层为 Java 微服务业务中台，通过自研 DS 数据中心桥接。</p>
-    <p class="kv"><strong>技术栈</strong>：Java、Vue、Spring Cloud、Hessian、Kafka、MySQL、Redis、Drools、Docker / Kubernetes</p>
+    <p class="kv"><strong>技术栈</strong>：Java、Vue、Spring MVC / MyBatis、Hessian、Kafka、MySQL、Redis、Drools、Docker / Kubernetes</p>
     <ul>
         <li>从 0 到 1 参与核心交易系统建设，从 1 到 N 主导平台化与配置化演进，负责业务中台 12+ 服务的架构设计与关键取舍。</li>
         <li>设计电子仓单与银行信贷系统实时校验链路，已质押仓单无法重复质押，关键操作全量日志存证；银行放款审核从 3 天 → 实时，上线至今零重复质押事故。</li>

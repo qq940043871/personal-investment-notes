@@ -246,7 +246,7 @@ const PART = [
   const rows = [
     ["接入层", "Vue 前端（PC + 移动端 + 大屏三端） ｜ Nginx"],
     ["网关层", "midservice 业务网关（Java 自研） ｜ midmon 监控网关"],
-    ["业务中台", "Java 微服务（Spring Cloud 生态） ｜ DS 数据中心（Hessian + Socket） ｜ 交易核心（C 语言内存撮合）"],
+    ["业务中台", "Java 微服务（Spring MVC / MyBatis） ｜ DS 数据中心（Hessian + Socket） ｜ 交易核心（C 语言内存撮合）"],
     ["数据存储", "MySQL（主从 / 分库分表） ｜ Redis（缓存 / 分布式锁） ｜ MinIO 对象存储 ｜ Elasticsearch"],
     ["中间件", "Kafka（outbox 本地消息表 + 消费幂等） ｜ Canal CDC ｜ XXL-Job ｜ Redisson ｜ Drools 规则引擎"],
     ["运维部署", "Docker + K8s ｜ GitLab CI/CD ｜ Prometheus + Grafana"],

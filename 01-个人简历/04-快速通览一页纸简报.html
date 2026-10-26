@@ -96,7 +96,7 @@
                     <p class="text-sm">不做"信息撮合"就完事，<strong>深入履约层</strong>——交收、资金、票据、仓单等最易扯皮造假环节系统化，这是供应链金融能做起来的前提</p>
                 </div>
             </div>
-            <p class="mt-3 text-xs text-gray-400">⚠️ 避坑：不要报菜名式地数子系统。先讲链路闭环，子系统作为佐证一笔带过。</p>
+            <p class="mt-3 text-xs text-gray-400">讲法：先讲链路闭环，子系统作为佐证一笔带过。</p>
         </div>
 
         <!-- 二 目标客户 -->
@@ -209,7 +209,7 @@
                 <li><strong>统一账户模块</strong>（B2B 支付）· <strong>统一订单服务</strong> · <strong>统一商品服务</strong>——三大统一服务是"管理端 → SaaS 运营端"产品化的地基</li>
                 <li><strong>关键判断</strong>："参数组合爆炸是 SaaS 化的致命陷阱——解法不是加配置项，而是<strong>能力集治理</strong>：把'功能可配'收敛为'能力可裁剪'，配置爆炸从根上消掉。"</li>
             </ul>
-            <p class="mt-2 text-xs text-gray-400">详见：<a href="../../04-备战手册/04-架构决策/03-平台化治理与多租户架构手册.md" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">技术实现 → SaaS</a>（8 大挑战 / 参数爆炸 / 能力集治理 / 多运营商 / 数据隔离）</p>
+            <p class="mt-2 text-xs text-gray-400">详见：<a href="../04-备战手册/04-架构决策/03-平台化治理与多租户架构手册.md" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">技术实现 → SaaS</a>（8 大挑战 / 参数爆炸 / 能力集治理 / 多运营商 / 数据隔离）</p>
         </div>
 
         <!-- 六 现存痛点与解法 -->
@@ -351,7 +351,7 @@
             </div>
             <div class="quote-card mt-3"><strong>选型 Trade-off（⭐）</strong>："为什么不让 Java 直接做撮合？不是 Java 慢，是 <strong>GC 停顿不可控</strong>——撮合要的是延迟确定性，不是平均速度。代价是 C 可维护性差、内存要手工管，所以解法不是'换语言'，而是给 C 核心外面建三层护栏：① 只暴露指令/事件契约；② 所有调用必须过 Java 桥接层（DS）；③ 撮合 TPS / 积压队列 / P99 延迟结构化输出接入监控。更关键的是<strong>不把 Java 写进 C、也不让 C 逻辑外泄到 Java</strong>，C 团队与 Java 团队各自独立演进、互不阻塞。"</div>
             <div class="quote-card mt-3" style="background: linear-gradient(135deg, #ECFDF5, #D1FAE5); border-left-color: #10B981; color: #065F46;"><strong>管理抓手（⭐）</strong>："我不写 C 代码，但 <strong>DS 是 Java 写的，正好在我的技术栈覆盖范围内</strong>——用'接口契约治理 + DS 协议转换逻辑 review + 可观测性指标'三件套，管住一个我不写代码的 C 撮合引擎。<strong>你能管住的边界，就是你能负责的边界。</strong>"（§7 故事①河南能源双平台就建在这套底座上）</div>
-            <p class="mt-2 text-xs text-gray-400">详见：<a href="05-速查卡/03-B2B微服务系统架构图-手绘版.html" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">异构四层架构图（需能脱手画）</a> · <a href="../../04-备战手册/04-架构决策/02-异构架构策略与真实系统叙事手册.md" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">异构架构叙事手册</a>（协议选型 / 桥接 SDK / 30 秒·2 分钟话术）</p>
+            <p class="mt-2 text-xs text-gray-400">详见：<a href="../02-项目底稿/b2b-project/03-B2B微服务系统架构图-手绘版.html" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">异构四层架构图（需能脱手画）</a> · <a href="../04-备战手册/04-架构决策/02-异构架构策略与真实系统叙事手册.md" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline">异构架构叙事手册</a>（协议选型 / 桥接 SDK / 30 秒·2 分钟话术）</p>
 
             <h3 class="sub-title">9.4 关键技术突破</h3>
             <ul>
@@ -378,7 +378,7 @@
 
             <div class="quote-card mt-3"><strong>一句话总结（⭐）</strong>："我为产品带来的最大改变，是让它从'一个交易网站'变成'一套可托付资金与货权的履约基础设施'——架构上用分域+双轨引擎扛住行业复杂度，突破上用 2PC 与适配器守住资金合规底线，性能上用异步化+缓存+弹性伸缩支撑实时四流透视。"</div>
 
-            <a href="../../04-备战手册/05-技术管理/01-技术整改十一项与落地.html" target="_blank" rel="noopener noreferrer" class="mt-4 flex items-center gap-3 rounded-xl p-4 text-white hover:opacity-95 transition" style="background: linear-gradient(135deg, #0891B2, #2563EB);">
+            <a href="../04-备战手册/05-技术管理/01-技术整改十一项与落地.html" target="_blank" rel="noopener noreferrer" class="mt-4 flex items-center gap-3 rounded-xl p-4 text-white hover:opacity-95 transition" style="background: linear-gradient(135deg, #0891B2, #2563EB);">
                 <i class="fas fa-screwdriver-wrench text-xl"></i>
                 <div class="flex-1 text-sm"><strong>深度整改十一项（我主导的专项）</strong>：国际化配置 · 功能授权码 · 交收场景三元组（破解参数爆炸）· 统一支付中心 · DS+MID 网关 · 等保+信创 · 统一开放网关 · 数据安全脱敏 · 统一基础模块工具（文档转换/翻译/视频/审批流/OCR）· 开发规范脚手架+AI 提效（原型/开发/审查 Skill）—— 每项按「背景问题 → 方案设计 → 落地效果」展开</div>
                 <i class="fas fa-arrow-right opacity-70"></i>

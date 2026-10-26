@@ -2,6 +2,16 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <script>
+        // 直开兼容：未嵌入带 loadPage 的容器页时，导航降级为本窗口跳转
+        (function () {
+            var embedded = false;
+            try { embedded = window.parent !== window && typeof window.parent.loadPage === 'function'; } catch (e) { }
+            if (!embedded) {
+                window.loadPage = function (page) { window.location.href = page.split('/').pop(); };
+            }
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>视频监控项目 · 项目总览</title>
     <script src="https://cdn.tailwindcss.com"></script>

@@ -185,7 +185,7 @@ body {
   transform: rotate(90deg);
 }
 
-/* 嵌套子分组（如 简历资料/05-速查卡） */
+/* 嵌套子分组 */
 .folder.nested > .folder-header {
   padding-left: 32px;
   font-weight: 500;
@@ -722,7 +722,7 @@ body {
       <div class="welcome">
         <div class="welcome-icon">📄</div>
         <h2>个人简历</h2>
-        <p>简历正文（home.html）、技术经理简历、技术经理成长手册、自我介绍脚本与面试速查卡。</p>
+        <p>简历正文（home.html）、完整简历通用版、技术经理简历、成长手册、一页纸简报与网申投递材料。</p>
         <p style="margin-top:8px;font-size:13px;">技术真题见「📝 技术真题」，项目底稿见「💼 项目底稿」→</p>
       </div>
     </div>
@@ -733,22 +733,31 @@ body {
 // ===================== DIRECTORY TREE DATA =====================
 const TREE = [
   {
-    name: '简历资料', icon: '📋', open: true,
+    name: '简历与手册', icon: '📋', open: true, dir: 'root',
     files: [
-      '01-简历与自我介绍脚本.md',
+      '00-完整简历-通用版.md',
       '02-技术经理成长手册.md',
       '03-技术情报收集与跨部门沟通手册.md',
-      '04-快速通览一页纸简报.html'
-    ],
-    children: [
-      {
-        name: '05-速查卡', icon: '🧰', open: true,
-        files: [
-          '01-RICE优先级决策矩阵.html',
-          '02-5Whys与业务技术映射速查卡.html',
-          '03-B2B微服务系统架构图-手绘版.html'
-        ]
-      }
+      '04-快速通览一页纸简报.html',
+      '06-简历知识补强清单.md'
+    ]
+  },
+  {
+    name: '05-网申投递', icon: '🧰', open: true,
+    files: [
+      '01-易盛研发岗-简历.md',
+      '02-易盛网申五项-可直接粘贴.md',
+      '03-豫信电科-报名表粘贴稿.md',
+      '04-BOSS直聘-字段粘贴稿.md',
+      '05-猎聘-字段粘贴稿.md',
+      '13-超聚变面试准备.md'
+    ]
+  },
+  {
+    name: '07-面试介绍PPT', icon: '🖼️', open: true,
+    files: [
+      'index.html',
+      'PPT模板与排版规范.md'
     ]
   }
 ];
@@ -871,11 +880,12 @@ function buildTree() {
   });
   html += '</div></div>';
 
-  // Subfolders (支持一级嵌套：folder.children)
+  // Subfolders (支持一级嵌套：folder.children；dir 指定磁盘目录，缺省用 name)
   TREE.forEach(folder => {
-    html += renderFolder(folder.name, folder.name, folder.icon, folder.files, folder.open, countTreeFiles(folder));
+    const dir = folder.dir || folder.name;
+    html += renderFolder(folder.name, dir, folder.icon, folder.files, folder.open, countTreeFiles(folder));
     (folder.children || []).forEach(sub => {
-      html += renderFolder(sub.name, `${folder.name}/${sub.name}`, sub.icon, sub.files, sub.open);
+      html += renderFolder(sub.name, `${dir}/${sub.name}`, sub.icon, sub.files, sub.open);
     });
   });
 

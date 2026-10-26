@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>平台五层架构全景图 · 接入到数据</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #EEF1F5;
+    font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", system-ui, sans-serif;
+    color: #243043;
+    -webkit-font-smoothing: antialiased;
+    padding: 26px 20px 40px;
+  }
+
+  /* 画布：设计宽度 1740px，导出 2× 得 3720px */
+  .sheet {
+    width: 1740px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(24, 39, 65, .10), 0 2px 6px rgba(24, 39, 65, .06);
+    padding: 26px 28px 22px;
+  }
+
+  /* ---------- 头部 ---------- */
+  .hd { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding-bottom: 14px; border-bottom: 2px solid #E7EBF1; }
+  .hd h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: .5px; color: #1B2739; }
+  .hd h1 em { font-style: normal; color: #C0504D; }
+  .hd .sub { margin-top: 8px; font-size: 13px; color: #5B6878; letter-spacing: .2px; }
+  .hd .sub b { color: #2C6FBE; font-weight: 700; }
+  .hd .sub i { font-style: normal; color: #98A3B2; padding: 0 4px; }
+
+  .legend { flex: 0 0 auto; border: 1px solid #E1E6ED; border-radius: 10px; background: #FAFBFD; padding: 10px 14px; }
+  .legend .lg-title { font-size: 11px; font-weight: 700; color: #8B96A5; letter-spacing: 1px; margin-bottom: 7px; }
+  .legend .lg-row { display: flex; align-items: center; gap: 7px; margin-top: 6px; }
+  .legend .lg-row span.k { font-size: 11.5px; color: #5B6878; }
+  .lang { display: inline-block; font-size: 10.5px; font-weight: 700; color: #fff; padding: 2px 7px; border-radius: 4px; letter-spacing: .4px; }
+  .lang.core { background: #C0504D; }
+  .lang.gw   { background: #7C5CBF; }
+  .lang.cfg  { background: #C2803A; }
+  .lang.ext  { background: #6B7280; }
+  .line-sample { display: inline-block; width: 30px; height: 0; border-top: 2px solid #7C8CA0; }
+  .line-sample.dash { border-top-style: dashed; }
+
+  /* ---------- 层带 ---------- */
+  .stack { padding-top: 18px; }
+  .band { display: flex; border: 1.6px solid var(--line); background: var(--bg); border-radius: 14px; padding: 13px 16px 13px 0; position: relative; }
+  .rail { flex: 0 0 54px; display: flex; align-items: center; justify-content: center; }
+  .rail i { font-style: normal; writing-mode: vertical-rl; font-size: 19px; font-weight: 800; color: #fff; background: var(--rail); border-radius: 8px; padding: 16px 8px; letter-spacing: 3px; box-shadow: 0 2px 6px rgba(0,0,0,.14); }
+  .bd { flex: 1; min-width: 0; }
+  .bd-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  .bd-head h2 { margin: 0; font-size: 14.5px; font-weight: 800; color: var(--rail); letter-spacing: .3px; white-space: nowrap; }
+  .bd-head p { margin: 0; font-size: 12px; color: #6B7787; }
+  .bd-head .pin { margin-left: auto; font-size: 11px; color: #8B96A5; border: 1px dashed var(--line); border-radius: 6px; padding: 3px 9px; background: #fff; white-space: nowrap; }
+
+  /* ---------- 网格与卡片 ---------- */
+  .row { display: grid; gap: 12px; }
+  .c3 { grid-template-columns: repeat(3, 1fr); }
+  .c4 { grid-template-columns: repeat(4, 1fr); }
+  .c5 { grid-template-columns: repeat(5, 1fr); }
+  .c6 { grid-template-columns: repeat(6, 1fr); }
+  .c7 { grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr 1fr 1fr; }
+  .row.c7 .card { padding-top: 27px; }   /* 统一留出角标位，避免有标签/无标签参差 */
+  .c4b { grid-template-columns: 1.15fr 1.35fr 1.15fr 1.25fr; }
+  .gap-lg { margin-top: 14px; }
+
+  .card { position: relative; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 15px 12px 13px; text-align: center; }
+  .card h3 { margin: 0; font-size: 14.5px; font-weight: 700; color: #22303F; line-height: 1.4; }
+  .card .tech { margin-top: 6px; font-size: 11.5px; font-weight: 700; color: var(--c); }
+  .card .desc { margin-top: 8px; font-size: 12.5px; color: #4A5568; line-height: 1.8; }
+  .card .badge { position: absolute; left: 7px; top: 7px; font-size: 10px; font-weight: 700; color: #fff; background: #2C5F8A; padding: 2px 6px; border-radius: 4px; letter-spacing: .3px; }
+  .card.has-tag { padding-top: 27px; }
+  .tag-row .card { padding-top: 27px; }   /* 同行有标签也有无标签时，统一留角标位保证标题齐平 */
+  .card .tag { position: absolute; left: 8px; top: 8px; }
+  .card .mini { margin-top: 7px; font-size: 11.5px; color: #6B7787; line-height: 1.7; }
+
+  /* ⚠️ 卡片配色类 —— 必须定义 */
+  .c-amber  { --c:#D8A94A; --cbg:#FEFAF0; }
+  .c-blue   { --c:#4A88CE; --cbg:#F3F8FE; }
+  .c-purple { --c:#8871C9; --cbg:#F8F5FE; }
+  .c-coral  { --c:#D16B65; --cbg:#FEF7F6; }
+  .c-teal   { --c:#2E9E8F; --cbg:#F1FAF8; }
+  .c-gold   { --c:#C2803A; --cbg:#FDF8F0; }
+  .c-sky    { --c:#4AA3D8; --cbg:#F2F9FD; }
+  .c-red    { --c:#C0504D; --cbg:#FDF3F2; }
+  .c-grey   { --c:#9AA3AF; --cbg:#F7F8FA; }
+
+  /* 通栏数据条 */
+  .bar { margin-top: 12px; border: 1.6px solid var(--c); background: var(--cbg); border-radius: 10px; padding: 13px 18px; display: flex; align-items: center; gap: 20px; }
+  .bar h3 { margin: 0; font-size: 15px; font-weight: 800; color: var(--c); white-space: nowrap; letter-spacing: .3px; }
+  .bar p { margin: 0; font-size: 12.5px; color: #4A5568; line-height: 1.7; }
+  .bar p b { color: #22303F; }
+
+  /* 层间流向条 */
+  .flows { padding: 9px 0 9px 54px; display: flex; flex-wrap: wrap; align-items: center; gap: 7px; position: relative; }
+  .flows::before { content: "⇅"; position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 17px; color: #AEB9C7; line-height: 1; }
+  .flows .cap { font-size: 11px; font-weight: 700; color: #98A3B2; letter-spacing: .8px; margin-right: 2px; }
+  .fl { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: #3C4959; background: #fff; border: 1.4px solid var(--c); border-radius: 999px; padding: 3px 11px; }
+  .fl.dash { border-style: dashed; }
+  .fl b { color: var(--c); font-weight: 800; font-size: 12.5px; }
+
+  .floating { text-align: center; margin: 9px 0; }
+  .floating span { display: inline-block; font-size: 11.5px; color: #9E3B36; background: #fff; border: 1px solid #E2B9B3; border-radius: 999px; padding: 3px 12px; }
+
+  /* 页脚注 */
+  .notes { margin-top: 20px; border-top: 2px solid #E7EBF1; padding-top: 14px; }
+  .notes p { margin: 0 0 8px; font-size: 12px; color: #56626F; line-height: 1.85; }
+  .notes p:last-child { margin-bottom: 0; }
+  .notes b { color: #1B2739; font-weight: 800; }
+  .notes i { font-style: normal; color: #98A3B2; padding: 0 4px; }
+
+  @media (max-width: 1800px) { body { padding: 16px 12px 32px; overflow-x: auto; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- ================= 头部 ================= -->
+  <div class="hd">
+    <div>
+      <h1>平台分层架构 · <em>接入到数据五层全景</em></h1>
+      <div class="sub">
+        HTTP 同步请求 <i>·</i> WebSocket 主动推送 <i>·</i> 缓存一致性分流 <i>·</i> 分协议线程池隔离 <i>·</i> midmon 可观测 <i>·</i> 画布 1740px
+      </div>
+    </div>
+    <div class="legend">
+      <div class="lg-title">图 例</div>
+      <div class="lg-row">
+        <span class="lang gw">接入</span><span class="k">接入通道与网关治理</span>
+      </div>
+      <div class="lg-row">
+        <span class="lang core">核心</span><span class="k">强一致核心业务（不可缓存）</span>
+      </div>
+      <div class="lg-row">
+        <span class="lang cfg">加速</span><span class="k">缓存 / 监控 / 一致性兜底</span>
+      </div>
+      <div class="lg-row">
+        <span class="lang ext">异构</span><span class="k">异构通道与外部系统</span>
+      </div>
+      <div class="lg-row">
+        <span class="line-sample"></span><span class="k">同步调用</span>
+        <span class="line-sample dash"></span><span class="k">异步 / 反向推送</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <!-- ================= 一 · 接入层 ================= -->
+    <div class="band b1" style="--rail:#2C6FBE;--line:#A9C9EA;--bg:#F3F8FE;">
+      <div class="rail"><i>一</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>接入层</h2>
+          <p>HTTP 拉取 + WebSocket 主动推送 · 双通道并存</p>
+          <span class="pin">强一致数据只推不拉 · 客户端零轮询</span>
+        </div>
+        <div class="row c4 tag-row">
+          <div class="card c-sky">
+            <h3>PC 交易客户端</h3>
+            <div class="tech">HTTP 短连接</div>
+            <div class="desc">下单 · 撤单 · 批量查询<br>报表导出（慢请求来源）</div>
+          </div>
+          <div class="card c-sky">
+            <h3>移动端 / 企业门户</h3>
+            <div class="tech">HTTP 短连接</div>
+            <div class="desc">行情浏览 · 单据查看<br>持仓与资金概览</div>
+          </div>
+          <div class="card c-sky has-tag">
+            <span class="lang gw tag">推送</span>
+            <h3>WebSocket 推送通道</h3>
+            <div class="tech">长连接 · 服务端主动下发</div>
+            <div class="desc">成交回报 · 持仓变动 · 资金变动<br>替代高频轮询，延迟 = 事件时延</div>
+          </div>
+          <div class="card c-sky">
+            <h3>外部系统对接</h3>
+            <div class="tech">HTTP + 签名验签</div>
+            <div class="desc">开放协议调用 · 白名单来源<br>合作方系统直连</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">流向</span>
+      <span class="fl" style="--c:#2C6FBE">HTTP 请求 <b>→</b> 网关（同步，等结果）</span>
+      <span class="fl" style="--c:#2C6FBE">WebSocket 长连接 <b>建立在</b> 网关</span>
+      <span class="fl dash" style="--c:#C0504D">服务端事件 <b>⇠</b> 网关反向推送回客户端</span>
+    </div>
+
+    <!-- ================= 二 · 网关层 ================= -->
+    <div class="band b2" style="--rail:#7C5CBF;--line:#C6B6E6;--bg:#F8F5FE;">
+      <div class="rail"><i>二</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>网关层</h2>
+          <p>统一入口 · 缓存挡读 · 线程池隔离 · midmon 观测</p>
+          <span class="pin">协议号 = 接口唯一编码</span>
+        </div>
+
+        <div class="row c4">
+          <div class="card c-purple has-tag">
+            <span class="lang gw tag">接入</span>
+            <h3>网关核心调度</h3>
+            <div class="tech">十道关处理链路</div>
+            <div class="desc">鉴权 · 协议路由 · 分级限流<br>入参白名单 · 分页与 SQL 红线<br>拒绝要早、要便宜</div>
+          </div>
+          <div class="card c-gold has-tag">
+            <span class="lang cfg tag">加速</span>
+            <h3>Redis 缓存</h3>
+            <div class="tech">弱一致性读专用</div>
+            <div class="desc">商品目录 · 参数配置<br>行情快照 · 公告模板<br>命中即返回，不打后端</div>
+          </div>
+          <div class="card c-purple has-tag">
+            <span class="lang gw tag">隔离</span>
+            <h3>分协议线程池</h3>
+            <div class="tech">按协议族独立成池</div>
+            <div class="desc">慢协议（报表导出 / 批量查询）<br>独占线程，不挤占快协议<br>（下单 / 回报）资源</div>
+          </div>
+          <div class="card c-teal has-tag">
+            <span class="lang cfg tag">观测</span>
+            <h3>midmon 监控</h3>
+            <div class="tech">协议级运行态</div>
+            <div class="desc">协议调用量 · 调用时长 P99<br>缓存命中率与失效管理<br>慢协议定位的唯一样本来源</div>
+          </div>
+        </div>
+
+        <div class="bar c-red" style="margin-top:12px">
+          <h3>一致性分流红线</h3>
+          <p><b>弱一致</b>（可旧、可延迟）→ Redis 直返，不穿透  <i style="font-style:normal;color:#B9C2CC">│</i>  <b>强一致</b>（金额 / 持仓 / 成交）→ 绝不过缓存，穿透到服务层。<br>缓存只能承载「旧值」，不能承载「错值」—— 这条线画错，上面所有优化都只是放大器。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">分流</span>
+      <span class="fl dash" style="--c:#C2803A">缓存命中 <b>⇢</b> 直接返回客户端（短路，不进后端）</span>
+      <span class="fl" style="--c:#7C5CBF">未命中 / 强一致读 <b>→</b> 协议转发至数据交互层</span>
+    </div>
+
+    <!-- ================= 三 · 数据交互层 ================= -->
+    <div class="band b3" style="--rail:#2E9E8F;--line:#A8D8D0;--bg:#F1FAF8;">
+      <div class="rail"><i>三</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>数据交互层</h2>
+          <p>聚合后端服务 · 对外只暴露一套统一协议</p>
+          <span class="pin">客户端不感知后端服务数量</span>
+        </div>
+        <div class="row c4">
+          <div class="card c-teal">
+            <h3>协议聚合器</h3>
+            <div class="tech">一次请求 · 多次内部调用</div>
+            <div class="desc">组合调用 + 结果拼装<br>把 N 个后端服务的返回<br>收敛为 1 个统一响应体</div>
+          </div>
+          <div class="card c-teal">
+            <h3>报文编解码</h3>
+            <div class="tech">数据类型通道适配</div>
+            <div class="desc">Hessian over HTTP（同步）<br>Socket 长连接（异步批量）<br>定长头 32B + TLV 报文体</div>
+          </div>
+          <div class="card c-teal">
+            <h3>统一协议规范</h3>
+            <div class="tech">header / body / signature / traceId</div>
+            <div class="desc">全链路 traceId 贯穿<br>一次调用可跨层追溯<br>签名与幂等键随报文下发</div>
+          </div>
+          <div class="card c-teal">
+            <h3>一致性派发</h3>
+            <div class="tech">本地事务 + 待发送表</div>
+            <div class="desc">同步落库 → 异步派发 → 人工兜底<br>阶梯重试 1s→2s→4s，上限熔断<br>手动重试只重置记录，不重放业务</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">调用</span>
+      <span class="fl" style="--c:#2E9E8F">聚合后的服务调用 <b>→</b> 服务层（内部协议）</span>
+      <span class="fl dash" style="--c:#2E9E8F">多服务结果 <b>⇠</b> 拼装为统一响应体</span>
+    </div>
+
+    <!-- ================= 四 · 服务层 ================= -->
+    <div class="band b4" style="--rail:#C0504D;--line:#EBC0BE;--bg:#FEF7F6;">
+      <div class="rail"><i>四</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>服务层</h2>
+          <p>强一致核心下沉 · C 单线程 + Java 微服务群</p>
+          <span class="pin">核心只保证「内存内一致」，持久化交给 Java 侧</span>
+        </div>
+        <div class="row c7">
+          <div class="card c-coral has-tag">
+            <span class="lang core tag">核心</span>
+            <h3>交易核心</h3>
+            <div class="tech">C · 单线程内存</div>
+            <div class="desc">委托 · 成交 · 持仓<br>撮合与撮合态</div>
+          </div>
+          <div class="card c-blue">
+            <h3>资金服务</h3>
+            <div class="tech">额度</div>
+            <div class="desc">冻结 / 解冻<br>额度校验</div>
+          </div>
+          <div class="card c-blue">
+            <h3>持仓服务</h3>
+            <div class="tech">持仓簿</div>
+            <div class="desc">可用量 · 成本<br>持仓快照</div>
+          </div>
+          <div class="card c-blue">
+            <h3>订单服务</h3>
+            <div class="tech">状态机</div>
+            <div class="desc">待审 → 下单<br>→ 成交</div>
+          </div>
+          <div class="card c-blue">
+            <h3>商品主数据</h3>
+            <div class="tech">基础数据</div>
+            <div class="desc">目录 · 参数<br>组织与权限</div>
+          </div>
+          <div class="card c-blue">
+            <h3>风控服务</h3>
+            <div class="tech">事前 + 事中</div>
+            <div class="desc">限额校验<br>分级预警</div>
+          </div>
+          <div class="card c-blue">
+            <h3>清算报表</h3>
+            <div class="tech">T+1</div>
+            <div class="desc">盘后结算<br>多维钻取</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flows">
+      <span class="cap">落库</span>
+      <span class="fl" style="--c:#C0504D">核心 ↔ Java 服务 <b>经</b> DS 数据交换中心桥接（编解码在 IO 线程）</span>
+      <span class="fl" style="--c:#C0504D">服务层 <b>→</b> 数据层（同步落库 + 异步派发）</span>
+      <span class="fl dash" style="--c:#C0504D">业务事件 <b>⇡</b> 上报网关，触发 WebSocket 推送</span>
+    </div>
+
+    <!-- ================= 五 · 数据层 ================= -->
+    <div class="band b5" style="--rail:#C97B70;--line:#EBC6C0;--bg:#FDF4F2;">
+      <div class="rail"><i>五</i></div>
+      <div class="bd">
+        <div class="bd-head">
+          <h2>数据层</h2>
+          <p>持久化主存 · 缓存加速 · 一致性兜底</p>
+          <span class="pin">镜像文件不防「算错」，只防「丢了」</span>
+        </div>
+        <div class="row c4 tag-row">
+          <div class="card c-gold">
+            <h3>关系型主库</h3>
+            <div class="tech">业务事实来源</div>
+            <div class="desc">订单 · 委托 · 成交<br>资金流水 · 持仓 · 结算</div>
+          </div>
+          <div class="card c-gold">
+            <h3>Redis</h3>
+            <div class="tech">缓存 / 会话 / 热点</div>
+            <div class="desc">弱一致读的唯一合法加速层<br>失效策略与 midmon 同源管理</div>
+          </div>
+          <div class="card c-coral has-tag">
+            <span class="lang cfg tag">兜底</span>
+            <h3>镜像文件 + 死信队列</h3>
+            <div class="tech">C 核心一致性兜底</div>
+            <div class="desc">命令日志（输入）· 快照（状态）· 待办（欠账）<br>重启靠重放输入恢复，死信只重放回写</div>
+          </div>
+          <div class="card c-grey has-tag">
+            <span class="lang ext tag">审计</span>
+            <h3>日志与调用档案</h3>
+            <div class="tech">midmon 数据底座</div>
+            <div class="desc">协议调用日志 · 链路 trace<br>操作审计 · 缓存操作留痕</div>
+          </div>
+        </div>
+
+        <div class="bar c-coral" style="margin-top:12px">
+          <h3>一致性兜底三件套</h3>
+          <p><b>镜像文件</b>防内存易失  <i style="font-style:normal;color:#B9C2CC">│</i>  <b>待回写队列</b>防回写失败（阶梯重试 + 熔断转人工）  <i style="font-style:normal;color:#B9C2CC">│</i>  <b>死信队列</b>只重放回写、幂等 upsert，绝不重新撮合</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= 页脚注 ================= -->
+  <div class="notes">
+    <p><b>① 为什么用 WebSocket 替掉强一致数据轮询：</b>轮询的延迟下界 = 轮询周期，且「客户端数 × 1/周期」是一个恒定打向网关的 QPS，成交高峰时纯属给自己加戏。改成服务端推送后，"发现变化"的成本从 N 个客户端收敛为服务端 1 次事件。</p>
+    <p><b>② 分协议线程池为什么必须做：</b>慢协议不隔离会占满共享池 → 快协议排队 → 表现为「下单偶发超时」，且在总维度监控上完全看不出元凶。按协议族分池后，慢的只拖死自己。</p>
+    <p><b>③ midmon 的三个观测位：</b>协议调用量（发现异常放大与刷接口）、调用时长 P99（定位是哪条协议慢）、缓存命中率与失效（判断缓存到底有没有在干活）。</p>
+    <p><b>④ 一致性分层是这张图的题眼：</b>弱一致可缓存、可延迟、可降级；强一致不缓存、不重试、不猜测。两层之间靠「协议号 + 数据语义」判定归属，而不是靠开发同学的心情。</p>
+  </div>
+
+</div>
+</body>
+</html>
