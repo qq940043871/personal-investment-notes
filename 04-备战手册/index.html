@@ -2,8 +2,9 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>资料库 — 文件索引与预览</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1e3a8a">
+<title>备战手册 — 文件索引与预览</title>
 <link rel="icon" type="image/png" href="../favicon.png">
 <link rel="shortcut icon" type="image/png" href="../favicon.png">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -668,9 +669,413 @@ body {
 .error-state .err-icon {
   font-size: 48px;
 }
+
+/* =========================================================
+   移动端视图（≤860px）：分类大卡片 → 文件清单 → 正文阅读
+   桌面端保持原双栏布局不变（.m-* 默认 display:none）
+   ========================================================= */
+.m-home, .m-list, .m-back-btn, .toc-close, .btn-short, .m-tip { display: none; }
+
+@media (max-width: 860px) {
+  html, body { height: auto; }
+  body {
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 100vh;
+    background: var(--bg);
+    -webkit-text-size-adjust: 100%;
+  }
+  .sidebar { display: none; }
+  .main { display: block; height: auto; overflow: visible; }
+
+  /* ---- 视图切换：home / list / read ---- */
+  body[data-mv="home"] .m-home,
+  body[data-mv="list"] .m-list { display: block; }
+  body[data-mv="home"] .main,
+  body[data-mv="list"] .main { display: none; }
+  body[data-mv="read"] .m-home,
+  body[data-mv="read"] .m-list { display: none; }
+
+  /* ---------- 首页：分类卡片 ---------- */
+  .m-home { padding: 0 0 32px; }
+
+  .m-hero {
+    padding: calc(20px + env(safe-area-inset-top)) 18px 20px;
+    background: linear-gradient(155deg, #0f2a5c 0%, #1d4ed8 55%, #3b82f6 100%);
+    color: #fff;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 8px 24px rgba(29, 78, 216, 0.22);
+  }
+  .m-hero-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .m-hero-title { font-size: 21px; font-weight: 800; letter-spacing: .3px; }
+  .m-hero-sub { font-size: 12.5px; opacity: .82; margin-top: 5px; }
+  .m-hero-chips { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+  .m-hero-chip {
+    font-size: 11px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .m-hero-chip:active { background: rgba(255, 255, 255, 0.28); }
+
+  .m-search {
+    margin: -14px 16px 0;
+    position: relative;
+    z-index: 2;
+  }
+  .m-search input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid var(--divider);
+    background: #fff;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.10);
+    -webkit-appearance: none;
+  }
+  .m-search input:focus { border-color: var(--accent); }
+
+  .m-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding: 18px 16px 0;
+  }
+  .m-grid > * { min-width: 0; }
+  .m-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-align: left;
+    padding: 16px 15px;
+    background: #fff;
+    border: 1px solid var(--divider);
+    border-left: 4px solid var(--cat, var(--accent));
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+    font-family: inherit;
+    transition: transform .15s, box-shadow .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .m-card:active {
+    transform: scale(0.985);
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.10);
+  }
+  .m-card-icon {
+    width: 46px; height: 46px;
+    flex: none;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    background: color-mix(in srgb, var(--cat, var(--accent)) 12%, #fff);
+  }
+  @supports not (background: color-mix(in srgb, red 10%, white)) {
+    .m-card-icon { background: #eff6ff; }
+  }
+  .m-card-body { flex: 1; min-width: 0; }
+  .m-card-title {
+    display: block;
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.35;
+  }
+  .m-card-meta {
+    display: block;
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .m-card-arrow {
+    flex: none;
+    font-size: 20px;
+    color: #cbd5e1;
+    line-height: 1;
+  }
+
+  /* ---------- 文件清单 ---------- */
+  .m-list { padding-bottom: 40px; }
+  .m-list-head {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: calc(10px + env(safe-area-inset-top)) 14px 10px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--divider);
+  }
+  .m-back {
+    flex: none;
+    width: 34px; height: 34px;
+    border-radius: 11px;
+    border: 1px solid var(--divider);
+    background: #fff;
+    color: var(--text);
+    font-size: 19px;
+    line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    font-family: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .m-back:active { background: var(--accent-light); }
+  .m-list-titles { flex: 1; min-width: 0; }
+  .m-list-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .m-list-meta { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; }
+
+  .m-group-title {
+    padding: 20px 18px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: .3px;
+  }
+  .m-rows {
+    margin: 8px 14px 0;
+    background: #fff;
+    border: 1px solid var(--divider);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  }
+  .m-group-title + .m-rows { margin-top: 0; }
+  .m-row {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    padding: 14px 14px;
+    background: none;
+    border: none;
+    border-top: 1px solid #f1f5f9;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .m-row:first-child { border-top: none; }
+  .m-row:active { background: var(--accent-light); }
+  .m-ext {
+    flex: none;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 6px;
+    border-radius: 5px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    letter-spacing: .4px;
+  }
+  .m-ext.md { background: #dbeafe; color: #1d4ed8; }
+  .m-ext.html { background: #ffedd5; color: #c2410c; }
+  .m-ext.pptx { background: #fecaca; color: #b91c1c; }
+  .m-ext.pdf { background: #fee2e2; color: #991b1b; }
+  .m-ext.js { background: #fef9c3; color: #a16207; }
+  .m-row-body { flex: 1; min-width: 0; }
+  .m-row-title {
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .m-row-arrow { flex: none; font-size: 17px; color: #cbd5e1; }
+  .m-empty {
+    padding: 40px 16px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 13.5px;
+  }
+
+  /* ---------- 阅读视图 ---------- */
+  .m-back-btn {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    padding: 6px 10px;
+    font-size: 12px;
+    gap: 2px;
+  }
+  .content-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    padding: calc(8px + env(safe-area-inset-top)) 12px 8px;
+    gap: 8px;
+    min-height: 0;
+    flex-wrap: nowrap;
+  }
+  .content-toolbar .current-file { font-size: 13px; }
+  .content-toolbar .actions { gap: 6px; }
+  .content-toolbar .btn { padding: 6px 9px; font-size: 11.5px; }
+  .btn-short { display: inline; }
+  .btn-full { display: none; }
+
+  .content-body { display: block; overflow: visible; }
+  .content-area {
+    overflow: visible;
+    padding: 18px 16px calc(48px + env(safe-area-inset-bottom));
+  }
+  .welcome { height: auto; min-height: 55vh; padding: 0 8px; }
+
+  .markdown-body { font-size: 15.5px; line-height: 1.8; max-width: none; }
+  .markdown-body h1 { font-size: 21px; line-height: 1.4; }
+  .markdown-body h2 { font-size: 18px; margin: 24px 0 10px; }
+  .markdown-body h3 { font-size: 16px; margin: 20px 0 8px; }
+  .markdown-body h4 { font-size: 15px; }
+  .markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 {
+    scroll-margin-top: 64px;
+  }
+  .markdown-body ul, .markdown-body ol { padding-left: 20px; }
+  .markdown-body pre { padding: 12px 14px; font-size: 12.5px; }
+  .markdown-body blockquote { padding: 8px 12px; }
+
+  /* 表格横向滚动容器（JS 渲染后自动包一层 .table-scroll） */
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 14px 0;
+  }
+  .table-scroll table { margin: 0; min-width: 480px; }
+
+  /* 目录：移动端改为右侧抽屉 */
+  .toc-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: min(78vw, 300px);
+    min-width: 0;
+    z-index: 60;
+    border-right: none;
+    border-left: 1px solid var(--toc-border);
+    box-shadow: -12px 0 36px rgba(15, 23, 42, 0.18);
+    transform: translateX(0);
+    transition: transform .25s ease;
+  }
+  .toc-panel.hidden {
+    display: flex;
+    transform: translateX(101%);
+    pointer-events: none;
+  }
+  .toc-head { justify-content: space-between; }
+  .toc-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    border: 1px solid var(--toc-border);
+    background: #fff;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .toc-item { font-size: 13px; padding: 8px 8px; }
+
+  /* HTML 预览自适应高度 */
+  .html-preview-frame {
+    height: calc(100vh - 56px - env(safe-area-inset-top));
+    min-height: 420px;
+  }
+  .m-tip {
+    display: block;
+    margin: 0 0 10px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    font-size: 11.5px;
+    line-height: 1.55;
+  }
+  .m-tip + .html-preview-frame { height: calc(100vh - 108px - env(safe-area-inset-top)); }
+  .binary-placeholder { height: auto; min-height: 55vh; }
+  .error-state { height: auto; min-height: 50vh; }
+}
+
+@media (max-width: 380px) {
+  .m-hero-title { font-size: 19px; }
+  .m-card { padding: 14px 12px; }
+  .m-card-icon { width: 42px; height: 42px; font-size: 20px; }
+}
 </style>
 </head>
 <body>
+
+<!-- ============= 移动端：分类首页（≤860px 显示） ============= -->
+<div class="m-home" id="mHome">
+  <div class="m-hero">
+    <div class="m-hero-top">
+      <div>
+        <div class="m-hero-title">📚 备战手册</div>
+        <div class="m-hero-sub">B2B大宗贸易供应链技术经理</div>
+      </div>
+    </div>
+    <div class="m-hero-chips">
+      <a class="m-hero-chip" href="../index.html">🏠 工作台</a>
+      <a class="m-hero-chip" href="../01-个人简历/index.html">📄 简历</a>
+      <a class="m-hero-chip" href="../02-项目底稿/index.html">💼 底稿</a>
+      <a class="m-hero-chip" href="../index.html#page-bank">📝 真题</a>
+    </div>
+    <div class="m-hero-chips" style="margin-top:8px">
+      <span class="m-hero-chip" id="mHeroStats">-- 份文件</span>
+    </div>
+  </div>
+
+  <div class="m-search">
+    <input type="search" id="mSearchInput" placeholder="搜索文件名，如 Saga / Cookie / 架构" oninput="mSearch(this.value)">
+  </div>
+
+  <div class="m-grid" id="mGrid"><!-- JS 渲染 --></div>
+</div>
+
+<!-- ============= 移动端：文件清单（≤860px 显示） ============= -->
+<div class="m-list" id="mList">
+  <div class="m-list-head">
+    <button class="m-back" onclick="mBackToListOrHome()" aria-label="返回">‹</button>
+    <div class="m-list-titles">
+      <div class="m-list-title" id="mListTitle">分类</div>
+      <div class="m-list-meta" id="mListMeta"></div>
+    </div>
+  </div>
+  <div id="mFiles"><!-- JS 渲染 --></div>
+</div>
 
 <!-- ============= SIDEBAR ============= -->
 <aside class="sidebar">
@@ -706,17 +1111,19 @@ body {
 <!-- ============= MAIN ============= -->
 <main class="main">
   <div class="content-toolbar" id="contentToolbar">
+    <button class="btn m-back-btn" onclick="mBackToListOrHome()" aria-label="返回清单">‹ 返回</button>
     <span class="current-file" id="currentFileName">请从左侧选择文件</span>
     <div class="actions" id="toolbarActions" style="display:none;">
       <button class="btn" id="tocBtn" style="display:none;" onclick="toggleToc()">📑 目录</button>
-      <button class="btn" onclick="window.open(currentFilePath, '_blank')">📄 新窗口打开</button>
+      <button class="btn" id="tocBtn" style="display:none;" onclick="toggleToc()">📑 目录</button>
+      <button class="btn" onclick="window.open(currentFilePath, '_blank')" title="在新窗口打开"><span class="btn-full">📄 新窗口打开</span><span class="btn-short">↗</span></button>
       <button class="btn" id="downloadBtn" onclick="downloadFile()">⬇ 下载</button>
     </div>
   </div>
 
   <div class="content-body">
     <aside class="toc-panel hidden" id="tocPanel">
-      <div class="toc-head">📑 文章目录</div>
+      <div class="toc-head"><span>📑 文章目录</span><button class="toc-close" onclick="toggleToc()" aria-label="关闭目录">✕</button></div>
       <div class="toc-list" id="tocList"></div>
     </aside>
 
@@ -1001,6 +1408,9 @@ function toggleFolder(header) {
 }
 
 function openFile(folder, filename) {
+  // 移动端：进入阅读视图
+  if (mIsMobile()) { document.body.dataset.mv = 'read'; window.scrollTo(0, 0); }
+
   // Update active state
   document.querySelectorAll('.file-item').forEach(el => el.classList.remove('active'));
   const selector = folder === 'root'
@@ -1026,7 +1436,10 @@ function openFile(folder, filename) {
   } else if (currentFileType === 'html') {
     hideToc();
     document.getElementById('tocBtn').style.display = 'none';
-    contentArea.innerHTML = `<iframe class="html-preview-frame" src="${currentFilePath}"></iframe>`;
+    const htmlTip = mIsMobile()
+      ? '<div class="m-tip">图表按桌面版式绘制：可直接双指缩放，或点顶部 ↗ 新窗口全屏查看。</div>'
+      : '';
+    contentArea.innerHTML = htmlTip + `<iframe class="html-preview-frame" src="${currentFilePath}"></iframe>`;
   } else if (currentFileType === 'pptx' || currentFileType === 'js' || currentFileType === 'pdf') {
     hideToc();
     document.getElementById('tocBtn').style.display = 'none';
@@ -1051,9 +1464,12 @@ function loadMarkdown(path) {
       const html = marked.parse(md);
       contentArea.innerHTML = `<div class="markdown-body">${html}</div>`;
       contentArea.scrollTop = 0;
+      window.scrollTo(0, 0);
 
       // 生成大纲目录（与备战手册内置阅读器一致）
       const body = contentArea.querySelector('.markdown-body');
+      wrapTables(body);
+      interceptLinks(body);
       buildToc(body);
       const btn = document.getElementById('tocBtn');
       if (btn) btn.style.display = tocHeadingIds.length ? 'inline-block' : 'none';
@@ -1172,6 +1588,252 @@ document.addEventListener('keydown', function(e) {
     document.getElementById('searchInput').focus();
   }
 });
+
+// ===================== 移动端视图（分类卡片 → 文件清单 → 阅读） =====================
+const MQ_MOBILE = window.matchMedia('(max-width: 860px)');
+const M_PALETTE = ['#2563eb', '#0891b2', '#7c3aed', '#ea580c', '#059669', '#db2777'];
+const M_ICONS = ['🎯', '💼', '📊', '🏗️', '🛠️', '🎤'];
+let mCatIndex = 0;
+
+function mIsMobile() { return MQ_MOBILE.matches; }
+
+/* 文件名瘦身：去掉扩展名与「01-」类序号前缀，手机上更好读 */
+function cleanName(name) {
+  return String(name)
+    .replace(/\.(md|html|pptx|pdf|js)$/i, '')
+    .replace(/^\d+[-_]\s*/, '');
+}
+
+/* 组装分类数据（TREE 六大类 + 根目录两份总纲） */
+function mCategories() {
+  const cats = [{
+    key: 'root',
+    title: '总纲 · 入口',
+    icon: '📌',
+    color: '#475569',
+    files: ROOT_FILES.slice(),
+    children: [],
+    all: ROOT_FILES.slice()
+  }];
+
+  TREE.forEach(function (folder, i) {
+    const all = folder.files.slice();
+    (folder.children || []).forEach(function (sub) { all.push.apply(all, sub.files); });
+    cats.push({
+      key: folder.name,
+      title: cleanName(folder.name),
+      icon: M_ICONS[i] || folder.icon || '📁',
+      color: M_PALETTE[i % M_PALETTE.length],
+      files: folder.files.slice(),
+      children: folder.children || [],
+      all: all
+    });
+  });
+
+  return cats;
+}
+
+function mBuildHome() {
+  const cats = mCategories();
+  let total = 0;
+  let html = '';
+
+  cats.forEach(function (c, i) {
+    total += c.all.length;
+    const preview = c.all.slice(0, 2).map(cleanName).join(' · ');
+    html += '<button class="m-card" style="--cat:' + c.color + '" onclick="mOpenCat(' + i + ')">'
+      + '<span class="m-card-icon">' + c.icon + '</span>'
+      + '<span class="m-card-body">'
+      + '<span class="m-card-title">' + escapeHtml(c.title) + '</span>'
+      + '<span class="m-card-meta">' + c.all.length + ' 份 · ' + escapeHtml(preview) + '</span>'
+      + '</span>'
+      + '<span class="m-card-arrow">›</span>'
+      + '</button>';
+  });
+
+  document.getElementById('mGrid').innerHTML = html;
+  document.getElementById('mHeroStats').textContent = total + ' 份文件 · ' + cats.length + ' 个分类';
+}
+
+function mSetView(v) {
+  document.body.dataset.mv = v;
+  window.scrollTo(0, 0);
+}
+
+function mCatView(cat) {
+  const groups = [];
+
+  if (cat.files.length) {
+    groups.push({
+      title: '',
+      items: cat.files.map(function (n) { return { folder: cat.key, name: n }; })
+    });
+  }
+
+  (cat.children || []).forEach(function (sub) {
+    if (!sub.files.length) return;
+    groups.push({
+      title: '📁 ' + cleanName(sub.name),
+      items: sub.files.map(function (n) {
+        return { folder: cat.key + '/' + sub.name, name: n };
+      })
+    });
+  });
+
+  return { title: cat.title, meta: cat.all.length + ' 份文件', groups: groups };
+}
+
+function mRenderList(view) {
+  document.getElementById('mListTitle').textContent = view.title;
+  document.getElementById('mListMeta').textContent = view.meta || '';
+
+  if (!view.groups.length) {
+    document.getElementById('mFiles').innerHTML = '<div class="m-empty">没有找到匹配的文件</div>';
+    return;
+  }
+
+  let html = '';
+  view.groups.forEach(function (g) {
+    if (g.title) html += '<div class="m-group-title">' + escapeHtml(g.title) + '</div>';
+    html += '<div class="m-rows">';
+    g.items.forEach(function (it) {
+      const ext = it.name.split('.').pop().toLowerCase();
+      html += '<button class="m-row" onclick="mTapFile(\'' + it.folder + '\',\'' + it.name + '\')">'
+        + '<span class="m-ext ' + getExtClass(it.name) + '">' + ext + '</span>'
+        + '<span class="m-row-body"><span class="m-row-title">' + escapeHtml(cleanName(it.name)) + '</span></span>'
+        + '<span class="m-row-arrow">›</span>'
+        + '</button>';
+    });
+    html += '</div>';
+  });
+
+  document.getElementById('mFiles').innerHTML = html;
+}
+
+function mOpenCat(i) {
+  const cats = mCategories();
+  if (!cats[i]) return;
+  mCatIndex = i;
+  mRenderList(mCatView(cats[i]));
+  mSetView('list');
+}
+
+/* 点文件：走原 openFile（它内部会切到 read 视图） */
+function mTapFile(folder, filename) {
+  openFile(folder, filename);
+}
+
+function mBackToHome() {
+  const s = document.getElementById('mSearchInput');
+  if (s) s.value = '';
+  mSetView('home');
+}
+
+/* 返回按钮：阅读中→回清单；清单中→回首页 */
+function mBackToListOrHome() {
+  if (document.body.dataset.mv === 'read' && mCatIndex >= 0) {
+    mOpenCat(mCatIndex);
+    return;
+  }
+  mBackToHome();
+}
+
+/* 跨分类搜索：结果摊平成一张清单 */
+function mSearch(q) {
+  q = String(q || '').trim().toLowerCase();
+  if (!q) { mSetView('home'); return; }
+
+  const hits = [];
+  ROOT_FILES.forEach(function (f) {
+    if (f.toLowerCase().indexOf(q) > -1) hits.push({ folder: 'root', name: f });
+  });
+  TREE.forEach(function (folder) {
+    folder.files.forEach(function (f) {
+      if (f.toLowerCase().indexOf(q) > -1) hits.push({ folder: folder.name, name: f });
+    });
+    (folder.children || []).forEach(function (sub) {
+      sub.files.forEach(function (f) {
+        if (f.toLowerCase().indexOf(q) > -1) {
+          hits.push({ folder: folder.name + '/' + sub.name, name: f });
+        }
+      });
+    });
+  });
+
+  mCatIndex = -1;
+  mRenderList({
+    title: '搜索：' + q,
+    meta: hits.length + ' 个结果',
+    groups: hits.length ? [{ title: '', items: hits }] : []
+  });
+  mSetView('list');
+}
+
+/* 站内文档互链：把正文里的 xxx.md / xxx.html 链接拦下来，走内置阅读器 */
+const M_KNOWN_DIRS = ['01-产品定位', '02-业务价值', '03-客户案例', '04-架构决策', '05-技术管理', '06-面试准备'];
+
+function resolvePath(href) {
+  const base = currentFilePath.split('/');
+  base.pop();
+  href.split('#')[0].split('/').forEach(function (s) {
+    if (!s || s === '.') return;
+    if (s === '..') base.pop();
+    else base.push(decodeURIComponent(s));
+  });
+  return base.join('/');
+}
+
+function openResolved(path) {
+  const idx = path.lastIndexOf('/');
+  const folder = idx > -1 ? path.slice(0, idx) : 'root';
+  const name = idx > -1 ? path.slice(idx + 1) : path;
+  openFile(folder, name);
+}
+
+function interceptLinks(root) {
+  if (!root) return;
+  root.querySelectorAll('a[href]').forEach(function (a) {
+    const href = a.getAttribute('href');
+    if (!href || /^(https?:|mailto:|tel:|#|javascript:)/i.test(href)) return;
+    if (!/\.(md|html)(\?|#|$)/i.test(href)) return;
+
+    a.addEventListener('click', function (ev) {
+      ev.preventDefault();
+      const target = resolvePath(href);
+      const dir = target.indexOf('/') > -1 ? target.split('/')[0] : '';
+      const usable = dir ? M_KNOWN_DIRS.indexOf(dir) > -1 : ROOT_FILES.indexOf(target) > -1;
+
+      if (!usable || !/\.(md|html)$/i.test(target)) {
+        window.open(href, '_blank');
+        return;
+      }
+      openResolved(target);
+      mCatIndex = dir ? M_KNOWN_DIRS.indexOf(dir) + 1 : 0;
+    });
+  });
+}
+
+/* 表格套横向滚动容器（窄屏必备） */
+function wrapTables(root) {
+  if (!root) return;
+  root.querySelectorAll('table').forEach(function (t) {
+    if (t.parentElement && t.parentElement.classList.contains('table-scroll')) return;
+    const box = document.createElement('div');
+    box.className = 'table-scroll';
+    t.parentNode.insertBefore(box, t);
+    box.appendChild(t);
+  });
+}
+
+/* 视图初始化 */
+mBuildHome();
+document.body.dataset.mv = mIsMobile() ? 'home' : 'desktop';
+
+const mOnMqChange = function () {
+  document.body.dataset.mv = mIsMobile() ? 'home' : 'desktop';
+};
+if (MQ_MOBILE.addEventListener) MQ_MOBILE.addEventListener('change', mOnMqChange);
+else if (MQ_MOBILE.addListener) MQ_MOBILE.addListener(mOnMqChange);
 </script>
 
 </body>

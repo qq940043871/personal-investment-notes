@@ -552,6 +552,81 @@
     background: rgba(34, 211, 238, 0.12); color: var(--primary);
   }
 
+  /* ===== AI 经验叙事页 ===== */
+  .ai-act {
+    display: flex; align-items: center; gap: 10px;
+    margin: 16px 0 8px;
+  }
+  .ai-act:first-child { margin-top: 2px; }
+  .ai-act-no {
+    font-size: 10.5px; font-weight: 800; letter-spacing: 0.06em;
+    color: var(--primary);
+    padding: 3px 9px; border-radius: 999px;
+    background: rgba(34, 211, 238, 0.12);
+  }
+  .ai-act-line { flex: 1; height: 1px; background: var(--border); }
+  .ai-step {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 13px 14px; margin-bottom: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    position: relative; overflow: hidden;
+  }
+  .ai-step::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--primary); opacity: 0.45;
+  }
+  .ai-step.key::before { background: var(--warning); opacity: 1; }
+  .ai-step.done::before { background: var(--success); opacity: 1; }
+  .ai-step-no {
+    flex: none; width: 26px; height: 26px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+    background: var(--surface-2); color: var(--text-2);
+    margin-top: 1px;
+  }
+  .ai-step.key .ai-step-no { background: rgba(251, 191, 36, 0.16); color: var(--warning); }
+  .ai-step.done .ai-step-no { background: rgba(52, 211, 153, 0.16); color: var(--success); }
+  .ai-step-body { flex: 1; min-width: 0; cursor: pointer; }
+  .ai-step-title { font-size: 13.5px; font-weight: 700; line-height: 1.45; }
+  .ai-step.done .ai-step-title { color: var(--text-2); }
+  .ai-step-q { font-size: 11px; color: var(--text-2); margin-top: 4px; line-height: 1.6; }
+  .ai-step-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+  .ai-chip {
+    font-size: 10px; padding: 2px 7px; border-radius: 999px;
+    background: var(--surface-2); color: var(--text-3);
+    border: 1px solid var(--border);
+    line-height: 1.5;
+  }
+  .ai-step-foot {
+    display: flex; align-items: center; gap: 6px;
+    margin-top: 8px; font-size: 10.5px; color: var(--text-3);
+  }
+  .ai-step-foot .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-3); }
+  .ai-step .task-check { margin-top: 2px; width: 22px; height: 22px; }
+  .ai-quote {
+    margin: 4px 0 14px; padding: 15px 16px;
+    border-radius: var(--radius-l);
+    background: linear-gradient(135deg, rgba(129, 140, 248, 0.14) 0%, rgba(34, 211, 238, 0.07) 100%);
+    border: 1px solid rgba(129, 140, 248, 0.22);
+    font-size: 12px; line-height: 1.8; color: var(--text);
+  }
+  .ai-quote b { color: var(--primary); }
+  .ai-quote-mark {
+    font-size: 10px; font-weight: 800; letter-spacing: 0.08em;
+    color: var(--secondary); margin-bottom: 6px;
+  }
+  .ai-redline {
+    margin-top: 10px; padding: 15px 16px;
+    border-radius: var(--radius-l);
+    background: rgba(248, 113, 113, 0.08);
+    border: 1px solid rgba(248, 113, 113, 0.28);
+  }
+  .ai-redline-title { font-size: 12px; font-weight: 800; color: var(--danger); margin-bottom: 6px; }
+  .ai-redline-text { font-size: 11.5px; line-height: 1.75; color: var(--text-2); }
+  .ai-redline-text b { color: var(--text); }
+
   /* ===== Hero 标签行 ===== */
   .hero-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
   .hero-pill {
@@ -1677,7 +1752,7 @@
 
     <div class="sidebar-nav-item" data-page="page-ai" onclick="switchTab('page-ai')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
-      <span>AI 方案集</span>
+      <span>AI 经验线</span>
     </div>
 
     <div class="sidebar-nav-item" data-page="page-cases" onclick="switchTab('page-cases')">
@@ -1806,7 +1881,7 @@
           <div class="quick-icon" style="background:rgba(167,139,250,0.15);color:var(--purple)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
           </div>
-          <span class="quick-label">AI 方案集</span>
+          <span class="quick-label">AI 经验线</span>
         </div>
         <div class="quick-item tap" onclick="switchTab('page-cases')">
           <div class="quick-icon" style="background:rgba(244,114,182,0.15);color:var(--pink)">
@@ -1907,12 +1982,55 @@
 
     </section>
 
-    <!-- ========== 页面：AI 方案集（ai/ 目录入口） ========== -->
+    <!-- ========== 页面：AI 经验线（四幕十阶叙事 + 资料全集） ========== -->
     <section class="page" id="page-ai">
 
+      <div class="plan-hero">
+        <div>
+          <div class="plan-hero-title">AI 经验叙事线</div>
+          <div class="plan-hero-desc"><span id="aiTotalSteps">10</span> 个台阶 · 四幕推进 · 每阶只回答一个问题：这一阶答不出，就别急着往上走</div>
+        </div>
+        <div class="plan-hero-side">
+          <div class="plan-hero-num"><span id="aiDoneSteps">0</span>/<span id="aiTotalSteps2">10</span></div>
+          <div class="plan-hero-label">台阶已过</div>
+        </div>
+      </div>
+      <div class="plan-progress-track"><div class="plan-progress-bar" id="aiProgressBar"></div></div>
+
       <div class="section-header" style="margin-top:0">
-        <div class="section-title"><span class="section-title-bar"></span>AI 工程方案集</div>
-        <div class="section-more tap" onclick="openFile('ai/00-导航.md')">
+        <div class="section-title"><span class="section-title-bar"></span>四幕 · 十个台阶</div>
+        <div class="section-more tap" onclick="openFriendly('00-面试计划/03-项目叙事-AI.md')">
+          叙事主稿
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+
+      <div id="aiLadderList"><!-- 由 JS 渲染 --></div>
+
+      <div style="display:flex;justify-content:flex-end;margin:-2px 0 12px">
+        <span class="tap" style="font-size:10.5px;color:var(--text-3)" onclick="resetAiProgress()">重置台阶打卡</span>
+      </div>
+
+      <div class="ai-quote">
+        <div class="ai-quote-mark">最该背的一句</div>
+        Agent 的可靠性不来自模型，来自 <b>Harness</b>——循环上限、状态外置、权限分级、失败补偿、人工卡点、评测观测。这六个机制我在企业级系统里都做过同构版本，AI 版的差异我清楚在哪。
+      </div>
+
+      <div class="plan-rules">
+        <div class="plan-rules-title">三条口径纪律（写进架构规范的原话）</div>
+        <div class="plan-rule"><span class="plan-rule-num">1</span><span><b>确定性的事不交给模型</b>：时效、效力位阶、密级权限、引用真伪全用代码算，只有「翻译成人话」这一步交给模型。哪个环节在让模型自己判断，那就是事故起点。</span></div>
+        <div class="plan-rule"><span class="plan-rule-num">2</span><span><b>Dify 不直连业务库</b>：数据访问一律走中台受控工具，权限在中台执行，不把过滤责任写进 Prompt。</span></div>
+        <div class="plan-rule"><span class="plan-rule-num">3</span><span><b>工作流内不写复杂业务逻辑</b>：只做路由、拼装、调用、格式化。复杂逻辑留在代码里，可回归、可测试。</span></div>
+      </div>
+
+      <div class="ai-redline">
+        <div class="ai-redline-title">一条红线 · 别把自己说大了</div>
+        <div class="ai-redline-text">Harness 是<b>个人技术储备</b>，不是公司平台技术栈。公司侧 B2B 后端 = Java 微服务业务中台 + C 语言内存撮合引擎；政策解读 Agent 承载在 Dify 上。任何材料把 <b>FastAPI / Python</b> 说成平台后端栈，都算过度声明；另外 AI 是<b>旁路</b>，不承接交易主链路。</div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title"><span class="section-title-bar"></span>资料全集 · 按目录</div>
+        <div class="section-more tap" onclick="openFriendly('ai/00-导航.md')">
           目录导航
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
@@ -1927,11 +2045,11 @@
             <div class="prep-cat-title">Agent / Harness 核心设计</div>
             <div class="prep-cat-meta">6 份 · 认知总纲 + 两份详细设计 + 报文拆解 + 两张架构图（`ai/01-认知框架/`）</div>
           </div>
-          <div class="prep-cat-arrow open">
+          <div class="prep-cat-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
-        <div class="prep-cat-list open">
+        <div class="prep-cat-list">
           <div class="prep-item tap" onclick="openFile('ai/01-认知框架/LLM-Agent-Harness-三层认知深度解读.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">★ LLM / Agent / Harness 三层认知深度解读（总纲）</span>
@@ -1974,11 +2092,11 @@
             <div class="prep-cat-title">Dify 平台与 RAG</div>
             <div class="prep-cat-meta">8 份 · 平台接入手册 + RAG 16 卡点 + 三个业务 Agent 设计（`ai/02-平台工程/`、`ai/03-业务设计/`）</div>
           </div>
-          <div class="prep-cat-arrow open">
+          <div class="prep-cat-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
-        <div class="prep-cat-list open">
+        <div class="prep-cat-list">
           <div class="prep-item tap" onclick="openFile('ai/03-业务设计/AI智能体企业级应用平台-定位与项目价值.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">★ AI 智能体企业级应用平台 · 定位与项目价值</span>
@@ -2031,11 +2149,11 @@
             <div class="prep-cat-title">文档解析 · MinerU</div>
             <div class="prep-cat-meta">1 份 · RAG 入口的复杂 PDF 解析改造（`ai/02-平台工程/`，面试锚点见 06-面试准备/15）</div>
           </div>
-          <div class="prep-cat-arrow open">
+          <div class="prep-cat-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
-        <div class="prep-cat-list open">
+        <div class="prep-cat-list">
           <div class="prep-item tap" onclick="openFile('ai/02-平台工程/minerU复杂PDF识别优化方案与选型分析.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">MinerU 复杂 PDF 解析优化方案与选型</span>
@@ -2053,11 +2171,11 @@
             <div class="prep-cat-title">RAG 面试实战 · 25 题 × 项目对照</div>
             <div class="prep-cat-meta">4 份 + 293 篇语料 · 25 题骨架 + 政策 Agent 问答 + 吴师兄题库（`ai/04-面试/`）</div>
           </div>
-          <div class="prep-cat-arrow open">
+          <div class="prep-cat-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
-        <div class="prep-cat-list open">
+        <div class="prep-cat-list">
           <div class="prep-item tap" onclick="openFile('ai/04-面试/00-RAG面试实战手册.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">RAG 面试实战手册（25 题 × 项目对照）</span>
@@ -2275,7 +2393,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
     <span>备战</span>
   </button>
-  <button class="tabbar-item tap" data-page="page-ai" aria-label="AI 方案集" onclick="switchTab('page-ai')">
+  <button class="tabbar-item tap" data-page="page-ai" aria-label="AI 经验线" onclick="switchTab('page-ai')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
     <span>AI</span>
   </button>
@@ -2808,7 +2926,7 @@ var pageTitles = {
   'page-plan': '面试计划',
   'page-drafts': '项目底稿',
   'page-bank': '技术真题',
-  'page-ai': 'AI 方案集',
+  'page-ai': 'AI 经验线',
   'page-cases': '案例 · 场景',
   'page-me': '我的'
 };
@@ -3409,6 +3527,129 @@ function filterBanks() {
   }
 }
 
+/* ===== AI 经验叙事页数据（四幕十阶，源自 00-面试计划/03-项目叙事-AI.md） ===== */
+var AI_STORE_KEY = 'wb_ai_step_done';
+
+var AI_STEPS = [
+  { n: 1, act: '第一幕 · 说清我是谁', title: '一句话定位（先说边界，再说贡献）',
+    q: '被问「你的角色」时，第一句必须收窄到哪？',
+    chips: ['前期选型 / 数据链路负责人', '编排调优与微调由团队推进'],
+    src: '叙事主稿 §0 两版开场 · §10 诚实口径',
+    path: '00-面试计划/03-项目叙事-AI.md', key: true },
+  { n: 2, act: '第一幕 · 说清我是谁', title: '三个死结 → 三类问题',
+    q: '业务为什么要这个平台？为什么必须先分类再谈技术？',
+    chips: ['政策看错（时效 / 位阶）', '同一问题打三次电话', '知识散在人脑里', '文档 / 数据 / 混合三类'],
+    src: '叙事主稿 §1 业务背景',
+    path: '00-面试计划/03-项目叙事-AI.md', key: false },
+  { n: 3, act: '第一幕 · 说清我是谁', title: '三层架构 + 我交付的四件',
+    q: '「你到底做了什么」怎么答到第二层？',
+    chips: ['Dify 智能层', '自研中台业务层', '六路底座选型', '解析 / 调度 / 元数据'],
+    src: '平台定位与项目价值 · 叙事主稿 §2',
+    path: 'ai/03-业务设计/AI智能体企业级应用平台-定位与项目价值.md', key: false },
+
+  { n: 4, act: '第二幕 · 拿得出手的活', title: 'MinerU 四层增强解析',
+    q: '复杂 PDF 为什么不能靠「换个更强的模型」解决？',
+    chips: ['图像预处理', '页级路由 pipeline / VLM', '表格 · 公式 · 多栏专项', '统一 Markdown 中间态'],
+    src: 'MinerU 优化方案与选型分析',
+    path: 'ai/02-平台工程/minerU复杂PDF识别优化方案与选型分析.md', key: true },
+  { n: 5, act: '第二幕 · 拿得出手的活', title: '两条失败链路',
+    q: '解析失败、检索空结果，各自怎么兜？',
+    chips: ['不静默丢文档', '降级 + 待办 + 告警', '允许说「不知道」', '转人工带交接包'],
+    src: '叙事主稿 §3.2 失败链路',
+    path: '00-面试计划/03-项目叙事-AI.md', key: false },
+
+  { n: 6, act: '第三幕 · 能自己推导', title: '三条物理约束 → 所有手段的源头',
+    q: '为什么上下文工程 / 缓存 / RAG 这些手段都长这样？',
+    chips: ['窗口有限', '按 token 计费 · 逐字生成', '概率生成 = 幻觉', '窗口大 ≠ 效果好'],
+    src: 'LLM / Agent / Harness 三层认知 · 叙事主稿 §9.1',
+    path: 'ai/01-认知框架/LLM-Agent-Harness-三层认知深度解读.md', key: true },
+  { n: 7, act: '第三幕 · 能自己推导', title: 'RAG 四层归因 + 排查树',
+    q: '效果不好，先查哪一层？调参之前先干什么？',
+    chips: ['索引定天花板', '检索定命中率', '生成定敢不敢用', '运维定能不能变好', '先评测集再调参'],
+    src: 'RAG 面试实战手册 · 叙事主稿 §9.2',
+    path: 'ai/04-面试/00-RAG面试实战手册.md', key: true },
+  { n: 8, act: '第三幕 · 能自己推导', title: 'Agent 六机制 + 防失控三闸门',
+    q: '「Agent 会跑飞 / 死循环」你怎么防？',
+    chips: ['循环 · 状态 · 权限 · 补偿 · HITL · 评测', '步数 / 预算 / 重复检测 → 熔断转人工'],
+    src: 'Harness 详细设计与项目落地',
+    path: 'ai/01-认知框架/Harness-详细设计与项目落地.md', key: true },
+  { n: 9, act: '第三幕 · 能自己推导', title: '报文全链路（事实层）',
+    q: '被追到 function call 细节时，你能报出哪些事实？',
+    chips: ['tool_calls ↔ tool_result', '终止判定三层信号', 'MCP vs Function Calling', '人工介入四触发源'],
+    src: 'Agent / Harness / LLM 报文全链路拆解',
+    path: 'ai/01-认知框架/Agent-Harness-LLM报文全链路拆解.md', key: false },
+
+  { n: 10, act: '第四幕 · 别踩雷', title: '诚实口径：能讲的与不能讲的',
+    q: '被问「准确率多少」时，给什么才不被追问打穿？',
+    chips: ['只给口径与方法', '绝不给 95% 这类数字', '标【实证】/【设计】/【待实测】'],
+    src: '叙事主稿 §6 项目指标 · §10 诚实口径',
+    path: '00-面试计划/03-项目叙事-AI.md', key: true }
+];
+
+function getAiDone() {
+  try {
+    var raw = window.localStorage.getItem(AI_STORE_KEY);
+    var arr = raw ? JSON.parse(raw) : [];
+    return Object.prototype.toString.call(arr) === '[object Array]' ? arr : [];
+  } catch (e) { return []; }
+}
+
+function saveAiDone(list) {
+  try { window.localStorage.setItem(AI_STORE_KEY, JSON.stringify(list)); } catch (e) {}
+}
+
+function toggleAiStep(n) {
+  var list = getAiDone();
+  var idx = list.indexOf(n);
+  if (idx === -1) { list.push(n); } else { list.splice(idx, 1); }
+  saveAiDone(list);
+  renderAiPage();
+}
+
+function resetAiProgress() {
+  if (!window.confirm('确认清空 AI 叙事线的台阶打卡？')) { return; }
+  saveAiDone([]);
+  renderAiPage();
+  showToast('已重置 AI 叙事线打卡');
+}
+
+// 渲染「AI 经验线」页：四幕十阶（幕头 + 台阶行 + 打卡）
+function renderAiPage() {
+  var done = getAiDone();
+  var html = '', i, j, lastAct = '';
+  for (i = 0; i < AI_STEPS.length; i++) {
+    var s = AI_STEPS[i];
+    var isDone = done.indexOf(s.n) !== -1;
+    if (s.act !== lastAct) {
+      lastAct = s.act;
+      html += '<div class="ai-act"><span class="ai-act-no">' + escapeHtml(s.act) + '</span><span class="ai-act-line"></span></div>';
+    }
+    html += '<div class="ai-step' + (s.key ? ' key' : '') + (isDone ? ' done' : '') + '">';
+    html += '<div class="ai-step-no">' + s.n + '</div>';
+    html += '<div class="ai-step-body" onclick="openFriendly(\'' + s.path + '\')">';
+    html += '<div class="ai-step-title">' + escapeHtml(s.title) + '</div>';
+    html += '<div class="ai-step-q">要能答：' + escapeHtml(s.q) + '</div>';
+    html += '<div class="ai-step-chips">';
+    for (j = 0; j < s.chips.length; j++) {
+      html += '<span class="ai-chip">' + escapeHtml(s.chips[j]) + '</span>';
+    }
+    html += '</div>';
+    html += '<div class="ai-step-foot"><span>' + escapeHtml(s.src) + '</span><span class="dot"></span><span>点开原文</span></div>';
+    html += '</div>';
+    html += '<div class="task-check tap' + (isDone ? ' done' : '') + '" onclick="toggleAiStep(' + s.n + ')">' + getIcon('check') + '</div>';
+    html += '</div>';
+  }
+  if ($('aiLadderList')) { $('aiLadderList').innerHTML = html; }
+
+  var total = AI_STEPS.length;
+  var n = 0;
+  for (i = 0; i < done.length; i++) { if (done[i] <= total) { n++; } }
+  if ($('aiTotalSteps')) { $('aiTotalSteps').textContent = total; }
+  if ($('aiTotalSteps2')) { $('aiTotalSteps2').textContent = total; }
+  if ($('aiDoneSteps')) { $('aiDoneSteps').textContent = n; }
+  if ($('aiProgressBar')) { $('aiProgressBar').style.width = Math.round((n / total) * 100) + '%'; }
+}
+
 // 渲染「案例 · 场景」页：五类客户 + 十个场景 + 资料清单
 function renderCaseScenePage() {
   var html = '';
@@ -3711,6 +3952,7 @@ function init() {
   renderFaceExpGrid();
   renderDraftPage();
   renderPlanPage();
+  renderAiPage();
   renderCaseScenePage();
   updateHomeStats();
   updateGreeting();
