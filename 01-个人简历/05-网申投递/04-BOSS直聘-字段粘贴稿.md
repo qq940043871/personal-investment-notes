@@ -54,7 +54,7 @@ Java · Spring MVC / MyBatis · Hessian · 自研 DS 服务治理 · Kafka · My
 
 ### 项目描述
 
-服务煤炭、钢铁、矿石、农产品产业链买卖双方的大宗商品线上交易平台，客单价几十万到上千万，覆盖挂牌/竞价/询价/招标/基差点价五种交易模式，打通交易、支付结算、合同履约、仓单、物流、税务闭环。系统三层：底层 C 单线程内存撮合引擎 + 中间自研 DS 数据中心（防腐层）+ 上层 12+ Java 微服务业务中台 + 自研 midservice 网关 + 9+ 外部系统适配层。技术栈：Java、Vue、Spring MVC / MyBatis、Hessian、Kafka、MySQL、Redis、Drools、Canal。
+服务煤炭、钢铁、矿石、农产品产业链买卖双方的大宗商品线上交易平台，客单价几十万到上千万，覆盖挂牌/竞价/询价/基差等多种交易模式，打通交易、支付结算、合同履约、仓单、物流、税务闭环。系统三层：底层 C 单线程内存撮合引擎 + 中间自研 DS 数据中心（防腐层）+ 上层 12+ Java 微服务业务中台 + 自研 midservice 网关 + 9+ 外部系统适配层。技术栈：Java、Vue、Spring MVC / MyBatis、Hessian、Kafka、MySQL、Redis、Drools、Canal。
 
 ### 项目业绩
 
