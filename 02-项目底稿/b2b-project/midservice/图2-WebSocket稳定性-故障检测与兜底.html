@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>WebSocket 稳定性 - 故障 / 检测 / 兜底</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f1f5f9;padding:40px;font-family:ui-sans-serif,system-ui,"Microsoft YaHei",sans-serif;color:#1e293b}
+  .wrap{width:1200px;margin:0 auto}
+  .card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:36px 40px}
+  h1{font-size:26px;font-weight:600;letter-spacing:.3px;color:#0f172a}
+  .sub{color:#64748b;font-size:14px;margin-top:12px;line-height:1.8}
+  .legend{display:flex;gap:28px;margin-top:20px;font-size:13px;color:#475569;flex-wrap:wrap}
+  .dot{width:13px;height:13px;border-radius:3px;display:inline-block;margin-right:7px;vertical-align:-1px}
+  svg{display:block;width:100%;height:auto;margin-top:28px}
+  svg text{font-family:ui-sans-serif,system-ui,"Microsoft YaHei",sans-serif}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>复杂网络环境下 WebSocket 的稳定性设计</h1>
+    <p class="sub">WebSocket 在真实互联网里必然断。真正的难题不是断线后怎么重连，而是「客户端不知道自己已经断了」——所以检测必须做三层。</p>
+    <div class="legend">
+      <span><span class="dot" style="background:#d97706"></span>故障形态</span>
+      <span><span class="dot" style="background:#0d9488"></span>三层检测</span>
+      <span><span class="dot" style="background:#2563eb"></span>兜底动作</span>
+    </div>
+
+    <svg viewBox="0 0 1200 560" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>WebSocket 稳定性：故障形态、三层检测与兜底动作</title>
+      <desc>五种故障形态经 TCP、应用层、业务层三层检测识别，分别由丢帧保新、快照对齐、降级轮询三种动作兜底。</desc>
+      <defs>
+        <marker id="aGray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#94a3b8"/>
+        </marker>
+      </defs>
+
+      <rect x="60" y="86" width="200" height="76" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="160" y="116" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">静默半开</text>
+      <text x="160" y="142" text-anchor="middle" font-size="12" fill="#b45309">NAT / 防火墙静默清会话</text>
+
+      <rect x="280" y="86" width="200" height="76" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="380" y="116" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">网络切换</text>
+      <text x="380" y="142" text-anchor="middle" font-size="12" fill="#b45309">WiFi↔4G，IP 变化</text>
+
+      <rect x="500" y="86" width="200" height="76" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="600" y="116" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">代理拦截</text>
+      <text x="600" y="142" text-anchor="middle" font-size="12" fill="#b45309">企业代理不支持 WS</text>
+
+      <rect x="720" y="86" width="200" height="76" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="820" y="116" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">服务重启</text>
+      <text x="820" y="142" text-anchor="middle" font-size="12" fill="#b45309">进程重启，全员断线</text>
+
+      <rect x="940" y="86" width="200" height="76" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="1040" y="116" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">弱网抖动</text>
+      <text x="1040" y="142" text-anchor="middle" font-size="12" fill="#b45309">高 RTT / 丢包</text>
+
+      <line x1="230" y1="168" x2="230" y2="222" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray)"/>
+      <line x1="600" y1="168" x2="600" y2="222" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray)"/>
+      <line x1="970" y1="168" x2="970" y2="222" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray)"/>
+
+      <rect x="60" y="228" width="340" height="106" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="230" y="258" text-anchor="middle" font-size="17" font-weight="600" fill="#115e59">TCP 层</text>
+      <text x="230" y="286" text-anchor="middle" font-size="13" fill="#0f766e">RST / FIN · 写失败</text>
+      <text x="230" y="312" text-anchor="middle" font-size="12" fill="#64748b">只能发现正常关闭，发现不了静默半开</text>
+
+      <rect x="430" y="228" width="340" height="106" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="600" y="258" text-anchor="middle" font-size="17" font-weight="600" fill="#115e59">应用层</text>
+      <text x="600" y="286" text-anchor="middle" font-size="13" fill="#0f766e">心跳 25s · 连续 2 次丢 pong 判死</text>
+      <text x="600" y="312" text-anchor="middle" font-size="12" fill="#64748b">发现静默半开与假死</text>
+
+      <rect x="800" y="228" width="340" height="106" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="970" y="258" text-anchor="middle" font-size="17" font-weight="600" fill="#115e59">业务层</text>
+      <text x="970" y="286" text-anchor="middle" font-size="13" fill="#0f766e">seq 跳号 · epoch 变化 · stale</text>
+      <text x="970" y="312" text-anchor="middle" font-size="12" fill="#64748b">唯一能发现「连着但数据不流动」</text>
+
+      <line x1="230" y1="338" x2="230" y2="390" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray)"/>
+      <line x1="600" y1="338" x2="600" y2="390" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray)"/>
+      <line x1="970" y1="338" x2="970" y2="390" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray)"/>
+
+      <rect x="60" y="396" width="340" height="96" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+      <text x="230" y="428" text-anchor="middle" font-size="17" font-weight="600" fill="#1e40af">丢帧保新</text>
+      <text x="230" y="456" text-anchor="middle" font-size="13" fill="#1d4ed8">有界发送队列，高频事件丢最旧保最新</text>
+      <text x="230" y="478" text-anchor="middle" font-size="12" fill="#64748b">丢弃可接受：下一帧自然修正</text>
+
+      <rect x="430" y="396" width="340" height="96" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+      <text x="600" y="428" text-anchor="middle" font-size="17" font-weight="600" fill="#1e40af">快照对齐</text>
+      <text x="600" y="456" text-anchor="middle" font-size="13" fill="#1d4ed8">跳号不补历史，直接拉一次快照重开</text>
+      <text x="600" y="478" text-anchor="middle" font-size="12" fill="#64748b">补事件成本远高于拉快照</text>
+
+      <rect x="800" y="396" width="340" height="96" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+      <text x="970" y="428" text-anchor="middle" font-size="17" font-weight="600" fill="#1e40af">降级轮询</text>
+      <text x="970" y="456" text-anchor="middle" font-size="13" fill="#1d4ed8">WS 不可用切 3~5s 轮询，后台 30s 试探</text>
+      <text x="970" y="478" text-anchor="middle" font-size="12" fill="#64748b">WS 只是加速器，不是唯一通道</text>
+
+      <text x="60" y="536" font-size="13" fill="#94a3b8">三层缺一层就有盲区：只看 TCP 层会漏掉静默半开；只看应用层会漏掉「连接活着但数据不流动」</text>
+    </svg>
+  </div>
+</div>
+</body>
+</html>

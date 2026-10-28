@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>竞价行情推送架构 - 推拉分离</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f1f5f9;padding:40px;font-family:ui-sans-serif,system-ui,"Microsoft YaHei",sans-serif;color:#1e293b}
+  .wrap{width:1200px;margin:0 auto}
+  .card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:36px 40px}
+  h1{font-size:26px;font-weight:600;letter-spacing:.3px;color:#0f172a}
+  .sub{color:#64748b;font-size:14px;margin-top:12px;line-height:1.8}
+  .legend{display:flex;gap:28px;margin-top:20px;font-size:13px;color:#475569;flex-wrap:wrap}
+  .dot{width:13px;height:13px;border-radius:3px;display:inline-block;margin-right:7px;vertical-align:-1px}
+  svg{display:block;width:100%;height:auto;margin-top:28px}
+  svg text{font-family:ui-sans-serif,system-ui,"Microsoft YaHei",sans-serif}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>竞价行情推送架构：推拉分离</h1>
+    <p class="sub">推送由 C 撮合引擎直推独立 WebSocket 服务，不经 dataShare 中继；查询仍走 midservice 网关。两条通道不共用任何节点，独立扩容、独立发布、独立故障。</p>
+    <div class="legend">
+      <span><span class="dot" style="background:#dc2626"></span>推送通道（只发不取）</span>
+      <span><span class="dot" style="background:#2563eb"></span>查询通道（只取不推）</span>
+      <span><span class="dot" style="background:#94a3b8"></span>客户端状态</span>
+    </div>
+
+    <svg viewBox="0 0 1200 620" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>竞价行情推送架构：推拉分离</title>
+      <desc>C 撮合引擎经有界队列直推独立 WebSocket 服务再扇出至客户端；客户端另经 midservice 网关与 dataShare 拉取数据。</desc>
+      <defs>
+        <marker id="aRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#dc2626"/>
+        </marker>
+        <marker id="aBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#2563eb"/>
+        </marker>
+        <marker id="aGray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#94a3b8"/>
+        </marker>
+      </defs>
+
+      <rect x="60" y="90" width="250" height="96" rx="10" fill="#fef2f2" stroke="#f87171" stroke-width="1.5"/>
+      <text x="185" y="124" text-anchor="middle" font-size="18" font-weight="600" fill="#991b1b">C 撮合引擎</text>
+      <text x="185" y="156" text-anchor="middle" font-size="13" fill="#b91c1c">单线程内存撮合 · 唯一真相源</text>
+
+      <line x1="312" y1="138" x2="460" y2="138" stroke="#dc2626" stroke-width="2" marker-end="url(#aRed)"/>
+      <text x="386" y="118" text-anchor="middle" font-size="12" fill="#b91c1c">有界队列 · 非阻塞</text>
+
+      <rect x="470" y="90" width="290" height="96" rx="10" fill="#fef2f2" stroke="#f87171" stroke-width="1.5"/>
+      <text x="615" y="124" text-anchor="middle" font-size="18" font-weight="600" fill="#991b1b">独立 WebSocket 服务</text>
+      <text x="615" y="156" text-anchor="middle" font-size="13" fill="#b91c1c">会话管理 · 订阅路由 · 扇出推送</text>
+
+      <polyline points="760,138 830,138 830,200 898,200" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#aRed)"/>
+
+      <rect x="910" y="150" width="230" height="200" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="1025" y="186" text-anchor="middle" font-size="18" font-weight="600" fill="#334155">客户端</text>
+      <text x="1025" y="222" text-anchor="middle" font-size="13" fill="#475569">① 本地快照（先查 DB）</text>
+      <text x="1025" y="252" text-anchor="middle" font-size="13" fill="#475569">② 服务端时钟（GP2458）</text>
+      <text x="1025" y="282" text-anchor="middle" font-size="13" fill="#475569">③ WS 长连接（收增量）</text>
+      <text x="1025" y="318" text-anchor="middle" font-size="12" fill="#94a3b8">状态机 + 倒计时</text>
+
+      <line x1="908" y1="378" x2="768" y2="378" stroke="#2563eb" stroke-width="2" marker-end="url(#aBlue)"/>
+      <text x="838" y="358" text-anchor="middle" font-size="12" fill="#1d4ed8">按事件拉取</text>
+
+      <rect x="470" y="330" width="290" height="96" rx="10" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="615" y="364" text-anchor="middle" font-size="18" font-weight="600" fill="#1e40af">midservice 网关</text>
+      <text x="615" y="396" text-anchor="middle" font-size="13" fill="#1d4ed8">GP24B0 / GP2457 / GP0105</text>
+
+      <line x1="468" y1="378" x2="318" y2="378" stroke="#2563eb" stroke-width="2" marker-end="url(#aBlue)"/>
+      <text x="393" y="358" text-anchor="middle" font-size="12" fill="#1d4ed8">查询穿透</text>
+
+      <rect x="60" y="330" width="250" height="96" rx="10" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="185" y="364" text-anchor="middle" font-size="18" font-weight="600" fill="#1e40af">dataShare 数据中心</text>
+      <text x="185" y="396" text-anchor="middle" font-size="13" fill="#1d4ed8">到 DB / C 核心</text>
+
+      <rect x="60" y="522" width="14" height="14" rx="3" fill="#dc2626"/>
+      <text x="86" y="534" font-size="14" fill="#475569">推送通道：C 核心直推，不经 dataShare；只发不取，无查询能力</text>
+      <rect x="60" y="552" width="14" height="14" rx="3" fill="#2563eb"/>
+      <text x="86" y="564" font-size="14" fill="#475569">查询通道：客户端经网关拉取；与推送通道独立扩容、独立发布、独立故障</text>
+      <text x="60" y="600" font-size="13" fill="#94a3b8">代价：直推省掉一跳，但「事件不丢」的责任从 MQ 转移到 WS 服务自己（靠 seq + epoch + 快照兜底）</text>
+    </svg>
+  </div>
+</div>
+</body>
+</html>
