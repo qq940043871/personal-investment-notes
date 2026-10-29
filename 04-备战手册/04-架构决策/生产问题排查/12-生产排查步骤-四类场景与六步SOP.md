@@ -2,7 +2,7 @@
 
 > **文档定位**：本系列**方法论总纲**（一问一文）——回答两个高频问题："你们日常排查的都是什么问题？"（四类场景地图）和"线上出问题，你的排查步骤是什么？"（六步 SOP）。`06/08/09/10/11` 五篇实录讲"一个案子怎么破"，本篇讲"所有案子通用的破案流程"，并给出四类问题到实录的对照索引。
 >
-> 🔗 **Java 技术排障细节**见同目录三件套：`java-architect-troubleshooting-handbook.md`（主手册，12 章）、`java-troubleshooting-quickcards.md`（第 1–3 章速查卡）、`java-troubleshooting-advanced-arthas-profiler.md`（Arthas 进阶）。**本篇讲"排查什么、按什么流程"，三件套讲"每类技术问题具体怎么查"**。
+> 🔗 **Java 技术排障细节**见同目录四件套：`java-architect-troubleshooting-handbook.md`（主手册，12 章）、`java-troubleshooting-quickcards.md`（第 1–3 章速查卡）、`java-troubleshooting-advanced-arthas-profiler.md`（Arthas 进阶）、`13-故障排查工作台-十类故障六步法.md`（十类故障六步作业单）。**本篇讲"排查什么、按什么流程"，四件套讲"每类技术问题具体怎么查"**。
 
 ---
 
