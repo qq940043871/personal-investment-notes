@@ -1733,9 +1733,14 @@
       <span>个人简历</span>
     </div>
 
-    <div class="sidebar-nav-item" data-page="page-drafts" onclick="switchTab('page-drafts')">
+    <div class="sidebar-nav-item" data-page="page-spot" onclick="switchTab('page-spot')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-      <span>项目底稿</span>
+      <span>现货贸易</span>
+    </div>
+
+    <div class="sidebar-nav-item" data-page="page-ai-agent" onclick="switchTab('page-ai-agent')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
+      <span>AI 智能体</span>
     </div>
 
     <div class="sidebar-nav-item" data-page="page-bank" onclick="switchTab('page-bank')">
@@ -1859,11 +1864,17 @@
           </div>
           <span class="quick-label">个人简历</span>
         </div>
-        <div class="quick-item tap" onclick="switchTab('page-drafts')">
+        <div class="quick-item tap" onclick="switchTab('page-spot')">
           <div class="quick-icon" style="background:rgba(129,140,248,0.15);color:var(--secondary)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
           </div>
-          <span class="quick-label">项目底稿</span>
+          <span class="quick-label">现货贸易</span>
+        </div>
+        <div class="quick-item tap" onclick="switchTab('page-ai-agent')">
+          <div class="quick-icon" style="background:rgba(167,139,250,0.15);color:var(--purple)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
+          </div>
+          <span class="quick-label">AI 智能体</span>
         </div>
         <div class="quick-item tap" onclick="switchTab('page-bank')">
           <div class="quick-icon" style="background:rgba(34,211,238,0.15);color:var(--primary)">
@@ -1956,27 +1967,53 @@
       </div>
     </section>
 
-    <!-- ========== 页面：项目底稿（resume/ 项目页 + 主线底稿） ========== -->
-    <section class="page" id="page-drafts">
+    <!-- ========== 页面：现货贸易（B2B 现货项目 + 交易系统问题指南） ========== -->
+    <section class="page" id="page-spot">
 
       <div class="section-header" style="margin-top:0">
         <div class="section-title"><span class="section-title-bar"></span>核心底稿</div>
-        <span class="setting-value" id="draftCoreCount">-- 份</span>
+        <span class="setting-value" id="spotCoreCount">-- 份</span>
       </div>
 
-      <div class="bank-grid" id="draftCoreGrid">
+      <div class="bank-grid" id="spotCoreGrid">
         <!-- 由 JS 渲染 -->
       </div>
 
       <div class="section-header">
         <div class="section-title"><span class="section-title-bar"></span>项目详情页</div>
-        <div class="section-more tap" onclick="openResume()">
-          简历站点
+        <div class="section-more tap" onclick="window.open('02-现货贸易/index.html','_blank')">
+          目录入口
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
       </div>
 
-      <div id="draftGroupList">
+      <div id="spotGroupList">
+        <!-- 由 JS 渲染 -->
+      </div>
+
+    </section>
+
+    <!-- ========== 页面：AI 智能体（02-AI智能体/ 05 项目底稿 + 06 大模型企业落地） ========== -->
+    <section class="page" id="page-ai-agent">
+
+      <div class="section-header" style="margin-top:0">
+        <div class="section-title"><span class="section-title-bar"></span>核心底稿</div>
+        <span class="setting-value" id="aiAgentCoreCount">-- 份</span>
+      </div>
+
+      <div class="bank-grid" id="aiAgentCoreGrid">
+        <!-- 由 JS 渲染 -->
+      </div>
+
+      <div class="section-header">
+        <div class="section-title"><span class="section-title-bar"></span>项目详情页</div>
+        <div class="section-more tap" onclick="window.open('02-AI智能体/index.html','_blank')">
+          目录入口
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+
+      <div id="aiAgentGroupList">
         <!-- 由 JS 渲染 -->
       </div>
 
@@ -2030,7 +2067,7 @@
 
       <div class="section-header">
         <div class="section-title"><span class="section-title-bar"></span>资料全集 · 按目录</div>
-        <div class="section-more tap" onclick="openFriendly('ai/00-导航.md')">
+        <div class="section-more tap" onclick="openFriendly('02-AI智能体/00-导航.md')">
           目录导航
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
@@ -2043,39 +2080,39 @@
           </div>
           <div class="prep-cat-body">
             <div class="prep-cat-title">Agent / Harness 核心设计</div>
-            <div class="prep-cat-meta">6 份 · 认知总纲 + 两份详细设计 + 报文拆解 + 两张架构图（`ai/01-认知框架/`）</div>
+            <div class="prep-cat-meta">6 份 · 认知总纲 + 两份详细设计 + 报文拆解 + 两张架构图（`02-AI智能体/01-认知框架/`）</div>
           </div>
           <div class="prep-cat-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
         <div class="prep-cat-list">
-          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/LLM-Agent-Harness-三层认知深度解读.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/01-认知框架/LLM-Agent-Harness-三层认知深度解读.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">★ LLM / Agent / Harness 三层认知深度解读（总纲）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/Agent-详细设计与项目落地.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/01-认知框架/Agent-详细设计与项目落地.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Agent 详细设计与项目落地（政策解读）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/Harness-详细设计与项目落地.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/01-认知框架/Harness-详细设计与项目落地.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Harness 详细设计与项目落地（六机制）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/Harness-功能架构图.html')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/01-认知框架/Harness-功能架构图.html')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Harness 功能架构图（六层 · 可导出 PNG）</span>
             <span class="prep-item-badge html">HTML</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/Harness-传统工程对应关系图.html')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/01-认知框架/Harness-传统工程对应关系图.html')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">传统工程 ↔ Harness 对应关系图（四层 · 可导出 PNG）</span>
             <span class="prep-item-badge html">HTML</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/01-认知框架/Agent-Harness-LLM报文全链路拆解.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/01-认知框架/Agent-Harness-LLM报文全链路拆解.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Agent / Harness / LLM 报文全链路拆解</span>
             <span class="prep-item-badge md">MD</span>
@@ -2090,49 +2127,49 @@
           </div>
           <div class="prep-cat-body">
             <div class="prep-cat-title">Dify 平台与 RAG</div>
-            <div class="prep-cat-meta">8 份 · 平台接入手册 + RAG 16 卡点 + 三个业务 Agent 设计（`ai/02-平台工程/`、`ai/03-业务设计/`）</div>
+            <div class="prep-cat-meta">8 份 · 平台接入手册 + RAG 16 卡点 + 三个业务 Agent 设计（`02-AI智能体/02-平台工程/`、`02-AI智能体/03-业务设计/`）</div>
           </div>
           <div class="prep-cat-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
         <div class="prep-cat-list">
-          <div class="prep-item tap" onclick="openFile('ai/03-业务设计/AI智能体企业级应用平台-定位与项目价值.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/03-业务设计/AI智能体企业级应用平台-定位与项目价值.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">★ AI 智能体企业级应用平台 · 定位与项目价值</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/02-平台工程/Dify快速深入指南.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/02-平台工程/Dify快速深入指南.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Dify 快速深入指南（平台接入手册）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/02-平台工程/Dify-RAG关键点详解.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/02-平台工程/Dify-RAG关键点详解.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Dify RAG 16 卡点与解法</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/02-平台工程/Dify速读.html')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/02-平台工程/Dify速读.html')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">Dify 速读（HTML 速览版）</span>
             <span class="prep-item-badge html">HTML</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/03-业务设计/政策解读Agent-通用设计.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/03-业务设计/政策解读Agent-通用设计.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">政策解读 Agent 通用设计（六层 + 两道闸门）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/03-业务设计/电力政策解读Agent-完整设计.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/03-业务设计/电力政策解读Agent-完整设计.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">电力政策解读 Agent 落地设计</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/03-业务设计/智能客服-完整流程设计.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/03-业务设计/智能客服-完整流程设计.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">智能客服完整流程设计</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/03-业务设计/RAG直击库-方案与治理.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/03-业务设计/RAG直击库-方案与治理.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">RAG 直击库（Q&A 命中直返）方案</span>
             <span class="prep-item-badge md">MD</span>
@@ -2147,16 +2184,115 @@
           </div>
           <div class="prep-cat-body">
             <div class="prep-cat-title">文档解析 · MinerU</div>
-            <div class="prep-cat-meta">1 份 · RAG 入口的复杂 PDF 解析改造（`ai/02-平台工程/`，面试锚点见 06-面试准备/15）</div>
+            <div class="prep-cat-meta">1 份 · RAG 入口的复杂 PDF 解析改造（`02-AI智能体/02-平台工程/`，面试锚点见 06-面试准备/15）</div>
           </div>
           <div class="prep-cat-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
         <div class="prep-cat-list">
-          <div class="prep-item tap" onclick="openFile('ai/02-平台工程/minerU复杂PDF识别优化方案与选型分析.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/02-平台工程/minerU复杂PDF识别优化方案与选型分析.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">MinerU 复杂 PDF 解析优化方案与选型</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="prep-category" onclick="togglePrepCat(this)">
+        <div class="prep-cat-header">
+          <div class="prep-cat-icon" style="background:rgba(124,58,237,0.12);color:#7c3aed">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/></svg>
+          </div>
+          <div class="prep-cat-body">
+            <div class="prep-cat-title">项目底稿 · AI 智能服务平台 9 页</div>
+            <div class="prep-cat-meta">9 页富 HTML + 口径声明 · 平台整体方案与本人参与边界（`02-AI智能体/05-项目底稿/`）</div>
+          </div>
+          <div class="prep-cat-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+        <div class="prep-cat-list">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/05-项目底稿/ai-project-overview.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">★ 参与边界与口径声明（9 页索引 · 先读）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/05-项目底稿/overview.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">项目总览（三个死结 / 八模块 / 六条硬指标）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/05-项目底稿/rag-system.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">RAG 与文档解析（★ 个人主责环节）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/05-项目底稿/policy-interpretation.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">政策解读（含电力垂直）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/05-项目底稿/customer-service.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">智能客服（直击库三档 / 转人工七条件）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/05-项目底稿/knowledge-base.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">知识库与智能检索（五步管道 / 增量版本）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/05-项目底稿/model-management.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">大模型管理（敏感度三通道）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/05-项目底稿/model-finetuning.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">模型微调（方案设计，未承担执行）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/05-项目底稿/data-annotation.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">数据标注（质量控制四件套 / 回流闭环）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/05-项目底稿/agent-development.html')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">智能体开发（Workflow 与 Agent 分工 / 工具权限）</span>
+            <span class="prep-item-badge html">HTML</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="prep-category" onclick="togglePrepCat(this)">
+        <div class="prep-cat-header">
+          <div class="prep-cat-icon" style="background:rgba(236,72,153,0.12);color:#ec4899">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+          </div>
+          <div class="prep-cat-body">
+            <div class="prep-cat-title">前期落地复盘 · 参与边界与选型</div>
+            <div class="prep-cat-meta">3 份 · 参与边界声明 + 解析链路 + Dify vs 自研（`02-AI智能体/06-大模型企业落地/`）</div>
+          </div>
+          <div class="prep-cat-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+        </div>
+        <div class="prep-cat-list">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/06-大模型企业落地/00_大模型企业落地总览.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">★ 落地总览 · 参与边界声明（四项真实参与）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/06-大模型企业落地/02_商品知识库与智能检索.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">文档解析 → 向量库链路（MinerU 主责环节）</span>
+            <span class="prep-item-badge md">MD</span>
+          </div>
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/06-大模型企业落地/09_技术选型总览.md')">
+            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <span class="prep-item-title">技术选型复盘（Dify vs 自研 / 敏感度分层 / MinerU）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
         </div>
@@ -2169,29 +2305,29 @@
           </div>
           <div class="prep-cat-body">
             <div class="prep-cat-title">RAG 面试实战 · 25 题 × 项目对照</div>
-            <div class="prep-cat-meta">4 份 + 293 篇语料 · 25 题骨架 + 政策 Agent 问答 + 吴师兄题库（`ai/04-面试/`）</div>
+            <div class="prep-cat-meta">4 份 + 293 篇语料 · 25 题骨架 + 政策 Agent 问答 + 吴师兄题库（`02-AI智能体/04-面试/`）</div>
           </div>
           <div class="prep-cat-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
         <div class="prep-cat-list">
-          <div class="prep-item tap" onclick="openFile('ai/04-面试/00-RAG面试实战手册.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/04-面试/00-RAG面试实战手册.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">RAG 面试实战手册（25 题 × 项目对照）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/04-面试/政策解读Agent-面试问题与回答要点.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/04-面试/政策解读Agent-面试问题与回答要点.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">政策解读 Agent 面试问答（A–J 组 55 题）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/04-面试/wushixiong-agent/00-索引.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/04-面试/wushixiong-agent/00-索引.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">吴师兄 Agent 题库（主树 5 篇 · 另 20 篇已归档）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
-          <div class="prep-item tap" onclick="openFile('ai/04-面试/语料/01-语料索引.md')">
+          <div class="prep-item tap" onclick="openFile('02-AI智能体/04-面试/语料/01-语料索引.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">RAG 语料索引（293 篇 · 正文 01 在主树，02–13 已归档）</span>
             <span class="prep-item-badge md">MD</span>
@@ -2206,7 +2342,7 @@
 
       <div class="section-header" style="margin-top:0">
         <div class="section-title"><span class="section-title-bar"></span>五类客户 · 五种运营模式</div>
-        <div class="section-more tap" onclick="openPrepFile('03-客户案例/13-客户深度复盘与面试亮点.md')">
+        <div class="section-more tap" onclick="openPrepFile('02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md')">
           深度复盘手册
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
@@ -2215,7 +2351,7 @@
 
       <div class="section-header">
         <div class="section-title"><span class="section-title-bar"></span>业务场景 · 一笔交易的十个环节</div>
-        <div class="section-more tap" onclick="openPrepFile('02-业务价值/02-业务全链路场景手册.md')">
+        <div class="section-more tap" onclick="openPrepFile('02-现货贸易/01-业务与价值/02-业务全链路场景手册.md')">
           全链路手册
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
@@ -2697,153 +2833,149 @@ var PREP_CATEGORIES = [
       { name: '09-待复习与复盘.md', type: 'md', path: '00-面试计划/09-待复习与复盘.md' }
     ]
   },
-  { key: 'product', title: '01 产品定位', icon: 'target', color: 'cyan',
+  { key: 'biz', title: '01 业务与价值', icon: 'briefcase', color: 'green',
     files: [
-      { name: '02-平台定位与客户分析.html', type: 'html', path: '01-产品定位/02-平台定位与客户分析.html' },
-      { name: '03-平台角色与业务动作全景手册.md', type: 'md', path: '01-产品定位/03-平台角色与业务动作全景手册.md' },
-      { name: '04-B2B大宗贸易平台-产品三维度分析.md', type: 'md', path: '01-产品定位/04-B2B大宗贸易平台-产品三维度分析.md' },
-      { name: '09-期现结合业务实现思路.md', type: 'md', path: '01-产品定位/09-期现结合业务实现思路.md' }
+      { name: '00-平台定位与价值总纲.md（定位 × 价值统一口径）', type: 'md', path: '04-备战手册/00-平台定位与价值总纲.md' },
+      { name: '01-业务价值与客户运营.md', type: 'md', path: '02-现货贸易/01-业务与价值/01-业务价值与客户运营.md' },
+      { name: '02-平台定位与客户分析.html', type: 'html', path: '02-现货贸易/01-业务与价值/02-平台定位与客户分析.html' },
+      { name: '02-业务全链路场景手册.md', type: 'md', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+      { name: '05-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-现货贸易/01-业务与价值/05-业务痛点与系统解决方案-架构详解.md' },
+      { name: '09-业务-技术映射地图.md', type: 'md', path: '02-现货贸易/01-业务与价值/09-业务-技术映射地图.md' },
+      { name: '09-期现结合业务实现思路.md', type: 'md', path: '02-现货贸易/01-业务与价值/09-期现结合业务实现思路.md' }
     ]
   },
-  { key: 'biz', title: '02 业务价值', icon: 'briefcase', color: 'green',
+  { key: 'cases', title: '02 客户与案例', icon: 'presentation', color: 'orange',
     files: [
-      { name: '01-业务价值与客户运营.md', type: 'md', path: '02-业务价值/01-业务价值与客户运营.md' },
-      { name: '02-业务全链路场景手册.md', type: 'md', path: '02-业务价值/02-业务全链路场景手册.md' },
-      { name: '05-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-业务价值/05-业务痛点与系统解决方案-架构详解.md' },
-      { name: '06-客户案例与行业对标手册.md', type: 'md', path: '03-客户案例/06-客户案例与行业对标手册.md' },
-      { name: '09-业务-技术映射地图.md', type: 'md', path: '02-业务价值/09-业务-技术映射地图.md' }
-    ]
-  },
-  { key: 'cases', title: '03 客户案例', icon: 'presentation', color: 'orange',
-    files: [
-      { name: '02-数字产业链服务平台-含痛点方案.pptx', type: 'pptx', path: '03-客户案例/02-数字产业链服务平台-含痛点方案.pptx' },
-      { name: '04-B2B技术经理-能力全景介绍.pptx', type: 'pptx', path: '03-客户案例/04-B2B技术经理-能力全景介绍.pptx' },
-      { name: '05-B2B产品服务客户案例.slides.pptx', type: 'pptx', path: '03-客户案例/05-B2B产品服务客户案例.slides.pptx' },
-      { name: '05-B2B产品服务客户案例.pdf', type: 'pdf', path: '03-客户案例/05-B2B产品服务客户案例.pdf' },
-      { name: '13-客户深度复盘与面试亮点.md', type: 'md', path: '03-客户案例/13-客户深度复盘与面试亮点.md' },
-      { name: '13-客户深度复盘与面试亮点.visual.html', type: 'html', path: '03-客户案例/13-客户深度复盘与面试亮点.visual.html' }
+      { name: '02-数字产业链服务平台-含痛点方案.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/02-数字产业链服务平台-含痛点方案.pptx' },
+      { name: '04-B2B技术经理-能力全景介绍.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/04-B2B技术经理-能力全景介绍.pptx' },
+      { name: '05-B2B产品服务客户案例.slides.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/05-B2B产品服务客户案例.slides.pptx' },
+      { name: '06-客户案例与行业对标手册.md', type: 'md', path: '02-现货贸易/02-客户与案例/06-客户案例与行业对标手册.md' },
+      { name: '13-客户深度复盘与面试亮点.md', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
+      { name: '13-客户深度复盘与面试亮点.visual.html', type: 'html', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.visual.html' },
+      { name: '14-五类客户运营模式速查卡.html', type: 'html', path: '02-现货贸易/02-客户与案例/14-五类客户运营模式速查卡.html' },
+      { name: '15-五类客户运营模式深度拆解.html', type: 'html', path: '02-现货贸易/02-客户与案例/15-五类客户运营模式深度拆解.html' }
     ]
   },
   { key: 'arch', title: '04 架构决策', icon: 'layout', color: 'warm',
     files: [
-      { name: '00-名词解释与术语速查.md（WAL / 死信队列 / Saga / 2PC / TCC）', type: 'md', path: '04-架构决策/00-名词解释与术语速查.md' },
-      { name: '01-架构方法论与选型设计手册.md（上篇方法论 · 中篇建设框架 · 下篇技术选型）', type: 'md', path: '04-架构决策/01-架构方法论与选型设计手册.md' },
-      { name: '02-异构架构策略与真实系统叙事手册.md', type: 'md', path: '04-架构决策/02-异构架构策略与真实系统叙事手册.md' },
-      { name: '03-平台化治理与多租户架构手册.md', type: 'md', path: '04-架构决策/03-平台化治理与多租户架构手册.md' },
-      { name: '04-现货交易供应链-难点与解决方案速查手册.md', type: 'md', path: '04-架构决策/04-现货交易供应链-难点与解决方案速查手册.md' },
-      { name: '05-Saga编排器详细介绍.md', type: 'md', path: '04-架构决策/05-Saga编排器详细介绍.md' },
-      { name: '06-Cookie认证失败-5Why根因分析.md', type: 'md', path: '04-架构决策/生产问题排查/06-Cookie认证失败-5Why根因分析.md' },
-      { name: '07-Cookie认证失败-5Why根因分析.slides.pptx', type: 'pptx', path: '04-架构决策/生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx' },
-      { name: '07-B2B合同中心vsB2C订单中心-区别分析.md', type: 'md', path: '04-架构决策/07-B2B合同中心vsB2C订单中心-区别分析.md' },
-      { name: '08-Dify与自研业务中台-技术选型复盘.md', type: 'md', path: '04-架构决策/08-Dify与自研业务中台-技术选型复盘.md' },
+      { name: '00-名词解释与术语速查.md（WAL / 死信队列 / Saga / 2PC / TCC）', type: 'md', path: '02-现货贸易/03-架构决策/00-名词解释与术语速查.md' },
+      { name: '01-架构方法论与选型设计手册.md（上篇方法论 · 中篇建设框架 · 下篇技术选型）', type: 'md', path: '02-现货贸易/03-架构决策/01-架构方法论与选型设计手册.md' },
+      { name: '02-异构架构策略与真实系统叙事手册.md', type: 'md', path: '02-现货贸易/03-架构决策/02-异构架构策略与真实系统叙事手册.md' },
+      { name: '03-平台化治理与多租户架构手册.md', type: 'md', path: '02-现货贸易/03-架构决策/03-平台化治理与多租户架构手册.md' },
+      { name: '04-现货交易供应链-难点与解决方案速查手册.md', type: 'md', path: '02-现货贸易/03-架构决策/04-现货交易供应链-难点与解决方案速查手册.md' },
+      { name: '05-Saga编排器详细介绍.md', type: 'md', path: '02-现货贸易/03-架构决策/05-Saga编排器详细介绍.md' },
+      { name: '06-Cookie认证失败-5Why根因分析.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/06-Cookie认证失败-5Why根因分析.md' },
+      { name: '07-Cookie认证失败-5Why根因分析.slides.pptx', type: 'pptx', path: '02-现货贸易/03-架构决策/生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx' },
+      { name: '07-B2B合同中心vsB2C订单中心-区别分析.md', type: 'md', path: '02-现货贸易/03-架构决策/07-B2B合同中心vsB2C订单中心-区别分析.md' },
+      { name: '08-Dify与自研业务中台-技术选型复盘.md', type: 'md', path: '02-现货贸易/03-架构决策/08-Dify与自研业务中台-技术选型复盘.md' },
       /* 09-建设框架、10-技术选型方案 已合并进 01-架构方法论与选型设计手册（中篇/下篇） */
-      { name: '08-多机房多线路网络故障-排查实录.md', type: 'md', path: '04-架构决策/生产问题排查/08-多机房多线路网络故障-排查实录.md' },
-      { name: '09-竞价页面突然变慢-排查实录.md', type: 'md', path: '04-架构决策/生产问题排查/09-竞价页面突然变慢-排查实录.md' },
-      { name: '10-下载PDF致JVM进程消失-排查实录.md', type: 'md', path: '04-架构决策/生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
-      { name: '11-网关扩容打穿DB-性能开发规范.md', type: 'md', path: '04-架构决策/生产问题排查/11-网关扩容打穿DB-性能开发规范.md' },
-      { name: '12-生产排查步骤-四类场景与六步SOP.md', type: 'md', path: '04-架构决策/生产问题排查/12-生产排查步骤-四类场景与六步SOP.md' },
-      { name: '13-故障排查工作台-十类故障六步法.md（六步作业单 · 含假死/日志风暴/应急）', type: 'md', path: '04-架构决策/生产问题排查/13-故障排查工作台-十类故障六步法.md' },
-      { name: 'java-architect-troubleshooting-handbook.md', type: 'md', path: '04-架构决策/生产问题排查/java-architect-troubleshooting-handbook.md' },
-      { name: 'java-troubleshooting-advanced-arthas-profiler.md', type: 'md', path: '04-架构决策/生产问题排查/java-troubleshooting-advanced-arthas-profiler.md' },
-      { name: 'java-troubleshooting-quickcards.md', type: 'md', path: '04-架构决策/生产问题排查/java-troubleshooting-quickcards.md' },
-      { name: '11-midservice网关职责与治理设计.md', type: 'md', path: '04-架构决策/11-midservice网关职责与治理设计.md' },
-      { name: '11-midservice网关架构图.html', type: 'html', path: '04-架构决策/11-midservice网关架构图.html' },
-      { name: '12-跨系统调用一致性方案.md', type: 'md', path: '04-架构决策/12-跨系统调用一致性方案.md' },
-      { name: '12-图-待发送表状态机.html', type: 'html', path: '04-架构决策/12-图-待发送表状态机.html' },
-      { name: '12-图-本地表双通道机制图.html', type: 'html', path: '04-架构决策/12-图-本地表双通道机制图.html' },
-      { name: '12-图-确认收货主链路时序图.html', type: 'html', path: '04-架构决策/12-图-确认收货主链路时序图.html' },
-      { name: '13-C核心单线程内存一致性设计.md', type: 'md', path: '04-架构决策/13-C核心单线程内存一致性设计.md' },
-      { name: '13-图-C核心热备一致性机制图.html', type: 'html', path: '04-架构决策/13-图-C核心热备一致性机制图.html' },
-      { name: '13-图-协调平面与数据平面对照图.html', type: 'html', path: '04-架构决策/13-图-协调平面与数据平面对照图.html' },
-      { name: '14-区块链架构与一致性同构对照图.html', type: 'html', path: '04-架构决策/14-区块链架构与一致性同构对照图.html' },
-      { name: '15-DS数据交换中心-C-Java异构桥接设计.md', type: 'md', path: '04-架构决策/15-DS数据交换中心-C-Java异构桥接设计.md' },
-      { name: '15-图-DS数据交换中心双通道流水线.html', type: 'html', path: '04-架构决策/15-图-DS数据交换中心双通道流水线.html' }
+      { name: '08-多机房多线路网络故障-排查实录.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/08-多机房多线路网络故障-排查实录.md' },
+      { name: '09-竞价页面突然变慢-排查实录.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/09-竞价页面突然变慢-排查实录.md' },
+      { name: '10-下载PDF致JVM进程消失-排查实录.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
+      { name: '11-网关扩容打穿DB-性能开发规范.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/11-网关扩容打穿DB-性能开发规范.md' },
+      { name: '12-生产排查步骤-四类场景与六步SOP.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/12-生产排查步骤-四类场景与六步SOP.md' },
+
+      { name: 'java-architect-troubleshooting-handbook.md（Java 排障主手册 · 合并版：速查+下钻+Arthas/火焰图）', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/java-architect-troubleshooting-handbook.md' },
+      { name: '11-midservice网关职责与治理设计.md', type: 'md', path: '02-现货贸易/03-架构决策/11-midservice网关职责与治理设计.md' },
+      { name: '11-midservice网关架构图.html', type: 'html', path: '02-现货贸易/03-架构决策/11-midservice网关架构图.html' },
+      { name: '12-跨系统调用一致性方案.md', type: 'md', path: '02-现货贸易/03-架构决策/12-跨系统调用一致性方案.md' },
+      { name: '12-图-待发送表状态机.html', type: 'html', path: '02-现货贸易/03-架构决策/12-图-待发送表状态机.html' },
+      { name: '12-图-本地表双通道机制图.html', type: 'html', path: '02-现货贸易/03-架构决策/12-图-本地表双通道机制图.html' },
+      { name: '12-图-确认收货主链路时序图.html', type: 'html', path: '02-现货贸易/03-架构决策/12-图-确认收货主链路时序图.html' },
+      { name: '13-C核心单线程内存一致性设计.md', type: 'md', path: '02-现货贸易/03-架构决策/13-C核心单线程内存一致性设计.md' },
+      { name: '13-图-C核心热备一致性机制图.html', type: 'html', path: '02-现货贸易/03-架构决策/13-图-C核心热备一致性机制图.html' },
+      { name: '13-图-协调平面与数据平面对照图.html', type: 'html', path: '02-现货贸易/03-架构决策/13-图-协调平面与数据平面对照图.html' },
+      { name: '14-区块链架构与一致性同构对照图.html', type: 'html', path: '02-现货贸易/03-架构决策/14-区块链架构与一致性同构对照图.html' },
+      { name: '15-DS数据交换中心-C-Java异构桥接设计.md', type: 'md', path: '02-现货贸易/03-架构决策/15-DS数据交换中心-C-Java异构桥接设计.md' },
+      { name: '15-图-DS数据交换中心双通道流水线.html', type: 'html', path: '02-现货贸易/03-架构决策/15-图-DS数据交换中心双通道流水线.html' },
+      { name: '16-平台五层架构全景图.html', type: 'html', path: '02-现货贸易/03-架构决策/16-平台五层架构全景图.html' },
+      { name: '09-合同中心处理逻辑与交收结算引擎.md', type: 'md', path: '02-现货贸易/03-架构决策/09-合同中心处理逻辑与交收结算引擎.md' },
+      { name: '10-Drools规则引擎与交收模式.md', type: 'md', path: '02-现货贸易/03-架构决策/10-Drools规则引擎与交收模式.md' }
     ]
   },
   { key: 'mgmt', title: '05 技术管理', icon: 'users', color: 'purple',
     files: [
-      { name: '00-技术管理索引.md', type: 'md', path: '05-技术管理/00-技术管理索引.md' },
-      { name: '01-技术整改十一项与落地.html', type: 'html', path: '05-技术管理/01-技术整改十一项与落地.html' },
-      { name: '02-B2B现货贸易产品技术管理说明.md', type: 'md', path: '05-技术管理/02-B2B现货贸易产品技术管理说明.md' },
-      { name: '12-面试自证与训练手册.md（§八 研发管理自证素材）', type: 'md', path: '06-面试准备/12-面试自证与训练手册.md' },
-      { name: '06-面试话术与背诵手册.md（管理类高频题 6 问）', type: 'md', path: '06-面试准备/06-面试话术与背诵手册.md' },
-      { name: 'CI-CD建设方案与CodeReview规范.md（研发效能）', type: 'md', path: '../02-项目底稿/研发效能/CI-CD建设方案与CodeReview规范.md' },
-      { name: '02-技术经理成长手册.md（成长方法论总纲：Π型能力/站位诊断/6个月执行/外部路径）', type: 'md', path: '../01-个人简历/02-技术经理成长手册.md' },
-      { name: '03-技术情报收集与跨部门沟通手册.md', type: 'md', path: '../01-个人简历/03-技术情报收集与跨部门沟通手册.md' },
-      { name: '06-项目经理面试真题.md（管理类真题）', type: 'md', path: '../03-技术真题/02-面试真题/06-项目经理面试真题.md' }
+      { name: '00-技术管理索引.md', type: 'md', path: '04-备战手册/05-技术管理/00-技术管理索引.md' },
+      { name: '01-技术整改十一项与落地.html', type: 'html', path: '04-备战手册/05-技术管理/01-技术整改十一项与落地.html' },
+      { name: '02-B2B现货贸易产品技术管理说明.md', type: 'md', path: '04-备战手册/05-技术管理/02-B2B现货贸易产品技术管理说明.md' },
+      { name: '12-面试自证与训练手册.md（§八 研发管理自证素材）', type: 'md', path: '04-备战手册/06-面试准备/12-面试自证与训练手册.md' },
+      { name: '06-面试话术与背诵手册.md（管理类高频题 6 问）', type: 'md', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md' },
+      { name: 'CI-CD建设方案与CodeReview规范.md（研发效能）', type: 'md', path: '04-备战手册/05-技术管理/CI-CD建设方案与CodeReview规范.md' },
+      { name: '02-技术经理成长手册.md（成长方法论总纲：Π型能力/站位诊断/6个月执行/外部路径）', type: 'md', path: '04-备战手册/01-个人简历/02-技术经理成长手册.md' },
+      { name: '03-技术情报收集与跨部门沟通手册.md', type: 'md', path: '04-备战手册/01-个人简历/03-技术情报收集与跨部门沟通手册.md' },
+      { name: '06-项目经理面试真题.md（管理类真题）', type: 'md', path: '03-技术真题/02-面试真题/06-项目经理面试真题.md' }
     ]
   },
   { key: 'strategy', title: '06 面试准备', icon: 'zap', color: 'green',
     files: [
-      { name: '01-面试核心策略手册.md', type: 'md', path: '06-面试准备/01-面试核心策略手册.md' },
-      { name: '02-技术栈全景图.md（全景图 · 面试题库 · 复习手册）', type: 'md', path: '06-面试准备/02-技术栈全景图.md' },
+      { name: '01-面试核心策略手册.md', type: 'md', path: '04-备战手册/06-面试准备/01-面试核心策略手册.md' },
+      { name: '02-技术栈全景图.md（全景图 · 面试题库 · 复习手册）', type: 'md', path: '04-备战手册/06-面试准备/02-技术栈全景图.md' },
       /* 03-技术栈深度面试题库、04-技术复习综合手册 已合并进 02-技术栈全景图（第二/第三部分） */
-      { name: '06-面试话术与背诵手册.md', type: 'md', path: '06-面试准备/06-面试话术与背诵手册.md' },
-      { name: '06-面试话术与背诵手册.html', type: 'html', path: '06-面试准备/06-面试话术与背诵手册.html' },
-      { name: '12-面试自证与训练手册.md', type: 'md', path: '06-面试准备/12-面试自证与训练手册.md' },
-      { name: '15-AI工程能力补强手册.md', type: 'md', path: '06-面试准备/15-AI工程能力补强手册.md' },
-      { name: '06-简历知识补强清单.md（简历伴生，2026-10-25 迁至 01-个人简历）', type: 'md', path: '../01-个人简历/06-简历知识补强清单.md' },
-      { name: '17-JavaGuide四周计划压缩版-14天执行表.md', type: 'md', path: '06-面试准备/17-JavaGuide四周计划压缩版-14天执行表.md' },
-      { name: '18-系统架构叙事手册.md', type: 'md', path: '06-面试准备/18-系统架构叙事手册.md' },
-      { name: '07-面试介绍PPT · 放映站点（2026-10-25 迁至 01-个人简历）', type: 'html', path: '../01-个人简历/07-面试介绍PPT/index.html' },
-      { name: '07-面试介绍PPT · 模板与排版规范.md', type: 'md', path: '../01-个人简历/07-面试介绍PPT/PPT模板与排版规范.md' },
-      { name: '07-面试介绍PPT · 面试自我介绍-haswhere.pptx', type: 'pptx', path: '../01-个人简历/07-面试介绍PPT/面试自我介绍-haswhere.pptx' },
-      { name: '07-面试介绍PPT · 个人简历介绍-24页.pptx', type: 'pptx', path: '../01-个人简历/07-面试介绍PPT/个人简历介绍-24页.pptx' },
-      { name: '07-面试介绍PPT · 面试自我介绍.pdf', type: 'pdf', path: '../01-个人简历/07-面试介绍PPT/render/面试自我介绍-haswhere.pdf' },
-      { name: '07-面试介绍PPT · 个人简历介绍-24页.pdf', type: 'pdf', path: '../01-个人简历/07-面试介绍PPT/render/个人简历介绍-24页.pdf' }
+      { name: '06-面试话术与背诵手册.md', type: 'md', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md' },
+      { name: '06-面试话术与背诵手册.html', type: 'html', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.html' },
+      { name: '12-面试自证与训练手册.md', type: 'md', path: '04-备战手册/06-面试准备/12-面试自证与训练手册.md' },
+      { name: '15-AI工程能力补强手册.md', type: 'md', path: '04-备战手册/06-面试准备/15-AI工程能力补强手册.md' },
+      { name: '06-简历知识补强清单.md（简历伴生，2026-10-25 迁至 04-备战手册/01-个人简历）', type: 'md', path: '04-备战手册/01-个人简历/06-简历知识补强清单.md' },
+      { name: '17-JavaGuide四周计划压缩版-14天执行表.md', type: 'md', path: '04-备战手册/06-面试准备/17-JavaGuide四周计划压缩版-14天执行表.md' },
+      { name: '18-系统架构叙事手册.md', type: 'md', path: '04-备战手册/06-面试准备/18-系统架构叙事手册.md' },
+      { name: '07-面试介绍PPT · 放映站点（2026-10-25 迁至 04-备战手册/01-个人简历）', type: 'html', path: '04-备战手册/01-个人简历/07-面试介绍PPT/index.html' },
+      { name: '07-面试介绍PPT · 模板与排版规范.md', type: 'md', path: '04-备战手册/01-个人简历/07-面试介绍PPT/PPT模板与排版规范.md' },
+      { name: '07-面试介绍PPT · 面试自我介绍-haswhere.pptx', type: 'pptx', path: '04-备战手册/01-个人简历/07-面试介绍PPT/面试自我介绍-haswhere.pptx' },
+      { name: '07-面试介绍PPT · 个人简历介绍-24页.pptx', type: 'pptx', path: '04-备战手册/01-个人简历/07-面试介绍PPT/个人简历介绍-24页.pptx' },
+      { name: '07-面试介绍PPT · 面试自我介绍.pdf', type: 'pdf', path: '04-备战手册/01-个人简历/07-面试介绍PPT/render/面试自我介绍-haswhere.pdf' },
+      { name: '07-面试介绍PPT · 个人简历介绍-24页.pdf', type: 'pdf', path: '04-备战手册/01-个人简历/07-面试介绍PPT/render/个人简历介绍-24页.pdf' }
     ]
   },
-  /* 个人简历资料已独立为 01-个人简历/ 菜单，不再计入备战主题 */
+  /* 个人简历资料已迁入 04-备战手册/01-个人简历/（保留独立门户与菜单），不计入本主题清单 */
 ];
 
 /* ===== 案例 · 场景页数据（五类客户 / 十个业务场景 / 资料清单） ===== */
 var CASE_CLIENTS = [
   { key: 'xi', title: '陕西煤炭交易中心', mode: '区域公共交易中心 · 国企', icon: 'layout', color: 'cyan',
     desc: '交易为入口、支付为抓手、物流金融数据变现的「五级火箭」；持央行互联网支付 + 跨境人民币支付双牌照。',
-    path: '03-客户案例/13-客户深度复盘与面试亮点.md' },
+    path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
   { key: 'hn', title: '河南能源大宗商品交易平台', mode: '集团产业电商 · 产销一体', icon: 'trending-up', color: 'warm',
     desc: '销售溢价增收 + 阳光采购降本。⭐ 我方实际承建的两个平台（河南能源大宗 + 中原云商）都在这条链上。',
-    path: '03-客户案例/13-客户深度复盘与面试亮点.md' },
+    path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
   { key: 'qz', title: '清镇「富矿精开 · 清铝集采」', mode: '政府主导区域资源平台', icon: 'target', color: 'green',
     desc: '资源统配统销 + 税收监管 + 代采金融 + 全链数据治理；铝土矿 / 氧化铝 / 铝加工品。',
-    path: '03-客户案例/13-客户深度复盘与面试亮点.md' },
+    path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
   { key: 'yl', title: '广西晔龙国际贸易', mode: '贸易商期现结合经营', icon: 'layers', color: 'purple',
     desc: '基差交易 + 期货套保锁价 + 预售 + 配套物流；豆粕 / 菜粕等粕类，期货套保子系统的最佳客户故事。',
-    path: '03-客户案例/13-客户深度复盘与面试亮点.md' },
+    path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
   { key: 'lk', title: '中国-东盟林业资源全要素交易平台', mode: '国有要素交易场所 · 广西林控', icon: 'briefcase', color: 'orange',
     desc: '⭐ 我方承建。活立木「包青山」/林地林木流转竞价 + 挂牌 + 产能预售；单标的 32 轮竞价、溢价 18.2%，是「非标要素也能打」的最佳证明。',
-    path: '03-客户案例/13-客户深度复盘与面试亮点.md' }
+    path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' }
 ];
 
 var CASE_SCENES = [
-  { title: '① 挂牌与报价', desc: '竞价 / 挂牌 / 报价 / 招标采购，交易的第一公里', path: '02-业务价值/02-业务全链路场景手册.md' },
-  { title: '② 合同签约', desc: '从口头到法律效力，合同域与履约域解耦', path: '02-业务价值/02-业务全链路场景手册.md' },
-  { title: '③ 支付结算', desc: '资金安全是底线，支付渠道适配器 + 资金预检 2PC', path: '02-业务价值/02-业务全链路场景手册.md' },
-  { title: '④ 仓储物流', desc: '货在哪里、什么状态，在途轨迹 + 电子围栏', path: '02-业务价值/02-业务全链路场景手册.md' },
-  { title: '⑤ 质检与异议', desc: '大宗交易最头疼的事，质检单据与责任判定', path: '02-业务价值/02-业务全链路场景手册.md' },
-  { title: '⑥ 风控系统', desc: '每笔交易背后的「安检」，规则引擎 + 授信额度', path: '02-业务价值/02-业务全链路场景手册.md' },
-  { title: '⑦ 发票与税务', desc: 'B2B 逃不掉的合规，发票与税务链路衔接', path: '02-业务价值/02-业务全链路场景手册.md' },
-  { title: '⑧ 供应链金融', desc: '从贸易服务到金融服务，应收 / 存货 / 仓单融资', path: '02-业务价值/02-业务全链路场景手册.md' },
-  { title: '⑨ 客户运营', desc: '买了产品之后：实施交付、活跃与续费', path: '02-业务价值/02-业务全链路场景手册.md' },
-  { title: '⑩ 多角色权限体系', desc: '一个客户账户 N 类人在用，权限与数据隔离', path: '02-业务价值/02-业务全链路场景手册.md' }
+  { title: '① 挂牌与报价', desc: '竞价 / 挂牌 / 报价 / 招标采购，交易的第一公里', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+  { title: '② 合同签约', desc: '从口头到法律效力，合同域与履约域解耦', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+  { title: '③ 支付结算', desc: '资金安全是底线，支付渠道适配器 + 资金预检 2PC', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+  { title: '④ 仓储物流', desc: '货在哪里、什么状态，在途轨迹 + 电子围栏', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+  { title: '⑤ 质检与异议', desc: '大宗交易最头疼的事，质检单据与责任判定', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+  { title: '⑥ 风控系统', desc: '每笔交易背后的「安检」，规则引擎 + 授信额度', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+  { title: '⑦ 发票与税务', desc: 'B2B 逃不掉的合规，发票与税务链路衔接', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+  { title: '⑧ 供应链金融', desc: '从贸易服务到金融服务，应收 / 存货 / 仓单融资', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+  { title: '⑨ 客户运营', desc: '买了产品之后：实施交付、活跃与续费', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+  { title: '⑩ 多角色权限体系', desc: '一个客户账户 N 类人在用，权限与数据隔离', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' }
 ];
 
 var CASE_GROUPS = [
   { key: 'cases', title: '01 客户案例材料', files: [
-    { name: '13-客户深度复盘与面试亮点.md', type: 'md', path: '03-客户案例/13-客户深度复盘与面试亮点.md' },
-    { name: '13-客户深度复盘与面试亮点.visual.html', type: 'html', path: '03-客户案例/13-客户深度复盘与面试亮点.visual.html' },
-    { name: '02-数字产业链服务平台-含痛点方案.pptx', type: 'pptx', path: '03-客户案例/02-数字产业链服务平台-含痛点方案.pptx' },
-    { name: '04-B2B技术经理-能力全景介绍.pptx', type: 'pptx', path: '03-客户案例/04-B2B技术经理-能力全景介绍.pptx' },
-    { name: '05-B2B产品服务客户案例.slides.pptx', type: 'pptx', path: '03-客户案例/05-B2B产品服务客户案例.slides.pptx' },
-    { name: '05-B2B产品服务客户案例.pdf', type: 'pdf', path: '03-客户案例/05-B2B产品服务客户案例.pdf' },
-    { name: '06-客户案例与行业对标手册.md', type: 'md', path: '03-客户案例/06-客户案例与行业对标手册.md' }
+    { name: '13-客户深度复盘与面试亮点.md', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
+    { name: '13-客户深度复盘与面试亮点.visual.html', type: 'html', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.visual.html' },
+    { name: '02-数字产业链服务平台-含痛点方案.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/02-数字产业链服务平台-含痛点方案.pptx' },
+    { name: '04-B2B技术经理-能力全景介绍.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/04-B2B技术经理-能力全景介绍.pptx' },
+    { name: '05-B2B产品服务客户案例.slides.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/05-B2B产品服务客户案例.slides.pptx' },
+    { name: '06-客户案例与行业对标手册.md', type: 'md', path: '02-现货贸易/02-客户与案例/06-客户案例与行业对标手册.md' }
   ] },
   { key: 'scenes', title: '02 业务场景材料', files: [
-    { name: '02-业务全链路场景手册.md', type: 'md', path: '02-业务价值/02-业务全链路场景手册.md' },
-    { name: '09-业务-技术映射地图.md', type: 'md', path: '02-业务价值/09-业务-技术映射地图.md' },
-    { name: '05-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-业务价值/05-业务痛点与系统解决方案-架构详解.md' },
-    { name: '03-平台角色与业务动作全景手册.md', type: 'md', path: '01-产品定位/03-平台角色与业务动作全景手册.md' },
-    { name: '04-快速通览一页纸简报.html', type: 'html', path: '../01-个人简历/04-快速通览一页纸简报.html' }
+    { name: '02-业务全链路场景手册.md', type: 'md', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+    { name: '09-业务-技术映射地图.md', type: 'md', path: '02-现货贸易/01-业务与价值/09-业务-技术映射地图.md' },
+    { name: '05-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-现货贸易/01-业务与价值/05-业务痛点与系统解决方案-架构详解.md' },
+    { name: '00-平台定位与价值总纲.md（原 01-产品定位 / 02-业务价值 收口）', type: 'md', path: '04-备战手册/00-平台定位与价值总纲.md' },
+    { name: '04-快速通览一页纸简报.html', type: 'html', path: '04-备战手册/01-个人简历/04-快速通览一页纸简报.html' }
   ] }
 ];
 
@@ -2853,7 +2985,7 @@ var CASE_GROUPS = [
 var TODAY_TASKS_SEED = [
   { title: '背熟 30 秒自我介绍（第一击）', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
   { title: '脱手画四层架构，讲 2 分钟（第二击）', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
-  { title: '复述第 4 步：客户买单的四个死结', category: 'prep', tag: '备战', path: '04-备战手册/02-业务价值/05-业务痛点与系统解决方案-架构详解.md', done: false },
+  { title: '复述第 4 步：客户买单的四个死结', category: 'prep', tag: '备战', path: '02-现货贸易/01-业务与价值/05-业务痛点与系统解决方案-架构详解.md', done: false },
   { title: '默写关键数字 6 个', category: 'prep', tag: '备战', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
   { title: '口述一个成果：问题→方案→结果', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
   { title: '自查 4 条禁用语录，说了就改口', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false }
@@ -2927,7 +3059,8 @@ function updateGreeting() {
 var pageTitles = {
   'page-home': '面试工作台',
   'page-plan': '面试计划',
-  'page-drafts': '项目底稿',
+  'page-spot': '现货贸易',
+  'page-ai-agent': 'AI 智能体',
   'page-bank': '技术真题',
   'page-ai': 'AI 经验线',
   'page-cases': '案例 · 场景',
@@ -3280,64 +3413,144 @@ function closeFilePicker() {
   $('pickerModal').classList.remove('open');
 }
 
-/* ===== 项目底稿页数据 ===== */
-var DRAFT_CORE = [
+/* ===== 现货贸易页数据 ===== */
+var SPOT_CORE = [
   { title: 'B2B 项目底稿 · 七栏', desc: '业务背景 / 个人职责 / 主链路与失败链路 / 选型对照 / 难点与故障 / 指标口径 / 边界',
     icon: 'layers', color: 'cyan', badge: '主线', path: '00-面试计划/02-项目叙事-B2B.md' },
-  { title: 'AI 项目底稿 · 收窄口径', desc: '主动收窄 / 三条物理约束 / RAG 排查树 / Agent 六机制',
-    icon: 'zap', color: 'purple', badge: '主线', path: '00-面试计划/03-项目叙事-AI.md' },
+  { title: '业务痛点与系统解决方案', desc: '26 痛点 → 系统模块/机制 + 编号对照表（权威口径）',
+    icon: 'target', color: 'green', badge: '业务', path: '02-现货贸易/01-业务与价值/05-业务痛点与系统解决方案-架构详解.md' },
+  { title: '架构方法论与选型设计', desc: '上篇方法论 / 中篇建设框架 / 下篇技术选型与三条铁律',
+    icon: 'layout', color: 'purple', badge: '架构', path: '02-现货贸易/03-架构决策/01-架构方法论与选型设计手册.md' },
   { title: '一致性与异构 · 追问底稿', desc: '送达 / 补偿 / 内存 / 互译四类选型 + 三套追问链 + 口径数字',
     icon: 'database', color: 'warm', badge: '主线', path: '00-面试计划/06-一致性与异构.md' },
   { title: '问题清单 · 待复习与复盘', desc: 'P0 / P1 / P2 清单 + 每日验收 + 复盘五列（活清单）',
     icon: 'target', color: 'pink', badge: '主线', path: '00-面试计划/09-待复习与复盘.md' }
 ];
 
-var DRAFT_GROUPS = [
+var SPOT_GROUPS = [
+  { title: '业务与价值', icon: 'briefcase', files: [
+    { name: '业务价值与客户运营', type: 'md', path: '02-现货贸易/01-业务与价值/01-业务价值与客户运营.md' },
+    { name: '平台定位与客户分析', type: 'html', path: '02-现货贸易/01-业务与价值/02-平台定位与客户分析.html' },
+    { name: '业务全链路场景手册', type: 'md', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
+    { name: '业务痛点与系统解决方案', type: 'md', path: '02-现货贸易/01-业务与价值/05-业务痛点与系统解决方案-架构详解.md' },
+    { name: '业务-技术映射地图', type: 'md', path: '02-现货贸易/01-业务与价值/09-业务-技术映射地图.md' },
+    { name: '期现结合业务实现思路', type: 'md', path: '02-现货贸易/01-业务与价值/09-期现结合业务实现思路.md' }
+  ] },
+  { title: '客户与案例', icon: 'users', files: [
+    { name: '客户案例与行业对标手册', type: 'md', path: '02-现货贸易/02-客户与案例/06-客户案例与行业对标手册.md' },
+    { name: '客户深度复盘与面试亮点', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
+    { name: '客户深度复盘（可视化版）', type: 'html', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.visual.html' },
+    { name: '五类客户运营模式速查卡', type: 'html', path: '02-现货贸易/02-客户与案例/14-五类客户运营模式速查卡.html' },
+    { name: '五类客户运营模式深度拆解', type: 'html', path: '02-现货贸易/02-客户与案例/15-五类客户运营模式深度拆解.html' }
+  ] },
+  { title: '架构决策', icon: 'layers', files: [
+    { name: '名词解释与术语速查', type: 'md', path: '02-现货贸易/03-架构决策/00-名词解释与术语速查.md' },
+    { name: '架构方法论与选型设计手册', type: 'md', path: '02-现货贸易/03-架构决策/01-架构方法论与选型设计手册.md' },
+    { name: '异构架构策略与真实系统叙事', type: 'md', path: '02-现货贸易/03-架构决策/02-异构架构策略与真实系统叙事手册.md' },
+    { name: '平台化治理与多租户架构', type: 'md', path: '02-现货贸易/03-架构决策/03-平台化治理与多租户架构手册.md' },
+    { name: '现货交易供应链六大难点速查', type: 'md', path: '02-现货贸易/03-架构决策/04-现货交易供应链-难点与解决方案速查手册.md' },
+    { name: 'Saga 编排器', type: 'md', path: '02-现货贸易/03-架构决策/05-Saga编排器详细介绍.md' },
+    { name: '合同中心 vs 订单中心', type: 'md', path: '02-现货贸易/03-架构决策/07-B2B合同中心vsB2C订单中心-区别分析.md' },
+    { name: 'Dify 与自研业务中台选型', type: 'md', path: '02-现货贸易/03-架构决策/08-Dify与自研业务中台-技术选型复盘.md' },
+    { name: '合同中心处理逻辑与交收结算引擎', type: 'md', path: '02-现货贸易/03-架构决策/09-合同中心处理逻辑与交收结算引擎.md' },
+    { name: 'Drools 规则引擎与交收模式', type: 'md', path: '02-现货贸易/03-架构决策/10-Drools规则引擎与交收模式.md' },
+    { name: 'midservice 网关职责与治理', type: 'md', path: '02-现货贸易/03-架构决策/11-midservice网关职责与治理设计.md' },
+    { name: 'midservice 网关架构图', type: 'html', path: '02-现货贸易/03-架构决策/11-midservice网关架构图.html' },
+    { name: '跨系统调用一致性方案', type: 'md', path: '02-现货贸易/03-架构决策/12-跨系统调用一致性方案.md' },
+    { name: 'C 核心单线程内存一致性', type: 'md', path: '02-现货贸易/03-架构决策/13-C核心单线程内存一致性设计.md' },
+    { name: 'DS 数据中心 C↔Java 桥接', type: 'md', path: '02-现货贸易/03-架构决策/15-DS数据交换中心-C-Java异构桥接设计.md' },
+    { name: '平台五层架构全景图', type: 'html', path: '02-现货贸易/03-架构决策/16-平台五层架构全景图.html' }
+  ] },
+  { title: '生产问题排查', icon: 'server', files: [
+    { name: '四类场景与六步 SOP', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/12-生产排查步骤-四类场景与六步SOP.md' },
+    { name: 'Cookie 认证失败 5Why', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/06-Cookie认证失败-5Why根因分析.md' },
+    { name: '多机房多线路网络故障', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/08-多机房多线路网络故障-排查实录.md' },
+    { name: '竞价页面突然变慢', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/09-竞价页面突然变慢-排查实录.md' },
+    { name: '下载 PDF 致 JVM 进程消失', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
+    { name: '网关扩容打穿 DB', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/11-网关扩容打穿DB-性能开发规范.md' },
+    { name: 'Java 排障主手册', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/java-architect-troubleshooting-handbook.md' }
+  ] },
   { title: 'B2B 现货交易平台', icon: 'briefcase', files: [
-    { name: '项目总览', type: 'html', path: '02-项目底稿/b2b-project/overview.html' },
-    { name: 'DS 数据中心（防腐层）', type: 'html', path: '02-项目底稿/b2b-project/data-exchange.html' },
-    { name: '中间件网关', type: 'html', path: '02-项目底稿/b2b-project/middleware-gateway.html' },
-    { name: '公共服务模块', type: 'html', path: '02-项目底稿/b2b-project/common-services.html' },
-    { name: '认证与权限', type: 'html', path: '02-项目底稿/b2b-project/auth-module.html' },
-    { name: '业务模块（合同中心）', type: 'html', path: '02-项目底稿/b2b-project/business-modules.html' },
-    { name: '外联网关', type: 'html', path: '02-项目底稿/b2b-project/external-gateway.html' },
-    { name: '交易模式（大宗贸易）', type: 'html', path: '02-项目底稿/b2b-project/大宗贸易场景.html' },
-    { name: '合同履约与资金', type: 'html', path: '02-项目底稿/b2b-project/付款发货场景.html' }
+    { name: '项目总览', type: 'html', path: '02-现货贸易/b2b-project/overview.html' },
+    { name: 'DS 数据中心（防腐层）', type: 'html', path: '02-现货贸易/b2b-project/data-exchange.html' },
+    { name: '中间件网关', type: 'html', path: '02-现货贸易/b2b-project/middleware-gateway.html' },
+    { name: '公共服务模块', type: 'html', path: '02-现货贸易/b2b-project/common-services.html' },
+    { name: '认证与权限', type: 'html', path: '02-现货贸易/b2b-project/auth-module.html' },
+    { name: '业务模块（合同中心）', type: 'html', path: '02-现货贸易/b2b-project/business-modules.html' },
+    { name: '外联网关', type: 'html', path: '02-现货贸易/b2b-project/external-gateway.html' },
+    { name: '交易模式（大宗贸易）', type: 'html', path: '02-现货贸易/b2b-project/大宗贸易场景.html' },
+    { name: '合同履约与资金', type: 'html', path: '02-现货贸易/b2b-project/付款发货场景.html' }
   ] },
-  { title: 'AI 智能体平台', icon: 'zap', files: [
-    { name: '项目总览', type: 'html', path: '02-项目底稿/ai-project/overview.html' },
-    { name: '智能客服', type: 'html', path: '02-项目底稿/ai-project/customer-service.html' },
-    { name: '知识库与智能检索', type: 'html', path: '02-项目底稿/ai-project/knowledge-base.html' },
-    { name: '政策解读（含电力垂直）', type: 'html', path: '02-项目底稿/ai-project/policy-interpretation.html' },
-    { name: 'RAG 与文档解析', type: 'html', path: '02-项目底稿/ai-project/rag-system.html' },
-    { name: '大模型管理', type: 'html', path: '02-项目底稿/ai-project/model-management.html' },
-    { name: '模型微调', type: 'html', path: '02-项目底稿/ai-project/model-finetuning.html' },
-    { name: '数据标注', type: 'html', path: '02-项目底稿/ai-project/data-annotation.html' },
-    { name: '智能体开发', type: 'html', path: '02-项目底稿/ai-project/agent-development.html' }
-  ] },
-  { title: '大模型企业落地', icon: 'layers', files: [
-    { name: '00 总览', type: 'md', path: '02-项目底稿/大模型企业落地/00_大模型企业落地总览.md' },
-    { name: '01 智能客服与商机转化', type: 'md', path: '02-项目底稿/大模型企业落地/01_智能客服与商机转化.md' },
-    { name: '02 商品知识库与智能检索', type: 'md', path: '02-项目底稿/大模型企业落地/02_商品知识库与智能检索.md' },
-    { name: '03 供应链智能', type: 'md', path: '02-项目底稿/大模型企业落地/03_供应链智能.md' },
-    { name: '04 智能合同风控', type: 'md', path: '02-项目底稿/大模型企业落地/04_智能合同风控.md' },
-    { name: '05 贸易数据分析', type: 'md', path: '02-项目底稿/大模型企业落地/05_贸易数据分析.md' },
-    { name: '06 流程自动化 RPA', type: 'md', path: '02-项目底稿/大模型企业落地/06_流程自动化RPA.md' },
-    { name: '07 大宗商品专项场景', type: 'md', path: '02-项目底稿/大模型企业落地/07_大宗商品专项场景.md' },
-    { name: '08 电商平台专项场景', type: 'md', path: '02-项目底稿/大模型企业落地/08_电商平台专项场景.md' },
-    { name: '09 技术选型复盘', type: 'md', path: '02-项目底稿/大模型企业落地/09_技术选型总览.md' }
-  ] },
-  { title: '专题资料', icon: 'server', files: [
-    { name: '电商 / 交易系统问题指南', type: 'md', path: '02-项目底稿/电商项目问题指南/README.md' },
-    { name: '研发效能 · CI/CD 与 CodeReview', type: 'md', path: '02-项目底稿/研发效能/CI-CD建设方案与CodeReview规范.md' }
+  { title: '交易系统专题', icon: 'server', files: [
+    { name: '电商 / 交易系统问题指南', type: 'md', path: '02-现货贸易/电商项目问题指南/README.md' },
+    { name: '研发效能 · CI/CD 与 CodeReview', type: 'md', path: '04-备战手册/05-技术管理/CI-CD建设方案与CodeReview规范.md' }
   ] }
 ];
 
-// 渲染「项目底稿」页
-function renderDraftPage() {
+/* ===== AI 智能体页数据 ===== */
+var AI_AGENT_CORE = [
+  { title: 'AI 项目底稿 · 收窄口径', desc: '主动收窄 / 三条物理约束 / RAG 排查树 / Agent 六机制',
+    icon: 'zap', color: 'purple', badge: '主线', path: '00-面试计划/03-项目叙事-AI.md' },
+  { title: 'AI 全域导航 · 六层结构', desc: '认知 / 平台 / 设计 / 项目 / 落地 / 面试 + 主题×权威源矩阵',
+    icon: 'search', color: 'cyan', badge: '总览', path: '02-AI智能体/00-导航.md' },
+  { title: '政策解读 Agent · 通用设计', desc: '确定性交给代码、只把"翻译成人话"交给模型',
+    icon: 'layers', color: 'green', badge: '设计', path: '02-AI智能体/03-业务设计/政策解读Agent-通用设计.md' },
+  { title: 'AI 平台参与边界 · 口径声明', desc: '四项真实参与 / 团队推进项 / 不得混入项',
+    icon: 'target', color: 'warm', badge: '口径', path: '02-AI智能体/05-项目底稿/ai-project-overview.md' }
+];
+
+var AI_AGENT_GROUPS = [
+  { title: '01 认知框架 · LLM / Agent / Harness', icon: 'target', files: [
+    { name: '★ 三层认知深度解读（总纲）', type: 'md', path: '02-AI智能体/01-认知框架/LLM-Agent-Harness-三层认知深度解读.md' },
+    { name: 'Agent 详细设计（六层 + 两闸门）', type: 'md', path: '02-AI智能体/01-认知框架/Agent-详细设计与项目落地.md' },
+    { name: 'Harness 详细设计（六机制）', type: 'md', path: '02-AI智能体/01-认知框架/Harness-详细设计与项目落地.md' },
+    { name: '报文全链路拆解', type: 'md', path: '02-AI智能体/01-认知框架/Agent-Harness-LLM报文全链路拆解.md' },
+    { name: 'Harness 功能架构图', type: 'html', path: '02-AI智能体/01-认知框架/Harness-功能架构图.html' },
+    { name: '传统工程对应关系图', type: 'html', path: '02-AI智能体/01-认知框架/Harness-传统工程对应关系图.html' }
+  ] },
+  { title: '02 平台工程 · Dify / MinerU', icon: 'server', files: [
+    { name: 'Dify 快速深入指南（权威源）', type: 'md', path: '02-AI智能体/02-平台工程/Dify快速深入指南.md' },
+    { name: 'Dify 速读（HTML 速览）', type: 'html', path: '02-AI智能体/02-平台工程/Dify速读.html' },
+    { name: 'Dify RAG 16 卡点', type: 'md', path: '02-AI智能体/02-平台工程/Dify-RAG关键点详解.md' },
+    { name: 'MinerU 复杂 PDF 解析改造', type: 'md', path: '02-AI智能体/02-平台工程/minerU复杂PDF识别优化方案与选型分析.md' }
+  ] },
+  { title: '03 业务设计 · 政策 / 客服 / 直击库', icon: 'layers', files: [
+    { name: '平台定位与项目价值（§8.1 三条硬约束）', type: 'md', path: '02-AI智能体/03-业务设计/AI智能体企业级应用平台-定位与项目价值.md' },
+    { name: '政策解读 Agent（通用底座）', type: 'md', path: '02-AI智能体/03-业务设计/政策解读Agent-通用设计.md' },
+    { name: '电力政策解读 Agent（行业实例）', type: 'md', path: '02-AI智能体/03-业务设计/电力政策解读Agent-完整设计.md' },
+    { name: '智能客服完整流程设计', type: 'md', path: '02-AI智能体/03-业务设计/智能客服-完整流程设计.md' },
+    { name: 'RAG 直击库方案与治理', type: 'md', path: '02-AI智能体/03-业务设计/RAG直击库-方案与治理.md' }
+  ] },
+  { title: '04 面试 · 25 题 / 题库 / 语料', icon: 'mic', files: [
+    { name: 'RAG 面试实战手册（25 题 × 项目）', type: 'md', path: '02-AI智能体/04-面试/00-RAG面试实战手册.md' },
+    { name: '政策解读 Agent 面试问答（A–J 组）', type: 'md', path: '02-AI智能体/04-面试/政策解读Agent-面试问题与回答要点.md' },
+    { name: '吴师兄 Agent 题库（索引）', type: 'md', path: '02-AI智能体/04-面试/wushixiong-agent/00-索引.md' },
+    { name: 'RAG 语料索引（293 篇）', type: 'md', path: '02-AI智能体/04-面试/语料/01-语料索引.md' }
+  ] },
+  { title: '05 项目底稿 · AI 智能服务平台', icon: 'zap', files: [
+    { name: '参与边界与口径声明', type: 'md', path: '02-AI智能体/05-项目底稿/ai-project-overview.md' },
+    { name: '项目总览', type: 'html', path: '02-AI智能体/05-项目底稿/overview.html' },
+    { name: '智能客服', type: 'html', path: '02-AI智能体/05-项目底稿/customer-service.html' },
+    { name: '知识库与智能检索', type: 'html', path: '02-AI智能体/05-项目底稿/knowledge-base.html' },
+    { name: '政策解读（含电力垂直）', type: 'html', path: '02-AI智能体/05-项目底稿/policy-interpretation.html' },
+    { name: 'RAG 与文档解析', type: 'html', path: '02-AI智能体/05-项目底稿/rag-system.html' },
+    { name: '大模型管理', type: 'html', path: '02-AI智能体/05-项目底稿/model-management.html' },
+    { name: '模型微调', type: 'html', path: '02-AI智能体/05-项目底稿/model-finetuning.html' },
+    { name: '数据标注', type: 'html', path: '02-AI智能体/05-项目底稿/data-annotation.html' },
+    { name: '智能体开发', type: 'html', path: '02-AI智能体/05-项目底稿/agent-development.html' }
+  ] },
+  { title: '06 大模型企业落地 · 前期复盘', icon: 'trending-up', files: [
+    { name: '00 总览 · 参与边界声明', type: 'md', path: '02-AI智能体/06-大模型企业落地/00_大模型企业落地总览.md' },
+    { name: '02 商品知识库与智能检索', type: 'md', path: '02-AI智能体/06-大模型企业落地/02_商品知识库与智能检索.md' },
+    { name: '09 技术选型复盘', type: 'md', path: '02-AI智能体/06-大模型企业落地/09_技术选型总览.md' }
+  ] }
+];
+
+// 通用渲染：核心底稿卡 + 分组文件列表
+function renderDraftSection(prefix, cores, groups) {
   var html = '';
-  for (var i = 0; i < DRAFT_CORE.length; i++) {
-    var d = DRAFT_CORE[i];
+  for (var i = 0; i < cores.length; i++) {
+    var d = cores[i];
     html += '<div class="bank-card ' + d.color + ' tap" onclick="openFriendly(\'' + d.path + '\')">';
     html += '<div class="bank-top">';
     html += '<div class="bank-icon ' + d.color + '">' + getIcon(d.icon) + '</div>';
@@ -3348,12 +3561,12 @@ function renderDraftPage() {
     html += '<div class="bank-desc">' + escapeHtml(d.desc) + '</div>';
     html += '</div></div>';
   }
-  $('draftCoreGrid').innerHTML = html;
-  $('draftCoreCount').textContent = DRAFT_CORE.length + ' 份';
+  $(prefix + 'CoreGrid').innerHTML = html;
+  $(prefix + 'CoreCount').textContent = cores.length + ' 份';
 
   var gHtml = '';
-  for (var g = 0; g < DRAFT_GROUPS.length; g++) {
-    var grp = DRAFT_GROUPS[g];
+  for (var g = 0; g < groups.length; g++) {
+    var grp = groups[g];
     var open = g === 0;
     gHtml += '<div class="prep-category">';
     gHtml += '<div class="prep-cat-header tap" onclick="togglePrepCategory(this)">';
@@ -3375,7 +3588,12 @@ function renderDraftPage() {
     }
     gHtml += '</div></div>';
   }
-  $('draftGroupList').innerHTML = gHtml;
+  $(prefix + 'GroupList').innerHTML = gHtml;
+}
+
+function renderDraftPage() {
+  renderDraftSection('spot', SPOT_CORE, SPOT_GROUPS);
+  renderDraftSection('aiAgent', AI_AGENT_CORE, AI_AGENT_GROUPS);
 }
 
 /* ===== 面试计划页数据（源自 00-面试计划） ===== */
@@ -3548,13 +3766,13 @@ var AI_STEPS = [
     q: '「你到底做了什么」怎么答到第二层？这平台长在谁的生意上？',
     chips: ['Dify 智能层 + 自研中台业务层', '长在 B2B 大宗商品现货平台', '平台规则 ≠ 法规', '撮合状态带时点', '写操作转工单'],
     src: '平台定位与项目价值 §8.1 三条硬约束 · 叙事主稿 §2',
-    path: 'ai/03-业务设计/AI智能体企业级应用平台-定位与项目价值.md', key: true },
+    path: '02-AI智能体/03-业务设计/AI智能体企业级应用平台-定位与项目价值.md', key: true },
 
   { n: 4, act: '第二幕 · 拿得出手的活', title: 'MinerU 四层增强解析',
     q: '复杂 PDF 为什么不能靠「换个更强的模型」解决？',
     chips: ['图像预处理', '页级路由 pipeline / VLM', '表格 · 公式 · 多栏专项', '统一 Markdown 中间态'],
     src: 'MinerU 优化方案与选型分析',
-    path: 'ai/02-平台工程/minerU复杂PDF识别优化方案与选型分析.md', key: true },
+    path: '02-AI智能体/02-平台工程/minerU复杂PDF识别优化方案与选型分析.md', key: true },
   { n: 5, act: '第二幕 · 拿得出手的活', title: '两条失败链路',
     q: '解析失败、检索空结果，各自怎么兜？',
     chips: ['不静默丢文档', '降级 + 待办 + 告警', '允许说「不知道」', '转人工带交接包', '接口返回未知 → 建工单不猜'],
@@ -3565,22 +3783,22 @@ var AI_STEPS = [
     q: '为什么上下文工程 / 缓存 / RAG 这些手段都长这样？',
     chips: ['窗口有限', '按 token 计费 · 逐字生成', '概率生成 = 幻觉', '窗口大 ≠ 效果好'],
     src: 'LLM / Agent / Harness 三层认知 · 叙事主稿 §9.1',
-    path: 'ai/01-认知框架/LLM-Agent-Harness-三层认知深度解读.md', key: true },
+    path: '02-AI智能体/01-认知框架/LLM-Agent-Harness-三层认知深度解读.md', key: true },
   { n: 7, act: '第三幕 · 能自己推导', title: 'RAG 四层归因 + 排查树',
     q: '效果不好，先查哪一层？调参之前先干什么？',
     chips: ['索引定天花板', '检索定命中率', '生成定敢不敢用', '运维定能不能变好', '先评测集再调参'],
     src: 'RAG 面试实战手册 · 叙事主稿 §9.2',
-    path: 'ai/04-面试/00-RAG面试实战手册.md', key: true },
+    path: '02-AI智能体/04-面试/00-RAG面试实战手册.md', key: true },
   { n: 8, act: '第三幕 · 能自己推导', title: 'Agent 六机制 + 防失控三闸门',
     q: '「Agent 会跑飞 / 死循环」你怎么防？',
     chips: ['循环 · 状态 · 权限 · 补偿 · HITL · 评测', '步数 / 预算 / 重复检测 → 熔断转人工'],
     src: 'Harness 详细设计与项目落地',
-    path: 'ai/01-认知框架/Harness-详细设计与项目落地.md', key: true },
+    path: '02-AI智能体/01-认知框架/Harness-详细设计与项目落地.md', key: true },
   { n: 9, act: '第三幕 · 能自己推导', title: '报文全链路（事实层）',
     q: '被追到 function call 细节时，你能报出哪些事实？',
     chips: ['tool_calls ↔ tool_result', '终止判定三层信号', 'MCP vs Function Calling', '人工介入四触发源'],
     src: 'Agent / Harness / LLM 报文全链路拆解',
-    path: 'ai/01-认知框架/Agent-Harness-LLM报文全链路拆解.md', key: false },
+    path: '02-AI智能体/01-认知框架/Agent-Harness-LLM报文全链路拆解.md', key: false },
 
   { n: 10, act: '第四幕 · 别踩雷', title: '诚实口径：能讲的与不能讲的',
     q: '被问「准确率多少」时，给什么才不被追问打穿？',
@@ -3591,7 +3809,7 @@ var AI_STEPS = [
     q: '「这 AI 平台跟你们的现货业务到底怎么咬合？」',
     chips: ['平台规则 ≠ 法规，建库必须分开', '撮合状态必须带时点，中间态不是终态', '写操作不开放，一律转工单', '查数按风险由低到高放开'],
     src: '平台定位 §8.1 · 智能客服 §8.5/§20 · 政策解读 §13.3',
-    path: 'ai/03-业务设计/智能客服-完整流程设计.md', key: true }
+    path: '02-AI智能体/03-业务设计/智能客服-完整流程设计.md', key: true }
 ];
 
 function getAiDone() {
@@ -3761,7 +3979,7 @@ function openPrepIndex() {
 }
 
 function openResume() {
-  window.open('01-个人简历/index.html', '_blank');
+  window.open('04-备战手册/01-个人简历/index.html', '_blank');
   showToast('打开简历中心');
 }
 

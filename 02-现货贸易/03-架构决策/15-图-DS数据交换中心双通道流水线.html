@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>DS 数据交换中心 · C↔Java 异构桥接流水线</title>
+<!--
+  ============================================================================
+  管道流程图骨架（单文件 · 零 CDN · 纯内联 CSS + 原生 JS）
+  arch-diagram-suite 工具箱 · 图型：管道 / 流水线流程图
+  配套文档：02-现货贸易/03-架构决策/15-DS数据交换中心-C-Java异构桥接设计.md
+  ============================================================================
+  改法只有两步，绝不手写坐标：
+
+    ① 改内容：阶段列 .col / 节点卡 .node[data-node="id"] 的文案与配色类
+    ② 改拓扑：底部 EDGES 数组 —— {from:'起点id', to:'终点id', kind:'类型', label:'可选文字'}
+
+  连线由脚本读节点实际位置自动路由，增删节点、改文案都不会错位。
+
+  kind 可选值：
+    main  实线蓝    主流程          （默认）
+    seq   细实线灰  同列相邻顺序
+    async 虚线青    异步 / 事件派发
+    fail  虚线红    失败 / 异常分支
+    back  虚线橙    回退 / 重试（自动走下方通道）
+
+  ⚠️ 节点配色类（k-*）必须写，漏写会静默失去边框与底色（浏览器不报错）。
+     自查：引用到的 k-* 是否都在 <style> 里有定义。
+  ============================================================================
+-->
+<style>
+:root{
+  --ink:#1F2937; --ink2:#4B5563; --ink3:#8A93A0;
+  --line:#E3E7EE; --paper:#FFFFFF; --canvas:#F1F4F9;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--canvas);
+  font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+  color:var(--ink); padding:22px 26px 26px;
+  -webkit-font-smoothing:antialiased;
+}
+.sheet{
+  width:1740px; margin:0 auto; background:var(--paper);
+  border-radius:16px; padding:30px 30px 22px;
+  box-shadow:0 10px 34px rgba(23,42,77,.10), 0 2px 8px rgba(23,42,77,.05);
+}
+
+/* ---------- 头部 ---------- */
+.hd{border-bottom:1.6px solid var(--line); padding-bottom:15px; margin-bottom:24px;}
+.hd h1{font-size:25px; margin:0 0 8px; letter-spacing:.4px; font-weight:800;}
+.hd .sub{font-size:13px; color:var(--ink2); margin:0; line-height:1.6;}
+.hd .sub b{color:#2C6FBE; font-weight:800;}
+.hd .legend{display:flex; flex-wrap:wrap; gap:9px 20px; margin-top:14px;}
+.lg{display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--ink2); font-weight:600;}
+.lg .sw{width:26px; height:0; border-top-width:2px; border-top-style:solid;}
+.lg .sw.dash{border-top-style:dashed;}
+.lg .pill{font-size:10px; font-weight:800; color:#fff; padding:2.5px 7px; border-radius:4px; letter-spacing:.3px;}
+
+/* ---------- 流程主区 ---------- */
+.flow{
+  position:relative;
+  display:flex; align-items:flex-start; gap:58px;
+  padding-bottom:76px;              /* 给 back 类型的下方回退通道留空间 */
+}
+.col{flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:32px;}
+.col-io{flex:0 0 136px;}
+
+/* 阶段表头 */
+.stage-head{
+  position:relative; z-index:6;
+  height:30px; display:flex; align-items:center; gap:7px; padding:0 10px;
+  border-radius:8px; font-size:12px; font-weight:800; letter-spacing:.4px;
+  background:#F3F6FB; color:#2C6FBE; border:1.4px solid #DCE6F5;
+}
+.stage-head .sno{
+  font-size:10.5px; font-weight:800; padding:1.5px 6px; border-radius:5px;
+  background:#2C6FBE; color:#fff; flex:0 0 auto;
+}
+.stage-head .snm{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.stage-head.io{
+  justify-content:center; background:#F5F6F8; color:#6B7280;
+  border-color:#DDE1E7; border-style:dashed; font-size:11px;
+}
+.stage-head.io .sno{background:#6B7280;}
+
+/* ---------- 节点卡 ---------- */
+.node{
+  position:relative; z-index:6;
+  border:1.6px solid var(--c,#C9D2DE); background:var(--cbg,#FBFCFE);
+  border-radius:11px; padding:11px 12px 12px;
+}
+.node h4{
+  display:flex; align-items:center; gap:6px; margin:0;
+  font-size:13px; font-weight:800; color:var(--c,#374151); letter-spacing:.2px;
+}
+.node .dot{width:6px; height:6px; border-radius:50%; background:var(--c,#C9D2DE); flex:0 0 auto;}
+.node .nt{font-size:10.5px; color:var(--ink3); margin-top:4px; font-weight:700; letter-spacing:.2px;}
+.node .nd{font-size:11.5px; color:var(--ink2); margin:7px 0 0; line-height:1.62;}
+
+/* 输入 / 输出端点：胶囊虚线卡 */
+.node.n-io{border-style:dashed; border-radius:999px; text-align:center; padding:13px 8px;}
+.node.n-io h4{justify-content:center; font-size:12.5px;}
+.node.n-io .nd{font-size:10.5px; line-height:1.55;}
+
+/* ---------- 节点配色类（务必与正文引用一一对应） ---------- */
+.k-blue  {--c:#2C6FBE; --cbg:#F3F8FE;}
+.k-teal  {--c:#2E9E8F; --cbg:#F1FAF8;}
+.k-purple{--c:#7C5CBF; --cbg:#F8F5FE;}
+.k-amber {--c:#C98A1F; --cbg:#FEFAF0;}
+.k-coral {--c:#D16B65; --cbg:#FEF7F6;}
+.k-gold  {--c:#C2803A; --cbg:#FDF8F0;}
+.k-sky   {--c:#4AA3D8; --cbg:#F2F9FD;}
+.k-red   {--c:#C0504D; --cbg:#FDF3F2;}
+.k-grey  {--c:#8A93A0; --cbg:#F7F8FA;}
+
+/* ---------- 连线画布 ---------- */
+svg.edges{
+  position:absolute; inset:0; width:100%; height:100%;
+  pointer-events:none; overflow:visible; z-index:1;
+}
+.elabel{
+  font-size:10.5px; font-weight:800; fill:#4B5563; font-family:inherit;
+  paint-order:stroke; stroke:#FFFFFF; stroke-width:3.5px; stroke-linejoin:round;
+}
+
+/* ---------- 页脚注 ---------- */
+.notes{border-top:1.6px solid var(--line); margin-top:2px; padding-top:14px;}
+.notes p{font-size:11.5px; color:var(--ink2); margin:0 0 7px; line-height:1.72;}
+.notes p:last-child{margin-bottom:0;}
+.notes p b{color:#2C6FBE;}
+.notes .no{
+  display:inline-block; width:15px; height:15px; line-height:15px; text-align:center;
+  border-radius:50%; background:#EAF1FB; color:#2C6FBE; font-size:10px; font-weight:800;
+  margin-right:6px; vertical-align:1px;
+}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="hd">
+    <h1>DS 数据交换中心 —— C↔Java 异构桥接流水线</h1>
+    <p class="sub">
+      <b>5</b> 个阶段 · <b>9</b> 个节点 · <b>10</b> 条流转 · <b>2</b> 条回传通道 —— 高并发四件事：<b>IO 模型 + 有界背压 + 分片并行 + 批量落库</b>；端到端瓶颈在下游 DB
+    </p>
+    <div class="legend">
+      <span class="lg"><span class="sw" style="border-color:#2C6FBE"></span>主流程（上行：回执 / 行情 / 对账）</span>
+      <span class="lg"><span class="sw" style="border-color:#9AA3AF"></span>同列顺序</span>
+      <span class="lg"><span class="sw dash" style="border-color:#2E9E8F"></span>反向通道（下行指令）</span>
+      <span class="lg"><span class="sw dash" style="border-color:#C2803A"></span>回传通道（ACK / 重试）</span>
+    </div>
+  </div>
+
+  <div class="flow" id="flow">
+
+    <!-- ===================== 输入（异构双入口） ===================== -->
+    <div class="col col-io">
+      <div class="stage-head io"><span class="sno">IN</span><span class="snm">异构入口</span></div>
+      <div class="node n-io k-grey" data-node="src">
+        <h4><i class="dot"></i>C 撮合核心</h4>
+        <div class="nt">单线程事件循环</div>
+        <p class="nd">Socket 二进制帧<br>定长头 32B + TLV<br>撮合线程绝不阻塞</p>
+      </div>
+      <div class="node n-io k-grey" data-node="src2" style="margin-top:30px">
+        <h4><i class="dot"></i>Java 业务中台</h4>
+        <div class="nt">Hessian over HTTP</div>
+        <p class="nd">指令：下单 / 撤单<br>等结果 · P99 &lt; 20ms</p>
+      </div>
+    </div>
+
+    <!-- ===================== 阶段一 · 接入与 IO ===================== -->
+    <div class="col">
+      <div class="stage-head"><span class="sno">S1</span><span class="snm">接入与 IO</span></div>
+      <div class="node k-blue" data-node="n1">
+        <h4><i class="dot"></i>事件驱动接入</h4>
+        <div class="nt">C 侧 epoll · Java 侧 Netty 主从 Reactor</div>
+        <p class="nd">boss 组 accept，worker 组 IO + 编解码<br>一连接一线程是自杀<br>30s 心跳保活 · 慢连接隔离</p>
+      </div>
+    </div>
+
+    <!-- ===================== 阶段二 · 协议转换 ===================== -->
+    <div class="col">
+      <div class="stage-head"><span class="sno">S2</span><span class="snm">协议转换</span></div>
+      <div class="node k-purple" data-node="n2">
+        <h4><i class="dot"></i>双向协议互译</h4>
+        <div class="nt">定长头 + TLV 帧 ⇄ Hessian 对象</div>
+        <p class="nd">统一内部报文：header + body<br>+ signature + traceId<br>编解码只在 IO 线程做</p>
+      </div>
+    </div>
+
+    <!-- ===================== 阶段三 · 有界队列与背压 ===================== -->
+    <div class="col">
+      <div class="stage-head"><span class="sno">S3</span><span class="snm">有界队列与背压</span></div>
+      <div class="node k-teal" data-node="n3">
+        <h4><i class="dot"></i>高水位三级处置</h4>
+        <div class="nt">队列必须有界 · 满了明确处置</div>
+        <p class="nd">60% 告警 / 80% 拒绝或转落盘<br>宁可明确拒收，不堆到 OOM<br>编解码与业务处理分离，不互拖</p>
+      </div>
+    </div>
+
+    <!-- ===================== 阶段四 · 分片路由与线程池 ===================== -->
+    <div class="col">
+      <div class="stage-head"><span class="sno">S4</span><span class="snm">分片路由与线程池</span></div>
+      <div class="node k-amber" data-node="n4">
+        <h4><i class="dot"></i>分片并行分发</h4>
+        <div class="nt">按接口编码 / 租户 / 品种分片</div>
+        <p class="nd">同键保序 · 异键并行<br>同步指令池与异步回执池隔离<br>DS→C 只写无锁 SPSC 队列</p>
+      </div>
+    </div>
+
+    <!-- ===================== 阶段五 · 批量持久化与交付 ===================== -->
+    <div class="col">
+      <div class="stage-head"><span class="sno">S5</span><span class="snm">批量持久化与交付</span></div>
+      <div class="node k-coral" data-node="n5">
+        <h4><i class="dot"></i>批量落地与可靠交付</h4>
+        <div class="nt">小包合并 · 一个事务一批</div>
+        <p class="nd">待发送本地表 + 批次号认领<br>ACK + 序号去重，回传 C 侧<br>阶梯重试 1s→2s→4s · 死信转人工</p>
+      </div>
+    </div>
+
+    <!-- ===================== 输出（落地） ===================== -->
+    <div class="col col-io">
+      <div class="stage-head io"><span class="sno">OUT</span><span class="snm">业务落地</span></div>
+      <div class="node n-io k-grey" data-node="dst">
+        <h4><i class="dot"></i>Java 业务中台</h4>
+        <div class="nt">12+ 微服务</div>
+        <p class="nd">回执 / 行情快照<br>日终对账 · 批量同步</p>
+      </div>
+      <div class="node n-io k-grey" data-node="dst2" style="margin-top:30px">
+        <h4><i class="dot"></i>下游 MySQL</h4>
+        <div class="nt">端到端真正天花板</div>
+        <p class="nd">单机 1~3 万 TPS<br>扩容治接入，治不了 DB</p>
+      </div>
+    </div>
+
+    <!-- 连线画布：坐标由脚本填充 -->
+    <svg class="edges" id="edges">
+      <defs>
+        <marker id="ar-main" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7"
+                markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 Z" fill="#2C6FBE"/>
+        </marker>
+        <marker id="ar-seq" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="5.5" markerHeight="5.5"
+                markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 Z" fill="#9AA3AF"/>
+        </marker>
+        <marker id="ar-async" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7"
+                markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 Z" fill="#2E9E8F"/>
+        </marker>
+        <marker id="ar-fail" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7"
+                markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 Z" fill="#C0504D"/>
+        </marker>
+        <marker id="ar-back" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7"
+                markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 Z" fill="#C2803A"/>
+        </marker>
+      </defs>
+      <g id="egrp"></g>
+    </svg>
+
+  </div>
+
+  <div class="notes">
+    <p><span class="no">1</span><b>双通道分工：</b>同步指令（下单 / 撤单）走 Hessian over HTTP 等结果；异步交换（回执 / 行情 / 对账）走 Socket 长连接等 ACK——两条通道共用同一套协议内核，选型跟着语义走，不是跟着潮流走（§1.2）。</p>
+    <p><span class="no">2</span><b>回传通道（橙）：</b>S4 → C 撮合核心是指令下行，DS 只往无锁 SPSC 队列投递，C 按自己节奏消费，撮合线程绝不阻塞（§4.2）；S5 → S3 是交付失败后阶梯重试回队，死信转人工（§6.4）。</p>
+    <p><span class="no">3</span><b>容量口径：</b>接入层单机 10~30 万 QPS，端到端（含落库）1~3 万 TPS——瓶颈在下游 DB；节点数 = ⌈峰值 QPS × 安全系数 2 ÷ 单节点端到端天花板⌉（§5.3 / §5.4）。</p>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ==========================================================================
+     拓扑声明 —— 这里是唯一需要维护的地方
+     只写「谁连谁 + 什么类型」，坐标由下面的引擎自动算。
+     ========================================================================== */
+  var EDGES = [
+    { from: 'src',   to: 'n1',    kind: 'main' },
+    { from: 'src2',  to: 'n1',    kind: 'async' },
+    { from: 'n1',    to: 'n2',    kind: 'main' },
+    { from: 'n2',    to: 'n3',    kind: 'main' },
+    { from: 'n3',    to: 'n4',    kind: 'main' },
+    { from: 'n4',    to: 'n5',    kind: 'main' },
+    { from: 'n5',    to: 'dst',   kind: 'main' },
+    { from: 'dst',   to: 'dst2',  kind: 'seq',  label: '批量事务落库' },
+    { from: 'n4',    to: 'src',   kind: 'back', label: '指令下行：无锁 SPSC 队列' },
+    { from: 'n5',    to: 'n3',    kind: 'back', label: '失败重试回队' }
+  ];
+
+  /* 边的视觉定义：颜色 / 线宽 / 虚线节奏 / 箭头 */
+  var KIND = {
+    main:  { stroke: '#2C6FBE', w: 2.0, dash: '',    mk: 'ar-main'  },
+    seq:   { stroke: '#9AA3AF', w: 1.6, dash: '',    mk: 'ar-seq'   },
+    async: { stroke: '#2E9E8F', w: 1.8, dash: '7 5', mk: 'ar-async' },
+    fail:  { stroke: '#C0504D', w: 1.8, dash: '7 5', mk: 'ar-fail'  },
+    back:  { stroke: '#C2803A', w: 1.8, dash: '5 4', mk: 'ar-back'  }
+  };
+
+  var NS  = 'http://www.w3.org/2000/svg';
+  var GAP = 4;    // 端点与节点边框之间的留白，避免箭头压住卡片
+  var RAD = 12;   // 折线圆角半径
+
+  var flow = document.getElementById('flow');
+  var grp  = document.getElementById('egrp');
+  if (!flow || !grp) return;
+
+  var cache = {};
+  var FLOOR = 0;    // 所有节点底边的最大 y：回退通道从它下方走，保证不压卡片
+  var backN = 0;    // 回退线序号，多条时依次错开
+
+  /* ---------- 取节点在 .flow 坐标系中的矩形 ---------- */
+  function rectOf(id) {
+    var el = cache[id];
+    if (!el) return null;
+    var r = el.getBoundingClientRect(), f = flow.getBoundingClientRect();
+    var x = r.left - f.left, y = r.top - f.top;
+    return {
+      x: x, y: y, w: r.width, h: r.height,
+      cx: x + r.width / 2, cy: y + r.height / 2,
+      r: x + r.width, b: y + r.height
+    };
+  }
+
+  /* ---------- 圆角折线：pts 为折点序列，拐角用二次贝塞尔倒圆 ---------- */
+  function roundPath(pts, rad) {
+    if (pts.length < 2) return '';
+    var d = 'M' + pts[0].x + ' ' + pts[0].y;
+    for (var i = 1; i < pts.length - 1; i++) {
+      var p = pts[i], a = pts[i - 1], n = pts[i + 1];
+      var v1x = a.x - p.x, v1y = a.y - p.y;
+      var v2x = n.x - p.x, v2y = n.y - p.y;
+      var l1 = Math.hypot(v1x, v1y) || 1, l2 = Math.hypot(v2x, v2y) || 1;
+      var rr = Math.min(rad, l1 / 2, l2 / 2);
+      var sx = p.x + v1x / l1 * rr, sy = p.y + v1y / l1 * rr;
+      var ex = p.x + v2x / l2 * rr, ey = p.y + v2y / l2 * rr;
+      d += ' L' + sx + ' ' + sy + ' Q' + p.x + ' ' + p.y + ' ' + ex + ' ' + ey;
+    }
+    var last = pts[pts.length - 1];
+    return d + ' L' + last.x + ' ' + last.y;
+  }
+
+  /* ---------- 路由：根据两节点的相对位置选走线方式 ---------- */
+  function route(a, b, kind) {
+
+    // ① 回退：起终点都走卡片侧边，中间走最底部的公共通道
+    // 为什么不从底边直连：同列若还有别的卡片，竖段会从那张卡片背后穿过，
+    // 露出来的箭头看着像是从它冒出来的，语义就错了。
+    if (kind === 'back') {
+      var ch = FLOOR + 26 + (backN++) * 22;   // 多条回退线依次错开
+      var ax = a.x - 20;                      // 源：从左侧出去
+      var lx = b.x - 20;                      // 靶：从左侧进来
+      var ey = b.y + b.h * 0.74;              // 进靶点放在左下 3/4 处，避开主线进入点
+      return {
+        d: roundPath([
+          { x: a.x - GAP, y: a.cy },
+          { x: ax,        y: a.cy },
+          { x: ax,        y: ch   },
+          { x: lx,        y: ch   },
+          { x: lx,        y: ey   },
+          { x: b.x - GAP, y: ey   }
+        ], 10)
+      };
+    }
+
+    // ② x 区间重叠 ⇒ 视为同一列（垂直走向）
+    var overlapX = !(b.x > a.r + 2 || b.r < a.x - 2);
+    if (overlapX) {
+      var down = b.cy > a.cy;
+      var p1 = down ? { x: a.cx, y: a.b + GAP } : { x: a.cx, y: a.y - GAP };
+      var p2 = down ? { x: b.cx, y: b.y - GAP } : { x: b.cx, y: b.b + GAP };
+      var mid = (p1.y + p2.y) / 2;
+      return { d: roundPath([p1, { x: p1.x, y: mid }, { x: p2.x, y: mid }, p2], RAD) };
+    }
+
+    // ③ 跨列 ⇒ 三次贝塞尔，分叉/汇合时自然张开成 Y 形
+    var fwd = b.cx > a.cx;
+    var s = fwd ? { x: a.r + GAP, y: a.cy } : { x: a.x - GAP, y: a.cy };
+    var e = fwd ? { x: b.x - GAP, y: b.cy } : { x: b.r + GAP, y: b.cy };
+    var k = Math.max(28, Math.abs(e.x - s.x) * 0.52);
+    return {
+      d: 'M' + s.x + ' ' + s.y +
+         ' C' + (s.x + (fwd ? k : -k)) + ' ' + s.y +
+         ' '   + (e.x + (fwd ? -k : k)) + ' ' + e.y +
+         ' '   + e.x + ' ' + e.y
+    };
+  }
+
+  /* ---------- 绘制 ---------- */
+  function draw() {
+    // 重新索引节点（增删节点后 id 会自动更新）
+    cache = {};
+    var nodes = flow.querySelectorAll('[data-node]');
+    for (var i = 0; i < nodes.length; i++) {
+      cache[nodes[i].getAttribute('data-node')] = nodes[i];
+    }
+
+    // 先算出最深处，回退通道以它为基准
+    FLOOR = 0;
+    for (var id in cache) {
+      var rr = rectOf(id);
+      if (rr && rr.b > FLOOR) FLOOR = rr.b;
+    }
+    backN = 0;
+
+    while (grp.firstChild) grp.removeChild(grp.firstChild);
+
+    var labels = [];
+
+    EDGES.forEach(function (item) {
+      var k = KIND[item.kind] || KIND.main;
+      var a = rectOf(item.from), b = rectOf(item.to);
+      if (!a || !b) {
+        console.warn('[pipeline] 找不到节点，已跳过连线：', item.from, '→', item.to);
+        return;
+      }
+
+      var r = route(a, b, item.kind);
+
+      var path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', r.d);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', k.stroke);
+      path.setAttribute('stroke-width', k.w);
+      path.setAttribute('stroke-linecap', 'round');
+      if (k.dash) path.setAttribute('stroke-dasharray', k.dash);
+      path.setAttribute('marker-end', 'url(#' + k.mk + ')');
+      grp.appendChild(path);
+
+      // 表注延迟到所有线画完后统一追加，保证文字压在最上层
+      if (item.label) labels.push({ path: path, text: item.label });
+    });
+
+    labels.forEach(function (L) {
+      var len = L.path.getTotalLength();
+      var pt = L.path.getPointAtLength(len * 0.46);
+      var t = document.createElementNS(NS, 'text');
+      t.setAttribute('x', pt.x);
+      t.setAttribute('y', pt.y - 8);
+      t.setAttribute('text-anchor', 'middle');
+      t.setAttribute('class', 'elabel');
+      t.textContent = L.text;
+      grp.appendChild(t);
+    });
+
+    window.__PIPE_READY__ = true;
+    window.__PIPE_EDGES__ = EDGES.length;
+    // 统一标记：让工具箱的通用导出器 export_png.py 无需区分骨架类型
+    window.__DIAGRAM_READY__ = true;
+    window.__DIAGRAM_STATS__ = {
+      type: 'pipeline',
+      nodes: Object.keys(cache).length,
+      edges: EDGES.length,
+      drawn: grp.querySelectorAll('path').length
+    };
+  }
+
+  window.addEventListener('load', draw);
+  window.addEventListener('resize', draw);
+
+  // 字体真正加载完后重画一次（字体替换会改变文字宽度，进而影响节点高度）
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { setTimeout(draw, 60); });
+  }
+})();
+</script>
+
+</body>
+</html>

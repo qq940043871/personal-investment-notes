@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        // 直开兼容：未嵌入带 loadPage 的容器页时，导航降级为本窗口跳转
+        (function () {
+            var embedded = false;
+            try { embedded = window.parent !== window && typeof window.parent.loadPage === 'function'; } catch (e) { }
+            if (!embedded) {
+                window.loadPage = function (page) { window.location.href = page.split('/').pop(); };
+            }
+        })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>政策解读 · AI 智能服务平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tier-card { transition: all .25s ease; }
+        .tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.10); }
+        .flow-arrow { animation: flowPulse 2s infinite; }
+        @keyframes flowPulse { 0%,100% { opacity:.45; } 50% { opacity:1; } }
+        .step-node { transition: all .25s ease; }
+        .step-node:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,.10); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-robot mr-1"></i>AI 开发项目</span>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/customer-service.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能客服</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/knowledge-base.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">知识库检索</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/policy-interpretation.html')" class="px-3 py-1 rounded-full bg-violet-600 text-white font-medium">政策解读</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/rag-system.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">RAG与解析</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/model-management.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">大模型管理</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/model-finetuning.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">模型微调</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/data-annotation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">数据标注</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/agent-development.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能体开发</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <!-- Hero -->
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-file-shield mr-3 text-violet-600"></i>政策解读（通用 + 电力垂直）
+                </h1>
+                <p class="text-gray-500 mb-4">Policy Interpretation Agent — 时效、效力位阶、权限边界、引用真伪用代码算，只有「翻译成人话」交给大模型</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-violet-50 text-violet-700 px-3 py-1 rounded-full"><i class="fas fa-file-shield mr-1"></i>价值出口 · 价值最硬</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-gavel mr-1"></i>六层架构 + 两道闸门</span>
+                    <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full"><i class="fas fa-bolt mr-1"></i>电力垂直版</span>
+                    <span class="bg-rose-50 text-rose-700 px-3 py-1 rounded-full"><i class="fas fa-triangle-exclamation mr-1"></i>引用已废止文件 = 误导</span>
+                </div>
+            </div>
+
+            <!-- 边界 -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
+                <p class="text-amber-900 text-sm"><i class="fas fa-triangle-exclamation mr-2"></i><strong>口径声明：</strong>本页描述的是政策解读的<strong>整体设计方案</strong>（六层架构 + 两道闸门）。个人参与 = 方案选型与解析链路；规则判定逻辑由 Dify Code 节点实现，编排与规则维护由团队推进。</p>
+            </div>
+
+            <div class="bg-rose-50 border-l-4 border-rose-500 p-5 mb-10">
+                <p class="text-rose-900 text-sm mb-2"><i class="fas fa-quote-left mr-2"></i><strong>一条总纲（先记住这句）：</strong></p>
+                <p class="text-rose-900 font-semibold mb-2">政策解读的绝大部分风险，不是模型不够聪明，而是把确定性的事情交给了模型去猜。</p>
+                <p class="text-rose-800 text-sm">时效、效力位阶、权限边界、引用真伪——这四件事全都有法定规则可循，<strong>必须用代码算</strong>；只有「把条款翻译成人话」这一件事，才交给大模型。凡是看到某个环节在「让模型自己判断」，那基本就是事故的起点。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-triangle-exclamation mr-2 text-violet-600"></i>一、五个独有约束</h2>
+            <div class="overflow-x-auto mb-10">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-40">约束</th>
+                            <th class="px-4 py-3 text-left font-semibold">与普通知识库问答的差别</th>
+                            <th class="px-4 py-3 text-left font-semibold w-64">答错的后果</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">时效敏感</td><td class="px-4 py-3">普通文档是「追加新版本」，政策是「失效 / 被替代」</td><td class="px-4 py-3">引用已废止文件 = 误导</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">效力分层</td><td class="px-4 py-3">存在法定位阶，下位不得抵触上位</td><td class="px-4 py-3">拿地方试点文件否定国务院条例</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">条款级溯源</td><td class="px-4 py-3">必须落到「第 X 条第 Y 款」</td><td class="px-4 py-3">说「根据相关政策」= 用户无法核实</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">解读 ≠ 立法</td><td class="px-4 py-3">不得替制定机关创设规则</td><td class="px-4 py-3">越界解读被当成官方口径使用</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">权限与密级</td><td class="px-4 py-3">征求意见稿、内部文件有明确知悉范围</td><td class="px-4 py-3">泄露未公开文件，属事故</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-gavel mr-2 text-violet-600"></i>二、三条写进代码的硬规则</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+                <div class="bg-white border-2 border-violet-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-violet-900 mb-2 text-sm"><i class="fas fa-hourglass-end mr-2"></i>规则一 · 有效期</h3>
+                    <ul class="text-xs text-gray-600 space-y-1">
+                        <li>• 行政规范性文件有效期一般 <strong>≤ 5 年</strong>；冠以「暂行/试行」的 <strong>≤ 3 年</strong></li>
+                        <li>• 届满未明确延续的<strong>自动失效</strong>，不需要谁再发废止通知</li>
+                        <li>• 制定机关应在届满前 6 个月组织评估</li>
+                        <li>• 专用于废止旧文件的，不适用有效期规定</li>
+                    </ul>
+                </div>
+                <div class="bg-white border-2 border-blue-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-blue-900 mb-2 text-sm"><i class="fas fa-calendar-day mr-2"></i>规则二 · 公布日 ≠ 施行日</h3>
+                    <ul class="text-xs text-gray-600 space-y-1">
+                        <li>• 一般要求施行日与公布日之间留间隔（常见 30 日）</li>
+                        <li>• 突发、执行上级紧急命令可自公布之日起施行</li>
+                        <li>• 推论：文件存在<strong>第三种状态</strong>——「已公布、尚未施行」</li>
+                        <li>• 不建模这个状态、把公布日当生效日，那一类问题必错</li>
+                    </ul>
+                </div>
+                <div class="bg-white border-2 border-emerald-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-emerald-900 mb-2 text-sm"><i class="fas fa-scale-balanced mr-2"></i>规则三 · 法律适用</h3>
+                    <ul class="text-xs text-gray-600 space-y-1">
+                        <li>• 上位法优于下位法</li>
+                        <li>• 特别法优于一般法（<strong>仅限同一机关</strong>）</li>
+                        <li>• 新法优于旧法、变通法优于被变通法</li>
+                        <li>• 「工作方案」「会议纪要」<strong>不构成行政管理依据</strong> → 正确答案是如实告知，不是硬凑解读</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-layer-group mr-2 text-violet-600"></i>三、六层架构 + 两道纯代码闸门</h2>
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 mb-6">
+                <div class="space-y-2 max-w-3xl mx-auto">
+                    <div class="tier-card bg-white border border-gray-200 rounded-lg p-3 text-center text-sm">
+                        <span class="font-semibold text-gray-800">① 接入层</span> <span class="text-gray-500">· 会话 · trace_id · 附件视为「待解读材料」而非指令</span>
+                    </div>
+                    <div class="tier-card bg-white border border-gray-200 rounded-lg p-3 text-center text-sm">
+                        <span class="font-semibold text-gray-800">② 规范化层</span> <span class="text-gray-500">· 口语→术语（"两个细则"→正式名称）· 文号识别 · 纠错</span>
+                    </div>
+                    <div class="tier-card bg-white border border-gray-200 rounded-lg p-3 text-center text-sm">
+                        <span class="font-semibold text-gray-800">③ 理解层</span> <span class="text-gray-500">· 意图三层判定（规则 → 轻量模型 → 保守兜底）· 槽位抽取</span>
+                    </div>
+                    <div class="tier-card bg-amber-50 border border-amber-200 rounded-lg p-3 text-center text-sm">
+                        <span class="font-semibold text-amber-800">④ 直击层</span> <span class="text-amber-700">· L0 标注 → L1 精确 → L2 语义；命中后仍过三道校验（时效/权限/替代链）</span>
+                    </div>
+                    <div class="tier-card bg-rose-50 border-2 border-rose-300 rounded-lg p-3 text-center text-sm">
+                        <span class="font-semibold text-rose-800">◆ 闸门 A · 权限（纯规则，检索前）</span> <span class="text-rose-600">· 权限画像每轮重载不缓存</span>
+                    </div>
+                    <div class="tier-card bg-white border border-gray-200 rounded-lg p-3 text-center text-sm">
+                        <span class="font-semibold text-gray-800">⑤ 检索层</span> <span class="text-gray-500">· 语义 + 关键词混合检索 · Rerank · 时效与效力校验（纯规则）</span>
+                    </div>
+                    <div class="tier-card bg-white border border-gray-200 rounded-lg p-3 text-center text-sm">
+                        <span class="font-semibold text-gray-800">⑥ 生成层</span> <span class="text-gray-500">· 受约束生成：强制 schema + 强制引用 + temp=0</span>
+                    </div>
+                    <div class="tier-card bg-rose-50 border-2 border-rose-300 rounded-lg p-3 text-center text-sm">
+                        <span class="font-semibold text-rose-800">◆ 闸门 B · 核验（纯规则，生成后）</span> <span class="text-rose-600">· 引用核验 + 越权复核</span>
+                    </div>
+                    <div class="tier-card bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-center text-sm">
+                        <span class="font-semibold text-emerald-800">输出 + 审计</span> <span class="text-emerald-700">· 三档门控降级 · 未命中样本回流直击库候选池</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-10">
+                <p class="text-sm text-gray-700"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i><strong>两道闸门都是纯代码</strong>，不经模型判断。这是「企业级」与「玩具」的分水岭：模型可以决定话怎么说，但不能决定「你有没有权看」和「这个引用是不是真的」。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-bolt mr-2 text-violet-600"></i>四、电力垂直版：六个独有难点</h2>
+            <div class="overflow-x-auto mb-6">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-12">#</th>
+                            <th class="px-4 py-3 text-left font-semibold w-64">难点</th>
+                            <th class="px-4 py-3 text-left font-semibold">通用政策没有的麻烦</th>
+                            <th class="px-4 py-3 text-left font-semibold w-56">翻车后果</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3">1</td><td class="px-4 py-3">存在「非政府但有约束力」的一层</td><td class="px-4 py-3">《供电营业规则》《电力交易规则》《两个细则》由电网企业/交易中心/派出机构发布，不是政府规范性文件，却对市场主体有事实约束</td><td class="px-4 py-3">把企业规则当政府政策引用 → 效力定性错误</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3">2</td><td class="px-4 py-3">主管机关多头且分层</td><td class="px-4 py-3">发改委（价格）、能源局（规划/监管）、区域派出机构、省发改委、省能源局，部分省在工信厅</td><td class="px-4 py-3">建议用户去错部门</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3">3</td><td class="px-4 py-3">术语口语化极严重</td><td class="px-4 py-3">「度电」「过网费」「隔墙售电」「两个细则」全是行业黑话，且不写进正式文件</td><td class="px-4 py-3">按口语检索 → 关键词通道全空</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3">4</td><td class="px-4 py-3">电价与时效强绑定</td><td class="px-4 py-3">多为「自 X 年 X 月 X 日起执行」，一年一调且带执行周期</td><td class="px-4 py-3">用过期电价 → <strong>直接算错钱</strong></td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3">5</td><td class="px-4 py-3">地域差异极大</td><td class="px-4 py-3">同是「分布式光伏并网」，各省容量上限、备案流程、补贴规则完全不同</td><td class="px-4 py-3">拿外省政策答本省问题</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3">6</td><td class="px-4 py-3">角色决定适用条款</td><td class="px-4 py-3">同一件事，发电企业、电网企业、售电公司、用户看到的条款完全不同</td><td class="px-4 py-3">答非所问，甚至答了不该适用的条款</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-10">
+                <p class="text-blue-800 text-sm"><i class="fas fa-circle-info mr-2"></i>第 6 条最隐蔽：用户问「电价怎么算」，不知道他是<strong>发电侧</strong>还是<strong>用户侧</strong>，答案可能完全相反。所以<strong>角色是必抽槽位，不是可选</strong>。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-signal mr-2 text-violet-600"></i>五、降级三档：宁可少说，不可乱说</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                <div class="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-lg p-5">
+                    <i class="fas fa-circle-check text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">A 档 · 完整解读</div>
+                    <p class="text-sm opacity-90 mt-1">条款清晰、引用核验通过：给解读 + 文号 + 条款位置 + 时效状态。</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-lg p-5">
+                    <i class="fas fa-file-lines text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">B 档 · 仅原文</div>
+                    <p class="text-sm opacity-90 mt-1">检索到但不确定：只给原文摘录与出处，不替用户下判断。</p>
+                </div>
+                <div class="bg-gradient-to-br from-gray-500 to-gray-600 text-white rounded-lg p-5">
+                    <i class="fas fa-circle-question text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">C 档 · 未找到依据</div>
+                    <p class="text-sm opacity-90 mt-1">如实告知 + 建议咨询渠道，<strong>不生成</strong>任何「看起来像政策」的内容。</p>
+                </div>
+            </div>
+            <div class="bg-rose-50 border border-rose-200 rounded-lg p-4">
+                <p class="text-sm text-gray-700"><i class="fas fa-triangle-exclamation text-rose-500 mr-2"></i><strong>贯穿全局一条原则：</strong>所有降级都朝「<strong>信息更少但更确定</strong>」的方向走，绝不朝「信息更多但更不确定」的方向走。这条原则反过来做，就是一份看起来很聪明、实际不能用的方案。</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/rag-system.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">RAG与解析</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/knowledge-base.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">知识库检索</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+        </div>
+    </nav>
+</body>
+</html>

@@ -186,7 +186,7 @@ body {
   transform: rotate(90deg);
 }
 
-/* 嵌套子分组（04-备战手册/03-技术真题、04-备战手册/04-架构决策/生产问题排查 等一级子目录）*/
+/* 嵌套子分组（04-备战手册/03-技术真题、02-现货贸易/03-架构决策/生产问题排查 等一级子目录）*/
 .folder.nested > .folder-header {
   padding-left: 32px;
   font-weight: 500;
@@ -1049,8 +1049,9 @@ body {
     </div>
     <div class="m-hero-chips">
       <a class="m-hero-chip" href="../index.html">🏠 工作台</a>
-      <a class="m-hero-chip" href="../01-个人简历/index.html">📄 简历</a>
-      <a class="m-hero-chip" href="../02-项目底稿/index.html">💼 底稿</a>
+      <a class="m-hero-chip" href="01-个人简历/index.html">📄 简历</a>
+      <a class="m-hero-chip" href="../02-现货贸易/index.html">📦 现货贸易</a>
+      <a class="m-hero-chip" href="../02-AI智能体/index.html">🤖 AI 智能体</a>
       <a class="m-hero-chip" href="../index.html#page-bank">📝 真题</a>
     </div>
     <div class="m-hero-chips" style="margin-top:8px">
@@ -1086,17 +1087,18 @@ body {
 
   <div class="sidebar-nav-links">
     <a href="../index.html">🏠 工作台</a>
-    <a href="../01-个人简历/index.html">📄 个人简历</a>
-    <a href="../02-项目底稿/index.html">💼 项目底稿</a>
+    <a href="01-个人简历/index.html">📄 个人简历</a>
+    <a href="../02-现货贸易/index.html">📦 现货贸易</a>
+    <a href="../02-AI智能体/index.html">🤖 AI 智能体</a>
     <a href="../index.html#page-bank">📝 技术真题</a>
   </div>
 
   <div class="sidebar-stats">
-    <span class="stat-chip md">59 .md</span>
-    <span class="stat-chip html">16 .html</span>
-    <span class="stat-chip pptx">6 .pptx</span>
-    <span class="stat-chip">3 .pdf</span>
-    <span class="stat-chip">84 文件</span>
+    <span class="stat-chip md">24 .md</span>
+    <span class="stat-chip html">9 .html</span>
+    <span class="stat-chip pptx">2 .pptx</span>
+    <span class="stat-chip">2 .pdf</span>
+    <span class="stat-chip">39 文件</span>
   </div>
 
   <div class="search-box">
@@ -1131,8 +1133,8 @@ body {
       <div class="welcome">
         <div class="welcome-icon">📖</div>
         <h2>备战手册</h2>
-        <p>83 份文档（已按主题归位并统一命名），覆盖主线件、产品定位、业务价值、客户案例、架构决策、面试准备 6 大分类。</p>
-        <p style="margin-top:8px;font-size:13px;">技术真题见「📝 技术真题」菜单，简历与项目见「📄 个人简历 / 💼 项目底稿」→</p>
+        <p>技术管理 + 面试准备两类；业务价值 / 客户案例 / 架构决策三类已归位 <b>02-现货贸易</b>，产品定位收口为根目录总纲。</p>
+        <p style="margin-top:8px;font-size:13px;">技术真题见「📝 技术真题」，项目底稿见「📦 现货贸易 / 🤖 AI 智能体」→</p>
       </div>
     </div>
   </div>
@@ -1142,74 +1144,34 @@ body {
 // ===================== DIRECTORY TREE DATA =====================
 const TREE = [
   {
-    name: '01-产品定位', icon: '🎯', open: true,
+    name: '01-个人简历', icon: '📄', open: true,
     files: [
-      '02-平台定位与客户分析.html',
-      '03-平台角色与业务动作全景手册.md',
-      '04-B2B大宗贸易平台-产品三维度分析.md',
-      '09-期现结合业务实现思路.md'
-    ]
-  },
-  {
-    name: '02-业务价值', icon: '💼',
-    files: [
-      '01-业务价值与客户运营.md',
-      '02-业务全链路场景手册.md',
-      '05-业务痛点与系统解决方案-架构详解.md',
-      '09-业务-技术映射地图.md'
-    ]
-  },
-  {
-    name: '03-客户案例', icon: '📊', open: true,
-    files: [
-      '02-数字产业链服务平台-含痛点方案.pptx',
-      '04-B2B技术经理-能力全景介绍.pptx',
-      '05-B2B产品服务客户案例.slides.pptx',
-      '05-B2B产品服务客户案例.pdf',
-      '06-客户案例与行业对标手册.md',
-      '13-客户深度复盘与面试亮点.md',
-      '13-客户深度复盘与面试亮点.visual.html'
-    ]
-  },
-  {
-    name: '04-架构决策', icon: '🏗️', open: true,
-    files: [
-      '00-名词解释与术语速查.md',
-      '01-架构方法论与选型设计手册.md',
-      '02-异构架构策略与真实系统叙事手册.md',
-      '03-平台化治理与多租户架构手册.md',
-      '04-现货交易供应链-难点与解决方案速查手册.md',
-      '05-Saga编排器详细介绍.md',
-      '07-B2B合同中心vsB2C订单中心-区别分析.md',
-      '08-Dify与自研业务中台-技术选型复盘.md',
-      '11-midservice网关职责与治理设计.md',
-      '11-midservice网关架构图.html',
-      '12-跨系统调用一致性方案.md',
-      '12-图-待发送表状态机.html',
-      '12-图-本地表双通道机制图.html',
-      '12-图-确认收货主链路时序图.html',
-      '13-C核心单线程内存一致性设计.md',
-      '13-图-C核心热备一致性机制图.html',
-      '13-图-协调平面与数据平面对照图.html',
-      '14-区块链架构与一致性同构对照图.html',
-      '15-DS数据交换中心-C-Java异构桥接设计.md',
-      '15-图-DS数据交换中心双通道流水线.html'
+      'home.html',
+      '00-完整简历-通用版.md',
+      '01-技术经理-简历.md',
+      '01-技术经理-简历.print.html',
+      '02-技术经理成长手册.md',
+      '03-技术情报收集与跨部门沟通手册.md',
+      '04-快速通览一页纸简报.html',
+      '06-简历知识补强清单.md'
     ],
     children: [
       {
-        name: '生产问题排查', icon: '🐞',
+        name: '05-网申投递', icon: '🧰', open: false,
         files: [
-          '06-Cookie认证失败-5Why根因分析.md',
-          '07-Cookie认证失败-5Why根因分析.slides.pptx',
-          '08-多机房多线路网络故障-排查实录.md',
-          '09-竞价页面突然变慢-排查实录.md',
-          '10-下载PDF致JVM进程消失-排查实录.md',
-          '11-网关扩容打穿DB-性能开发规范.md',
-          '12-生产排查步骤-四类场景与六步SOP.md',
-          '13-故障排查工作台-十类故障六步法.md',
-          'java-architect-troubleshooting-handbook.md',
-          'java-troubleshooting-advanced-arthas-profiler.md',
-          'java-troubleshooting-quickcards.md'
+          '01-易盛研发岗-简历.md',
+          '02-易盛网申五项-可直接粘贴.md',
+          '03-豫信电科-报名表粘贴稿.md',
+          '04-BOSS直聘-字段粘贴稿.md',
+          '05-猎聘-字段粘贴稿.md',
+          '13-超聚变面试准备.md'
+        ]
+      },
+      {
+        name: '07-面试介绍PPT', icon: '🖼️', open: false,
+        files: [
+          'index.html',
+          'PPT模板与排版规范.md'
         ]
       }
     ]
@@ -1773,7 +1735,7 @@ function mSearch(q) {
 }
 
 /* 站内文档互链：把正文里的 xxx.md / xxx.html 链接拦下来，走内置阅读器 */
-const M_KNOWN_DIRS = ['01-产品定位', '02-业务价值', '03-客户案例', '04-架构决策', '05-技术管理', '06-面试准备'];
+const M_KNOWN_DIRS = ['05-技术管理', '06-面试准备'];
 
 function resolvePath(href) {
   const base = currentFilePath.split('/');

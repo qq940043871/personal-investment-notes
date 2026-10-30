@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        // 直开兼容：未嵌入带 loadPage 的容器页时，导航降级为本窗口跳转
+        (function () {
+            var embedded = false;
+            try { embedded = window.parent !== window && typeof window.parent.loadPage === 'function'; } catch (e) { }
+            if (!embedded) {
+                window.loadPage = function (page) { window.location.href = page.split('/').pop(); };
+            }
+        })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型微调 · AI 智能服务平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tier-card { transition: all .25s ease; }
+        .tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.10); }
+        .flow-arrow { animation: flowPulse 2s infinite; }
+        @keyframes flowPulse { 0%,100% { opacity:.45; } 50% { opacity:1; } }
+        .step-node { transition: all .25s ease; }
+        .step-node:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,.10); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-robot mr-1"></i>AI 开发项目</span>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/customer-service.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能客服</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/knowledge-base.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">知识库检索</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/policy-interpretation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">政策解读</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/rag-system.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">RAG与解析</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/model-management.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">大模型管理</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/model-finetuning.html')" class="px-3 py-1 rounded-full bg-violet-600 text-white font-medium">模型微调</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/data-annotation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">数据标注</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/agent-development.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能体开发</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <!-- Hero -->
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-sliders mr-3 text-violet-600"></i>模型微调
+                </h1>
+                <p class="text-gray-500 mb-4">Model Fine-tuning — 非必选项：只在效果瓶颈明确时才上，否则纯烧钱</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-violet-50 text-violet-700 px-3 py-1 rounded-full"><i class="fas fa-sliders mr-1"></i>底座 · 可选项</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-database mr-1"></i>标注集即训练集</span>
+                    <span class="bg-rose-50 text-rose-700 px-3 py-1 rounded-full"><i class="fas fa-ban mr-1"></i>不做算法创新</span>
+                </div>
+            </div>
+
+            <!-- 边界 -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
+                <p class="text-amber-900 text-sm"><i class="fas fa-triangle-exclamation mr-2"></i><strong>口径声明：</strong>本页是<strong>方案设计</strong>，不是个人交付记录。个人未承担微调训练执行；此项在平台中定位为「效果瓶颈明确时的可选项」，由团队按阶段四推进。</p>
+            </div>
+
+            <div class="bg-rose-50 border-l-4 border-rose-500 p-5 mb-10">
+                <p class="text-rose-900 text-sm mb-2"><i class="fas fa-ban mr-2"></i><strong>先立规矩：微调是最后一张牌，不是第一张。</strong></p>
+                <p class="text-rose-800 text-sm">绝大多数「效果不好」的真实原因是<strong>解析质量差、分块不合理、检索没做混合、Prompt 没约束</strong>。这些没解决就上微调，等于花几万块把一个错误的输入喂得更熟练——而且从此要养一套训练流水线。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-code-branch mr-2 text-violet-600"></i>一、决策顺序：先排查，再微调</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-6">
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-violet-600 font-semibold mb-1">第 1 步</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">解析对不对</div>
+                    <p class="text-xs text-gray-500">源文档进向量库的 Markdown 是否干净？</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-blue-600 font-semibold mb-1">第 2 步</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">召回得到吗</div>
+                    <p class="text-xs text-gray-500">正确分段在不在 TopK 里？混合检索开了吗？</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-amber-600 font-semibold mb-1">第 3 步</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">Prompt 约束够吗</div>
+                    <p class="text-xs text-gray-500">强制 schema、强制引用、温度设了吗？</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-rose-600 font-semibold mb-1">第 4 步</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">评测集有吗</div>
+                    <p class="text-xs text-gray-500">没有评测集，「变好了」无从证明。</p>
+                </div>
+                <div class="bg-violet-50 border-2 border-violet-300 rounded-lg p-4 step-node">
+                    <div class="text-xs text-violet-700 font-semibold mb-1">第 5 步</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">才轮到微调</div>
+                    <p class="text-xs text-gray-500">且必须是「风格/格式/领域术语」类问题，而不是知识缺失。</p>
+                </div>
+            </div>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-10">
+                <p class="text-blue-800 text-sm"><i class="fas fa-circle-info mr-2"></i><strong>关键区分：</strong>微调擅长「<strong>怎么说</strong>」（风格、格式、术语、稳定输出结构），不擅长「<strong>说什么</strong>」（事实与知识）。知识类问题应该用 RAG 解决——把文档塞进参数里，既贵又容易过期。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-list-ol mr-2 text-violet-600"></i>二、五步流程</h2>
+            <div class="overflow-x-auto mb-10">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-40">阶段</th>
+                            <th class="px-4 py-3 text-left font-semibold">做什么</th>
+                            <th class="px-4 py-3 text-left font-semibold w-64">容易翻车的地方</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">① 数据准备</td><td class="px-4 py-3">从标注集与真实会话里整理「输入 → 期望输出」样本，清洗、去重、划分训练/验证</td><td class="px-4 py-3">拿模型自己生成的答案当训练数据（自举污染）</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">② 配置</td><td class="px-4 py-3">选基座、LoRA 秩与学习率、轮数、序列长度</td><td class="px-4 py-3">样本量不足就全参微调，直接过拟合</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">③ 执行</td><td class="px-4 py-3">训练任务与日志、断点续跑、显存与时长控制</td><td class="px-4 py-3">没有固定随机种子与版本号，结果无法复现</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">④ 评估</td><td class="px-4 py-3">在同一套回归集上与基座对比：格式合规率、拒答率、关键字段准确率</td><td class="px-4 py-3">只看「感觉更顺了」，不做对照</td></tr>
+                        <tr class="hover:bg-gray-50"><td class="px-4 py-3 font-medium text-gray-800">⑤ 部署与回滚</td><td class="px-4 py-3">新模型以独立端点上线，灰度量；保留旧端点随时切回</td><td class="px-4 py-3">直接覆盖线上模型，出问题没有退路</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-scale-balanced mr-2 text-violet-600"></i>三、代价与收益要对得上</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-arrow-trend-down text-rose-500 mr-2"></i>要付的代价</h3>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• GPU 与人工成本，且要持续维护训练流水线</li>
+                        <li>• 知识更新不再「改文档」，而是「重训一次」</li>
+                        <li>• 版本管理复杂度上升：模型版本 × Prompt 版本 × 知识库版本</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-arrow-trend-up text-green-500 mr-2"></i>什么时候值得</h3>
+                    <ul class="text-sm text-gray-600 space-y-1">
+                        <li>• 输出结构必须严格稳定（固定字段的抽取、分类、话术模板）</li>
+                        <li>• 领域术语多、通用模型总说外行话</li>
+                        <li>• 私有化小模型效果不够，又不能用公有云</li>
+                        <li>• 高频任务，微调后可降级到更小模型跑，长期省成本</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <p class="text-sm text-gray-700"><i class="fas fa-triangle-exclamation text-amber-500 mr-2"></i><strong>顺序纪律：</strong>平台落地四阶段里，微调排在<strong>阶段四</strong>——前提是前三阶段的价值已被度量并认可。反过来做，很容易在打通与训练上耗掉全部预算，一个价值都没证明。</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/data-annotation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">数据标注</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/model-management.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">大模型管理</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+        </div>
+    </nav>
+</body>
+</html>

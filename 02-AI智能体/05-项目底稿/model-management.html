@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        // 直开兼容：未嵌入带 loadPage 的容器页时，导航降级为本窗口跳转
+        (function () {
+            var embedded = false;
+            try { embedded = window.parent !== window && typeof window.parent.loadPage === 'function'; } catch (e) { }
+            if (!embedded) {
+                window.loadPage = function (page) { window.location.href = page.split('/').pop(); };
+            }
+        })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大模型管理 · AI 智能服务平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tier-card { transition: all .25s ease; }
+        .tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.10); }
+        .flow-arrow { animation: flowPulse 2s infinite; }
+        @keyframes flowPulse { 0%,100% { opacity:.45; } 50% { opacity:1; } }
+        .step-node { transition: all .25s ease; }
+        .step-node:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,.10); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-robot mr-1"></i>AI 开发项目</span>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/customer-service.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能客服</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/knowledge-base.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">知识库检索</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/policy-interpretation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">政策解读</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/rag-system.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">RAG与解析</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/model-management.html')" class="px-3 py-1 rounded-full bg-violet-600 text-white font-medium">大模型管理</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/model-finetuning.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">模型微调</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/data-annotation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">数据标注</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/agent-development.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能体开发</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <!-- Hero -->
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-server mr-3 text-violet-600"></i>大模型管理
+                </h1>
+                <p class="text-gray-500 mb-4">Model Management — 多模型接入、按数据敏感度分通道、模型中立不被厂商锁定</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-violet-50 text-violet-700 px-3 py-1 rounded-full"><i class="fas fa-server mr-1"></i>底座 · 平台建设方</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-shield-alt mr-1"></i>数据不出域</span>
+                    <span class="bg-green-50 text-green-700 px-3 py-1 rounded-full"><i class="fas fa-random mr-1"></i>模型可换，代码不动</span>
+                </div>
+            </div>
+
+            <!-- 边界 -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
+                <p class="text-amber-900 text-sm"><i class="fas fa-triangle-exclamation mr-2"></i><strong>口径声明：</strong>本页描述的是平台<strong>整体方案</strong>。个人参与 = 前期「数据敏感度决定通道」的判断与底座选型；模型接入的日常运维由团队推进。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-circle-question mr-2 text-violet-600"></i>一、为什么必须有「模型管理」这一层</h2>
+            <p class="text-gray-600 mb-5 text-sm">如果业务代码里到处是 <code class="bg-gray-100 px-1 rounded text-xs">openai.chat.completions.create</code>，那么换一次模型就等于一次全量改造。而模型这个市场，一年换三轮是常态。所以这一层要解决两件事：</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                <div class="bg-rose-50 border border-rose-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-rose-800 mb-2"><i class="fas fa-lock mr-2"></i>数据敏感度不同，通道必须不同</h3>
+                    <p class="text-sm text-gray-600">通用咨询（商品怎么下单、流程怎么走）走第三方模型，见效快、成本低；涉密数据（合同、客户资料、内部制度）必须走<strong>内网私有化</strong>。一刀切只有两种结局：要么全内网、成本与效果都拖垮，要么全公有云、合规先出事。</p>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-amber-800 mb-2"><i class="fas fa-unlink mr-2"></i>不被单一厂商锁定</h3>
+                    <p class="text-sm text-gray-600">模型价格、能力、可用性都会变。要求是：<strong>换模型不改业务代码、不影响业务连续性</strong>。做不到这一点，所谓「技术选型」其实是一次不可逆的押注。</p>
+                </div>
+            </div>
+            <div class="bg-violet-50 border-l-4 border-violet-500 p-4 mb-10">
+                <p class="text-violet-900 text-sm"><i class="fas fa-info-circle mr-2"></i><strong>平台内的一句话判断（前期选型的核心结论）：</strong>模型选型风险不由架构承担——用 OpenAI-compatible 端点 + 中台网关抽象，把「用哪个模型」变成一个<strong>配置项</strong>而不是一个架构决策。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-route mr-2 text-violet-600"></i>二、三通道：按敏感度分流</h2>
+            <div class="overflow-x-auto mb-6">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-40">通道</th>
+                            <th class="px-4 py-3 text-left font-semibold w-44">技术形态</th>
+                            <th class="px-4 py-3 text-left font-semibold">适用</th>
+                            <th class="px-4 py-3 text-left font-semibold w-40">代价</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">公有通道</td>
+                            <td class="px-4 py-3">第三方模型 API（OpenAI-compatible）</td>
+                            <td class="px-4 py-3">通用咨询、公开政策解读、话术改写——不涉密、要求效果好、要快</td>
+                            <td class="px-4 py-3">按量计费；数据出域需评估</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">私有通道</td>
+                            <td class="px-4 py-3">内网 vLLM 部署开源模型</td>
+                            <td class="px-4 py-3">涉密文档解析后的问答、合同条款、客户资料类场景</td>
+                            <td class="px-4 py-3">要 GPU 与运维；小模型效果弱于旗舰</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">轻量通道</td>
+                            <td class="px-4 py-3">Ollama（开发 / 边缘 / 单机验证）</td>
+                            <td class="px-4 py-3">本地调试、演示环境、轻量任务（分类、抽取、改写）</td>
+                            <td class="px-4 py-3">并发与吞吐有限，不进生产主链路</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-10">
+                <p class="text-sm text-gray-700"><i class="fas fa-lightbulb text-yellow-500 mr-2"></i><strong>分流点放在哪？</strong>不在业务代码里 if-else，而是在<strong>中台网关</strong>按数据的敏感等级路由。业务侧只说「我需要一个能回答合同问题的模型」，不关心它跑在哪。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-random mr-2 text-violet-600"></i>三、模型中立怎么落成机制</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-10">
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-violet-600 font-semibold mb-1">① 统一协议</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">OpenAI-compatible</div>
+                    <p class="text-xs text-gray-500">所有模型套同一个请求/响应契约，国产、开源、私有都走这个口。</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-blue-600 font-semibold mb-1">② 网关抽象</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">中台统一出口</div>
+                    <p class="text-xs text-gray-500">鉴权、限流、熔断、重试、日志、计量都在这一层，业务不重复实现。</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-amber-600 font-semibold mb-1">③ 配置而非代码</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">模型 = 配置项</div>
+                    <p class="text-xs text-gray-500">切换模型改配置 + 回归测试，不改业务代码。</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node">
+                    <div class="text-xs text-emerald-600 font-semibold mb-1">④ 退出路径</div>
+                    <div class="font-semibold text-gray-800 text-sm mb-1">编排引擎也可换</div>
+                    <p class="text-xs text-gray-500">AI 能力一律经网关暴露，保留「换掉 Dify」的可能。</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-gauge-high mr-2 text-violet-600"></i>四、监控与计量：让「值不值」有数据</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-heart-pulse text-violet-500 mr-2"></i>运行态监控</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>可用性 / 错误率 / 超时率（分模型、分通道）</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>首字延迟与总耗时（P50 / P95）</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>私有通道：GPU 显存与并发队列长度</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>降级触发次数（模型不可用时的兜底是否生效）</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-coins text-violet-500 mr-2"></i>用量与成本计量</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>token 按<strong>部门 / 租户 / 应用</strong>三维归集</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>直击库命中（0 生成 token）单独计数——这是省钱的证据</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>配额与告警：超阈值先告警再限流，按部门分摊</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>trace_id 串联业务操作日志与 AI 调用日志，可归因到人、到单据</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-chart-simple mr-2 text-violet-600"></i>五、验收口径</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                <div class="bg-gradient-to-br from-violet-500 to-violet-600 text-white rounded-lg p-5">
+                    <i class="fas fa-random text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">换模型成本 = 改配置 + 回归</div>
+                    <p class="text-sm opacity-90 mt-1">目标口径：切换到新模型不产生业务代码改动；实测人日待 POC 记录。</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg p-5">
+                    <i class="fas fa-shield-alt text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">涉密场景 0 出域</div>
+                    <p class="text-sm opacity-90 mt-1">涉密等级数据的调用 100% 落在内网通道，可审计抽查。</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-lg p-5">
+                    <i class="fas fa-coins text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">单会话 token 消耗</div>
+                    <p class="text-sm opacity-90 mt-1">度量口径已定（按会话/部门归集），实测值待采集，不填估算数。</p>
+                </div>
+            </div>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                <p class="text-blue-800 text-sm"><i class="fas fa-circle-info mr-2"></i><strong>边界：</strong>这一层不做算法创新，也不承诺「换个模型效果就好了」。它保证的是<strong>可替换性</strong>与<strong>可控的账</strong>——效果提升要靠检索质量与场景设计。</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/model-finetuning.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">模型微调</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/rag-system.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">RAG与解析</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+        </div>
+    </nav>
+</body>
+</html>

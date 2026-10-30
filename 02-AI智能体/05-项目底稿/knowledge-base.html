@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        // 直开兼容：未嵌入带 loadPage 的容器页时，导航降级为本窗口跳转
+        (function () {
+            var embedded = false;
+            try { embedded = window.parent !== window && typeof window.parent.loadPage === 'function'; } catch (e) { }
+            if (!embedded) {
+                window.loadPage = function (page) { window.location.href = page.split('/').pop(); };
+            }
+        })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识库检索 · AI 智能服务平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tier-card { transition: all .25s ease; }
+        .tier-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,.10); }
+        .flow-arrow { animation: flowPulse 2s infinite; }
+        @keyframes flowPulse { 0%,100% { opacity:.45; } 50% { opacity:1; } }
+        .step-node { transition: all .25s ease; }
+        .step-node:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(0,0,0,.10); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="sticky top-0 z-20 bg-white/95 backdrop-blur border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 font-semibold mr-2 hidden sm:inline"><i class="fas fa-robot mr-1"></i>AI 开发项目</span>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/overview.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">总览</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/customer-service.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能客服</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/knowledge-base.html')" class="px-3 py-1 rounded-full bg-violet-600 text-white font-medium">知识库检索</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/policy-interpretation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">政策解读</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/rag-system.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">RAG与解析</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/model-management.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">大模型管理</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/model-finetuning.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">模型微调</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/data-annotation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">数据标注</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/agent-development.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能体开发</a>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-md p-8">
+
+            <!-- Hero -->
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-3">
+                    <i class="fas fa-book mr-3 text-violet-600"></i>知识库与智能检索
+                </h1>
+                <p class="text-gray-500 mb-4">Knowledge Base &amp; Retrieval — 把散在个人脑子里的口径，变成平台可查的唯一版本</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <span class="bg-violet-50 text-violet-700 px-3 py-1 rounded-full"><i class="fas fa-book mr-1"></i>价值出口 · 内外通用</span>
+                    <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full"><i class="fas fa-layer-group mr-1"></i>采集 → 解析 → 分块 → 索引 → 发布</span>
+                    <span class="bg-green-50 text-green-700 px-3 py-1 rounded-full"><i class="fas fa-filter mr-1"></i>元数据过滤防越权</span>
+                </div>
+            </div>
+
+            <!-- 边界 -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
+                <p class="text-amber-900 text-sm"><i class="fas fa-triangle-exclamation mr-2"></i><strong>口径声明：</strong>本页描述的是平台<strong>整体方案</strong>。个人实际参与集中在<strong>文档解析与入库链路</strong>（MinerU 改造 + 批量调度 + 元数据对齐）；知识运营流程由业务团队承接。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-circle-question mr-2 text-violet-600"></i>一、知识库到底在解决什么</h2>
+            <p class="text-gray-600 mb-5 text-sm">它不是「上传文档的地方」，而是把散在个人经验里的口径收敛成<strong>唯一版本</strong>的过程。三件具体的事：</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                <div class="bg-rose-50 border border-rose-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-rose-800 mb-2"><i class="fas fa-comments mr-2"></i>口径不一</h3>
+                    <p class="text-sm text-gray-600">同一个「能不能退」，销售、客服、财务三套说法。知识库给出唯一版本，并标明依据来源。</p>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-amber-800 mb-2"><i class="fas fa-magnifying-glass mr-2"></i>找不到 / 找得慢</h3>
+                    <p class="text-sm text-gray-600">制度散在 OA、群文件、个人电脑。自然语言一问即得，把「会查库」的门槛降到「会说话」。</p>
+                </div>
+                <div class="bg-sky-50 border border-sky-200 rounded-lg p-5">
+                    <h3 class="font-semibold text-sky-800 mb-2"><i class="fas fa-link mr-2"></i>说了但没出处</h3>
+                    <p class="text-sm text-gray-600">答案必须能落到「哪份文件的哪一段」，否则无法核实，也不敢对外讲。</p>
+                </div>
+            </div>
+            <div class="bg-violet-50 border-l-4 border-violet-500 p-4 mb-10">
+                <p class="text-violet-900 text-sm"><i class="fas fa-info-circle mr-2"></i><strong>知识来源三路：</strong>业务文档（商品、规格、流程、制度）· 政策文件（带文号、时效、效力位阶）· <strong>已验证问答</strong>（召回测试里答对的样本，沉淀成独立 Q&amp;A 库，可被多个应用共享、可进版本管理）。</p>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-diagram-project mr-2 text-violet-600"></i>二、五步管道：从一堆文件到可检索知识</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4">
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node text-center">
+                    <i class="fas fa-inbox text-violet-500 text-xl mb-2"></i>
+                    <div class="font-semibold text-gray-800 text-sm">① 采集</div>
+                    <p class="text-xs text-gray-500 mt-1">文件 / 网页 / 云盘 / 业务系统</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node text-center">
+                    <i class="fas fa-file-lines text-blue-500 text-xl mb-2"></i>
+                    <div class="font-semibold text-gray-800 text-sm">② 解析</div>
+                    <p class="text-xs text-gray-500 mt-1">统一为 Markdown 中间态</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node text-center">
+                    <i class="fas fa-scissors text-amber-500 text-xl mb-2"></i>
+                    <div class="font-semibold text-gray-800 text-sm">③ 分块</div>
+                    <p class="text-xs text-gray-500 mt-1">通用 / 父子 / QA 三选一</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node text-center">
+                    <i class="fas fa-database text-green-500 text-xl mb-2"></i>
+                    <div class="font-semibold text-gray-800 text-sm">④ 索引</div>
+                    <p class="text-xs text-gray-500 mt-1">高质量 vs 经济型（不可逆）</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 step-node text-center">
+                    <i class="fas fa-rocket text-rose-500 text-xl mb-2"></i>
+                    <div class="font-semibold text-gray-800 text-sm">⑤ 发布</div>
+                    <p class="text-xs text-gray-500 mt-1">权限 · 版本 · 召回测试</p>
+                </div>
+            </div>
+            <p class="text-xs text-gray-500 mb-10">箭头方向不是画着好看：<strong>②解析错了，③④⑤再怎么调都是错的</strong>。这也是为什么解析这一环要单独做工程化（见「RAG 与解析」页）。</p>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-gavel mr-2 text-violet-600"></i>三、三个不能拍脑袋的设计点</h2>
+            <div class="overflow-x-auto mb-6">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left font-semibold w-40">设计点</th>
+                            <th class="px-4 py-3 text-left font-semibold">为什么不能随便选</th>
+                            <th class="px-4 py-3 text-left font-semibold w-64">我们的做法</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">分块策略</td>
+                            <td class="px-4 py-3">切太碎语义断裂、切太大召回不准；政策条款与商品规格的天然边界完全不同。</td>
+                            <td class="px-4 py-3">政策类走<strong>父子分块</strong>（小块检索、大块喂给模型）；FAQ 类走 <strong>QA 结构</strong>；普通文档走通用分块。</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">索引方式</td>
+                            <td class="px-4 py-3">「经济型」用倒排关键词、几乎零成本但没有语义泛化；<strong>换索引方式需要重建全库，不可逆</strong>。</td>
+                            <td class="px-4 py-3">主库一次性选高质量（embedding）；成本敏感的临时库才用经济型。这个决定写在选型文档里，不允许中途改口。</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 font-medium text-gray-800">元数据过滤</td>
+                            <td class="px-4 py-3">权限与版本都挂在这上面；一旦只靠 Prompt「请不要说别人的数据」，越权只是时间问题。</td>
+                            <td class="px-4 py-3">入库即写 <strong>部门 / 密级 / 有效期 / 版本</strong> 四类元数据，检索节点按当前身份做前置过滤。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-clock-rotate-left mr-2 text-violet-600"></i>四、增量更新与版本：改一个字不该重建全库</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-rotate text-violet-500 mr-2"></i>增量更新三原则</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>文档 / 分段级 CRUD，改段落自动重索引</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>入库带<strong>幂等键</strong>（来源 + 版本），重复推送不产生重复分段</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>旧版本不物理删除，置为失效并保留替代链</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-5">
+                    <h3 class="font-semibold text-gray-800 mb-3"><i class="fas fa-shield-halved text-violet-500 mr-2"></i>知识治理是业务流程</h3>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>入库审批：谁有权把内容变成「平台口径」</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>同步周期：政策类按发布节奏，商品类按变更频率</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>过期下架：到期自动失效，不靠人记得</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4"><i class="fas fa-chart-simple mr-2 text-violet-600"></i>五、验收口径</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                <div class="bg-gradient-to-br from-violet-500 to-violet-600 text-white rounded-lg p-5">
+                    <i class="fas fa-bullseye text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">召回率 / 准确率</div>
+                    <p class="text-sm opacity-90 mt-1">用 50–100 条真实问题做召回测试，取基线；实测值待 POC 采集。</p>
+                </div>
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg p-5">
+                    <i class="fas fa-file-circle-check text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">解析成功率</div>
+                    <p class="text-sm opacity-90 mt-1">按文档类型分桶统计，失败必须有告警与人工兜底，不能静默丢。</p>
+                </div>
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-lg p-5">
+                    <i class="fas fa-link text-3xl mb-2 opacity-80"></i>
+                    <div class="text-lg font-bold">可溯源率</div>
+                    <p class="text-sm opacity-90 mt-1">答案能给出「文件 + 段落位置」的比例，目标口径 100%（无依据不开口）。</p>
+                </div>
+            </div>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                <p class="text-blue-800 text-sm"><i class="fas fa-circle-info mr-2"></i><strong>一句话：</strong>知识库的质量不取决于向量库选型，取决于<strong>源头文档干不干净 + 分块是否尊重原文结构 + 元数据是否老实填写</strong>。这三件事没有一件是「买个组件」能解决的。</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="border-t border-gray-200 bg-white">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex flex-wrap items-center gap-x-2 gap-y-2 text-sm">
+            <span class="text-gray-400 mr-2">继续阅读：</span>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/rag-system.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">RAG与解析</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/customer-service.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">智能客服</a>
+            <a href="#" onclick="parent.loadPage('05-项目底稿/policy-interpretation.html')" class="px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100">政策解读</a>
+        </div>
+    </nav>
+</body>
+</html>

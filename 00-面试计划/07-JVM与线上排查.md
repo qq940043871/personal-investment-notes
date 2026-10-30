@@ -185,11 +185,11 @@ Young GC 太频繁？   → Eden 太小 / 短命对象多
 | 要查什么 | 去哪 |
 |---|---|
 | 四类场景 + 六步 SOP + 工具链 + 实录对照地图 | `生产问题排查/12-生产排查步骤-四类场景与六步SOP.md` |
-| 十类故障的六步作业单（含服务假死 / 日志风暴 / 应急响应 / openGauss 命令） | `生产问题排查/13-故障排查工作台-十类故障六步法.md` |
+| 十类故障的六步作业单（含服务假死 / 日志风暴 / 应急响应 / openGauss 命令） | `生产问题排查/java-architect-troubleshooting-handbook.md` 各章 `x.5 六步作业单` + 第 13–15 章 |
 | 竞价变慢五层定界全链路 | `生产问题排查/09-竞价页面突然变慢-排查实录.md` |
 | 进程消失判定树、处置五步（S-1~3 / M-1~5） | `生产问题排查/10-下载PDF致JVM进程消失-排查实录.md` |
 | 多机房四步定位法 | `生产问题排查/08-多机房多线路网络故障-排查实录.md` |
 | Cookie 5Why 完整推理链 | `生产问题排查/06-Cookie认证失败-5Why根因分析.md` |
-| 11 张排障卡（CPU/OOM/GC/线程池/死锁/慢SQL/Redis/MQ/网关/Arthas/Checklist） | `生产问题排查/java-troubleshooting-quickcards.md` |
-| 12 章主手册、Arthas `tt`/`ognl` + async-profiler 火焰图 | `生产问题排查/java-architect-troubleshooting-handbook.md`、`java-troubleshooting-advanced-arthas-profiler.md` |
-| JVM 内存模型 / GC / 参数教材式表述 | `02-项目底稿/电商项目问题指南/16-JVM调优.md` |
+| 11 类场景速查命令链 + 阈值（CPU/OOM/GC/线程池/死锁/慢SQL/Redis/MQ/网关） | `生产问题排查/java-architect-troubleshooting-handbook.md` 第 1–9 章（每章 `x.1 现象与阈值` + `x.2 命令链` 可直接打印应急） |
+| Arthas `tt`/`ognl` + async-profiler 火焰图 + 联合实战 | 同上，第 10–12 章 |
+| JVM 内存模型 / GC / 参数教材式表述 | `02-现货贸易/电商项目问题指南/16-JVM调优.md` |
