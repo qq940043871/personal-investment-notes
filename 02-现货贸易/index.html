@@ -173,10 +173,20 @@
                                 id="b2b-project-chevron"></i>
                         </a>
                         <div class="submenu ml-8 expanded" id="b2b-project-submenu">
+                            <a href="#" onclick="loadPage('b2b-project/README.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">导读 · 目录与单一信息源</a>
                             <a href="#" onclick="loadPage('b2b-project/overview.html')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目总览</a>
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目总览（富页面）</a>
+                            <a href="#" onclick="loadPage('b2b-project/overview.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">项目总览（文本版）</a>
+                            <a href="#" onclick="loadPage('b2b-project/03-B2B微服务系统架构图-手绘版.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">B2B 微服务架构图（手绘版）</a>
+                            <a href="#" onclick="loadPage('b2b-project/02-5Whys与业务技术映射速查卡.html')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">5Whys 与业务技术映射速查卡</a>
+                            <a href="#" onclick="loadPage('b2b-project/竞价系统-竞价状态不一致问题解决方案.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">竞价状态不一致 · 解决方案</a>
                             <a href="#" onclick="loadPage('b2b-project/data-exchange.html')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">DS 数据中心（防腐层）</a>
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">DS 数据中心 · 架构页</a>
                             <a href="#" onclick="loadPage('b2b-project/middleware-gateway.html')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">中间件网关</a>
                             <a href="#" onclick="loadPage('b2b-project/common-services.html')"
@@ -191,6 +201,64 @@
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">交易模式</a>
                             <a href="#" onclick="loadPage('b2b-project/付款发货场景.html')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">合同履约与资金</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('midservice')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-server mr-3"></i>
+                                <span>网关与容量（midservice）</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200" id="midservice-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="midservice-submenu">
+                            <a href="#" onclick="loadPage('b2b-project/midservice/5万QPS与1000TPS-容量攻坚全案.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">容量攻坚全案（5 万 QPS / 1000 TPS）</a>
+                            <a href="#" onclick="loadPage('b2b-project/midservice/全链路容量压测计划.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">全链路容量压测计划</a>
+                            <a href="#" onclick="loadPage('b2b-project/midservice/HandlerController-网关功能详解.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">HandlerController 网关功能详解</a>
+                            <a href="#" onclick="loadPage('b2b-project/midservice/ToBackController-后台网关与HandlerController对比.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">后台网关 ToBackController 对比</a>
+                            <a href="#" onclick="loadPage('b2b-project/midservice/网关百万并发与协议隔离设计.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">百万并发与协议隔离</a>
+                            <a href="#" onclick="loadPage('b2b-project/midservice/安全防护与熔断限流汇总.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">安全防护与熔断限流</a>
+                            <a href="#" onclick="loadPage('b2b-project/midservice/读接口缓存判断方法.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">读接口缓存判断方法</a>
+                            <a href="#" onclick="loadPage('b2b-project/midservice/协议调用量探针机制设计.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">协议调用量探针机制</a>
+                            <a href="#" onclick="loadPage('b2b-project/midservice/连接池参数配置建议.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">连接池参数配置建议</a>
+                            <a href="#" onclick="loadPage('b2b-project/midservice/慢查询慢服务故障传导分析.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">慢查询 / 慢服务传导</a>
+                            <a href="#" onclick="loadPage('b2b-project/midservice/竞价详情页轮询改造-WebSocket事件驱动方案.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">竞价页轮询改 WebSocket</a>
+                            <a href="#" onclick="loadPage('b2b-project/midservice/Boot改造实录-AI辅助迁移与四轮完善.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">Boot 改造实录</a>
+                        </div>
+                    </div>
+
+                    <div class="nav-item">
+                        <a href="#" onclick="toggleMainMenu('datashare')"
+                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
+                            <div class="flex items-center">
+                                <i class="fas fa-exchange-alt mr-3"></i>
+                                <span>DS 数据中心（dataShare）</span>
+                            </div>
+                            <i class="fas fa-chevron-right transition-transform duration-200" id="datashare-chevron"></i>
+                        </a>
+                        <div class="submenu ml-8" id="datashare-submenu">
+                            <a href="#" onclick="loadPage('b2b-project/dataShare/dataShare-并发能力与缺陷清单.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">并发能力与缺陷清单</a>
+                            <a href="#" onclick="loadPage('b2b-project/dataShare/dataShare-分布式服务能力与瓶颈分析.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">服务端能力与瓶颈深度分析</a>
+                            <a href="#" onclick="loadPage('b2b-project/dataShare/dataShare-SDK网关能力解析.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">SDK 网关能力解析</a>
+                            <a href="#" onclick="loadPage('b2b-project/dataShare/dataShare-worker线程池改造方案.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">worker 线程池改造方案</a>
                         </div>
                     </div>
 
@@ -260,6 +328,8 @@
                             <i class="fas fa-chevron-right transition-transform duration-200" id="arch-decision-chevron"></i>
                         </a>
                         <div class="submenu ml-8" id="arch-decision-submenu">
+                            <a href="#" onclick="loadPage('03-架构决策/README.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">导读 · 目录与单一信息源</a>
                             <a href="#" onclick="loadPage('03-架构决策/00-名词解释与术语速查.md')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">名词解释与术语速查</a>
                             <a href="#" onclick="loadPage('03-架构决策/01-架构方法论与选型设计手册.md')"

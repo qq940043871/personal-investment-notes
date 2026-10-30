@@ -1,9 +1,12 @@
-# dataShare 分布式服务能力 · 深度解读与瓶颈分析
+# dataShare 服务端能力与瓶颈深度分析
 
 > 分析对象：`dataShare-2.6.2`（服务端 159 个类） + `dataShareClientAPI-1.3.4` / `dataShareCommon-1.1.3`（SDK）
 > 消费方：`J_1018_midservice-v1.1.188.228.5`（188 个类 / 46943 行）
 >
-> 本文档所有结论均以源码为准，关键论断附 `文件:行号` 证据。SDK 侧能力清单见同目录 `dataShare-SDK网关能力解析.md`，本文不重复，只聚焦**服务端**与**端到端链路**。
+> 本文档所有结论均以源码为准，关键论断附 `文件:行号` 证据。**三篇分工**：
+> - SDK 侧能力清单 → [`dataShare-SDK网关能力解析.md`](./dataShare-SDK网关能力解析.md)
+> - 缺陷清单、并发上限、改造优先级 → [`dataShare-并发能力与缺陷清单.md`](./dataShare-并发能力与缺陷清单.md)
+> - 本文 → **服务端能力**（三~五章）与**瓶颈机理**（六章），不重复上述两文的条目。
 
 ---
 
@@ -26,9 +29,8 @@
   - [P1 级瓶颈](#p1-级瓶颈)
   - [P2 级瓶颈](#p2-级瓶颈)
   - [瓶颈汇总表](#瓶颈汇总表)
-- [七、缺陷与安全风险清单](#七缺陷与安全风险清单)
-- [八、改造建议与优先级](#八改造建议与优先级)
-- [九、架构评价](#九架构评价)
+- [七、缺陷清单与改造建议（已收口，见另文）](#七缺陷清单与改造建议已收口见另文)
+- [八、架构评价](#八架构评价)
 
 ---
 
@@ -743,95 +745,15 @@ public static Object revert(Object obj) throws Exception {
 
 ---
 
-## 七、缺陷与安全风险清单
+## 七、缺陷清单与改造建议（已收口，见另文）
 
-### 安全问题（严重度高于性能问题）
-
-| # | 问题 | 位置 | 说明 |
-|---|---|---|---|
-| **S1** | **SQL 注入** | `db/load/impl/ProtocolLoadImpl.java:115,125,136` | `"RANDOM_ID='" + key + "'"`、`"SERVER_KEY LIKE '" + key + "%'"` 直接拼接，**无任何校验**。`key` 来自 `T0001fa03/T0001fa04` 请求体的 `PROTOCOL` 字段 ⇒ **外部输入直达 SQL 拼接** |
-| **S2** | **Redis 密码明文回吐** | `T00010030_GetRedisService.java:27` | `reJson.put("USERNAME", SystemRedisConfig.AUTH)`——通过协议直接返回 Redis AUTH 密码 |
-| **S3** | **解密后敏感参数打进 INFO 日志** | `HandlerController.java:245,271` | 完整业务参数（含密码、身份证、资金账号）落盘，每请求 2 条 |
-| **S4** | **AES-CBC 用 Key 当 IV** | `HandlerController.java:321`、`:1232` | `aesKey.getBytes("UTF-8")` 同时作 Key 与 IV，不符合 CBC 语义 |
-| **S5** | **出参脱敏 `indexOf` 子串匹配** | `HandlerController.java:1790,1807`；`ToBackController.java:346` | 误命中 + 漏脱敏 |
-| **S6** | **SQL 关键字脱敏用 `contains`** | `HandlerController.java:1193` | 误判（文案含 "update" 被吞）+ 漏判（`INTO`/`DELETE`/`EXEC` 不在列表） |
-| **S7** | **`ProtocolLoadImpl` 的 `getProcotolListByOne` 等无参数化** | 对比 `PubConfigServiceImpl.java:38-51` 的 `:PARAM` 写法 | 后者有白名单兜底，前者没有 |
-
-> 注：`PubConfigServiceImpl` 的 `cfgType`/`sysId` 也有拼接，但有 `Pattern.compile("^[a-zA-Z0-9_,]+$")` 白名单（`:27`）兜底。
-
-### 功能缺陷
-
-| # | 问题 | 位置 |
-|---|---|---|
-| F1 | 退订命令号与订阅撞车：类名 `DS0001fa10Protocol` 暗示 `0001fa10`，但 `getSubLowProtocol()` 返回 `52`(0x34)，与订阅命令号完全相同，只能靠 body 区分 | SDK `DS0001fa10Protocol.java:31` vs `DS00010034Protocol.java:35` |
-| F2 | `DSBean` 构造函数 Bug：`this.userPswd = "test@123"` 误写成 `this.userName`，`getUserPswd()` 永远返回 null | SDK `bean/DSBean.java:25-26` |
-| F3 | `ShardedReidsPool.getIntValue` 硬编码读小写 `"key"`，与传入的大写字段名不匹配 | SDK `redis/ShardedReidsPool.java:56` |
-| F4 | `hset` 硬编码 TTL = 10800 秒 | SDK `redis/RedisTools.java:317` |
-| F5 | ansyKey 三次归还（try/catch/finally），靠 `LinkedBlockingQueue.offer` 幂等兜住 | SDK `thread/HandleAnsyRequestThread.java:52,57,64` |
-| F6 | `removeKeys` 中 `System.out.println(infoKeys.length)` | SDK `redis/RedisTools.java:267` |
-| F7 | `InterfaceBean.java:18` 的 `if (Modifier.isInterface(modifiers));` 是**空语句**，接口性检查形同虚设 | `server/asm/bean/InterfaceBean.java:18` |
-| F8 | `CommandParseUtils.getSringCommand` 是 `getCommand` 的非静态重复实现，方法名拼写错误，**无调用者** | `service/nio/core/CommandParseUtils.java:19-29` |
-| F9 | `MQTopicServiceImpl.putTopcNameToRedis` 重复归还同一 jedis 两次 | `db/update/impl/MQTopicServiceImpl.java:85,91` |
-| F10 | `RedisPool`（非分片）整个死代码 | `redis/RedisPool.java` |
-| F11 | `T0001fa01`（Suspended）与 `T0001fa02`（Recovery）代码逐行相同，**都不实现挂起/恢复** | `service/nio/impl/control/` |
-| F12 | `T0001fa03` 的 connType 3/4 分支空实现 → **HTTP / WebService 类型无法通过 reload 生效** | `T0001fa03_ReloadProtocoldService.java:69-70` |
-| F13 | 协议号防伪开关失效：`if/else if` 写反，开关为 Y 和不为 Y 走**完全相同**的逻辑 | `HandlerController.java:501-522` |
-| F14 | 攻击检测是死代码：`MtradeInterceptor.preHandle` 直接 `return true`，`checkAttack()` 无调用方 | `MtradeInterceptor.java:42` |
-| F15 | `ServiceConfig.Security.Api.WhiteApi.apis` 是**死配置** —— `whiteApis` 字段只写不读 | `HandlerController.java:1112` |
-| F16 | `@HandlerRule` 注解**运行时不参与路由** —— 真正的绑定在外部 `api.json`（不在源码树）。形成**双重事实源** | `HandlerController.java:2137-2193` |
+> 缺陷与安全风险（原 S1–S7 / F1–F16）、改造优先级（原“立即 / 短期 / 中期”三档）已统一收口到 [`dataShare-并发能力与缺陷清单.md`](./dataShare-并发能力与缺陷清单.md)：A–E 类 57 项缺陷、全局串行点全表、各级资源上限实测方法、三档整改清单与“缺陷 → 修复动作”对应关系。
+>
+> 原第七章内容与该文 D/E 类及第三部分同源且更简，已删除以免双份维护；本文只保留**服务端能力**（三~五章）与**瓶颈机理**（六章）。
 
 ---
 
-## 八、改造建议与优先级
-
-### 立即（不改架构，直接提 QPS）
-
-| # | 动作 | 位置 | 预期收益 |
-|---|---|---|---|
-| 1 | 去掉 3 处 `static synchronized`：`getClient()` → `volatile`；`_genSerialLocal` → `ThreadLocal`+`AtomicLong`；`getTokenId` → 去锁 | `DSUtils.java:35`、`SerialService.java:31`、`ServiceUtils.java:169` | 消除每请求的 monitor 争用 |
-| 2 | `SocketClientConnectManager` 去掉类级 `static synchronized`，改为**按 clientFlag 分段锁**；`Thread.sleep(1)` 自旋换 `synchronized`/`CountDownLatch`；初始化改 `putIfAbsent` | `SocketClientConnectManager.java:28-63` | **消除全局串行点 + 消除死锁窗口** |
-| 3 | `LockUtils.lockMap` 改 `ConcurrentHashMap.computeIfAbsent`，并加 Caffeine 过期清理 | `HandlerController.java:1735-1740` | 消除互斥失效 + 内存泄漏 |
-| 4 | 6 个无锁 Map 改 `ConcurrentHashMap`（`SubscribeCache` 改 `ConcurrentSkipListMap` 或同步包装） | 见 P1-1 | 消除数据竞争 |
-| 5 | `handlerRouters` / `apiConfig` / `KeyMapper` 三处线性扫描改 HashMap 双向索引 | `HandlerController.java:622,749,798`；`KeyMapper.java:113` | 消除每请求 O(n)/O(1745) |
-| 6 | `Validate` 27 处 `.matches()` 改 `static final Pattern` | `utils/Validate.java` | 消除重复编译 |
-| 7 | `SensitivewordFilter.getInstance()` 改真单例 + 定时刷新；命中即 break | `SensitivewordFilter.java:26-29,54-65` | 消除每请求 Trie 重建 |
-| 8 | 删/降级 `HandlerController.java:245,271` 两条 INFO 日志 | 同上 | 安全 + IO |
-| 9 | `HttpClientUtils` 改单例 `CloseableHttpClient` + 连接池复用 | `HttpClientUtils.java` ×5 | 消除连接泄漏 |
-
-### 短期
-
-| # | 动作 | 位置 |
-|---|---|---|
-| 10 | **接线 `PubConfigCache`**（5s TTL 已就绪），`T00010101` 改读缓存 | `param/cache/PubConfigCache.java` |
-| 11 | `getTopicName` 加进程内 `ConcurrentHashMap` 本地缓存（Redis/DB 之上） | `MQTopicServiceImpl.java:27-48` |
-| 12 | 分布式锁改 `SET key token NX EX ttl` 原子命令；value 存 UUID；unlock 用 Lua 校验 token 后删除 | `T00010040/41/42/43` |
-| 13 | `CxgpHandler.get2007_X` 加本地缓存（支撑 36 个 GP9xxx 公开协议） | `CxgpHandler.java:102` |
-| 14 | `checkLoginType` 的 LOGINTYPE 结果随 Token 缓存（Token 已有 `EXTRA_DATA` 机制） | `HandlerController.java:1605` |
-| 15 | `doAuthRtn` / `func_id` 的 `indexOf` 改 `Set.contains` | `HandlerController.java:1790`；`ToBackController.java:346` |
-| 16 | `DSUtils.callSocket` 去掉 `jo.toString()` → `JSONUtils.toMap` 二次序列化 | `DSUtils.java:247,253` |
-| 17 | `DSUtils.revert` 改 `ThreadLocal` 复用 ObjectStream，或在 dataShare 侧改 JSON/Hessian | `DSUtils.java:143` |
-| 18 | `1018_MONITOR_DATA` 加 `ltrim`；审计 MQ 发送移到独立线程池 | `HandlerController.java:886,944` |
-| 19 | `OpenHandler` 的 `Thread.sleep` 改异步轮询 | `OpenHandler.java:404` |
-| 20 | `ProtocolLoadImpl` 的 SQL 改命名参数；`T00010030` 停止回吐 Redis 密码 | `ProtocolLoadImpl.java:115,125,136`；`T00010030:27` |
-| 21 | 消费线程池改有界；`KrackleConsumer` 的 1MB buffer 提到循环外 | `SubscribeThreadUtils.java:8`；`KrackleConsumer.java:162,175` |
-| 22 | 敏感词、静态数据加采样/截断；`T0001fc02` 加管理端鉴权 | `T0001fc02_setDetailStatusService.java:38` |
-
-### 中期（架构）
-
-| # | 动作 |
-|---|---|
-| 23 | **引入 dataShare 分布式锁（`T00010040`）替换本地 `ReentrantLock`**，解决多实例一致性 |
-| 24 | 抽取 `AbstractApiGateway` 模板 + `GatewayFilter` 责任链，消除 `HandlerController`(2581行) 与 `ToBackController`(1526行) 的 4107 行双份实现 |
-| 25 | 统一 JSON 库，废弃 `net.sf.json` |
-| 26 | 消除 `plzg`/`PLZBzg`/`xht`/`xhtV5` 四套复制粘贴（`DSCommon` 中 `PLZG_*`/`PLZGZB_*`/`XHV5_*`/`H_IFACE_*` 四套 11 个常量一一对应，仅协议号第 2 字节不同） |
-| 27 | 协议配置热更新：`api.json` 接到配置中心（Apollo/Nacos），避免 `BeanFactory.clear()` 导致的热部署状态不一致 |
-| 28 | 明确 `@HandlerRule` 与 `api.json` 的**单一事实源**（建议以注解为源，启动时生成 `api.json`） |
-| 29 | 消息可靠性：补 ack/重试/DLQ，offset 改为**推送确认后**再记录，明确至少一次语义 + 业务幂等契约 |
-| 30 | 补齐真正的服务治理：健康检查、熔断器、限流、`isSuccessRun` 标记接入流量决策 |
-
----
-
-## 九、架构评价
+## 八、架构评价
 
 ### 值得肯定的设计
 

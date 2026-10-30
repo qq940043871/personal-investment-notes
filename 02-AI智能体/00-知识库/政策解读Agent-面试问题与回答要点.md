@@ -567,7 +567,7 @@ L0 接入层（鉴权/会话/限流）
 
 ## 3. 与吴师兄 Agent 项目面试题 25 道的对照映射
 
-> 本地题库：`02-AI智能体/04-面试/wushixiong-agent/`，索引见 `02-AI智能体/04-面试/wushixiong-agent/00-索引.md`。
+> 本地题库：`02-AI智能体/00-知识库/Agent/`（保留 5 篇），索引见 `02-AI智能体/00-知识库/Agent/00-索引.md`。
 > 用法：**先按映射找到对应题，用本项目的真实事实去回答**，而不是背它的通用答案。
 
 | # | 题库题目 | 本项目的对应事实 | 优先度 |
@@ -646,21 +646,18 @@ L0 接入层（鉴权/会话/限流）
 ## 附：文档地图
 
 ```
-02-AI智能体/04-面试/
+02-AI智能体/00-知识库/
 ├── 政策解读Agent-面试问题与回答要点.md        ← 本文（项目锚定版）
 ├── 00-RAG面试实战手册.md                      ← RAG 25 题 × 项目对照
-└── wushixiong-agent/
-    ├── 00-索引.md                             ← 25 道题索引
-    ├── 01-agent-vs-workflow-decision.md      ← ★ 选型题，与 A4 对照
-    ├── 02-agent-planning-prompt-vs-code.md   ← ★ 与 B2 / C6 对照
-    ├── 05-agent-reflection-critic-quality-gate.md ← 与 B4 对照
-    ├── 11-agent-tool-three-layer-success.md  ← 与 G1 对照
-    ├── 12-agent-tool-timeout-retry-fallback.md ← 与 G4 对照
-    ├── 16-agent-memory-write-lifecycle.md    ← 与 E4 对照
-    ├── 17-agent-memory-relevance-recency-importance.md ← 与 D7 对照
-    ├── 18-agent-memory-storage-schema.md     ← 与 D4 对照
-    ├── 24-agent-trace-replay-observability.md ← 与 H3 对照
-    └── 25-agent-evaluation-task-trajectory-cost.md ← 与 H1 对照
+├── 01-语料索引.md                            ← 291 篇 RAG 语料清单（含 URL）
+├── Agent/                                    ← 吴师兄 Agent 题库（保留 5 篇 / 原 25 篇）
+│   ├── 00-索引.md                            ← 5 道题的索引与保留判据
+│   ├── 01-agent-vs-workflow-decision.md      ← ★ 选型题，与 A4 对照
+│   ├── 03-react-loop-stop-conditions.md      ← 死循环与停止条件
+│   ├── 08-function-calling-tool-result-loop.md ← 工具结果循环，与 G1 对照
+│   ├── 13-agent-side-effect-safety-idempotency.md ← 写操作安全，与 G4 对照
+│   └── 14-mcp-vs-function-calling-agent-tools.md  ← MCP 定位
+└── RAG/                                      ← 语料 13 桶（01 成品 + 02–13 原料）
 
 02-AI智能体/03-业务设计/
 ├── 政策解读Agent-通用设计.md                  ← 通用底座（六层两闸门 · 18 步 · §12 判定清单）

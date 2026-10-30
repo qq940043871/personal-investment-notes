@@ -166,7 +166,7 @@
                         <a href="#" onclick="loadPage('00-导航.md')"
                             class="flex items-center px-4 py-3 text-gray-700 hover:text-primary">
                             <i class="fas fa-compass mr-3"></i>
-                            <span>总导航 · 六层结构</span>
+                            <span>总导航 · 五层结构</span>
                         </a>
                     </div>
 
@@ -190,6 +190,8 @@
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">Harness 详细设计（六机制）</a>
                             <a href="#" onclick="loadPage('01-认知框架/Agent-Harness-LLM报文全链路拆解.md')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">报文全链路拆解</a>
+                            <a href="#" onclick="loadPage('01-认知框架/AI工程能力补强手册.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">AI 工程能力补强手册</a>
                             <a href="#" onclick="loadPage('01-认知框架/Harness-功能架构图.html')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">Harness 功能架构图</a>
                             <a href="#" onclick="loadPage('01-认知框架/Harness-传统工程对应关系图.html')"
@@ -209,8 +211,6 @@
                         <div class="submenu ml-8" id="platform-submenu">
                             <a href="#" onclick="loadPage('02-平台工程/Dify快速深入指南.md')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">Dify 快速深入指南（权威源）</a>
-                            <a href="#" onclick="loadPage('02-平台工程/Dify速读.html')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">Dify 速读（HTML 速览）</a>
                             <a href="#" onclick="loadPage('02-平台工程/Dify-RAG关键点详解.md')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">Dify RAG 16 卡点</a>
                             <a href="#" onclick="loadPage('02-平台工程/minerU复杂PDF识别优化方案与选型分析.md')"
@@ -277,45 +277,26 @@
                         </div>
                     </div>
 
-                    <div class="nav-item">
-                        <a href="#" onclick="toggleMainMenu('landing')"
-                            class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
-                            <div class="flex items-center">
-                                <i class="fas fa-brain mr-3"></i>
-                                <span>06 大模型企业落地</span>
-                            </div>
-                            <i class="fas fa-chevron-right transition-transform duration-200" id="landing-chevron"></i>
-                        </a>
-                        <div class="submenu ml-8" id="landing-submenu">
-                            <a href="#" onclick="loadPage('06-大模型企业落地/00_大模型企业落地总览.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">落地总览 · 参与边界</a>
-                            <a href="#" onclick="loadPage('06-大模型企业落地/02_商品知识库与智能检索.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">商品知识库与智能检索</a>
-                            <a href="#" onclick="loadPage('06-大模型企业落地/09_技术选型总览.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">技术选型复盘</a>
-                        </div>
-                    </div>
-
                     <div class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4">表达层</div>
 
                     <div class="nav-item">
-                        <a href="#" onclick="toggleMainMenu('interview')"
+                        <a href="#" onclick="toggleMainMenu('knowledge')"
                             class="flex items-center justify-between px-4 py-3 text-gray-700 hover:text-primary">
                             <div class="flex items-center">
                                 <i class="fas fa-comments mr-3"></i>
-                                <span>04 面试</span>
+                                <span>00 知识库（面试 · 语料）</span>
                             </div>
-                            <i class="fas fa-chevron-right transition-transform duration-200" id="interview-chevron"></i>
+                            <i class="fas fa-chevron-right transition-transform duration-200" id="knowledge-chevron"></i>
                         </a>
-                        <div class="submenu ml-8" id="interview-submenu">
-                            <a href="#" onclick="loadPage('04-面试/00-RAG面试实战手册.md')"
+                        <div class="submenu ml-8" id="knowledge-submenu">
+                            <a href="#" onclick="loadPage('00-知识库/00-RAG面试实战手册.md')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">RAG 面试实战手册（25 题）</a>
-                            <a href="#" onclick="loadPage('04-面试/政策解读Agent-面试问题与回答要点.md')"
+                            <a href="#" onclick="loadPage('00-知识库/政策解读Agent-面试问题与回答要点.md')"
                                 class="block px-4 py-2 text-gray-600 hover:text-primary">政策解读 Agent 问答</a>
-                            <a href="#" onclick="loadPage('04-面试/wushixiong-agent/00-索引.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">吴师兄 Agent 题库</a>
-                            <a href="#" onclick="loadPage('04-面试/语料/01-语料索引.md')"
-                                class="block px-4 py-2 text-gray-600 hover:text-primary">RAG 语料索引</a>
+                            <a href="#" onclick="loadPage('00-知识库/Agent/00-索引.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">吴师兄 Agent 题库（5 篇）</a>
+                            <a href="#" onclick="loadPage('00-知识库/01-语料索引.md')"
+                                class="block px-4 py-2 text-gray-600 hover:text-primary">RAG 语料索引（291 篇）</a>
                         </div>
                     </div>
                 </nav>
