@@ -3162,11 +3162,11 @@ var FACE_EXP_CATEGORIES = [
   }
 ];
 
-// 备战主题数据（04-备战手册/ 下除八股题库外的分类；03-技术真题见题库页）
+// 备战主题数据（01-备战手册/ 下除八股题库外的分类；03-技术真题见题库页）
 var PREP_CATEGORIES = [
   { key: 'lib', title: '资料库总览', icon: 'layers', color: 'cyan',
     files: [
-      { name: '00-资料库总览.md（全库目录地图 + 权威源分工）', type: 'md', path: '04-备战手册/00-资料库总览.md' }
+      { name: '00-资料库总览.md（全库目录地图 + 权威源分工）', type: 'md', path: '01-备战手册/00-资料库总览.md' }
     ]
   },
   { key: 'main', title: '00 面试计划（10 件）', icon: 'layers', color: 'warm',
@@ -3185,7 +3185,7 @@ var PREP_CATEGORIES = [
   },
   { key: 'biz', title: '01 业务与价值', icon: 'briefcase', color: 'green',
     files: [
-      { name: '00-平台定位与价值总纲.md（定位 × 价值统一口径）', type: 'md', path: '04-备战手册/00-平台定位与价值总纲.md' },
+      { name: '01-平台定位与价值总纲.md（定位 × 价值统一口径）', type: 'md', path: '02-现货贸易/01-平台定位与价值总纲.md' },
       { name: '01-业务价值与客户运营.md', type: 'md', path: '02-现货贸易/01-业务与价值/01-业务价值与客户运营.md' },
       { name: '02-平台定位与客户分析.html', type: 'html', path: '02-现货贸易/01-业务与价值/02-平台定位与客户分析.html' },
       { name: '02-业务全链路场景手册.md', type: 'md', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
@@ -3210,22 +3210,22 @@ var PREP_CATEGORIES = [
     files: [
       { name: '00-名词解释与术语速查.md（WAL / 死信队列 / Saga / 2PC / TCC）', type: 'md', path: '02-现货贸易/03-架构决策/00-名词解释与术语速查.md' },
       { name: '01-架构方法论与选型设计手册.md（上篇方法论 · 中篇建设框架 · 下篇技术选型）', type: 'md', path: '02-现货贸易/03-架构决策/01-架构方法论与选型设计手册.md' },
-      { name: '02-异构架构策略与真实系统叙事手册.md', type: 'md', path: '02-现货贸易/03-架构决策/02-异构架构策略与真实系统叙事手册.md' },
-      { name: '03-平台化治理与多租户架构手册.md', type: 'md', path: '02-现货贸易/03-架构决策/03-平台化治理与多租户架构手册.md' },
+      { name: '02A-异构架构策略与真实系统叙事手册.md', type: 'md', path: '02-现货贸易/03-架构决策/02A-异构架构策略与真实系统叙事手册.md' },
+      { name: '03A-平台化治理与多租户架构手册.md', type: 'md', path: '02-现货贸易/03-架构决策/03A-平台化治理与多租户架构手册.md' },
       { name: '04-现货交易供应链-难点与解决方案速查手册.md', type: 'md', path: '02-现货贸易/03-架构决策/04-现货交易供应链-难点与解决方案速查手册.md' },
       { name: '05-Saga编排器详细介绍.md', type: 'md', path: '02-现货贸易/03-架构决策/05-Saga编排器详细介绍.md' },
-      { name: '06-Cookie认证失败-5Why根因分析.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/06-Cookie认证失败-5Why根因分析.md' },
-      { name: '07-Cookie认证失败-5Why根因分析.slides.pptx', type: 'pptx', path: '02-现货贸易/03-架构决策/生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx' },
+      { name: '06-Cookie认证失败-5Why根因分析.md', type: 'md', path: '02-现货贸易/04-生产问题排查/06-Cookie认证失败-5Why根因分析.md' },
+      { name: '07-Cookie认证失败-5Why根因分析.slides.pptx', type: 'pptx', path: '02-现货贸易/04-生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx' },
       { name: '07-B2B合同中心vsB2C订单中心-区别分析.md', type: 'md', path: '02-现货贸易/03-架构决策/07-B2B合同中心vsB2C订单中心-区别分析.md' },
       { name: '08-Dify与自研业务中台-技术选型复盘.md', type: 'md', path: '02-现货贸易/03-架构决策/08-Dify与自研业务中台-技术选型复盘.md' },
       /* 09-建设框架、10-技术选型方案 已合并进 01-架构方法论与选型设计手册（中篇/下篇） */
-      { name: '08-多机房多线路网络故障-排查实录.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/08-多机房多线路网络故障-排查实录.md' },
-      { name: '09-竞价页面突然变慢-排查实录.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/09-竞价页面突然变慢-排查实录.md' },
-      { name: '10-下载PDF致JVM进程消失-排查实录.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
-      { name: '11-网关扩容打穿DB-性能开发规范.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/11-网关扩容打穿DB-性能开发规范.md' },
-      { name: '12-生产排查步骤-四类场景与六步SOP.md', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/12-生产排查步骤-四类场景与六步SOP.md' },
+      { name: '08-多机房多线路网络故障-排查实录.md', type: 'md', path: '02-现货贸易/04-生产问题排查/08-多机房多线路网络故障-排查实录.md' },
+      { name: '09-竞价页面突然变慢-排查实录.md', type: 'md', path: '02-现货贸易/04-生产问题排查/09-竞价页面突然变慢-排查实录.md' },
+      { name: '10-下载PDF致JVM进程消失-排查实录.md', type: 'md', path: '02-现货贸易/04-生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
+      { name: '11-网关扩容打穿DB-性能开发规范.md', type: 'md', path: '02-现货贸易/04-生产问题排查/11-网关扩容打穿DB-性能开发规范.md' },
+      { name: '12-生产排查步骤-四类场景与六步SOP.md', type: 'md', path: '02-现货贸易/04-生产问题排查/12-生产排查步骤-四类场景与六步SOP.md' },
 
-      { name: 'java-architect-troubleshooting-handbook.md（Java 排障主手册 · 合并版：速查+下钻+Arthas/火焰图）', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/java-architect-troubleshooting-handbook.md' },
+      { name: 'java-architect-troubleshooting-handbook.md（Java 排障主手册 · 合并版：速查+下钻+Arthas/火焰图）', type: 'md', path: '02-现货贸易/04-生产问题排查/java-architect-troubleshooting-handbook.md' },
       { name: '11-midservice网关职责与治理设计.md', type: 'md', path: '02-现货贸易/03-架构决策/11-midservice网关职责与治理设计.md' },
       { name: '11-midservice网关架构图.html', type: 'html', path: '02-现货贸易/03-架构决策/11-midservice网关架构图.html' },
       { name: '12-跨系统调用一致性方案.md', type: 'md', path: '02-现货贸易/03-架构决策/12-跨系统调用一致性方案.md' },
@@ -3243,31 +3243,29 @@ var PREP_CATEGORIES = [
       { name: '10-Drools规则引擎与交收模式.md', type: 'md', path: '02-现货贸易/03-架构决策/10-Drools规则引擎与交收模式.md' }
     ]
   },
-  { key: 'mgmt', title: '05 技术管理', icon: 'users', color: 'purple',
+  { key: 'mgmt', title: '04 技术管理（根级）', icon: 'users', color: 'purple',
     files: [
-      { name: '00-技术管理索引.md', type: 'md', path: '04-备战手册/05-技术管理/00-技术管理索引.md' },
-      { name: '01-技术整改十一项与落地.html', type: 'html', path: '04-备战手册/05-技术管理/01-技术整改十一项与落地.html' },
-      { name: '02-技术管理补充件.md', type: 'md', path: '04-备战手册/05-技术管理/02-技术管理补充件.md' },
-      { name: '12-面试自证与训练手册.md（§八 研发管理自证素材）', type: 'md', path: '04-备战手册/06-面试准备/12-面试自证与训练手册.md' },
-      { name: '06-面试话术与背诵手册.md（管理类高频题 6 问）', type: 'md', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md' },
-          { name: '02-技术经理成长手册.md（成长方法论总纲：Π型能力/站位诊断/6个月执行/外部路径）', type: 'md', path: '04-备战手册/01-个人简历/02-技术经理成长手册.md' },
-      { name: '03-技术情报收集与跨部门沟通手册.md', type: 'md', path: '04-备战手册/01-个人简历/03-技术情报收集与跨部门沟通手册.md' }
+      { name: '00-技术管理索引.md', type: 'md', path: '04-技术管理/00-技术管理索引.md' },
+      { name: '01-技术整改十一项与落地.html', type: 'html', path: '04-技术管理/01-技术整改十一项与落地.html' },
+      { name: '02-技术管理补充件.md', type: 'md', path: '04-技术管理/02-技术管理补充件.md' },
+      { name: '02-面试自证与训练手册.md（§八 研发管理自证素材）', type: 'md', path: '01-备战手册/02-面试准备/02-面试自证与训练手册.md' },
+      { name: '01-面试话术与背诵手册.md（管理类高频题 6 问）', type: 'md', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md' },
+          { name: '02-技术经理成长手册.md（成长方法论总纲：Π型能力/站位诊断/6个月执行/外部路径）', type: 'md', path: '01-备战手册/01-个人简历/02-技术经理成长手册.md' },
+      { name: '03-技术情报收集与跨部门沟通手册.md', type: 'md', path: '01-备战手册/01-个人简历/03-技术情报收集与跨部门沟通手册.md' }
     ]
   },
-  { key: 'strategy', title: '06 面试准备', icon: 'zap', color: 'green',
+  { key: 'strategy', title: '02 面试准备', icon: 'zap', color: 'green',
     files: [
-      { name: '12-面试自证与训练手册.md', type: 'md', path: '04-备战手册/06-面试准备/12-面试自证与训练手册.md' },
-      { name: '02-技术栈全景图.md（全景图 · 面试题库 · 复习手册）', type: 'md', path: '04-备战手册/06-面试准备/02-技术栈全景图.md' },
-      /* 03-技术栈深度面试题库、04-技术复习综合手册 已合并进 02-技术栈全景图（第二/第三部分） */
-      { name: '06-面试话术与背诵手册.md', type: 'md', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md' },
-      { name: '06-面试话术与背诵手册.html', type: 'html', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.html' },
-      { name: '12-面试自证与训练手册.md', type: 'md', path: '04-备战手册/06-面试准备/12-面试自证与训练手册.md' },
+      { name: '02B-技术栈全景图.md（全景图 · 面试题库 · 复习手册）', type: 'md', path: '02-现货贸易/03-架构决策/02B-技术栈全景图.md' },
+      /* 03-技术栈深度面试题库、04-技术复习综合手册 已合并进 02B-技术栈全景图（第二/第三部分） */
+      { name: '01-面试话术与背诵手册.md', type: 'md', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md' },
+      { name: '01-面试话术与背诵手册.html', type: 'html', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.html' },
+      { name: '02-面试自证与训练手册.md', type: 'md', path: '01-备战手册/02-面试准备/02-面试自证与训练手册.md' },
       { name: '02-AI智能体/01-认知框架/AI工程能力补强手册.md', type: 'md', path: '02-AI智能体/01-认知框架/AI工程能力补强手册.md' },
-      { name: '17-JavaGuide四周计划压缩版-14天执行表.md', type: 'md', path: '04-备战手册/06-面试准备/17-JavaGuide四周计划压缩版-14天执行表.md' },
-      { name: '18-系统架构叙事手册.md', type: 'md', path: '04-备战手册/06-面试准备/18-系统架构叙事手册.md' }
+      { name: '03-系统架构叙事手册.md', type: 'md', path: '01-备战手册/02-面试准备/03-系统架构叙事手册.md' }
     ]
   }
-  /* 个人简历（04-备战手册/01-个人简历/）不再作为工作台入口，简历 / 网申 / 面试介绍 PPT 系列不在此登记 */
+  /* 个人简历（01-备战手册/01-个人简历/）不再作为工作台入口，简历 / 网申 / 面试介绍 PPT 系列不在此登记 */
 ];
 
 /* ===== 案例 · 场景页数据（五类客户 / 十个业务场景 / 资料清单） ===== */
@@ -3325,8 +3323,8 @@ var CASE_GROUPS = [
     { name: '05-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-现货贸易/01-业务与价值/05-业务痛点与系统解决方案-架构详解.md' },
     { name: '09-期现结合业务实现思路.md（基差 / 套保，对应晔龙）', type: 'md', path: '02-现货贸易/01-业务与价值/09-期现结合业务实现思路.md' },
     { name: '01-业务价值与客户运营.md', type: 'md', path: '02-现货贸易/01-业务与价值/01-业务价值与客户运营.md' },
-    { name: '00-平台定位与价值总纲.md（原产品定位 / 业务价值收口）', type: 'md', path: '04-备战手册/00-平台定位与价值总纲.md' },
-    { name: '04-快速通览一页纸简报.html', type: 'html', path: '04-备战手册/01-个人简历/04-快速通览一页纸简报.html' }
+    { name: '01-平台定位与价值总纲.md（原产品定位 / 业务价值收口）', type: 'md', path: '02-现货贸易/01-平台定位与价值总纲.md' },
+    { name: '06-快速通览一页纸简报.html', type: 'html', path: '01-备战手册/01-个人简历/06-快速通览一页纸简报.html' }
   ] }
 ];
 
@@ -3334,12 +3332,12 @@ var CASE_GROUPS = [
 
 // 今日任务种子数据
 var TODAY_TASKS_SEED = [
-  { title: '背熟 30 秒自我介绍（第一击）', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
-  { title: '脱手画四层架构，讲 2 分钟（第二击）', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
+  { title: '背熟 30 秒自我介绍（第一击）', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
+  { title: '脱手画四层架构，讲 2 分钟（第二击）', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
   { title: '复述第 4 步：客户买单的四个死结', category: 'prep', tag: '备战', path: '02-现货贸易/01-业务与价值/05-业务痛点与系统解决方案-架构详解.md', done: false },
-  { title: '默写关键数字 6 个', category: 'prep', tag: '备战', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
-  { title: '口述一个成果：问题→方案→结果', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false },
-  { title: '自查 4 条禁用语录，说了就改口', category: 'mock', tag: '口述', path: '04-备战手册/06-面试准备/06-面试话术与背诵手册.md', done: false }
+  { title: '默写关键数字 6 个', category: 'prep', tag: '备战', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
+  { title: '口述一个成果：问题→方案→结果', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
+  { title: '自查 4 条禁用语录，说了就改口', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false }
 ];
 
 /* ===== SVG 图标库 ===== */
@@ -3805,8 +3803,8 @@ var SPOT_GROUPS = [
   { title: '架构决策', icon: 'layers', files: [
     { name: '名词解释与术语速查', type: 'md', path: '02-现货贸易/03-架构决策/00-名词解释与术语速查.md' },
     { name: '架构方法论与选型设计手册', type: 'md', path: '02-现货贸易/03-架构决策/01-架构方法论与选型设计手册.md' },
-    { name: '异构架构策略与真实系统叙事', type: 'md', path: '02-现货贸易/03-架构决策/02-异构架构策略与真实系统叙事手册.md' },
-    { name: '平台化治理与多租户架构', type: 'md', path: '02-现货贸易/03-架构决策/03-平台化治理与多租户架构手册.md' },
+    { name: '异构架构策略与真实系统叙事', type: 'md', path: '02-现货贸易/03-架构决策/02A-异构架构策略与真实系统叙事手册.md' },
+    { name: '平台化治理与多租户架构', type: 'md', path: '02-现货贸易/03-架构决策/03A-平台化治理与多租户架构手册.md' },
     { name: '现货交易供应链六大难点速查', type: 'md', path: '02-现货贸易/03-架构决策/04-现货交易供应链-难点与解决方案速查手册.md' },
     { name: 'Saga 编排器', type: 'md', path: '02-现货贸易/03-架构决策/05-Saga编排器详细介绍.md' },
     { name: '合同中心 vs 订单中心', type: 'md', path: '02-现货贸易/03-架构决策/07-B2B合同中心vsB2C订单中心-区别分析.md' },
@@ -3818,76 +3816,81 @@ var SPOT_GROUPS = [
     { name: '跨系统调用一致性方案', type: 'md', path: '02-现货贸易/03-架构决策/12-跨系统调用一致性方案.md' },
     { name: 'C 核心单线程内存一致性', type: 'md', path: '02-现货贸易/03-架构决策/13-C核心单线程内存一致性设计.md' },
     { name: 'DS 数据中心 C↔Java 桥接', type: 'md', path: '02-现货贸易/03-架构决策/15-DS数据交换中心-C-Java异构桥接设计.md' },
+    { name: '技术栈全景图', type: 'md', path: '02-现货贸易/03-架构决策/02B-技术栈全景图.md' },
+    { name: '机制图 · 本地表双通道机制', type: 'html', path: '02-现货贸易/03-架构决策/12-图-本地表双通道机制图.html' },
+    { name: '机制图 · 待发送表状态机', type: 'html', path: '02-现货贸易/03-架构决策/12-图-待发送表状态机.html' },
+    { name: '机制图 · 确认收货主链路时序', type: 'html', path: '02-现货贸易/03-架构决策/12-图-确认收货主链路时序图.html' },
+    { name: '机制图 · 协调平面与数据平面', type: 'html', path: '02-现货贸易/03-架构决策/13-图-协调平面与数据平面对照图.html' },
+    { name: '机制图 · C 核心热备一致性', type: 'html', path: '02-现货贸易/03-架构决策/13-图-C核心热备一致性机制图.html' },
+    { name: '机制图 · 区块链一致性同构', type: 'html', path: '02-现货贸易/03-架构决策/14-区块链架构与一致性同构对照图.html' },
+    { name: '机制图 · DS 双通道流水线', type: 'html', path: '02-现货贸易/03-架构决策/15-图-DS数据交换中心双通道流水线.html' },
     { name: '平台五层架构全景图', type: 'html', path: '02-现货贸易/03-架构决策/16-平台五层架构全景图.html' }
   ] },
   { title: '生产问题排查', icon: 'server', files: [
-    { name: '四类场景与六步 SOP', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/12-生产排查步骤-四类场景与六步SOP.md' },
-    { name: 'Cookie 认证失败 5Why', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/06-Cookie认证失败-5Why根因分析.md' },
-    { name: '多机房多线路网络故障', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/08-多机房多线路网络故障-排查实录.md' },
-    { name: '竞价页面突然变慢', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/09-竞价页面突然变慢-排查实录.md' },
-    { name: '下载 PDF 致 JVM 进程消失', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
-    { name: '网关扩容打穿 DB', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/11-网关扩容打穿DB-性能开发规范.md' },
-    { name: 'Java 排障主手册', type: 'md', path: '02-现货贸易/03-架构决策/生产问题排查/java-architect-troubleshooting-handbook.md' }
+    { name: '四类场景与六步 SOP', type: 'md', path: '02-现货贸易/04-生产问题排查/12-生产排查步骤-四类场景与六步SOP.md' },
+    { name: 'Cookie 认证失败 5Why', type: 'md', path: '02-现货贸易/04-生产问题排查/06-Cookie认证失败-5Why根因分析.md' },
+    { name: '多机房多线路网络故障', type: 'md', path: '02-现货贸易/04-生产问题排查/08-多机房多线路网络故障-排查实录.md' },
+    { name: '竞价页面突然变慢', type: 'md', path: '02-现货贸易/04-生产问题排查/09-竞价页面突然变慢-排查实录.md' },
+    { name: '下载 PDF 致 JVM 进程消失', type: 'md', path: '02-现货贸易/04-生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
+    { name: '网关扩容打穿 DB', type: 'md', path: '02-现货贸易/04-生产问题排查/11-网关扩容打穿DB-性能开发规范.md' },
+    { name: 'Java 排障主手册', type: 'md', path: '02-现货贸易/04-生产问题排查/java-architect-troubleshooting-handbook.md' },
+    { name: 'Cookie 5Why 演示', type: 'pptx', path: '02-现货贸易/04-生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx' }
   ] },
-  { title: 'B2B 现货交易平台', icon: 'briefcase', files: [
-    { name: '项目总览（Markdown 源）', type: 'md', path: '02-现货贸易/b2b-project/overview.md' },
-    { name: '项目总览（页面版）', type: 'html', path: '02-现货贸易/b2b-project/overview.html' },
-    { name: '5Whys 与业务技术映射速查卡', type: 'html', path: '02-现货贸易/b2b-project/02-5Whys与业务技术映射速查卡.html' },
-    { name: 'B2B 微服务系统架构图（手绘版）', type: 'html', path: '02-现货贸易/b2b-project/03-B2B微服务系统架构图-手绘版.html' },
-    { name: 'DS 数据中心（防腐层）', type: 'html', path: '02-现货贸易/b2b-project/data-exchange.html' },
-    { name: '中间件网关', type: 'html', path: '02-现货贸易/b2b-project/middleware-gateway.html' },
-    { name: '公共服务模块', type: 'html', path: '02-现货贸易/b2b-project/common-services.html' },
-    { name: '认证与权限', type: 'html', path: '02-现货贸易/b2b-project/auth-module.html' },
-    { name: '业务模块（合同中心）', type: 'html', path: '02-现货贸易/b2b-project/business-modules.html' },
-    { name: '外联网关', type: 'html', path: '02-现货贸易/b2b-project/external-gateway.html' },
-    { name: '交易模式（大宗贸易）', type: 'html', path: '02-现货贸易/b2b-project/大宗贸易场景.html' },
-    { name: '合同履约与资金', type: 'html', path: '02-现货贸易/b2b-project/付款发货场景.html' },
-    { name: '竞价状态不一致 · 解决方案', type: 'md', path: '02-现货贸易/b2b-project/竞价系统-竞价状态不一致问题解决方案.md' }
+  { title: 'B2B 架构专题页', icon: 'briefcase', files: [
+    { name: '5Whys 与业务技术映射速查卡', type: 'html', path: '02-现货贸易/03-架构决策/02C-5Whys与业务技术映射速查卡.html' },
+    { name: 'B2B 微服务系统架构图（手绘版）', type: 'html', path: '02-现货贸易/03-架构决策/03B-B2B微服务系统架构图-手绘版.html' },
+    { name: 'DS 数据中心（防腐层）', type: 'html', path: '02-现货贸易/03-架构决策/data-exchange.html' },
+    { name: '中间件网关', type: 'html', path: '02-现货贸易/03-架构决策/middleware-gateway.html' },
+    { name: '外联网关', type: 'html', path: '02-现货贸易/03-架构决策/external-gateway.html' },
+    { name: '竞价状态不一致 · 解决方案', type: 'md', path: '02-现货贸易/03-架构决策/06-竞价状态不一致问题解决方案.md' }
   ] },
   { title: 'B2B 专题 · 网关与容量（midservice）', icon: 'server', files: [
-    { name: '全链路容量压测计划', type: 'md', path: '02-现货贸易/b2b-project/midservice/全链路容量压测计划.md' },
-    { name: '5 万 QPS / 1000 TPS · 容量攻坚全案', type: 'md', path: '02-现货贸易/b2b-project/midservice/5万QPS与1000TPS-容量攻坚全案.md' },
-    { name: '网关百万并发与协议隔离设计', type: 'md', path: '02-现货贸易/b2b-project/midservice/网关百万并发与协议隔离设计.md' },
-    { name: '协议调用量探针机制设计', type: 'md', path: '02-现货贸易/b2b-project/midservice/协议调用量探针机制设计.md' },
-    { name: '安全防护与熔断限流汇总', type: 'md', path: '02-现货贸易/b2b-project/midservice/安全防护与熔断限流汇总.md' },
-    { name: '读接口缓存判断方法', type: 'md', path: '02-现货贸易/b2b-project/midservice/读接口缓存判断方法.md' },
-    { name: '连接池参数配置建议', type: 'md', path: '02-现货贸易/b2b-project/midservice/连接池参数配置建议.md' },
-    { name: '连接池配置流程图', type: 'html', path: '02-现货贸易/b2b-project/midservice/连接池配置流程图.html' },
-    { name: '慢查询 / 慢服务故障传导分析', type: 'md', path: '02-现货贸易/b2b-project/midservice/慢查询慢服务故障传导分析.md' },
-    { name: '竞价详情页轮询改造 · WebSocket 事件驱动', type: 'md', path: '02-现货贸易/b2b-project/midservice/竞价详情页轮询改造-WebSocket事件驱动方案.md' },
-    { name: 'HandlerController 网关功能详解', type: 'md', path: '02-现货贸易/b2b-project/midservice/HandlerController-网关功能详解.md' },
-    { name: 'ToBackController 与 HandlerController 对比', type: 'md', path: '02-现货贸易/b2b-project/midservice/ToBackController-后台网关与HandlerController对比.md' },
-    { name: 'Boot 改造实录 · AI 辅助迁移与四轮完善', type: 'md', path: '02-现货贸易/b2b-project/midservice/Boot改造实录-AI辅助迁移与四轮完善.md' }
+    { name: '全链路容量压测计划', type: 'md', path: '02-现货贸易/03-架构决策/midservice/全链路容量压测计划.md' },
+    { name: '5 万 QPS / 1000 TPS · 容量攻坚全案', type: 'md', path: '02-现货贸易/03-架构决策/midservice/5万QPS与1000TPS-容量攻坚全案.md' },
+    { name: '网关百万并发与协议隔离设计', type: 'md', path: '02-现货贸易/03-架构决策/midservice/网关百万并发与协议隔离设计.md' },
+    { name: '协议调用量探针机制设计', type: 'md', path: '02-现货贸易/03-架构决策/midservice/协议调用量探针机制设计.md' },
+    { name: '安全防护与熔断限流汇总', type: 'md', path: '02-现货贸易/03-架构决策/midservice/安全防护与熔断限流汇总.md' },
+    { name: '读接口缓存判断方法', type: 'md', path: '02-现货贸易/03-架构决策/midservice/读接口缓存判断方法.md' },
+    { name: '连接池参数配置建议', type: 'md', path: '02-现货贸易/03-架构决策/midservice/连接池参数配置建议.md' },
+    { name: '连接池配置流程图', type: 'html', path: '02-现货贸易/03-架构决策/midservice/连接池配置流程图.html' },
+    { name: '慢查询 / 慢服务故障传导分析', type: 'md', path: '02-现货贸易/03-架构决策/midservice/慢查询慢服务故障传导分析.md' },
+    { name: '竞价详情页轮询改造 · WebSocket 事件驱动', type: 'md', path: '02-现货贸易/03-架构决策/midservice/竞价详情页轮询改造-WebSocket事件驱动方案.md' },
+    { name: '机制图 1 · 竞价推送架构（推拉分离）', type: 'html', path: '02-现货贸易/03-架构决策/midservice/图-竞价推送-推拉分离.html' },
+    { name: '机制图 2 · WebSocket 稳定性', type: 'html', path: '02-现货贸易/03-架构决策/midservice/图-竞价推送-WS稳定性三层.html' },
+    { name: '机制图 3 · 断线到恢复五步时序', type: 'html', path: '02-现货贸易/03-架构决策/midservice/图-竞价推送-重连五步时序.html' },
+    { name: 'HandlerController 网关功能详解', type: 'md', path: '02-现货贸易/03-架构决策/midservice/HandlerController-网关功能详解.md' },
+    { name: 'ToBackController 与 HandlerController 对比', type: 'md', path: '02-现货贸易/03-架构决策/midservice/ToBackController-后台网关与HandlerController对比.md' },
+    { name: 'Boot 改造实录 · AI 辅助迁移与四轮完善', type: 'md', path: '02-现货贸易/03-架构决策/midservice/Boot改造实录-AI辅助迁移与四轮完善.md' }
   ] },
   { title: 'B2B 专题 · DS 数据中心（dataShare）', icon: 'database', files: [
-    { name: 'SDK 网关能力解析', type: 'md', path: '02-现货贸易/b2b-project/dataShare/dataShare-SDK网关能力解析.md' },
-    { name: '并发能力与缺陷清单', type: 'md', path: '02-现货贸易/b2b-project/dataShare/dataShare-并发能力与缺陷清单.md' },
-    { name: '服务端能力与瓶颈深度分析', type: 'md', path: '02-现货贸易/b2b-project/dataShare/dataShare-分布式服务能力与瓶颈分析.md' },
-    { name: 'worker 线程池改造方案', type: 'md', path: '02-现货贸易/b2b-project/dataShare/dataShare-worker线程池改造方案.md' }
+    { name: 'SDK 网关能力解析', type: 'md', path: '02-现货贸易/03-架构决策/dataShare/dataShare-SDK网关能力解析.md' },
+    { name: '并发能力与缺陷清单', type: 'md', path: '02-现货贸易/03-架构决策/dataShare/dataShare-并发能力与缺陷清单.md' },
+    { name: '服务端能力与瓶颈深度分析', type: 'md', path: '02-现货贸易/03-架构决策/dataShare/dataShare-分布式服务能力与瓶颈分析.md' },
+    { name: 'worker 线程池改造方案', type: 'md', path: '02-现货贸易/03-架构决策/dataShare/dataShare-worker线程池改造方案.md' }
   ] },
-  { title: '交易系统专题 · 电商项目问题指南', icon: 'layers', files: [
-    { name: '00 导读 · README', type: 'md', path: '02-现货贸易/电商项目问题指南/README.md' },
-    { name: '01 系统架构设计', type: 'md', path: '02-现货贸易/电商项目问题指南/01-系统架构设计.md' },
-    { name: '02 高可用架构', type: 'md', path: '02-现货贸易/电商项目问题指南/02-高可用架构.md' },
-    { name: '03 可扩展性设计', type: 'md', path: '02-现货贸易/电商项目问题指南/03-可扩展性设计.md' },
-    { name: '04 高并发处理策略', type: 'md', path: '02-现货贸易/电商项目问题指南/04-高并发处理策略.md' },
-    { name: '05 缓存系统设计', type: 'md', path: '02-现货贸易/电商项目问题指南/05-缓存系统设计.md' },
-    { name: '06 CDN 与静态资源', type: 'md', path: '02-现货贸易/电商项目问题指南/06-CDN与静态资源.md' },
-    { name: '07 数据库选型与分库分表', type: 'md', path: '02-现货贸易/电商项目问题指南/07-数据库选型与分库分表.md' },
-    { name: '08 数据一致性与分布式事务', type: 'md', path: '02-现货贸易/电商项目问题指南/08-数据一致性与分布式事务.md' },
-    { name: '10 库存超卖与多货', type: 'md', path: '02-现货贸易/电商项目问题指南/10-库存超卖与多货.md' },
-    { name: '11 订单系统设计', type: 'md', path: '02-现货贸易/电商项目问题指南/11-订单系统设计.md' },
-    { name: '12 支付系统设计', type: 'md', path: '02-现货贸易/电商项目问题指南/12-支付系统设计.md' },
-    { name: '14 接口性能优化', type: 'md', path: '02-现货贸易/电商项目问题指南/14-接口性能优化.md' },
-    { name: '15 前端性能优化', type: 'md', path: '02-现货贸易/电商项目问题指南/15-前端性能优化.md' },
-    { name: '16 JVM 调优', type: 'md', path: '02-现货贸易/电商项目问题指南/16-JVM调优.md' },
-    { name: '18 合规与审计', type: 'md', path: '02-现货贸易/电商项目问题指南/18-合规与审计.md' },
-    { name: '21 监控与日志', type: 'md', path: '02-现货贸易/电商项目问题指南/21-监控与日志.md' },
-    { name: '24 客服与售后系统', type: 'md', path: '02-现货贸易/电商项目问题指南/24-客服与售后系统.md' },
-    { name: '25 合同管理系统设计', type: 'md', path: '02-现货贸易/电商项目问题指南/25-合同管理系统设计.md' },
-    { name: '26 工作流与审批流', type: 'md', path: '02-现货贸易/电商项目问题指南/26-工作流与审批流.md' },
-    { name: '27 表单与模板配置', type: 'md', path: '02-现货贸易/电商项目问题指南/27-表单与模板配置.md' },
-    { name: '研发效能 · CI/CD 与 CodeReview', type: 'md', path: '04-备战手册/05-技术管理/02-技术管理补充件.md' }
+  { title: '交易系统专题 · 通用问题指南（arch）', icon: 'layers', files: [
+    { name: '00 导读 · README', type: 'md', path: '02-现货贸易/03-架构决策/arch/README.md' },
+    { name: '01 系统架构设计', type: 'md', path: '02-现货贸易/03-架构决策/arch/01-系统架构设计.md' },
+    { name: '02 高可用架构', type: 'md', path: '02-现货贸易/03-架构决策/arch/02-高可用架构.md' },
+    { name: '03 可扩展性设计', type: 'md', path: '02-现货贸易/03-架构决策/arch/03-可扩展性设计.md' },
+    { name: '04 高并发处理策略', type: 'md', path: '02-现货贸易/03-架构决策/arch/04-高并发处理策略.md' },
+    { name: '05 缓存系统设计', type: 'md', path: '02-现货贸易/03-架构决策/arch/05-缓存系统设计.md' },
+    { name: '06 CDN 与静态资源', type: 'md', path: '02-现货贸易/03-架构决策/arch/06-CDN与静态资源.md' },
+    { name: '07 数据库选型与分库分表', type: 'md', path: '02-现货贸易/03-架构决策/arch/07-数据库选型与分库分表.md' },
+    { name: '08 数据一致性与分布式事务', type: 'md', path: '02-现货贸易/03-架构决策/arch/08-数据一致性与分布式事务.md' },
+    { name: '10 库存超卖与多货', type: 'md', path: '02-现货贸易/03-架构决策/arch/10-库存超卖与多货.md' },
+    { name: '11 订单系统设计', type: 'md', path: '02-现货贸易/03-架构决策/arch/11-订单系统设计.md' },
+    { name: '12 支付系统设计', type: 'md', path: '02-现货贸易/03-架构决策/arch/12-支付系统设计.md' },
+    { name: '14 接口性能优化', type: 'md', path: '02-现货贸易/03-架构决策/arch/14-接口性能优化.md' },
+    { name: '15 前端性能优化', type: 'md', path: '02-现货贸易/03-架构决策/arch/15-前端性能优化.md' },
+    { name: '16 JVM 调优', type: 'md', path: '02-现货贸易/03-架构决策/arch/16-JVM调优.md' },
+    { name: '18 合规与审计', type: 'md', path: '02-现货贸易/03-架构决策/arch/18-合规与审计.md' },
+    { name: '21 监控与日志', type: 'md', path: '02-现货贸易/03-架构决策/arch/21-监控与日志.md' },
+    { name: '24 客服与售后系统', type: 'md', path: '02-现货贸易/03-架构决策/arch/24-客服与售后系统.md' },
+    { name: '25 合同管理系统设计', type: 'md', path: '02-现货贸易/03-架构决策/arch/25-合同管理系统设计.md' },
+    { name: '26 工作流与审批流', type: 'md', path: '02-现货贸易/03-架构决策/arch/26-工作流与审批流.md' },
+    { name: '27 表单与模板配置', type: 'md', path: '02-现货贸易/03-架构决策/arch/27-表单与模板配置.md' },
+    { name: '研发效能 · CI/CD 与 CodeReview', type: 'md', path: '04-技术管理/02-技术管理补充件.md' }
   ] }
 ];
 
@@ -4336,7 +4339,7 @@ var SPOT_STEPS = [
     q: '讲一条真故障的时间线：先定性质还是先定根因？',
     chips: ['扩容把流量放大器开到 DB', '慢在 DB，根因在变更流程与监控缺口', '退出码 137 → 内核 OOM Killer', '没有固化措施等于没排查'],
     src: '叙事主稿 §5.4–5.6 · 生产问题排查',
-    path: '02-现货贸易/03-架构决策/生产问题排查/11-网关扩容打穿DB-性能开发规范.md', key: true },
+    path: '02-现货贸易/04-生产问题排查/11-网关扩容打穿DB-性能开发规范.md', key: true },
 
   { n: 11, act: '第四幕 · 别踩雷', title: '指标口径：每个数字都要接得住追问',
     q: '被问「200ms 怎么统计的」时，第一句给什么？',
@@ -4515,7 +4518,7 @@ function togglePrepCat(el) {
 
 /* ===== 快捷入口 ===== */
 function openPrepIndex() {
-  window.open('04-备战手册/index.html', '_blank');
+  window.open('01-备战手册/index.html', '_blank');
   showToast('打开备战手册');
 }
 
@@ -5059,7 +5062,7 @@ function init() {
   updateGreeting();
   updateStatusTime();
 
-  // 支持 hash 直达页面（供 04-备战手册 等外部入口跳转，如 ../index.html#page-bank）
+  // 支持 hash 直达页面（供 01-备战手册 等外部入口跳转，如 ../index.html#page-bank）
   function applyHashPage() {
     var hashPage = (location.hash || '').replace('#', '');
     if (hashPage && document.getElementById(hashPage)) switchTab(hashPage);

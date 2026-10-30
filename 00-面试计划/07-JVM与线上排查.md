@@ -192,4 +192,4 @@ Young GC 太频繁？   → Eden 太小 / 短命对象多
 | Cookie 5Why 完整推理链 | `生产问题排查/06-Cookie认证失败-5Why根因分析.md` |
 | 11 类场景速查命令链 + 阈值（CPU/OOM/GC/线程池/死锁/慢SQL/Redis/MQ/网关） | `生产问题排查/java-architect-troubleshooting-handbook.md` 第 1–9 章（每章 `x.1 现象与阈值` + `x.2 命令链` 可直接打印应急） |
 | Arthas `tt`/`ognl` + async-profiler 火焰图 + 联合实战 | 同上，第 10–12 章 |
-| JVM 内存模型 / GC / 参数教材式表述 | `02-现货贸易/电商项目问题指南/16-JVM调优.md` |
+| JVM 内存模型 / GC / 参数教材式表述 | `02-现货贸易/03-架构决策/arch/16-JVM调优.md` |
