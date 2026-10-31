@@ -2103,7 +2103,7 @@
           </div>
           <div class="hero-stats">
             <div class="hero-stat">
-              <span class="hero-stat-num" id="heroTotal">13</span>
+              <span class="hero-stat-num" id="heroTotal">96</span>
               <span class="hero-stat-label">备战资料</span>
             </div>
             <div class="hero-stat">
@@ -2478,7 +2478,7 @@
 
       <div class="achievement-grid">
         <div class="achievement-item">
-          <div class="achievement-num" id="meTotal">51</div>
+          <div class="achievement-num" id="meTotal">96</div>
           <div class="achievement-label">资料总数</div>
         </div>
         <div class="achievement-item">
@@ -3274,7 +3274,8 @@ function countFiles(categories) {
   return n;
 }
 
-var TOTAL_PREP_FILES = countFiles(PREP_CATEGORIES);
+// 备战资料总数 = 02-现货贸易 全部文件（86：62 md + 19 html + 4 pptx + 1 sh）+ 00-面试计划（10 md）= 96
+var TOTAL_PREP_FILES = 96;
 
 // 打开任意路径的本地资料（md 走内置阅读器）
 function openFile(path) {
@@ -3451,7 +3452,7 @@ function renderPrepPage() {
     html += '<div class="bank-grid">' + cards + '</div>';
   }
   $('prepGroupList').innerHTML = html;
-  $('prepTotalCount').textContent = total + ' 份';
+  $('prepTotalCount').textContent = TOTAL_PREP_FILES + ' 份';
 }
 
 // 打开题库分类
