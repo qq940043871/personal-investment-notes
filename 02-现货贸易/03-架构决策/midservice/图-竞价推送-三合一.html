@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>竞价行情推送：推拉分离 · 稳定性三层 · 断线恢复五步（三合一）</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f1f5f9;padding:40px;font-family:ui-sans-serif,system-ui,"Microsoft YaHei",sans-serif;color:#1e293b}
+  .wrap{width:1200px;margin:0 auto}
+  .card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:36px 40px;margin-bottom:32px}
+  h1{font-size:26px;font-weight:600;letter-spacing:.3px;color:#0f172a}
+  h2{font-size:20px;font-weight:600;color:#0f172a}
+  h2 .no{display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;border-radius:50%;background:#0f172a;color:#fff;font-size:14px;margin-right:10px;vertical-align:2px}
+  .sub{color:#64748b;font-size:14px;margin-top:12px;line-height:1.8}
+  .legend{display:flex;gap:28px;margin-top:20px;font-size:13px;color:#475569;flex-wrap:wrap}
+  .dot{width:13px;height:13px;border-radius:3px;display:inline-block;margin-right:7px;vertical-align:-1px}
+  svg{display:block;width:100%;height:auto;margin-top:28px}
+  svg text{font-family:ui-sans-serif,system-ui,"Microsoft YaHei",sans-serif}
+  .divider{height:1px;background:#e2e8f0;margin:30px 0 34px}
+  .goal{background:#f0fdfa;border:1px solid #5eead4;border-radius:10px;padding:16px 20px;margin-top:18px;font-size:14px;line-height:1.9;color:#115e59}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="card">
+    <h1>竞价行情推送架构全景（三合一）</h1>
+    <p class="sub">前端要保证「竞价状态 + 倒计时」始终准确，依赖三件事咬合：<b>① 推拉分离</b>决定数据从哪来、快不快；<b>② 三层检测</b>保证连接假死、数据停流一定被发现；<b>③ 五步恢复时序</b>保证断线重连后状态与倒计时重新对齐，而不是停在断线那一刻。三者缺一，页面都会出现「看着正常、数据已死」。</p>
+    <div class="goal">
+      <b>贯穿主线：</b>独立 WS 通道收增量（快） → 三层检测发现故障（不漏报） → 重连后按 ③拉快照 + ④校时钟 重建基准（状态准、倒计时准） → 重订阅从最新 seq 开始（不回退、不串台）。
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="no">一</span>竞价行情推送架构：推拉分离</h2>
+    <p class="sub">推送由 C 撮合引擎直推独立 WebSocket 服务，不经 dataShare 中继；查询仍走 midservice 网关。两条通道不共用任何节点，独立扩容、独立发布、独立故障。</p>
+    <div class="legend">
+      <span><span class="dot" style="background:#dc2626"></span>推送通道（只发不取）</span>
+      <span><span class="dot" style="background:#2563eb"></span>查询通道（只取不推）</span>
+      <span><span class="dot" style="background:#94a3b8"></span>客户端状态</span>
+    </div>
+
+    <svg viewBox="0 0 1200 620" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>竞价行情推送架构：推拉分离</title>
+      <desc>C 撮合引擎经有界队列直推独立 WebSocket 服务再扇出至客户端；客户端另经 midservice 网关与 dataShare 拉取数据。</desc>
+      <defs>
+        <marker id="aRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#dc2626"/>
+        </marker>
+        <marker id="aBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#2563eb"/>
+        </marker>
+        <marker id="aGray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#94a3b8"/>
+        </marker>
+      </defs>
+
+      <rect x="60" y="90" width="250" height="96" rx="10" fill="#fef2f2" stroke="#f87171" stroke-width="1.5"/>
+      <text x="185" y="124" text-anchor="middle" font-size="18" font-weight="600" fill="#991b1b">C 撮合引擎</text>
+      <text x="185" y="156" text-anchor="middle" font-size="13" fill="#b91c1c">单线程内存撮合 · 唯一真相源</text>
+
+      <line x1="312" y1="138" x2="460" y2="138" stroke="#dc2626" stroke-width="2" marker-end="url(#aRed)"/>
+      <text x="386" y="118" text-anchor="middle" font-size="12" fill="#b91c1c">有界队列 · 非阻塞</text>
+
+      <rect x="470" y="90" width="290" height="96" rx="10" fill="#fef2f2" stroke="#f87171" stroke-width="1.5"/>
+      <text x="615" y="124" text-anchor="middle" font-size="18" font-weight="600" fill="#991b1b">独立 WebSocket 服务</text>
+      <text x="615" y="156" text-anchor="middle" font-size="13" fill="#b91c1c">会话管理 · 订阅路由 · 扇出推送</text>
+
+      <polyline points="760,138 830,138 830,200 898,200" fill="none" stroke="#dc2626" stroke-width="2" marker-end="url(#aRed)"/>
+
+      <rect x="910" y="150" width="230" height="200" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="1025" y="186" text-anchor="middle" font-size="18" font-weight="600" fill="#334155">客户端</text>
+      <text x="1025" y="222" text-anchor="middle" font-size="13" fill="#475569">① 本地快照（先查 DB）</text>
+      <text x="1025" y="252" text-anchor="middle" font-size="13" fill="#475569">② 服务端时钟（GP2458）</text>
+      <text x="1025" y="282" text-anchor="middle" font-size="13" fill="#475569">③ WS 长连接（收增量）</text>
+      <text x="1025" y="318" text-anchor="middle" font-size="12" fill="#94a3b8">状态机 + 倒计时</text>
+
+      <line x1="908" y1="378" x2="768" y2="378" stroke="#2563eb" stroke-width="2" marker-end="url(#aBlue)"/>
+      <text x="838" y="358" text-anchor="middle" font-size="12" fill="#1d4ed8">按事件拉取</text>
+
+      <rect x="470" y="330" width="290" height="96" rx="10" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="615" y="364" text-anchor="middle" font-size="18" font-weight="600" fill="#1e40af">midservice 网关</text>
+      <text x="615" y="396" text-anchor="middle" font-size="13" fill="#1d4ed8">GP24B0 / GP2457 / GP0105</text>
+
+      <line x1="468" y1="378" x2="318" y2="378" stroke="#2563eb" stroke-width="2" marker-end="url(#aBlue)"/>
+      <text x="393" y="358" text-anchor="middle" font-size="12" fill="#1d4ed8">查询穿透</text>
+
+      <rect x="60" y="330" width="250" height="96" rx="10" fill="#eff6ff" stroke="#60a5fa" stroke-width="1.5"/>
+      <text x="185" y="364" text-anchor="middle" font-size="18" font-weight="600" fill="#1e40af">dataShare 数据中心</text>
+      <text x="185" y="396" text-anchor="middle" font-size="13" fill="#1d4ed8">到 DB / C 核心</text>
+
+      <rect x="60" y="522" width="14" height="14" rx="3" fill="#dc2626"/>
+      <text x="86" y="534" font-size="14" fill="#475569">推送通道：C 核心直推，不经 dataShare；只发不取，无查询能力</text>
+      <rect x="60" y="552" width="14" height="14" rx="3" fill="#2563eb"/>
+      <text x="86" y="564" font-size="14" fill="#475569">查询通道：客户端经网关拉取；与推送通道独立扩容、独立发布、独立故障</text>
+      <text x="60" y="600" font-size="13" fill="#94a3b8">代价：直推省掉一跳，但「事件不丢」的责任从 MQ 转移到 WS 服务自己（靠 seq + epoch + 快照兜底）</text>
+    </svg>
+  </div>
+
+  <div class="card">
+    <h2><span class="no">二</span>复杂网络环境下 WebSocket 的稳定性设计：故障 / 检测 / 兜底</h2>
+    <p class="sub">WebSocket 在真实互联网里必然断。真正的难题不是断线后怎么重连，而是「客户端不知道自己已经断了」——所以检测必须做三层。</p>
+    <div class="legend">
+      <span><span class="dot" style="background:#d97706"></span>故障形态</span>
+      <span><span class="dot" style="background:#0d9488"></span>三层检测</span>
+      <span><span class="dot" style="background:#2563eb"></span>兜底动作</span>
+    </div>
+
+    <svg viewBox="0 0 1200 560" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>WebSocket 稳定性：故障形态、三层检测与兜底动作</title>
+      <desc>五种故障形态经 TCP、应用层、业务层三层检测识别，分别由丢帧保新、快照对齐、降级轮询三种动作兜底。</desc>
+      <defs>
+        <marker id="aGray2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#94a3b8"/>
+        </marker>
+      </defs>
+
+      <rect x="60" y="86" width="200" height="76" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="160" y="116" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">静默半开</text>
+      <text x="160" y="142" text-anchor="middle" font-size="12" fill="#b45309">NAT / 防火墙静默清会话</text>
+
+      <rect x="280" y="86" width="200" height="76" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="380" y="116" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">网络切换</text>
+      <text x="380" y="142" text-anchor="middle" font-size="12" fill="#b45309">WiFi↔4G，IP 变化</text>
+
+      <rect x="500" y="86" width="200" height="76" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="600" y="116" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">代理拦截</text>
+      <text x="600" y="142" text-anchor="middle" font-size="12" fill="#b45309">企业代理不支持 WS</text>
+
+      <rect x="720" y="86" width="200" height="76" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="820" y="116" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">服务重启</text>
+      <text x="820" y="142" text-anchor="middle" font-size="12" fill="#b45309">进程重启，全员断线</text>
+
+      <rect x="940" y="86" width="200" height="76" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="1040" y="116" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">弱网抖动</text>
+      <text x="1040" y="142" text-anchor="middle" font-size="12" fill="#b45309">高 RTT / 丢包</text>
+
+      <line x1="230" y1="168" x2="230" y2="222" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray2)"/>
+      <line x1="600" y1="168" x2="600" y2="222" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray2)"/>
+      <line x1="970" y1="168" x2="970" y2="222" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray2)"/>
+
+      <rect x="60" y="228" width="340" height="106" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="230" y="258" text-anchor="middle" font-size="17" font-weight="600" fill="#115e59">TCP 层</text>
+      <text x="230" y="286" text-anchor="middle" font-size="13" fill="#0f766e">RST / FIN · 写失败</text>
+      <text x="230" y="312" text-anchor="middle" font-size="12" fill="#64748b">只能发现正常关闭，发现不了静默半开</text>
+
+      <rect x="430" y="228" width="340" height="106" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="600" y="258" text-anchor="middle" font-size="17" font-weight="600" fill="#115e59">应用层</text>
+      <text x="600" y="286" text-anchor="middle" font-size="13" fill="#0f766e">心跳 25s · 连续 2 次丢 pong 判死</text>
+      <text x="600" y="312" text-anchor="middle" font-size="12" fill="#64748b">发现静默半开与假死</text>
+
+      <rect x="800" y="228" width="340" height="106" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="970" y="258" text-anchor="middle" font-size="17" font-weight="600" fill="#115e59">业务层</text>
+      <text x="970" y="286" text-anchor="middle" font-size="13" fill="#0f766e">seq 跳号 · epoch 变化 · stale</text>
+      <text x="970" y="312" text-anchor="middle" font-size="12" fill="#64748b">唯一能发现「连着但数据不流动」</text>
+
+      <line x1="230" y1="338" x2="230" y2="390" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray2)"/>
+      <line x1="600" y1="338" x2="600" y2="390" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray2)"/>
+      <line x1="970" y1="338" x2="970" y2="390" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#aGray2)"/>
+
+      <rect x="60" y="396" width="340" height="96" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+      <text x="230" y="428" text-anchor="middle" font-size="17" font-weight="600" fill="#1e40af">丢帧保新</text>
+      <text x="230" y="456" text-anchor="middle" font-size="13" fill="#1d4ed8">有界发送队列，高频事件丢最旧保最新</text>
+      <text x="230" y="478" text-anchor="middle" font-size="12" fill="#64748b">丢弃可接受：下一帧自然修正</text>
+
+      <rect x="430" y="396" width="340" height="96" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+      <text x="600" y="428" text-anchor="middle" font-size="17" font-weight="600" fill="#1e40af">快照对齐</text>
+      <text x="600" y="456" text-anchor="middle" font-size="13" fill="#1d4ed8">跳号不补历史，直接拉一次快照重开</text>
+      <text x="600" y="478" text-anchor="middle" font-size="12" fill="#64748b">补事件成本远高于拉快照</text>
+
+      <rect x="800" y="396" width="340" height="96" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+      <text x="970" y="428" text-anchor="middle" font-size="17" font-weight="600" fill="#1e40af">降级轮询</text>
+      <text x="970" y="456" text-anchor="middle" font-size="13" fill="#1d4ed8">WS 不可用切 3~5s 轮询，后台 30s 试探</text>
+      <text x="970" y="478" text-anchor="middle" font-size="12" fill="#64748b">WS 只是加速器，不是唯一通道</text>
+
+      <text x="60" y="536" font-size="13" fill="#94a3b8">三层缺一层就有盲区：只看 TCP 层会漏掉静默半开；只看应用层会漏掉「连接活着但数据不流动」</text>
+    </svg>
+  </div>
+
+  <div class="card">
+    <h2><span class="no">三</span>从断线到恢复：五步时序</h2>
+    <p class="sub">重连不等于重订阅。第三、四步（拉快照、校时钟）最常被省略——代码不报错、页面显示「已连接」，但价格和倒计时永远停在断线那一刻。</p>
+    <div class="legend">
+      <span><span class="dot" style="background:#d97706"></span>检测到故障</span>
+      <span><span class="dot" style="background:#0d9488"></span>恢复动作（顺序不可换）</span>
+    </div>
+
+    <svg viewBox="0 0 1200 350" xmlns="http://www.w3.org/2000/svg" role="img">
+      <title>从断线到恢复的五步时序</title>
+      <desc>依次为发现断开、退避重连、拉快照、校时钟、重订阅，顺序不可颠倒。</desc>
+      <defs>
+        <marker id="aGray3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L8,3 L0,6 Z" fill="#94a3b8"/>
+        </marker>
+      </defs>
+
+      <rect x="60" y="100" width="196" height="150" rx="10" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="158" y="138" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">① 发现断开</text>
+      <text x="158" y="172" text-anchor="middle" font-size="13" fill="#b45309">连续 2 次 pong 未回</text>
+      <text x="158" y="198" text-anchor="middle" font-size="13" fill="#b45309">即判死，不是「再等等」</text>
+      <text x="158" y="228" text-anchor="middle" font-size="12" fill="#94a3b8">依据：应用层心跳</text>
+
+      <line x1="258" y1="175" x2="279" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#aGray3)"/>
+
+      <rect x="281" y="100" width="196" height="150" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="379" y="138" text-anchor="middle" font-size="17" font-weight="600" fill="#115e59">② 退避重连</text>
+      <text x="379" y="172" text-anchor="middle" font-size="13" fill="#0f766e">1→2→4→8→16→30s</text>
+      <text x="379" y="198" text-anchor="middle" font-size="13" fill="#0f766e">每次叠加 ±20% 抖动</text>
+      <text x="379" y="228" text-anchor="middle" font-size="12" fill="#94a3b8">依据：无抖动会引发惊群</text>
+
+      <line x1="479" y1="175" x2="500" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#aGray3)"/>
+
+      <rect x="502" y="100" width="196" height="150" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="600" y="138" text-anchor="middle" font-size="17" font-weight="600" fill="#115e59">③ 拉快照</text>
+      <text x="600" y="172" text-anchor="middle" font-size="13" fill="#0f766e">GP0105 重建基准</text>
+      <text x="600" y="198" text-anchor="middle" font-size="13" fill="#0f766e">不补断线期间的中间事件</text>
+      <text x="600" y="228" text-anchor="middle" font-size="12" fill="#94a3b8">依据：补历史成本高于拉快照</text>
+
+      <line x1="700" y1="175" x2="721" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#aGray3)"/>
+
+      <rect x="723" y="100" width="196" height="150" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="821" y="138" text-anchor="middle" font-size="17" font-weight="600" fill="#115e59">④ 校时钟</text>
+      <text x="821" y="172" text-anchor="middle" font-size="13" fill="#0f766e">GP2458 校准倒计时基准</text>
+      <text x="821" y="198" text-anchor="middle" font-size="13" fill="#0f766e">此后只做本地插值</text>
+      <text x="821" y="228" text-anchor="middle" font-size="12" fill="#94a3b8">依据：本地钟会漂移、可被改</text>
+
+      <line x1="921" y1="175" x2="942" y2="175" stroke="#94a3b8" stroke-width="2" marker-end="url(#aGray3)"/>
+
+      <rect x="944" y="100" width="196" height="150" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+      <text x="1042" y="138" text-anchor="middle" font-size="17" font-weight="600" fill="#115e59">⑤ 重订阅</text>
+      <text x="1042" y="172" text-anchor="middle" font-size="13" fill="#0f766e">从最新 seq 开始</text>
+      <text x="1042" y="198" text-anchor="middle" font-size="13" fill="#0f766e">以快照为准丢弃过期事件</text>
+      <text x="1042" y="228" text-anchor="middle" font-size="12" fill="#94a3b8">依据：epoch 变化则 seq 不可比</text>
+
+      <text x="60" y="296" font-size="14" fill="#dc2626">最常见的错误：只做 ②、⑤ 两步——连接恢复了，心跳也通了，但没有任何一层能发现「数据停在断线那一刻」。</text>
+      <text x="60" y="326" font-size="13" fill="#94a3b8">连续失败 5 次：停止重试，切降频轮询（3~5s）保页面可用，后台每 30s 试探一次 WS，恢复后自动切回。</text>
+    </svg>
+  </div>
+
+</div>
+</body>
+</html>

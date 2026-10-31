@@ -98,8 +98,7 @@
 
 | 文档 | 定位 |
 |---|---|
-| [java-architect-troubleshooting-handbook.md](../04-生产问题排查/java-architect-troubleshooting-handbook.md) | ✅ **Java 技术排障唯一权威**：CPU/内存/GC/线程/死锁/DB/Redis/MQ/网络 + Arthas/火焰图 + 现场收口 |
-| [12-生产排查步骤-四类场景与六步SOP.md](../04-生产问题排查/12-生产排查步骤-四类场景与六步SOP.md) | ✅ **排查方法论总纲**：四类场景分流 + 六步作业单 |
+| [java-architect-troubleshooting-handbook.md](../04-生产问题排查/java-architect-troubleshooting-handbook.md) | ✅ **Java 技术排障唯一权威**：第 0 章排查方法论（四类场景分流 + 六步 SOP，原 12 号已并入）+ CPU/内存/GC/线程/死锁/DB/Redis/MQ/网络 + Arthas/火焰图 + 现场收口 |
 | [11-网关扩容打穿DB-性能开发规范.md](../04-生产问题排查/11-网关扩容打穿DB-性能开发规范.md) | ✅ **网关性能数值基线**：五层防线 + 限流/线程池/连接池具体数值 |
 | 其余排查实录（06 / 08 / 09 / 10）+ `jvm_diag.sh` | 见 [04-生产问题排查/](../04-生产问题排查/) |
 
@@ -115,7 +114,7 @@
 | 回答"网关管什么" | [11 网关职责与治理](./11-midservice网关职责与治理设计.md) → 实现细节去 [`midservice/`](./midservice/) |
 | 回答"竞价状态为什么会对不上" | [06 竞价状态不一致](./06-竞价状态不一致问题解决方案.md) → [WebSocket 推拉分离](./midservice/竞价详情页轮询改造-WebSocket事件驱动方案.md) |
 | 回答"为什么自研不用 Dify" | [08 选型复盘](./08-Dify与自研业务中台-技术选型复盘.md) |
-| 出事故了怎么办 | [12 六步 SOP](../04-生产问题排查/12-生产排查步骤-四类场景与六步SOP.md) → 按现象进 [handbook](../04-生产问题排查/java-architect-troubleshooting-handbook.md) 对应章 |
+| 出事故了怎么办 | [handbook](../04-生产问题排查/java-architect-troubleshooting-handbook.md) 第 0 章（六步 SOP）→ 按现象进对应章 |
 | 被问"能扛多少并发" | [容量攻坚全案](./midservice/5万QPS与1000TPS-容量攻坚全案.md) |
 
 ---
@@ -127,7 +126,7 @@
 | 网关**治理规则**（契约/校验/限流/脱敏/可观测） | [11](./11-midservice网关职责与治理设计.md) | 其他文档只引用，不复制规则条文 |
 | 网关**性能数值**（限流 200 QPS、线程池 15/30/100、连接池 20、五层防线） | [`../04-生产问题排查/11-网关扩容打穿DB`](../04-生产问题排查/11-网关扩容打穿DB-性能开发规范.md) | 11 号只做"入口位置"引用，数值不复制 |
 | Java 技术排障（命令 / 判读 / 处置） | [`../04-生产问题排查/java-architect-troubleshooting-handbook.md`](../04-生产问题排查/java-architect-troubleshooting-handbook.md) | 其他排查实录只写"本次现场"，命令回指 handbook |
-| 排查流程（先干什么后干什么） | [`../04-生产问题排查/12-...六步SOP`](../04-生产问题排查/12-生产排查步骤-四类场景与六步SOP.md) | — |
+| 排查流程（先干什么后干什么） | [`../04-生产问题排查/java-architect-troubleshooting-handbook.md`](../04-生产问题排查/java-architect-troubleshooting-handbook.md) 第 0 章（原 12 号六步 SOP 已并入） | — |
 | 容量目标与判据（5 万 QPS / 1000 TPS） | [`midservice/5万QPS与1000TPS-容量攻坚全案`](./midservice/5万QPS与1000TPS-容量攻坚全案.md) | 压测计划 / 连接池建议只引用结论；已合并的旧稿已从工作区移除 |
 | 竞价状态一致性（状态漂移 / 倒计时 / 断线补偿） | [06](./06-竞价状态不一致问题解决方案.md) | [WebSocket 改造篇](./midservice/竞价详情页轮询改造-WebSocket事件驱动方案.md) 只讲推送通道，不重复状态口径 |
 | dataShare 缺陷与并发上限 | [`dataShare/dataShare-并发能力与缺陷清单`](./dataShare/dataShare-并发能力与缺陷清单.md) | 其余 dataShare 篇目只写局部推导 |

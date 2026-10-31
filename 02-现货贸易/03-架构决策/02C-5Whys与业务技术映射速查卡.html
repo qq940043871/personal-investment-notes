@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>方法速查卡：5 Whys + 业务-技术映射</title>
 <style>
   @page {
@@ -13,67 +14,102 @@
 
   body {
     font-family: "Microsoft YaHei", "PingFang SC", "Source Han Sans SC", sans-serif;
-    color: #1a1a1a;
-    font-size: 8.5pt;
-    line-height: 1.55;
-    background: #fff;
+    color: #1f2937;
+    font-size: 15px;
+    line-height: 1.65;
+    background: #eef2f7;
   }
 
   .page {
     width: 100%;
-    max-width: 188mm;
+    max-width: 1180px;
     margin: 0 auto;
+    padding: 40px 32px 48px;
   }
 
   /* ---- 页头 ---- */
   .header {
-    text-align: center;
-    margin-bottom: 4mm;
+    background: linear-gradient(135deg, #0b5394 0%, #1667b0 55%, #2a86d4 100%);
+    border-radius: 16px;
+    padding: 34px 40px;
+    margin-bottom: 24px;
+    color: #fff;
+    box-shadow: 0 10px 28px rgba(11, 83, 148, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
   }
   .header h1 {
-    font-size: 14pt;
+    font-size: 27px;
     font-weight: 700;
-    color: #0b5394;
-    letter-spacing: 0.5px;
-    margin-bottom: 1mm;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
   }
   .header .tagline {
-    font-size: 8pt;
-    color: #888;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .header-chips { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+  .header-chip {
+    font-size: 12.5px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    padding: 5px 16px;
+    text-align: center;
+    white-space: nowrap;
   }
 
   /* ---- 双栏 ---- */
   .two-col {
-    display: flex;
-    gap: 5mm;
-    margin-bottom: 3mm;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
   }
-  .col {
-    flex: 1;
-    min-width: 0;
-  }
+  .col { min-width: 0; display: flex; flex-direction: column; gap: 24px; }
 
   /* ---- 块样式 ---- */
   .box {
-    border: 1px solid #c8d6e5;
-    border-radius: 3px;
-    padding: 3mm 3.5mm;
-    margin-bottom: 3mm;
-    background: #fafbfd;
+    border: 1px solid #dbe4ee;
+    border-radius: 14px;
+    padding: 26px 28px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(30, 60, 100, 0.07);
+    flex: 1;
   }
   .box h2 {
-    font-size: 11pt;
+    font-size: 19px;
     font-weight: 700;
     color: #0b5394;
-    margin-bottom: 2mm;
-    padding-bottom: 1.5mm;
-    border-bottom: 2px solid #0b5394;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e3ecf5;
+  }
+  .box h2::before {
+    content: "";
+    width: 5px;
+    height: 20px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, #2a86d4, #0b5394);
+    flex-shrink: 0;
   }
   .box h3 {
-    font-size: 9pt;
+    font-size: 15.5px;
     font-weight: 700;
-    color: #333;
-    margin: 2.5mm 0 1mm 0;
+    color: #334155;
+    margin: 18px 0 10px 0;
+    padding-left: 10px;
+    border-left: 3px solid #2a86d4;
+  }
+  .box .sub {
+    font-size: 13px;
+    color: #8a94a6;
+    margin-bottom: 16px;
   }
 
   /* ---- 五层追问列表 ---- */
@@ -84,96 +120,170 @@
   .level-list li {
     display: flex;
     align-items: flex-start;
-    gap: 2mm;
-    padding: 1.2mm 0;
-    border-bottom: 1px dotted #dde;
+    gap: 14px;
+    padding: 11px 0;
+    border-bottom: 1px dashed #e2e8f0;
   }
   .level-list li:last-child { border-bottom: none; }
   .level-list .badge {
     flex-shrink: 0;
-    width: 16mm;
-    padding: 0.8mm 0;
+    min-width: 74px;
+    padding: 5px 10px;
     text-align: center;
-    font-size: 7pt;
+    font-size: 12.5px;
     font-weight: 700;
     color: #fff;
-    border-radius: 2px;
-    line-height: 1.3;
+    border-radius: 8px;
+    line-height: 1.35;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
   }
-  .b-l1 { background: #e74c3c; }
-  .b-l2 { background: #e67e22; }
-  .b-l3 { background: #2980b9; }
-  .b-l4 { background: #8e44ad; }
-  .b-l5 { background: #2c3e50; }
-  .level-list .text { flex: 1; line-height: 1.45; }
-  .level-list .text strong { color: #0b5394; }
+  .b-l1 { background: linear-gradient(135deg, #f0705c, #e74c3c); }
+  .b-l2 { background: linear-gradient(135deg, #f2974a, #e67e22); }
+  .b-l3 { background: linear-gradient(135deg, #3f96d6, #2980b9); }
+  .b-l4 { background: linear-gradient(135deg, #a55fca, #8e44ad); }
+  .b-l5 { background: linear-gradient(135deg, #46617c, #2c3e50); }
+  .level-list .text { flex: 1; line-height: 1.55; }
+  .level-list .text strong { color: #0b5394; font-size: 15px; }
   .level-list .text .ask {
     display: block;
-    font-size: 7.5pt;
-    color: #888;
-    margin-top: 0.5mm;
+    font-size: 13px;
+    color: #8a94a6;
+    margin-top: 3px;
   }
 
-  /* ---- 映射三栏 ---- */
-  .map-table {
+  /* ---- 表格通用 ---- */
+  table.plain, .map-table {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 8pt;
-    margin-top: 2mm;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-top: 8px;
   }
-  .map-table th {
-    background: #0b5394;
-    color: #fff;
-    padding: 1.2mm 2mm;
-    font-size: 7.5pt;
+  table.plain td {
+    border-bottom: 1px solid #e8eef5;
+    padding: 8px 12px;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  table.plain tr:last-child td { border-bottom: none; }
+  table.plain td.k {
+    width: 58px;
     text-align: center;
+    font-weight: 700;
+    color: #0b5394;
+    background: #f4f8fc;
+    border-right: 1px solid #e8eef5;
+  }
+  table.plain tr:nth-child(even) td:not(.k) { background: #fbfcfe; }
+
+  .map-table { font-size: 13.5px; }
+  .map-table th {
+    background: linear-gradient(135deg, #0b5394, #2277c2);
+    color: #fff;
+    padding: 10px 12px;
+    font-size: 13px;
+    text-align: center;
+    letter-spacing: 0.5px;
   }
   .map-table td {
-    border: 1px solid #c8d6e5;
-    padding: 1.2mm 2mm;
+    border-bottom: 1px solid #e8eef5;
+    padding: 10px 12px;
     vertical-align: top;
-    line-height: 1.45;
+    line-height: 1.5;
   }
-  .map-table tr:nth-child(even) td { background: #fafbfd; }
+  .map-table tr:last-child td { border-bottom: none; }
+  .map-table tr:nth-child(even) td { background: #fbfcfe; }
   .col-biz { color: #e74c3c; font-weight: 600; }
   .col-tech { color: #2980b9; font-weight: 600; }
   .col-loss { color: #e67e22; font-weight: 600; }
 
-  /* ---- 速记卡片 ---- */
-  .note {
-    background: #fff8e1;
-    border: 1px solid #f0d88a;
-    border-radius: 3px;
-    padding: 2.5mm 3.5mm;
-    font-size: 8pt;
-    margin-bottom: 3mm;
-    line-height: 1.5;
+  /* ---- 提示行 ---- */
+  .hint {
+    font-size: 12.5px;
+    color: #8a94a6;
+    margin-top: 12px;
+    background: #f4f8fc;
+    border-radius: 8px;
+    padding: 8px 12px;
   }
-  .note strong { color: #c0392b; }
+  .hint b { color: #0b5394; }
 
-  /* ---- 底部横栏 ---- */
+  /* ---- 底部三卡 ---- */
   .footer-strip {
-    border-top: 2px solid #0b5394;
-    padding-top: 2.5mm;
-    display: flex;
-    gap: 4mm;
-    font-size: 7.5pt;
-    color: #555;
-    line-height: 1.5;
+    display: grid;
+    grid-template-columns: 1.1fr 1.2fr 0.9fr;
+    gap: 24px;
   }
   .footer-strip .item {
-    flex: 1;
+    background: #fff;
+    border: 1px solid #dbe4ee;
+    border-radius: 14px;
+    padding: 22px 24px;
+    font-size: 13.5px;
+    color: #4b5563;
+    line-height: 1.7;
+    box-shadow: 0 4px 16px rgba(30, 60, 100, 0.07);
   }
   .footer-strip .item h4 {
-    font-size: 8pt;
+    font-size: 15px;
     color: #0b5394;
-    margin-bottom: 1mm;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-strip .item h4::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #2a86d4;
+    flex-shrink: 0;
+  }
+  .footer-strip strong { color: #0b5394; }
+  .footer-strip .item:last-child strong { color: #c0392b; }
+
+  /* ---- 窄屏 ---- */
+  @media (max-width: 900px) {
+    .two-col { grid-template-columns: 1fr; }
+    .footer-strip { grid-template-columns: 1fr; }
+    .header { flex-direction: column; align-items: flex-start; }
+    .header-chips { flex-direction: row; flex-wrap: wrap; }
   }
 
-  /* ---- 打印优化 ---- */
+  /* ---- 打印优化：切回紧凑 A4 排版 ---- */
   @media print {
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .page { max-width: 100%; }
+    body { font-size: 8.5pt; line-height: 1.55; background: #fff; }
+    .page { max-width: 100%; padding: 0; }
+    .header {
+      border-radius: 3px;
+      padding: 3mm 4mm;
+      margin-bottom: 4mm;
+      box-shadow: none;
+      display: block;
+      text-align: center;
+    }
+    .header h1 { font-size: 14pt; margin-bottom: 1mm; }
+    .header .tagline { font-size: 8pt; }
+    .header-chips { display: none; }
+    .two-col { display: flex; gap: 5mm; margin-bottom: 3mm; }
+    .col { gap: 0; }
+    .box { border-radius: 3px; padding: 3mm 3.5mm; box-shadow: none; }
+    .box h2 { font-size: 11pt; margin-bottom: 2mm; padding-bottom: 1.5mm; }
+    .box h3 { font-size: 9pt; margin: 2.5mm 0 1mm 0; padding-left: 0; border-left: none; }
+    .box .sub { font-size: 7.5pt; margin-bottom: 2mm; }
+    .level-list li { padding: 1.2mm 0; gap: 2mm; }
+    .level-list .badge { min-width: 16mm; padding: 0.8mm 0; font-size: 7pt; border-radius: 2px; box-shadow: none; }
+    .level-list .text strong { font-size: 8.5pt; }
+    .level-list .text .ask { font-size: 7.5pt; margin-top: 0.5mm; }
+    table.plain td, .map-table td { padding: 1.2mm 2mm; font-size: 7.5pt; }
+    .map-table th { padding: 1.2mm 2mm; font-size: 7.5pt; }
+    .hint { font-size: 7pt; padding: 0; background: none; margin-top: 1.5mm; }
+    .footer-strip { display: flex; gap: 4mm; }
+    .footer-strip .item { border-radius: 0; border: none; border-top: 2px solid #0b5394; padding: 2.5mm 0 0 0; font-size: 7.5pt; box-shadow: none; }
+    .footer-strip .item h4 { font-size: 8pt; margin-bottom: 1mm; }
+    .footer-strip .item h4::before { display: none; }
   }
 </style>
 </head>
@@ -183,8 +293,14 @@
 
   <!-- ===== 页头 ===== -->
   <div class="header">
-    <h1>5 Whys 追问法 &amp; 业务-技术映射地图</h1>
-    <div class="tagline">B2B技术经理速查卡 · A4单页 · 从技术排障到业务洞察</div>
+    <div>
+      <h1>5 Whys 追问法 &amp; 业务-技术映射地图</h1>
+      <div class="tagline">B2B 技术经理速查卡 · 从技术排障到业务洞察</div>
+    </div>
+    <div class="header-chips">
+      <span class="header-chip">技术故障 → 向下钻 5 层</span>
+      <span class="header-chip">业务链路 → 向上联 3 栏</span>
+    </div>
   </div>
 
   <!-- ===== 双栏主体 ===== -->
@@ -194,7 +310,7 @@
     <div class="col">
       <div class="box">
         <h2>一、5 Whys 追问法</h2>
-        <p style="font-size:7.5pt;color:#888;margin-bottom:2mm;">丰田生产方式迁移 · 从表面症状到决策层根因</p>
+        <p class="sub">丰田生产方式迁移 · 从表面症状到决策层根因</p>
 
         <ol class="level-list">
           <li>
@@ -222,29 +338,29 @@
 
       <div class="box">
         <h3>实战案例：订单查询慢</h3>
-        <table style="width:100%;border-collapse:collapse;font-size:7.5pt;margin-top:1.5mm;">
-          <tr style="background:#f5f7fa;">
-            <td style="padding:1mm 2mm;border:1px solid #dde;width:12mm;text-align:center;font-weight:700;">L1</td>
-            <td style="padding:1mm 2mm;border:1px solid #dde;">查询P99从200ms→8s</td>
+        <table class="plain">
+          <tr>
+            <td class="k">L1</td>
+            <td>查询P99从200ms→8s</td>
           </tr>
           <tr>
-            <td style="padding:1mm 2mm;border:1px solid #dde;text-align:center;font-weight:700;">L2</td>
-            <td style="padding:1mm 2mm;border:1px solid #dde;">新功能引用了WHERE DATE()函数</td>
-          </tr>
-          <tr style="background:#f5f7fa;">
-            <td style="padding:1mm 2mm;border:1px solid #dde;text-align:center;font-weight:700;">L3</td>
-            <td style="padding:1mm 2mm;border:1px solid #dde;">函数运算破坏B+Tree有序性→索引失效→全表扫描</td>
+            <td class="k">L2</td>
+            <td>新功能引用了WHERE DATE()函数</td>
           </tr>
           <tr>
-            <td style="padding:1mm 2mm;border:1px solid #dde;text-align:center;font-weight:700;">L4</td>
-            <td style="padding:1mm 2mm;border:1px solid #dde;">设计阶段未识别高频时间范围查询模式</td>
+            <td class="k">L3</td>
+            <td>函数运算破坏B+Tree有序性→索引失效→全表扫描</td>
           </tr>
-          <tr style="background:#f5f7fa;">
-            <td style="padding:1mm 2mm;border:1px solid #dde;text-align:center;font-weight:700;">L5</td>
-            <td style="padding:1mm 2mm;border:1px solid #dde;">缺少查询模式评审机制，索引策略未按业务查询驱动</td>
+          <tr>
+            <td class="k">L4</td>
+            <td>设计阶段未识别高频时间范围查询模式</td>
+          </tr>
+          <tr>
+            <td class="k">L5</td>
+            <td>缺少查询模式评审机制，索引策略未按业务查询驱动</td>
           </tr>
         </table>
-        <p style="font-size:7pt;color:#888;margin-top:1.5mm;">▸ 面试答到L3=及格，L4=加分，L5=技术决策者水平</p>
+        <p class="hint">▸ 面试答到 <b>L3 = 及格</b>，<b>L4 = 加分</b>，<b>L5 = 技术决策者水平</b></p>
       </div>
     </div>
 
@@ -252,7 +368,7 @@
     <div class="col">
       <div class="box">
         <h2>二、业务-技术映射地图</h2>
-        <p style="font-size:7.5pt;color:#888;margin-bottom:2mm;">三维标注体系 · 让技术人员看到代码背后的业务代价</p>
+        <p class="sub">三维标注体系 · 让技术人员看到代码背后的业务代价</p>
 
         <h3>三维标注结构</h3>
         <table class="map-table">
@@ -281,7 +397,7 @@
 
       <div class="box">
         <h3>示例：大宗交易核心链路</h3>
-        <table class="map-table" style="font-size:7.5pt;">
+        <table class="map-table">
           <tr>
             <th style="width:22%">业务环节</th>
             <th style="width:40%">技术模块 &amp; 依赖</th>
