@@ -3964,29 +3964,30 @@ function renderDraftSection(prefix, cores, groups) {
   $(prefix + 'CoreGrid').innerHTML = html;
   $(prefix + 'CoreCount').textContent = cores.length + ' 份';
 
+  // 分组文件 → 与技术真题一致的卡片平铺布局（每组一个小节标题 + bank-grid 卡片网格）
+  var grpColors = ['cyan', 'purple', 'green', 'orange', 'pink', 'warm'];
   var gHtml = '';
   for (var g = 0; g < groups.length; g++) {
     var grp = groups[g];
-    var open = g === 0;
-    gHtml += '<div class="prep-category">';
-    gHtml += '<div class="prep-cat-header tap" onclick="togglePrepCategory(this)">';
-    gHtml += '<div class="prep-cat-icon" style="background:var(--surface-2);color:var(--text-2)">' + getIcon(grp.icon) + '</div>';
-    gHtml += '<div class="prep-cat-body">';
-    gHtml += '<div class="prep-cat-title">' + escapeHtml(grp.title) + '</div>';
-    gHtml += '<div class="prep-cat-meta">' + grp.files.length + ' 份资料</div>';
+    var color = grpColors[g % grpColors.length];
+    gHtml += '<div class="section-header">';
+    gHtml += '<div class="section-title"><span class="section-title-bar"></span>' + escapeHtml(grp.title) + '</div>';
+    gHtml += '<span class="setting-value">' + grp.files.length + ' 份</span>';
     gHtml += '</div>';
-    gHtml += '<div class="prep-cat-arrow' + (open ? ' open' : '') + '">' + getIcon('chevron-right') + '</div>';
-    gHtml += '</div>';
-    gHtml += '<div class="prep-cat-list' + (open ? ' open' : '') + '">';
+    gHtml += '<div class="bank-grid">';
     for (var m = 0; m < grp.files.length; m++) {
       var f = grp.files[m];
-      gHtml += '<div class="prep-item tap" onclick="openFriendly(\'' + f.path.replace(/'/g, "\\'") + '\')">';
-      gHtml += '<div class="prep-item-icon">' + getIcon('file') + '</div>';
-      gHtml += '<span class="prep-item-title">' + escapeHtml(f.name) + '</span>';
-      gHtml += '<span class="prep-item-badge ' + f.type + '">' + f.type.toUpperCase() + '</span>';
+      gHtml += '<div class="bank-card ' + color + ' tap" onclick="openFriendly(\'' + f.path.replace(/'/g, "\\'") + '\')">';
+      gHtml += '<div class="bank-top">';
+      gHtml += '<div class="bank-icon ' + color + '">' + getIcon(grp.icon) + '</div>';
+      gHtml += '<span class="bank-count">' + f.type.toUpperCase() + '</span>';
       gHtml += '</div>';
+      gHtml += '<div class="bank-info">';
+      gHtml += '<div class="bank-title">' + escapeHtml(f.name) + '</div>';
+      gHtml += '<div class="bank-desc">' + escapeHtml(grp.title) + '</div>';
+      gHtml += '</div></div>';
     }
-    gHtml += '</div></div>';
+    gHtml += '</div>';
   }
   $(prefix + 'GroupList').innerHTML = gHtml;
 }
