@@ -76,20 +76,19 @@
 | [竞价详情页轮询改造-WebSocket事件驱动方案.md](./midservice/竞价详情页轮询改造-WebSocket事件驱动方案.md) | 推拉分离与断线恢复；附[图 1](./midservice/图-竞价推送-推拉分离.html)、[图 2](./midservice/图-竞价推送-WS稳定性三层.html)、[图 3](./midservice/图-竞价推送-重连五步时序.html) |
 | [HandlerController-网关功能详解.md](./midservice/HandlerController-网关功能详解.md) | 网关主控制器职责拆解 |
 | [ToBackController-后台网关与HandlerController对比.md](./midservice/ToBackController-后台网关与HandlerController对比.md) | 后台网关与主网关的分工 |
-| [Boot改造实录-AI辅助迁移与四轮完善.md](./midservice/Boot改造实录-AI辅助迁移与四轮完善.md) | 迁移实录与四轮返工过程 |
 
-> 已合并的旧稿（《容量目标实现方案》《达成目标的改造路线》）不在本节列出，移至 [`_archive/`](./_archive/README.md) 仅留兼容跳转，内容以容量攻坚全案为准。
+> 已合并的旧稿（《容量目标实现方案》《达成目标的改造路线》）不在本节列出；内容已并入容量攻坚全案，旧文件已从工作区移除（git 历史可追溯），以容量攻坚全案为准。
 
 ### 2.4 DS 数据交换中心专题（`dataShare/`）
 
 | 文档 | 定位 |
 |---|---|
 | [dataShare-并发能力与缺陷清单.md](./dataShare/dataShare-并发能力与缺陷清单.md) | ✅ **缺陷与并发上限唯一权威**：缺陷清单 + 五跳并发约束 + 瓶颈排名 |
-| [dataShare-分布式服务能力与瓶颈分析.md](./dataShare/dataShare-分布式服务能力与瓶颈分析.md) | 服务端能力与瓶颈 |
+| [dataShare-分布式服务能力与瓶颈分析.md](./dataShare/dataShare-分布式服务能力与瓶颈分析.md) | 服务端视角推导（参照；缺陷与并发上限以缺陷清单为准） |
 | [dataShare-SDK网关能力解析.md](./dataShare/dataShare-SDK网关能力解析.md) | SDK / 网关客户端侧能力 |
 | [dataShare-worker线程池改造方案.md](./dataShare/dataShare-worker线程池改造方案.md) | worker 线程池改造 |
 
-> 《端到端链路并发能力分析》《系统缺陷与并发能力分析》已并入缺陷清单，旧稿移至 [`_archive/`](./_archive/README.md)。
+> 《端到端链路并发能力分析》《系统缺陷与并发能力分析》已并入缺陷清单，旧文件已从工作区移除（git 历史可追溯）。
 
 ### 2.5 通用问题指南（`arch/`）
 
@@ -129,7 +128,7 @@
 | 网关**性能数值**（限流 200 QPS、线程池 15/30/100、连接池 20、五层防线） | [`../04-生产问题排查/11-网关扩容打穿DB`](../04-生产问题排查/11-网关扩容打穿DB-性能开发规范.md) | 11 号只做"入口位置"引用，数值不复制 |
 | Java 技术排障（命令 / 判读 / 处置） | [`../04-生产问题排查/java-architect-troubleshooting-handbook.md`](../04-生产问题排查/java-architect-troubleshooting-handbook.md) | 其他排查实录只写"本次现场"，命令回指 handbook |
 | 排查流程（先干什么后干什么） | [`../04-生产问题排查/12-...六步SOP`](../04-生产问题排查/12-生产排查步骤-四类场景与六步SOP.md) | — |
-| 容量目标与判据（5 万 QPS / 1000 TPS） | [`midservice/5万QPS与1000TPS-容量攻坚全案`](./midservice/5万QPS与1000TPS-容量攻坚全案.md) | 压测计划 / 连接池建议只引用结论；已合并的旧稿在 `_archive/` |
+| 容量目标与判据（5 万 QPS / 1000 TPS） | [`midservice/5万QPS与1000TPS-容量攻坚全案`](./midservice/5万QPS与1000TPS-容量攻坚全案.md) | 压测计划 / 连接池建议只引用结论；已合并的旧稿已从工作区移除 |
 | 竞价状态一致性（状态漂移 / 倒计时 / 断线补偿） | [06](./06-竞价状态不一致问题解决方案.md) | [WebSocket 改造篇](./midservice/竞价详情页轮询改造-WebSocket事件驱动方案.md) 只讲推送通道，不重复状态口径 |
 | dataShare 缺陷与并发上限 | [`dataShare/dataShare-并发能力与缺陷清单`](./dataShare/dataShare-并发能力与缺陷清单.md) | 其余 dataShare 篇目只写局部推导 |
 | 交收模式口径（5 种 / 7 种及其层次关系） | [09 §3](./09-合同中心处理逻辑与交收结算引擎.md) + [00 术语](./00-名词解释与术语速查.md) | [10](./10-Drools规则引擎与交收模式.md)、[07](./07-B2B合同中心vsB2C订单中心-区别分析.md) 引用同一口径 |
@@ -155,4 +154,4 @@
 
 ---
 
-*最后更新：2026-10-30（结构治理：02/03 重号改字母后缀、竞价篇补编号 06、已合并旧稿归 `_archive/`、midservice 图统一命名）*
+*最后更新：2026-10-31（2026-10-30 结构治理：02/03 重号改字母后缀、竞价篇补编号 06、已合并旧稿移除、midservice 图统一命名；2026-10-31：删除 Boot 改造实录（用户确认不需要）、arch 数据层口径修正为「垂直分 schema」、删除无限定成果数字、修正失效归档引用）*

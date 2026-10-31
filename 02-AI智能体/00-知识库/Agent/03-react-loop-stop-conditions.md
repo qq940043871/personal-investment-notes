@@ -35,7 +35,7 @@ ReAct 把推理和行动放在一个反馈循环里。模型根据当前目标�
 
 如果系统没有“城市 A 已查询”“城市 B 已查询”这样的状态，模型下一轮可能再次查询城市 A。表面上步骤还在继续，实际上只是在重复读取相似上下文。
 
-![ReAct 循环必须同时检查状态和出口](/project-interview-assets/agent/react-loop-stop-conditions/image_1.png)
+*（原文配图未随抓取保存：ReAct 循环必须同时检查状态和出口）*
 
 *每轮循环都应产生可观察的状态变化，否则继续行动没有依据。*
 
@@ -77,7 +77,7 @@ ReAct 把推理和行动放在一个反馈循环里。模型根据当前目标�
 
 如果所有错误都进入同一个 Retry 分支，死循环只是时间问题。
 
-![死循环通常来自四类根因](/project-interview-assets/agent/react-loop-stop-conditions/image_2.png)
+*（原文配图未随抓取保存：死循环通常来自四类根因）*
 
 *最大步数负责最后止损，目标、Observation、状态和错误策略才决定系统能否收敛。*
 
@@ -153,7 +153,7 @@ ReAct 把推理和行动放在一个反馈循环里。模型根据当前目标�
 
 停止自动执行，提示需要授权、人工处理或修改请求。不得通过其他工具绕过。
 
-![不同失败要走不同出口](/project-interview-assets/agent/react-loop-stop-conditions/image_3.png)
+*（原文配图未随抓取保存：不同失败要走不同出口）*
 
 *错误语义决定下一步，重试只是有限且受预算约束的一种动作。*
 
@@ -166,7 +166,7 @@ ReAct 把推理和行动放在一个反馈循环里。模型根据当前目标�
 教学 Trace 可以长这样：
 
 ```
-`turn=3
+turn=3
 state_version=7
 pending_goal=读取资料 B 的发布日期
 action=read_metadata
@@ -175,7 +175,6 @@ tool_status=not_found
 state_delta=无新增事实
 budget=剩余工具调用 2 次
 decision=询问用户确认资料版本
-`
 ```
 
 这里没有虚构模型内部长思维链，但足以回答：为什么调用工具、工具发生什么、状态有没有变化、为什么停止或继续。
@@ -264,7 +263,7 @@ Planner 不能因为第一个结果回来就宣布整个任务完成，也不能
 
 按 Trace 回放每轮状态、Action、工具结果和预算变化，判断根因属于目标、工具、状态、错误策略还是上下文，再用同一轨迹验证修复。
 
-![ReAct 循环验收清单](/project-interview-assets/agent/react-loop-stop-conditions/image_4.png)
+*（原文配图未随抓取保存：ReAct 循环验收清单）*
 
 *能安全停止、准确说明停止原因，与能完成任务同样重要。*
 

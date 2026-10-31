@@ -396,7 +396,7 @@ doc.confidentiality ≤ user.clearance
 
 ---
 
-## 5. 三条设计红线
+## 5. 三条设计约束
 
 ### 5.1 稳：所有降级朝"信息更少但更确定"
 

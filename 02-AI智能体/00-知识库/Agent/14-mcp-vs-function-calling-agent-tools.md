@@ -23,7 +23,7 @@
 
 这段回答里，最关键的是“模型协议层”和“工具接入层”两个位置。
 
-![Function Calling 与 MCP 的分层关系](/project-interview-assets/agent/mcp-vs-function-calling-agent-tools/image_1.png)
+*（原文配图未随抓取保存：Function Calling 与 MCP 的分层关系）*
 
 *把两者放回各自层次，就不会把 MCP Server 误写成模型，也不会把 Function Calling 误写成网络协议。*
 
@@ -31,9 +31,7 @@
 
 模型本身看不到后端函数实现。应用把工具名称、描述和参数 Schema 随请求发给模型，模型选择是否调用，并返回结构化工具名、参数和调用 ID。
 
-这一步完成的是意图表达。模型没有执行数据库查询，也没有访问文件。宿主程序解析 tool call，进行参数、业务和权限校验，再找到真实执行器。结果以 tool message 回传，模型下一轮继续决策或生成答案。
-
-Function Calling 的优势是结构化。相比让模型输出 `Action: search(...)` 再用正则解析，工具名和参数更容易校验，多个调用也可以通过 ID 关联。
+这一步完成的是**意图表达**：宿主程序解析 tool call，校验后交给真实执行器，结果以 tool message 回传。相比让模型输出 `Action: search(...)` 再用正则解析，结构化协议更易校验、可按 ID 关联多个调用——工具 Schema、结果循环与终止判定的完整拆解见 `08-function-calling-tool-result-loop.md`。
 
 但它没有规定你的真实工具要怎样部署、不同应用怎样发现工具、如何连接远程服务，也不会替你管理每个数据源的接入方式。开发者仍可能为每个工具手写适配器、认证和错误转换。
 
@@ -73,7 +71,7 @@ Server 调用真实数据源或服务，将结果或错误按协议返回。Host
 
 Host 使用原调用 ID 把 tool result 加回消息，模型决定继续使用其他工具或形成最终答案。停止条件仍由 Agent 运行时控制。
 
-![MCP 与 Function Calling 协作流程](/project-interview-assets/agent/mcp-vs-function-calling-agent-tools/image_2.png)
+*（原文配图未随抓取保存：MCP 与 Function Calling 协作流程）*
 
 *Function Calling 表达模型意图，MCP 承担 Host 到工具服务器的标准接入。*
 
@@ -141,7 +139,7 @@ Prompts 同样是可复用模板，不是不可被覆盖的安全策略。真正
 
 双端校验不是重复浪费。Host 防止错误能力暴露，Server 防止恶意或配置错误客户端绕过。
 
-![两种接入方式的工程取舍](/project-interview-assets/agent/mcp-vs-function-calling-agent-tools/image_3.png)
+*（原文配图未随抓取保存：两种接入方式的工程取舍）*
 
 *少量本地工具优先简单，跨应用复用与独立演进时再考虑标准协议层。*
 
@@ -209,7 +207,7 @@ Server 故障时，Host 可以从候选中移除其工具、切换契约兼容�
 
 第四步，再考虑独立团队和更多 Host 复用。高风险写工具最后迁移，并保留审批与幂等，不能因为协议统一就放宽安全。
 
-![MCP 与 Function Calling 验收清单](/project-interview-assets/agent/mcp-vs-function-calling-agent-tools/image_4.png)
+*（原文配图未随抓取保存：MCP 与 Function Calling 验收清单）*
 
 *是否值得引入 MCP，要看复用与治理收益是否超过新增协议层成本。*
 

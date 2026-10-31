@@ -23,7 +23,7 @@
 
 这段回答里，职责分工最重要：模型负责选择和生成参数，程序负责验证和执行，工具负责返回事实，模型再负责解释或继续决策。
 
-![Function Calling 的四方职责](/project-interview-assets/agent/function-calling-tool-result-loop/image_1.png)
+*（原文配图未随抓取保存：Function Calling 的四方职责）*
 
 *把模型、宿主程序、工具和用户分开，很多误解会自然消失。*
 
@@ -32,7 +32,7 @@
 模型通常看不到后端函数的实现。你需要把工具转换成一份它能理解的 Schema，至少包含工具名、用途描述和参数约束。
 
 ```
-`tools = [{
+tools = [{
     "type": "function",
     "function": {
         "name": "search_order",
@@ -49,7 +49,6 @@
         }
     }
 }]
-`
 ```
 
 这段 Schema 是模型的“工具说明书”，不是执行代码。后端还需要有真正的 `search_order` 实现，并在自己的注册表中建立同名映射。
@@ -65,7 +64,7 @@
 如果它认为不需要工具，可能直接返回普通文本。如果它认为需要工具，会在响应中返回一个或多个 tool call。每个调用一般包含调用 ID、工具名和序列化参数。
 
 ```
-`{
+{
   "id": "call_x1",
   "type": "function",
   "function": {
@@ -73,7 +72,6 @@
     "arguments": "{\"order_id\":\"SO001\"}"
   }
 }
-`
 ```
 
 看到这段 JSON 时，订单还没有被查询。它只表达“模型建议调用 `search_order`，并给出参数”。程序要先判断 `tool_calls` 是否存在，再逐个处理。直接取数组第一项而不判空，是最常见的新手错误之一。
@@ -85,7 +83,7 @@
 宿主程序可以是 Python 服务、Java 服务、Node 服务或 Agent 运行时。它收到 tool call 后，按工具名从注册表找到真实执行器。
 
 ```
-`registry = {
+registry = {
     "search_order": search_order,
     "search_document": search_document,
 }
@@ -96,7 +94,6 @@ for call in assistant_message.tool_calls:
     validate_schema(name, args)
     check_permission(current_user, name, args)
     result = registry[name](**args)
-`
 ```
 
 这段代码仍然是教学骨架，生产实现还需要超时、限流、审计、幂等和错误分类。关键点在于，执行权始终留在程序侧。
@@ -110,13 +107,12 @@ for call in assistant_message.tool_calls:
 工具执行完成后，应用要把两类消息追加到对话：模型刚才发出的 assistant tool call，以及与调用 ID 对应的 tool result。
 
 ```
-`messages.append(assistant_message)
+messages.append(assistant_message)
 messages.append({
     "role": "tool",
     "tool_call_id": call.id,
     "content": json.dumps(result, ensure_ascii=False)
 })
-`
 ```
 
 为什么两条都要保留？因为下一轮模型需要知道自己发出了哪个请求，也需要知道哪个结果对应哪个调用。只追加结果、不保留调用请求，或者丢失 `tool_call_id`，可能让协议链条断裂。
@@ -125,7 +121,7 @@ messages.append({
 
 循环的出口不能只依赖模型“自觉结束”。应用还要限制最大步数、总耗时、调用预算，并检测重复动作。模型连续用相同参数调用同一工具，或者多轮没有新增信息时，应停止、换路或转人工。
 
-![从用户问题到最终答案的完整循环](/project-interview-assets/agent/function-calling-tool-result-loop/image_2.png)
+*（原文配图未随抓取保存：从用户问题到最终答案的完整循环）*
 
 *真正的 Agent 循环发生在应用里：请求模型、执行工具、回传结果、再次请求模型。*
 
@@ -134,7 +130,7 @@ messages.append({
 下面把各阶段串在一起：
 
 ```
-`def run_agent(user_text, current_user, max_steps):
+def run_agent(user_text, current_user, max_steps):
     messages = [{"role": "user", "content": user_text}]
     state = build_initial_state(user_text, current_user)
 
@@ -169,7 +165,6 @@ messages.append({
             state = apply_observation(state, call, observation)
 
     return {"status": "stopped", "reason": "step_limit"}
-`
 ```
 
 这里的 `not msg.tool_calls` 只代表模型没有继续发起工具请求，不代表业务已经完成。`validate_completion` 还要根据任务目标、必需字段、工具结果和停止原因，明确返回 `done`、`waiting_user`、`insufficient` 或 `failed`。
@@ -229,8 +224,7 @@ Function Calling 有三个不同层次的“成功”。
 ReAct 教学 Demo 常让模型输出：
 
 ```
-`Action: search("关键词")
-`
+Action: search("关键词")
 ```
 
 然后程序用正则解析。这种方式直观，也能兼容没有原生工具协议的模型，但格式容易漂移。模型多写一段解释、引号变化或参数包含特殊字符，都可能让解析失败。
@@ -239,7 +233,7 @@ Function Calling 让模型按结构化协议返回工具名和参数，程序更
 
 两者的本质都是“模型提出动作，程序执行动作”。区别主要在动作表达是否结构化、解析是否稳定，而不是谁获得了真实执行权。
 
-![四种调用结果该怎样处理](/project-interview-assets/agent/function-calling-tool-result-loop/image_3.png)
+*（原文配图未随抓取保存：四种调用结果该怎样处理）*
 
 *工具调用不是只有成功和失败，缺参数、越权、暂时故障和业务拒绝需要不同出口。*
 
@@ -295,7 +289,7 @@ JSON 通过校验，不代表业务参数合理。例如日期范围颠倒、资
 
 评估样本最好保存完整 Trace：用户输入、可见工具集合、模型 tool call、校验结果、真实工具结果、下一轮模型输出和最终状态。这样一次回归失败才能定位到描述、模型、执行器还是答案整合。
 
-![Function Calling 项目验收清单](/project-interview-assets/agent/function-calling-tool-result-loop/image_4.png)
+*（原文配图未随抓取保存：Function Calling 项目验收清单）*
 
 *能调通一次只是起点，能处理错误、权限和重复副作用才接近工程系统。*
 
