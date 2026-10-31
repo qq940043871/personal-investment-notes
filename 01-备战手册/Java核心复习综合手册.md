@@ -1,0 +1,771 @@
+# Java 核心复习综合手册
+
+> 2026-10-31 自 `02-现货贸易/03-架构决策/02B-技术栈全景图.md` 第三部分整体拆出，内容未改动；面试技术栈口径仍以 02B 第一、二部分为准。
+
+
+> ✅ **技术栈口径（2026-10-05 已确认，全库统一）**：B2B 平台后端 = **Java 微服务业务中台 + C 语言单线程内存撮合引擎 + 自研 DS 数据中心桥接（Hessian + Socket）+ Vue3 前端**（见 `../../02-现货贸易/03-架构决策/02A-异构架构策略与真实系统叙事手册.md`）。
+> 本文件第十四章的 FastAPI / Python 内容属于**个人其他项目（Agent Harness）的技术储备**，面试时只作为"个人技术广度"提及，与本平台后端栈分开表述。
+
+---
+
+### 目录
+
+- [上篇：Java 核心](#上篇java-核心)
+  - [一、JVM 内存结构](#一jvm-内存结构)
+  - [二、垃圾回收（GC）](#二垃圾回收gc)
+  - [三、类加载机制](#三类加载机制)
+  - [四、Java 内存模型（JMM）](#四java-内存模型jmm)
+  - [五、并发编程](#五并发编程)
+  - [六、集合框架](#六集合框架)
+  - [七、Spring 框架](#七spring-框架)
+  - [八、Java vs Python 对照表](#八java-vs-python-对照表)
+- 下篇：中间件核心（⚠️ **目录预留，正文尚未编写**——十一~十八章暂缺，需要时到 `03-技术真题/` 与 `05-八股/` 取材补写）
+
+---
+
+### 上篇：Java 核心
+
+> 与 Python/FastAPI 对照：每个 Java 概念附 Python 类比，帮助跨语言理解
+
+#### Java 知识体系全景
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                     Java 面试核心                         │
+├───────────┬───────────┬───────────┬─────────────────────┤
+│  JVM      │  并发编程   │  集合框架  │    Spring           │
+│  内存模型  │  JMM       │  HashMap  │    IOC              │
+│  GC算法   │  synchronized│ ConcurrentHashMap│ AOP        │
+│  类加载    │  volatile  │  线程池    │    事务传播          │
+│  调优      │  AQS/CAS   │  ThreadLocal│   Bean生命周期     │
+├───────────┴───────────┴───────────┴─────────────────────┤
+│  Java 基础：泛型/反射/注解/异常/IO/NIO                    │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+#### 一、JVM 内存结构
+
+##### 1.1 运行时数据区
+
+```
+┌──────────────────────────────────────────────────────┐
+│                    JVM 进程内存                        │
+├──────────────┬───────────────────────────────────────┤
+│              │  ┌─────────┐ ┌─────────┐              │
+│  线程私有     │  │ 虚拟机栈 │ │ 本地方法栈│              │
+│（随线程生死） │  └────┬────┘ └─────────┘              │
+│              │  ┌────┴────┐                           │
+│              │  │ 程序计数器│                          │
+│              │  └─────────┘                           │
+├──────────────┼───────────────────────────────────────┤
+│              │  ┌─────────────────────────────────┐  │
+│  线程共享     │  │            堆 (Heap)             │  │
+│（随 JVM 生死）│  │  ┌─────────┬─────────────────┐  │  │
+│              │  │  │ 新生代   │     老年代        │  │  │
+│              │  │  │Eden|S0|S1│                 │  │  │
+│              │  │  └─────────┴─────────────────┘  │  │
+│              │  └─────────────────────────────────┘  │
+│              │  ┌─────────────────────────────────┐  │
+│              │  │        方法区/元空间              │  │
+│              │  │  类信息/常量池/静态变量            │  │
+│              │  └─────────────────────────────────┘  │
+└──────────────┴───────────────────────────────────────┘
+```
+
+| 区域 | 线程 | 存储内容 | OOM 类型 | Python 类比 |
+|------|------|---------|----------|-------------|
+| **虚拟机栈** | 私有 | 栈帧（局部变量表/操作数栈） | StackOverflowError / OOM | 函数调用栈 |
+| **本地方法栈** | 私有 | Native 方法调用 | OOM | C 扩展调用 |
+| **程序计数器** | 私有 | 当前执行字节码行号 | **不会 OOM** | — |
+| **堆** | 共享 | 对象实例/数组 | OutOfMemoryError: Heap | Python 堆内存 |
+| **方法区（元空间）** | 共享 | 类元数据/常量池/静态变量 | OOM: Metaspace | 模块/类对象 |
+
+##### 1.2 堆内存分代
+
+```
+┌──────────────────── 堆 (Heap) ────────────────────────┐
+│  ┌──────────────── 新生代 (Young) ──────────┐ ┌──────┐│
+│  │   Eden (8)    │   S0 (1)   │   S1 (1)   │ │ Old  ││
+│  │               │  (From)    │   (To)     │ │      ││
+│  │  新对象分配    │  存活对象   │  复制存活对象│ │ 长期  ││
+│  │               │            │            │ │ 存活  ││
+│  └───────────────┴────────────┴────────────┘ │ 对象  ││
+│           Minor GC（复制算法）         ↓      │      ││
+│                                  Major GC / Full GC  ││
+└───────────────────────────────────────────────────────┘
+  新生代:老年代 = 1:2（默认）    晋升条件：年龄≥15 或 S 区放不下
+```
+
+| GC 类型 | 回收区域 | 触发条件 | STW |
+|---------|---------|---------|-----|
+| **Minor GC** | 新生代（Eden+S0/S1） | Eden 满 | ✅ 短暂停（毫秒级） |
+| **Major GC** | 老年代 | 老年代满 | ✅ 较长 |
+| **Full GC** | 整个堆+元空间 | 老年代满/System.gc() | ✅ 最长（应避免） |
+
+##### 1.3 对象生命周期
+
+```
+new Object()
+    │
+    ├─→ 优先分配到 TLAB（Thread Local Allocation Buffer）
+    ├─→ TLAB 满 → Eden 区分配
+    │
+    ├─→ Eden 满 → Minor GC
+    │     ├─ 存活 → 复制到 S0（年龄+1）
+    │     ├─ S0 满 → 复制到 S1（年龄+1）
+    │     └─ 年龄 ≥ 15 → 晋升老年代
+    │
+    ├─→ 大对象 → 直接老年代（-XX:PretenureSizeThreshold）
+    │
+    └─→ 老年代满 → Full GC → 仍满 → OOM
+```
+
+---
+
+#### 二、垃圾回收（GC）
+
+##### 2.1 GC 算法
+
+| 算法 | 原理 | 优点 | 缺点 | 适用 |
+|------|------|------|------|------|
+| **标记-清除** | 标记存活→清除其余 | 简单 | **内存碎片** | CMS Old |
+| **复制** | 存活对象复制到另一半 | 无碎片、快 | 浪费 50% 空间 | 新生代 |
+| **标记-整理** | 标记存活→向一端移动 | 无碎片、不浪费 | 较慢 | Old |
+| **分代收集** | 新生代复制+老年代标记整理 | 综合最优 | — | **主流 JVM** |
+
+##### 2.2 GC Roots（根对象）
+
+GC 从以下 Roots 开始可达性分析，不可达的对象即垃圾：
+
+| GC Root 类型 | 说明 |
+|-------------|------|
+| 虚拟机栈中引用的对象 | 正在执行的方法的局部变量 |
+| 方法区中类静态属性引用的对象 | static 变量 |
+| 方法区中常量引用的对象 | static final 常量 |
+| 本地方法栈 JNI 引用的对象 | Native 方法引用 |
+| 活跃线程 | Thread 对象本身 |
+| 同步锁持有的对象 | synchronized 持有的对象 |
+
+##### 2.3 垃圾回收器对比
+
+```
+时间线：Serial → Parallel → CMS → G1 → ZGC/Shenandoah
+
+吞吐量优先 ←─────────────────────────→ 延迟优先
+Serial/Parallel ──── CMS ──── G1 ──── ZGC
+```
+
+| 回收器 | 分代 | 算法 | STW | 适用场景 | Python 类比 |
+|--------|------|------|-----|---------|-------------|
+| **Serial** | 新生代 | 复制 | 全程 STW | 单核、小内存 | — |
+| **ParNew** | 新生代 | 复制 | 多线程 STW | 配合 CMS | — |
+| **Parallel Scavenge** | 新生代 | 复制 | 多线程 STW | **吞吐量优先** | — |
+| **CMS** | 老年代 | 标记-清除 | 4 阶段（部分并发） | 低延迟（已废弃） | — |
+| **G1** | 全堆（Region） | 标记-整理+复制 | 可预测停顿 | **JDK9+ 默认** | gc 模块 |
+| **ZGC** | 全堆（Region） | 染色指针+读屏障 | **<10ms** | 超低延迟（JDK11+） | — |
+
+##### 2.4 G1 详解（面试重点）
+
+```
+G1 将堆划分为 2048 个等大 Region（1-32MB）
+每个 Region 可以动态是 Eden / Survivor / Old / Humongous
+
+GC 过程：
+1. 初始标记（STW）→ 标记 GC Roots 直接引用
+2. 并发标记 → 从 Roots 遍历对象图
+3. 最终标记（STW）→ 处理并发标记期间的变更
+4. 筛选回收（STW）→ 按回收价值排序，回收性价比高的 Region
+```
+
+**G1 核心优势**：
+- 可预测停顿：`-XX:MaxGCPauseMillis=200`（目标 200ms 内）
+- Region 化：不再严格分代，整体看是一组 Region
+- 无内存碎片：整体标记-整理，局部复制
+
+##### 2.5 常用 JVM 参数
+
+| 参数 | 说明 | 推荐值 |
+|------|------|--------|
+| `-Xms` | 初始堆大小 | = `-Xmx`（避免动态扩缩） |
+| `-Xmx` | 最大堆大小 | 物理内存的 60-70% |
+| `-Xmn` | 新生代大小 | 堆的 1/3 |
+| `-XX:MetaspaceSize` | 元空间初始大小 | 256M |
+| `-XX:MaxMetaspaceSize` | 元空间最大大小 | 512M |
+| `-XX:+UseG1GC` | 使用 G1 回收器 | JDK9+ 默认 |
+| `-XX:MaxGCPauseMillis` | G1 目标停顿时间 | 200ms |
+| `-XX:+PrintGCDetails` | 打印 GC 详情 | 排查必开 |
+
+##### 2.6 OOM 排查
+
+```
+java.lang.OutOfMemoryError: Java heap space
+  → 堆内存不足，检查是否有内存泄漏
+
+java.lang.OutOfMemoryError: Metaspace
+  → 元空间不足，类加载过多（动态生成类）
+
+java.lang.OutOfMemoryError: unable to create new native thread
+  → 线程数过多，检查线程池配置
+
+排查工具：
+  jps → 找到 JVM 进程
+  jstat -gc <pid> 1000 → 每秒看 GC 情况
+  jmap -dump:format=b,file=heap.hprof <pid> → dump 堆
+  MAT / VisualVM → 分析堆 dump 文件
+  Arthas → 在线诊断（神器）
+```
+
+---
+
+#### 三、类加载机制
+
+##### 3.1 类加载过程
+
+```
+.java → javac → .class → ClassLoader 加载到 JVM
+
+加载 → 验证 → 准备 → 解析 → 初始化
+ │      │      │      │      │
+ │      │      │      │      └─ 执行 <clinit>() 静态代码块
+ │      │      │      └─ 符号引用→直接引用
+ │      │      └─ 静态变量赋默认值（int=0, ref=null）
+ │      └─ 文件格式/元数据/字节码/符号引用验证
+ └─ 读取 .class 文件，生成 Class 对象
+```
+
+##### 3.2 双亲委派模型
+
+```
+          ┌───────────────────┐
+          │ Bootstrap ClassLoader │  ← 加载 rt.jar（java.lang.*）
+          │  （C++ 实现）          │
+          └──────────┬──────────┘
+                     │
+          ┌──────────┴──────────┐
+          │ Extension ClassLoader │  ← 加载 ext/*.jar
+          └──────────┬──────────┘
+                     │
+          ┌──────────┴──────────┐
+          │ Application ClassLoader│ ← 加载 classpath
+          └──────────┬──────────┘
+                     │
+          ┌──────────┴──────────┐
+          │  自定义 ClassLoader    │
+          └─────────────────────┘
+
+委派流程：子加载器先委托父加载器，父加载不到才自己加载
+```
+
+**为什么需要双亲委派？**
+1. **安全**：防止用户伪造 `java.lang.String` 类（Bootstrap 先加载真的）
+2. **唯一性**：同一类只会被加载一次（由加载器+类名共同确定）
+
+**打破双亲委派的场景**：
+
+| 场景 | 方式 | 原因 |
+|------|------|------|
+| SPI（JDBC） | 线程上下文类加载器 | Bootstrap 要加载子类实现的 Driver |
+| Tomcat | 每个 WebApp 独立 ClassLoader | 应用隔离，互不影响 |
+| OSGi | 网状委派 | 模块化热部署 |
+| 热部署 | 自定义 loadClass() | 修改类后重新加载 |
+
+---
+
+#### 四、Java 内存模型（JMM）
+
+##### 4.1 JMM 是什么
+
+> JMM（Java Memory Model）定义了**多线程之间如何通过内存进行交互**的规范。它不是 JVM 内存结构（堆/栈），而是一组并发编程的规则。
+
+```
+线程 A                          线程 B
+┌──────────┐                  ┌──────────┐
+│ 工作内存   │                  │ 工作内存   │
+│ (CPU缓存) │                  │ (CPU缓存) │
+└────┬─────┘                  └────┬─────┘
+     │ read/write                   │ read/write
+     │                              │
+┌────┴──────────────────────────────┴─────┐
+│              主内存 (Main Memory)          │
+│              共享变量存储                    │
+└─────────────────────────────────────────┘
+```
+
+| 操作 | 说明 |
+|------|------|
+| **read** | 主内存→工作内存 |
+| **load** | 放入工作内存变量副本 |
+| **use** | 工作内存→执行引擎 |
+| **assign** | 执行引擎→工作内存 |
+| **store** | 工作内存→主内存 |
+| **write** | 写入主内存变量 |
+
+##### 4.2 三大特性
+
+| 特性 | 说明 | 问题示例 |
+|------|------|---------|
+| **可见性** | 线程修改变量后，其他线程能立即看到 | 线程 A 改了 flag=true，线程 B 还看到 false |
+| **原子性** | 操作不可分割，不被中断 | `count++` 不是原子的（读+加+写） |
+| **有序性** | 代码执行顺序符合预期（防重排） | DCL 单例的 `new Object()` 可能被重排 |
+
+##### 4.3 volatile（高频考点）
+
+```java
+// volatile 两大作用：
+// 1. 可见性：写入后立即刷主内存，读取前从主内存刷新
+// 2. 禁止指令重排：插入内存屏障
+
+private volatile boolean running = true;
+
+// 线程 A
+running = false;  // volatile 写 → 刷主内存
+
+// 线程 B
+while (running) {  // volatile 读 → 从主内存刷新
+    // 如果不加 volatile，B 可能永远看不到 running=false
+}
+```
+
+**volatile 不保证原子性**：
+
+```java
+private volatile int count = 0;
+count++;  // ❌ 不安全！count++ = 读+加+写，三步非原子
+// 需要 AtomicInteger.count.incrementAndGet() 或 synchronized
+```
+
+**DCL 单例为什么要 volatile**：
+
+```java
+public class Singleton {
+    private static volatile Singleton instance;  // ← 必须 volatile！
+
+    public static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (Singleton.class) {
+                if (instance == null) {
+                    instance = new Singleton();
+                    // new Singleton() 分三步：
+                    // 1. 分配内存  2. 初始化对象  3. 引用指向内存地址
+                    // 如果 2 和 3 重排 → 其他线程拿到未初始化的对象！
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
+
+##### 4.4 happens-before 规则
+
+> 如果 A happens-before B，则 A 的操作结果对 B 可见。
+
+| 规则 | 说明 |
+|------|------|
+| **程序顺序规则** | 同一线程内，代码前面的操作 HB 后面的 |
+| **volatile 规则** | volatile 写 HB 后续的 volatile 读 |
+| **锁规则** | unlock HB 后续 lock |
+| **线程启动规则** | Thread.start() HB 线程内所有操作 |
+| **线程终止规则** | 线程内所有操作 HB Thread.join() |
+| **传递性** | A HB B 且 B HB C → A HB C |
+
+---
+
+#### 五、并发编程
+
+##### 5.1 synchronized 锁升级（JDK 6+）
+
+```
+无锁 → 偏向锁 → 轻量级锁 → 重量级锁（不可逆）
+
+┌──────┐   竞争    ┌────────┐  自旋失败  ┌──────────┐
+│ 偏向锁 │ ──────→ │ 轻量级锁 │ ────────→ │ 重量级锁  │
+│      │         │(CAS自旋) │          │(OS互斥量) │
+└──────┘         └────────┘          └──────────┘
+首个线程         2个线程交替          多线程激烈竞争
+记录ThreadID     CAS竞争              进入内核态阻塞
+几乎无开销       避免系统调用          上下文切换开销大
+```
+
+| 锁状态 | 适用场景 | 开销 |
+|--------|---------|------|
+| **偏向锁** | 单线程访问 | 几乎为零（CAS 记录 ThreadID） |
+| **轻量级锁** | 两个线程交替访问 | CAS 自旋（用户态） |
+| **重量级锁** | 多线程激烈竞争 | OS 互斥量（内核态阻塞） |
+
+##### 5.2 synchronized vs ReentrantLock
+
+| 维度 | synchronized | ReentrantLock |
+|------|-------------|---------------|
+| **实现** | JVM 内置（monitorenter/exit） | JDK API（AQS） |
+| **锁释放** | 自动（出代码块/异常） | **手动** `finally { lock.unlock() }` |
+| **可中断** | ❌ 不可中断 | ✅ `lockInterruptibly()` |
+| **超时获取** | ❌ | ✅ `tryLock(timeout)` |
+| **公平锁** | ❌ 非公平 | ✅ 可选公平/非公平 |
+| **条件变量** | 1 个（wait/notify） | **多个** `Condition` |
+| **锁升级** | 偏向→轻量→重量 | 直接 AQS |
+
+##### 5.3 AQS（AbstractQueuedSynchronizer）
+
+```
+AQS 核心：state 变量 + CLH 双向等待队列
+
+         ┌──────────────────────────────┐
+         │        state (volatile int)    │
+         │  0=未锁定  >0=锁定/重入次数     │
+         └──────────────────────────────┘
+                      │
+    ┌─────────────────┼─────────────────┐
+    │                 │                  │
+  独占模式            共享模式           条件变量
+  ReentrantLock      Semaphore          Condition
+  writeLock          CountDownLatch     await/signal
+                    readLock
+                    CyclicBarrier
+
+CLH 队列：
+  head ←→ Node ←→ Node ←→ Node ←→ tail
+            (ThreadA) (ThreadB) (ThreadC)
+```
+
+##### 5.4 CAS（Compare And Swap）
+
+```java
+// CAS 原理：比较并交换，CPU 原子指令（cmpxchg）
+boolean compareAndSwap(Object obj, long offset, int expected, int newValue) {
+    // 如果 obj.offset 的值 == expected，则设为 newValue，返回 true
+    // 否则返回 false
+}
+
+// AtomicInteger.incrementAndGet() 底层就是 CAS
+public final int incrementAndGet() {
+    return U.getAndAddInt(this, VALUE, 1) + 1;
+    // 自旋 CAS：do { v = getInt(this); } while (!cas(this, v, v+1));
+}
+```
+
+| 优点 | 缺点 |
+|------|------|
+| 无锁，性能高 | **ABA 问题**（值从 A→B→A，CAS 认为没变过） |
+| CPU 原子指令 | 自旋开销大（竞争激烈时） |
+| | 只保证一个变量原子 |
+
+**ABA 解决**：`AtomicStampedReference`（加版本号）
+
+##### 5.5 线程池（ThreadPoolExecutor）
+
+```java
+ThreadPoolExecutor pool = new ThreadPoolExecutor(
+    corePoolSize,      // 核心线程数
+    maximumPoolSize,   // 最大线程数
+    keepAliveTime,     // 非核心线程空闲存活时间
+    unit,              // 时间单位
+    workQueue,         // 任务队列
+    threadFactory,     // 线程工厂
+    handler            // 拒绝策略
+);
+```
+
+**执行流程**：
+
+```
+提交任务
+  │
+  ├─ 当前线程数 < corePoolSize？→ 创建核心线程执行
+  │
+  ├─ 核心线程满？→ 放入 workQueue 队列
+  │
+  ├─ 队列满？→ 创建非核心线程（不超过 maximumPoolSize）
+  │
+  └─ 线程数达到 max 且队列满？→ 执行拒绝策略
+```
+
+| 拒绝策略 | 行为 |
+|---------|------|
+| **AbortPolicy**（默认） | 抛 RejectedExecutionException |
+| **CallerRunsPolicy** | 调用者线程执行（降级，不丢任务） |
+| **DiscardPolicy** | 静默丢弃 |
+| **DiscardOldestPolicy** | 丢弃队列最老的任务，重试 |
+
+**线程数设置**：
+
+| 任务类型 | CPU 密集型 | IO 密集型 |
+|---------|-----------|----------|
+| 核心线程数 | **CPU 核数 + 1** | **CPU 核数 × 2~10** |
+| 理论公式 | N+1 | N × (1 + W/C)（W=等待时间, C=计算时间） |
+
+**为什么不推荐 Executors 工具方法**：
+
+| 方法 | 问题 |
+|------|------|
+| `newFixedThreadPool` | 队列 `LinkedBlockingQueue` 无界 → **OOM** |
+| `newCachedThreadPool` | 最大线程 `Integer.MAX_VALUE` → **OOM** |
+| `newSingleThreadExecutor` | 同 FixedThreadPool → **OOM** |
+| 推荐 | 手动 `new ThreadPoolExecutor(...)`，明确参数 |
+
+##### 5.6 ThreadLocal
+
+```java
+// 每个线程独立副本，线程隔离
+private static ThreadLocal<SimpleDateFormat> dateFormat =
+    ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
+
+// 底层：每个 Thread 有一个 ThreadLocalMap
+// Key = ThreadLocal 对象（弱引用），Value = 实际值（强引用）
+```
+
+**内存泄漏问题**：
+
+```
+Thread → ThreadLocalMap → Entry(WeakRef<ThreadLocal>, StrongRef<Value>)
+                                          ↑                    ↑
+                                    GC 可回收             GC 不可回收！
+                                    Key=null              Value 仍在
+```
+
+- Key 是弱引用，ThreadLocal 被回收后 Key=null
+- Value 是强引用，**线程不结束 Value 就不回收**
+- 线程池中线程复用 → Value 积累 → 内存泄漏
+
+**解决**：用完必须 `threadLocal.remove()`
+
+---
+
+#### 六、集合框架
+
+##### 6.1 HashMap 源码（高频重点）
+
+##### JDK 1.8 结构
+
+```
+table 数组
+┌──┬──┬──┬──┬──┬──┬──┬──┐
+│  │  │  │  │  │  │  │  │  ← 桶（Bucket）
+└──┴──┴──┴──┴──┴──┴──┴──┘
+       │              │
+   ┌───┴──┐       ┌───┴──┐
+   │ K:V  │       │ K:V  │  ← 链表节点
+   │ next │──→   │ next │──→ null
+   └──────┘       └──────┘
+                       │
+                   链表长度 ≥ 8 且 table ≥ 64
+                       ↓ 红黑树化
+                   ┌───────┐
+                   │ K:V   │  ← 红黑树节点
+                   │ left  │
+                   │ right │
+                   │ parent│
+                   └───────┘
+```
+
+##### put 流程
+
+```java
+V put(K key, V value) {
+    // 1. hash(key) → (h = key.hashCode()) ^ (h >>> 16)  扰动函数
+    // 2. (n-1) & hash  →  定位桶下标（n 是 2 的幂，保证均匀分布）
+    // 3. 桶为空 → 直接放入
+    // 4. 桶非空：
+    //    a. key 相同（== 或 equals）→ 覆盖 value
+    //    b. 链表 → 尾插法插入（JDK1.7 是头插法，多线程会成环）
+    //    c. 链表 ≥ 8 且 table ≥ 64 → 转红黑树
+    // 5. size > threshold(容量×负载因子) → resize 扩容（2 倍）
+}
+```
+
+##### 关键参数
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| 初始容量 | 16 | `1 << 4` |
+| 负载因子 | 0.75 | size > 容量×0.75 时扩容 |
+| 链表转树阈值 | 8 | 链表长度 ≥ 8 |
+| 树退化链表阈值 | 6 | 红黑树节点 ≤ 6 时退化 |
+| 最小树化容量 | 64 | table < 64 时优先扩容不树化 |
+
+##### 为什么容量是 2 的幂？
+
+```
+桶下标 = (n-1) & hash
+当 n = 16 时：n-1 = 15 = 0000 1111
+hash & 0000 1111 → 等价于 hash % 16，但位运算更快
+且 2 的幂保证 n-1 全是 1，分布均匀
+```
+
+##### HashMap 线程不安全
+
+| 问题 | JDK 1.7 | JDK 1.8 |
+|------|---------|---------|
+| 扩容时链表成环 → 死循环 | ✅ 会有 | ❌ 尾插法修复 |
+| 数据覆盖 | ✅ | ✅ 仍有 |
+| size 不准确 | ✅ | ✅ |
+
+> **面试回答**：JDK 1.8 改为尾插法解决了死循环，但仍然线程不安全（put 可能覆盖）。多线程用 `ConcurrentHashMap`。
+
+##### 6.2 ConcurrentHashMap
+
+##### JDK 1.7 → 分段锁（Segment[]，默认 16 段，锁粒度段级别）
+
+##### JDK 1.8 → CAS + synchronized 桶级锁
+
+```
+Node[] table
+  ┌──┬──┬──┬──┬──┬──┬──┬──┐
+  │  │  │  │  │  │  │  │  │  ← 桶
+  └──┴──┴──┴──┴──┴──┴──┴──┘
+           │
+     ┌─────┴─────┐
+     │ CAS 插入   │  ← 桶为空时，CAS 插入（无锁）
+     │           │
+     │ synchronized│  ← 桶非空时，锁桶头节点（细粒度）
+     └───────────┘
+```
+
+**put 流程**：hash 定位桶 → 桶为空 CAS 插入 → 桶扩容中协助扩容 → 桶非空 synchronized 锁头节点 → 链表/树插入 → 检查扩容
+
+**并发度**：从 1.7 的 16 段提升到 **桶级别**。
+
+##### 6.3 集合对比速查
+
+| 集合 | 底层 | 线程安全 | 特点 | Python 类比 |
+|------|------|---------|------|-------------|
+| ArrayList | 数组 | ❌ | 查询快 O(1)，增删慢 | list |
+| LinkedList | 双向链表 | ❌ | 增删快 O(1)，查询慢 O(n) | collections.deque |
+| HashMap | 数组+链表/红黑树 | ❌ | O(1) 查找 | dict |
+| ConcurrentHashMap | 同 HashMap | ✅ | 桶级锁 | — |
+| TreeMap | 红黑树 | ❌ | 有序 O(logN) | — |
+| CopyOnWriteArrayList | 数组 | ✅ | 写时复制，读无锁 | — |
+
+---
+
+#### 七、Spring 框架
+
+##### 7.1 IOC（控制反转）
+
+```
+传统方式：对象自己 new 依赖
+  new Service() → new Dao() → new DataSource()
+
+IOC 方式：容器创建并注入依赖
+  容器创建 DataSource → 注入 Dao → 注入 Service
+
+控制反转：依赖的创建控制权从"对象自己"反转到"容器"
+依赖注入（DI）是实现 IOC 的方式
+```
+
+| 注入方式 | 写法 | 推荐 |
+|---------|------|------|
+| 字段注入 | `@Autowired private FundService svc;` | ❌ 不推荐（无法 final） |
+| 构造器注入 | 构造方法加 `@Autowired` | ✅ **推荐**（可 final，易测试） |
+| Setter 注入 | `@Autowired public void setSvc(...)` | 可选依赖时用 |
+
+##### 7.2 Bean 生命周期
+
+```
+实例化 (Instantiation)
+  ↓ ← 构造方法调用
+属性赋值 (Populate Properties)
+  ↓ ← @Autowired / @Value 注入
+BeanNameAware / BeanFactoryAware
+  ↓ ← 回调 setBeanName() 等
+BeanPostProcessor.postProcessBeforeInitialization
+  ↓ ← @PostConstruct 在此触发
+InitializingBean.afterPropertiesSet() / init-method
+  ↓ ← 自定义初始化
+BeanPostProcessor.postProcessAfterInitialization
+  ↓ ← AOP 代理在此创建
+使用中 (In Use)
+  ↓
+DisposableBean.destroy() / destroy-method
+  ↓ ← 容器关闭时销毁
+```
+
+##### 7.3 AOP（面向切面编程）
+
+```
+核心概念：
+  切面(Aspect)     = 日志切面类
+  切入点(Pointcut) = execution(* com.b2b.service.*.*(..))
+  通知(Advice)     = @Before / @After / @Around
+  织入(Weaving)    = 运行时代理
+
+通知类型：
+  @Before        方法前
+  @After         方法后（无论成功失败）
+  @AfterReturning 方法成功返回后
+  @AfterThrowing  方法抛异常后
+  @Around        环绕（最强大，可控制是否执行、修改参数/返回值）
+```
+
+**动态代理实现**：
+
+| 方式 | 条件 | 原理 |
+|------|------|------|
+| **JDK 动态代理** | 目标类实现接口 | `Proxy.newProxyInstance()` 生成接口代理类 |
+| **CGLIB 代理** | 目标类无接口 | 生成目标类的子类，重写方法 |
+
+##### 7.4 Spring 事务
+
+##### 传播行为（高频考点）
+
+| 传播行为 | 说明 | 场景 |
+|---------|------|------|
+| **REQUIRED**（默认） | 有事务加入，无事务新建 | 大多数场景 |
+| REQUIRES_NEW | 总是新建事务，挂起当前 | 日志记录（不受主事务影响） |
+| NESTED | 嵌套事务（保存点） | 部分回滚 |
+| SUPPORTS | 有事务加入，无事务非事务执行 | 查询方法 |
+| NOT_SUPPORTED | 非事务执行，挂起当前 | 不需要事务的操作 |
+| MANDATORY | 必须有事务，否则异常 | 强制要求事务 |
+| NEVER | 必须无事务，否则异常 | 明确不能有事务 |
+
+##### 事务失效场景（高频考点）
+
+| 失效原因 | 说明 | 解决 |
+|---------|------|------|
+| **方法非 public** | Spring AOP 只代理 public 方法 | 改为 public |
+| **自调用** | `this.method()` 不走代理 | 注入自己 `@Autowired self` 或 AopContext |
+| **异常被 catch** | 事务管理器检测不到异常 | catch 后手动 `throw` 或 setRollbackOnly() |
+| **异常类型错误** | 默认只回滚 RuntimeException | `@Transactional(rollbackFor = Exception.class)` |
+| **数据库引擎不支持** | MyISAM 不支持事务 | 用 InnoDB |
+| **传播行为错误** | NOT_SUPPORTED / NEVER | 检查传播行为配置 |
+
+```java
+// ❌ 事务失效：自调用不走代理
+@Service
+public class TradeService {
+    public void batchTrade() {
+        for (int i = 0; i < 10; i++) {
+            this.singleTrade();  // ← this 调用不走代理，@Transactional 无效！
+        }
+    }
+    
+    @Transactional
+    public void singleTrade() { ... }
+}
+
+// ✅ 解决方案：注入自己走代理
+@Autowired
+private TradeService self;
+```
+
+---
+
+#### 八、Java vs Python 对照表
+
+| 概念 | Java | Python | 差异要点 |
+|------|------|--------|---------|
+| **内存管理** | JVM GC（分代回收） | 引用计数 + 分代 GC | Java GC 更可控 |
+| **并发模型** | 多线程 + 锁 + 线程池 | GIL 限制 + asyncio | Java 真多线程 |
+| **类型系统** | 静态强类型 | 动态强类型 | Java 编译期检查 |
+| **泛型** | 类型擦除（伪泛型） | 无原生泛型（typing） | Java 泛型是编译期检查 |
+| **注解** | 编译时+运行时（反射读取） | 装饰器（函数变换） | Java 注解是元数据 |
+| **接口** | interface + implements | 鸭子类型 / Protocol | Java 显式声明 |
+| **异常** | Checked + Unchecked | 全部 Unchecked | Java 强制处理 Checked |
+| **Web 框架** | Spring（IOC/AOP） | FastAPI（依赖注入/中间件） | Spring 更重 |
+| **ORM** | MyBatis/Hibernate | SQLAlchemy | MyBatis 半自动更灵活 |
+| **构建** | Maven/Gradle | pip/poetry | Maven 约定优于配置 |
+
+---
+

@@ -26,10 +26,7 @@
   - [附带能力：通知下发、配置读取、运行时控制面](#附带能力通知下发配置读取运行时控制面)
 - [四、midservice 侧的使用画像](#四midservice-侧的使用画像)
 - [五、关键流程时序](#五关键流程时序)
-- [六、系统瓶颈](#六系统瓶颈)
-  - [P0 级瓶颈](#p0-级瓶颈)
-  - [P1 级瓶颈](#p1-级瓶颈)
-  - [P2 级瓶颈](#p2-级瓶颈)
+- [六、系统瓶颈（索引 · 已收口）](#六系统瓶颈索引--已收口)
   - [瓶颈汇总表](#瓶颈汇总表)
 - [七、缺陷清单与改造建议（已收口，见另文）](#七缺陷清单与改造建议已收口见另文)
 - [八、架构评价](#八架构评价)
@@ -475,252 +472,21 @@ else if (errMsg.indexOf("服务端休息了下") > -1 && ...) { ... }
 
 ---
 
-## 六、系统瓶颈
+## 六、系统瓶颈（索引 · 已收口）
 
-### P0 级瓶颈
+> 本章原为 P0/P1/P2 逐项机理分析（约 250 行），2026-10-31 收口至《[dataShare-并发能力与缺陷清单](./dataShare-并发能力与缺陷清单.md)》（唯一权威）：P0 项对应其 **A 类（并发正确性）/ B 类（可用性）**，P1/P2 项对应其 **C 类（性能）**。逐项代码取证（file:line）、量化测算与全局串行点全表（权威篇 §2.7）以权威篇为准，本文不再双份维护。
 
-#### P0-1 `SocketClientConnectManager` 全局锁 + 池创建竞态
+映射关系速查：
 
-```java
-// com/ylsoft/ds/server/socket/core/SocketClientConnectManager.java:28-54
-private static SocketClient getSocketClient(String clientFlag) throws Exception {
-  ConnectPool connectPool = (ConnectPool)cpCache.get(clientFlag);
-  if (connectPool == null) {
-    AtomicBoolean atomicBoolean = (AtomicBoolean)lockMap.get(clientFlag);
-    while ((atomicBoolean != null) && (!atomicBoolean.compareAndSet(false, true))) {
-      Thread.sleep(1L);                                    // ← 忙等
-    }
-    if (atomicBoolean == null) {
-      atomicBoolean = new AtomicBoolean(true);
-      lockMap.put(clientFlag, atomicBoolean);              // ← check-then-act，非原子
-    }
-    connectPool = (ConnectPool)cpCache.get(clientFlag);
-    if (connectPool == null) {
-      SocketPara sp = (SocketPara)socketParaCache.get(clientFlag);
-      connectPool = new ConnectPool(sp.getHostConfig(), sp.getPoolConfig());
-      cpCache.put(clientFlag, connectPool);
-    }
-  }
-  return connectPool.getConnection();
-}
-```
-
-**三个缺陷叠加**：
-1. `lockMap.get()` → `new AtomicBoolean` → `put()` 是**非原子的 check-then-act**。两个线程可同时判定 null，各建一个池，后者覆盖前者，前者泄漏。
-2. `finally { atomicBoolean.set(false) }` 释放的是**局部变量**持有的对象。若 (1) 中发生覆盖，释放的是旧对象，新对象的 CAS 永远失败 → **该 clientFlag 永久死锁**（所有后来者卡在 `Thread.sleep(1)` 循环）。
-3. `Thread.sleep(1L)` 忙等 = 上下文切换风暴。
-
-**更严重的是归还路径**：
-
-```java
-// :56, :63
-public static synchronized void releaseConnection(SocketClient sc, String clientFlag) { ... }
-public static synchronized void removeConnetPoll(String clientFlag) { ... }
-```
-
-**类级 `static synchronized`** ⇒ **所有协议的所有并发请求在"归还连接"这一步被串成一条单线**。每个 socket 请求的 `finally` 都会走这里（`ConnSocketCommandParse.java:172-173,201-202,231-232,260-261,289-290`）。这是后端调用路径上的**全局单点**。
-
-> 对照：客户端 SDK 侧用的是 `synchronized (ConnectPool.class)` 且只锁创建路径，**服务端版本更差**。
-
-#### P0-2 池耗尽 → 关闭池 → 递归重试的雪崩链
-
-池参数全部来自 DB（`ProtocolBean.java:83-85`），代码里**没有默认值**，池大小不可静态评估。`maxWaitMillis=5000`（`SocketConnRunnable.java:120`）⇒ 池耗尽时请求线程**阻塞 5 秒**后抛 `Timeout waiting for idle object` ⇒ 触发 `removeConnetPoll`（又一个全局锁）**关闭整个池** ⇒ 递归重建 ⇒ 全部请求再来一轮。
-
-**放大器**：`SocketConnRunnable.java:112-121`、`:161-170`、`:205-214`、`:249-258`、`:294-303` —— **5 份几乎逐行重复的池配置代码**，任何调优都要改 5 处。
-
-#### P0-3 midservice 三处全局 `synchronized` 在每请求路径上
-
-```java
-// com/ylsoft/mid/service/utils/DSUtils.java:35
-public static synchronized DSClientAPI getClient() { return dsClient; }
-// com/ylsoft/mid/service/service/SerialService.java:31
-public synchronized String _genSerialLocal(int length) { ... }
-// com/ylsoft/mid/service/utils/ServiceUtils.java:169
-public static synchronized String getTokenId(HttpServletRequest req) { ... }
-```
-
-- `DSUtils.getClient()`：**135 个 DS 调用点全部经过它**，方法体只有一次字段读，但 monitor 争用真实存在（biased locking 在 JDK15+ 已移除）。
-- `SerialService._genSerialLocal`：每请求一次，且 `DateUtils.getNowDString` 很可能每次 new `SimpleDateFormat`。
-- `ServiceUtils.getTokenId`：纯读操作，锁完全无必要。
-
-#### P0-4 `LockUtils.lockMap` 的竞态导致互斥失效 + 内存泄漏
-
-```java
-// com/ylsoft/mid/service/utils/LockUtils.java:9
-public static Map<String, Lock> lockMap = new ConcurrentHashMap();
-```
-
-调用点（`HandlerController.java:1735-1740`）：
-
-```java
-if (LockUtils.lockMap.get(lockKey) == null) {
-  Lock lock = new ReentrantLock();
-  LockUtils.lockMap.put(lockKey, lock);
-}
-((Lock)LockUtils.lockMap.get(lockKey)).lock();
-```
-
-**三个缺陷**：
-1. **无淘汰** —— `lockMap` 永不清理，key 数 = 协议数 × 在线用户数，**单调增长 → 内存泄漏**。
-2. **check-then-act 非原子** —— `get` 与 `put` 之间有竞态，两线程可能各 new 一个 `ReentrantLock` 并互相覆盖，**导致互斥完全失效**（线程 A 锁 L1，线程 B 锁 L2）。必须用 `computeIfAbsent`。
-3. **`unLockApi` 重新 `get`**（`:1756`）—— 若期间被覆盖会抛 `IllegalMonitorStateException`。
-
-#### P0-5 midservice 不用 dataShare 分布式锁，多实例一致性缺失
-
-dataShare 提供 `T00010040`（集群级 Redis 锁），midservice 却用进程内 `ReentrantLock`。`ServiceConfig.SYS.clusterId` 证明系统支持多节点。**用户串行保证在多实例下失效。**
-
----
-
-### P1 级瓶颈
-
-#### P1-1 无锁 HashMap 承载并发路由表
-
-| 类 | 位置 | 并发模式 |
-|---|---|---|
-| `HessianServiceCache._cache` | `server/hessian/HessianServiceCache.java:12` | **put 在协议加载线程，get 在 NIO 请求线程**（`ConnHessianCommandParse.java:154`） |
-| `HttpServiceCache._cache` | `server/http/HttpServiceCache.java:9` | 同上（`ConnHttpCommandParse.java:108`） |
-| `AESKeyCache._cache` | `server/socket/gomti/head/AESKeyCache.java:8,26` | **put 在登录时，get 在每次收发**（`GomtiCommonProtocol.java:138`） |
-| `ProducerCache._cache` | `mq/cache/ProducerCache.java:9` | **put 在并发 publish 路径**（`T00010033_PushlishMQService.java:64`） |
-| `SubscribeCache._cache` | `service/subscribe/cache/SubscribeCache.java:24`（**TreeMap**） | NIO 线程 + consumer 线程并发；`getValues()` 遍历时另一线程 `removeKey` ⇒ **ConcurrentModificationException**（`T0001fe01_IPByTopicService.java:37,58`） |
-| `HessianFactoryUtils.serverInstanceMap` | `server/hessian/core/HessianFactoryUtils.java:135` | 无锁 |
-| `DSUserCache._cache` | `db/memory/DSUserCache.java:13` | 启动后只读 |
-
-> 对照：`ProtocolCache` / `ServerProtocolCache` / `SocketClientParaCache` / `ClassLoaderCache` 都用了 ConcurrentHashMap ⇒ **作者知道该用，只是没用全**。
-
-#### P1-2 每次请求一次 JDBC 查配置（缓存位留了没接线）
-
-```java
-// T00010101_LoasParaService.java:48 → ParameterServiceImpl.java:41 → PubConfigServiceImpl.java:54
-List<Map> getAllPubConfig() { return jdbcTemplate.queryForList(query); }
-```
-
-`PubConfigCache` 类**存在且实现了 5 秒 TTL**，但全库 grep 只命中其自身定义 —— **从未被调用**。确定性 N+1 数据库热点。
-
-`PubConfigServiceImpl.getAllPubConfig` 的 catch 返回 `new ArrayList()`（`:52-54`）⇒ **DB 故障伪装成"配置为空"**。
-
-#### P1-3 每次 publish 一次 Redis + 潜在 JDBC
-
-`getTopicName` 先查 Redis `-INNER-DSMQ-{typeFlag}`，miss 再查 `TB_DS_MQ_TOPIC`，再 miss 才建 topic 并写库（`MQTopicServiceImpl.java:27-48`）。Redis 被 evict / 抖动 ⇒ 退化为**每次 publish 一次 JDBC**。
-
-#### P1-4 分布式锁的四项缺陷
-
-见 [能力 6](#能力-6分布式锁)。摘要：
-- `setnx` + `expire` **两条独立命令** ⇒ 非原子，存在"已 setnx 未 expire 即崩溃"→ **永久锁死**窗口
-- 锁值固定 `"1"`，**不存 owner token** ⇒ **不可重入**、**无所有权校验**（任何客户端能 DEL 别人的锁）
-- **无看门狗**，一次性 TTL（默认 600s），持锁方崩溃靠自然过期
-- `waitTime>0` 时 **1ms 忙等 + 每次都发一次 Redis 往返**（`T00010040_LockBusinessService.java:93-98`）
-
-#### P1-5 HTTP 客户端每请求新建且从不关闭
-
-```java
-// com/ylsoft/ds/server/http/HttpClientUtils.java:189-224（另有 4 个重载 :45,:101,:146,:183）
-CloseableHttpClient httpclient = HttpClients.createDefault();
-HttpPost httpPost = new HttpPost();
-...
-finally { if (httpPost != null) httpPost.releaseConnection(); }   // ← 只 release 请求，不 close client
-```
-
-每个 HTTP 请求 new 一个 `CloseableHttpClient`（含新的连接池和线程池），**从不 close** ⇒ 连接池对象泄漏，底层 socket 靠 GC 回收。Apache HttpClient 官方明确要求复用实例。
-
-#### P1-6 热路径 per-request 对象分配
-
-一个请求至少：
-
-- **2 次 Spring `getBean` + 2 次 prototype 实例化**（`HandlerImpl.java:67,75,83,91`；35 个 `T*Service` 全部 `@Scope("prototype")`；`ConnSocketCommandParse` 自身也是 prototype）
-- **1 次 clone**：`ServerProtocolCache.get()` 每次 `clone()` 一份（`:20`）→ `DSStandardProtocol.clone()` 再 clone `mainHeader`（`:144-148`）⇒ 每请求 3 个对象
-- **至少 3 个 StringBuilder**：`CommandParseUtils.getCommand`（2 个）+ `getProtocolString`（1 个）+ `HandlerImpl.run()` 额外拼一次 procotolKey
-
-`CommandParseUtils.byteToString` 是 **256 分支 switch**（`:41-557`），每次调用重走分支树。**同样的实现还在 `MainHeader.byteToString`（dataShareCommon）和 `BIOProtocolReadUtils.byteToString`（clientAPI）中重复了三份。**
-
-#### P1-7 midservice 路由查找 O(n) 线性扫描（每请求两次）
-
-```java
-// HandlerController.java:622-628 与 :749-756
-for (HandlerRouter _router : this.handlerRouters) {
-  if (restfull.equals(_router.getAPI_RESTFULL())) { router = _router; ... break; }
-}
-```
-
-`handlerRouters` 是 `ArrayList`（`:1109`）。本 jar 声明 **1296 个唯一协议号**（实测 `grep -rho 'protocol *= *"[^"]*"' | sort -u | wc -l` = 1296，`@HandlerRule` 共 1332 处）。**每请求两次线性扫描** + `String.equals` 逐个比较。
-
-同类问题：
-- `apiConfig` 线性扫描（`HandlerController.java:798-710`）
-- `KeyMapper.getNameByAlias` 线性扫描 `dictionary`（**~1745 条** = 145 硬编码 + 10×10×16 个 `MT1xx` 码，`utils/KeyMapper.java:41-52,113-124`）⇒ 一次带 20 个参数的请求 = **3.5 万次字符串比较**
-- `MCallable` 每个方法参数做一次线性查找（`:2410-2421`、`:2456-2465`）
-
-#### P1-8 敏感词过滤器每次重建整棵 Trie
-
-```java
-// utils/sensitive/SensitivewordFilter.java:26-29
-public static SensitivewordFilter getInstance() { return new SensitivewordFilter(); }   // ← 不是单例！
-private SensitivewordFilter() { this.sensitiveWordMap = new SensitiveWordInit().initKeyWord(); }
-```
-
-`initKeyWord()` → `DSUtils.getClient().getRedisInfo("1001_INFO", "SENSITIVE")`（`SensitiveWordInit.java:109`）→ 再建一棵 `HashMap<Character,Map>` 字典树。
-
-**每次命中敏感词检查的请求 = 1 次 DS Redis 往返 + 一次全量敏感词字典树重建**。且 `isContaintSensitiveWord` 是 **O(len²)** 最坏（`:54-65` 每个字符位置重跑一次 `CheckSensitiveWord`，且 `:61-62` 命中后 `flag = true` 但**不 break**，仍扫全串）。
-
-#### P1-9 `DSUtils.callHession` 的 Java 原生序列化往返
-
-```java
-// utils/DSUtils.java:143 → :40-56
-obj = revert(obj);
-public static Object revert(Object obj) throws Exception {
-  ByteArrayOutputStream bos = new ByteArrayOutputStream();
-  ObjectOutputStream oos = new ObjectOutputStream(bos);   // 每次 new
-  oos.writeObject(obj);
-  ByteInputStream bis = new ByteInputStream(bos.toByteArray());
-  ObjectInputStream ois = new ObjectInputStream(bis);       // 每次 new
-  return ois.readObject();
-}
-```
-
-**113 个 hession 调用点，每次返回都要一次完整的 Java 序列化 + 反序列化**（含类描述符解析）。应在 dataShare 侧改用 JSON/Hessian，或至少用 `ThreadLocal` 复用 ObjectStream。
-
-#### P1-10 消费线程数无上限 + 背压是忙轮询
-
-- `SubscribeThreadUtils.executorService = Executors.newCachedThreadPool()`（`service/subscribe/utils/SubscribeThreadUtils.java:8`）—— **无界**，每个订阅一个长驻线程
-- `KrackleConsumer.java:162` 每线程 `new byte[1048576]`（**1MB 缓冲**），且 `:175` 在 while 循环内每轮再 new 一个 2048 字节 keyBytes
-- 背压：`reviewQueue.size() > 20` 时 `Thread.sleep(0L, 300000)`（**0.3ms**）后 continue（`:179-182`）—— **忙轮询**而非条件变量
-
-#### P1-11 队列统计 O(n) + Redis 内存单调泄漏
-
-- `T00010039`：HGETALL 拉全量再**逐条 LLEN**（`:89-97`）⇒ N 个队列 = N+1 次 Redis 往返
-- `T00010037` 每次 append 写 **3 个 hash + 1 个 list**（`:50-56`）
-- `DS-QUEUE-ALL` 是**只增不减的全局注册表**，**无对应删除路径** ⇒ **Redis 内存单调泄漏**
-
-#### P1-12 每 60 秒全量刷 offset 的 N+1 SQL
-
-`HandleLastOffsetThread` 遍历**所有** offset bean 逐条 UPDATE（`:34-38`），60s 一轮（`:41`）；每条 update 又先 `getExistRecord()` 查一次再决定 UPDATE/INSERT（`MQTopicServiceImpl.java:164-141`）⇒ **N+1 SQL**。
-
----
-
-### P2 级瓶颈
-
-| # | 问题 | 证据 | 说明 |
-|---|---|---|---|
-| P2-1 | **日志在热路径无条件执行** | `ConnSocketCommandParse.java:41,70`；`ConnHessianCommandParse.java:46,65` | `log.info(new StringBuilder()...)`——**参数是已拼好的字符串**（非 log4j `{}` 占位符），**即使 INFO 关闭，字符串拼接开销照付**。对照 `DSStandardProtocol.java:56,59,66` 用 `DS_SERVER_DETAIL_LOG` 判定是正确做法 |
-| P2-2 | **trade32 报文组装用 `String.format`** | `Trade32_f406Header.java:103,134,147`（f401/MultiLine 同） | 每报文 **3 次 `String.format("%1$5s",...)`**，走 Formatter 解析，代价约为手工 padding 的 20~50 倍 |
-| P2-3 | **gomti 每请求 2 次 `Security.addProvider(new BouncyCastleProvider())`** | `server/socket/gomti/head/AESUtils.java:22-58`；`GomtiCommonProtocol.java:132-141` | `new BouncyCastleProvider()` 构造开销大（数百个静态初始化） |
-| P2-4 | **midservice `Validate` 27 处 `.matches()`** | `utils/Validate.java` | `String.matches()` 内部 `Pattern.compile()`，**每次调用编译一次正则**。对照 `utils/xss/XssUtil.java:12-31` 正确做成了 `static final Pattern` |
-| P2-5 | **敏感信息全量打进 INFO 日志** | `HandlerController.java:245,271` | 第二条把**解密后的完整业务参数**（账号、密码、身份证、资金账号）打进日志。每请求 2 条 |
-| P2-6 | **审计 MQ 写同步阻塞在请求路径** | `HandlerController.java:886,944` | `publishInfo` 在 dataShare 侧是同步 Kafka `producer.send()`，**审计日志的 MQ 写延迟直接计入接口响应时间**。`1018_MONITOR_DATA` 是**无界 Redis List**（rpush 从不 ltrim） |
-| P2-7 | **敏感词 / 脱敏用 `indexOf` 子串匹配** | `HandlerController.java:1790,1807` | 字段 `ID` 会误命中 `IDNO`/`USERID`；`NAME` 误命中 `NICKNAME` ⇒ **脱敏越权/漏脱敏**。`ToBackController.java:346` 的 `func_id` 匹配同问题 |
-| P2-8 | **`DSUtils.callSocket` 二次序列化** | `utils/DSUtils.java:247,253` | `jo` 已是 JSONObject，又 `toString()` 再 `JSONUtils.toMap()`——一次多余的序列化+反序列化。22 个 callSocket 点全中 |
-| P2-9 | **`OpenHandler` 请求路径上 `Thread.sleep`** | `handler/OpenHandler.java:404` | 开户接口在 Tomcat 工作线程上**主动 sleep** 等开户完成，**直接吃掉一个工作线程** |
-| P2-10 | **`e.printStackTrace()` 在生产路径** | `HandlerController.java:429,884`；`DSUtils.java:139` | 直写 stderr，不受 log4j 配置控制 |
-| P2-11 | **连接池 `maxCon` 一律 50 且各业务独立** | `common/ServiceConfig.java:21,35,49,80,103,115` | `ServiceConst.java:56-78` 有 20 个池字段 ⇒ 理论 1000+ 连接，每个池独立占用后端 T9/资金/存管系统的连接数。`initCon=1` 意味着**冷启动后首次请求要现场建连** |
-| P2-12 | **`Thread.sleep(5000)` 轮询 / 无界 `LinkedBlockingDeque`** | `ServiceServlet.java:457`；`CallBackSubscribe.java:331` | 监控重连轮询；`w4back` 无界 |
-| P2-13 | **`BeanFactory.clear()` 在热部署时清空单例缓存** | `utils/BeanFactory.java:12-40`；`HandlerController.java:1101` | 正在处理的请求可能拿到**新建的 handler 实例**（`@Autowired` 字段是新注入的），状态丢失。配合 `MonService.deploy_complete()` → `DeployThread` → `loadService()`（`MonService.java:403-414`）存在**请求语义不一致窗口** |
-| P2-14 | **`LibreTranslateMain` 静态块硬编码 Linux 绝对路径** | `translate/LibreTranslateMain.java:78` | `/root/D03/1018/tokens.txt` 不存在 → 类初始化失败 → `ExceptionInInitializerError`；且 `translate()` 每次调 `System.out.println`（`:25-26`） |
-| P2-15 | **无界线程池 × 2** | `ConnServerThreadUtils.java:11`；`SubscribeThreadUtils.java:8` | 均为 `Executors.newCachedThreadPool()`。`T0001fa03` 远程重载可反复触发 → 投进无界池 |
-| P2-16 | **`RedisPool`（非分片）整个是死代码** | `redis/RedisPool.java` | 全库 grep `RedisPool.` 零命中 |
-| P2-17 | **`ShardedReidsPool.getConnect()` 全局锁串行化借出** | `redis/ShardedReidsPool.java:58-66` | 所有 Redis 命令的**借出阶段**被一把全局 ReentrantLock 串行 |
-| P2-18 | **三套 JSON 库混用** | `net.sf.json`（21 文件 38 处）、`fastjson`、`JSONUtils`（62 处） | `net.sf.json` 的 `fromObject` 走反射 Bean 装配，是**公认最慢的 JSON 路径**。`HandlerController` 单文件 11 处 `fromObject`，其中 `checkLoginType` 路径每请求 1 次（`:1607`） |
-| P2-19 | **`DSUserCache` / `DSUser` 用 TreeMap** | `db/memory/DSUserCache.java:13`；`db/load/bean/DSUser.java:30-31` | 启动后只读，风险低；但 `getAllowUser()` 每次启动遍历 |
-| P2-20 | **`MqOffsetConstant` 60s 全量刷 + `MQTopicServiceImpl.putTopcNameToRedis` 重复归还同一 jedis 两次** | `MQTopicServiceImpl.java:85` 与 finally 的 `:91` | **双重 close 风险** |
-
----
+| 本文原条目 | 权威篇落点 |
+|---|---|
+| P0-1 `SocketClientConnectManager` 池创建竞态 / 永久死锁 | 权威篇 A2 |
+| P0-2 池耗尽 → 关池 → 递归重试雪崩 | A 类（关池全局锁）+ B 类（雪崩链） |
+| P0-3 midservice 三处全局 `synchronized` | B3 / §2.7 表 #9~#11 |
+| P0-4 `LockUtils.lockMap` 竞态 + 泄漏 | A 类锁条目 / §2.7 |
+| P0-5 midservice 未用 dataShare 分布式锁 | §八·架构问题 8 |
+| P1（无锁 HashMap 路由、每请求 JDBC、HTTP 客户端泄漏、热路径分配、O(n) 扫描、敏感词 Trie、revert 往返、消费线程无界、队列统计、offset N+1） | C 类对应条目 + §2.4 逐跳约束 |
+| P2 共 20 项（热路径日志、String.format、正则重编译、脱敏 indexOf 等） | C 类（中低优先级） |
 
 ### 瓶颈汇总表
 
@@ -751,7 +517,7 @@ public static Object revert(Object obj) throws Exception {
 
 > 缺陷与安全风险（原 S1–S7 / F1–F16）、改造优先级（原“立即 / 短期 / 中期”三档）已统一收口到 [`dataShare-并发能力与缺陷清单.md`](./dataShare-并发能力与缺陷清单.md)：A–E 类 57 项缺陷、全局串行点全表、各级资源上限实测方法、三档整改清单与“缺陷 → 修复动作”对应关系。
 >
-> 原第七章内容与该文 D/E 类及第三部分同源且更简，已删除以免双份维护；本文只保留**服务端能力**（三~五章）与**瓶颈机理**（六章）。
+> 原第七章内容与该文 D/E 类及第三部分同源且更简，已删除以免双份维护；本文只保留**服务端能力**（三~五章）与**瓶颈索引**（六章，2026-10-31 收口）。
 
 ---
 

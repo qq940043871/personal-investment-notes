@@ -235,17 +235,12 @@ Token.AUTHS (Map)
 
 ### 6.1 请求入口阶段
 
+> 路径与安全开关类差异（升级熔断 / 注入防护 / 公私钥验签 / 明文白名单的有无）即 §五 清单第 1~5 项的对照视图，不再重复列表。本阶段独有的两点：
+
 | 项 | `HandlerController` | `ToBackController` |
 |---|---|---|
-| 主路径 | `/api/**` | `/toBack/**` |
-| 上传路径 | `/api_upload/**` | `/toBack_upload/**` |
-| 公钥路径 | `/api/encrypt/publicKey` | `/toBack/encrypt/publicKey` |
 | `singleRtn` 初值 | `false`（仅 params 分支置 `true`） | `true`（仅 directives 分支置 `false`） |
-| 升级熔断 | 有（`SysPara 40310/40311`） | **无** |
-| 注入防护 | `Validate.isSafe(params/directives)` | **无** |
-| 公私钥验签 | 有（`security.auth.isopen`） | **无** |
-| 明文白名单 | `rsaAllowMap` 强制 | **无** |
-| `func_id` 校验 | — | **强制非空** |
+| `func_id` 校验 | — | **强制非空**（模型见 §三） |
 
 ### 6.2 参数封装阶段
 
@@ -260,39 +255,11 @@ Token.AUTHS (Map)
 
 ### 6.3 授权阶段
 
-| 项 | `HandlerController` | `ToBackController` |
-|---|---|---|
-| 核心校验 | `checkApiAuth` → Redis `3002_API_AUTH_LIST` | **`func_id` vs `Token.AUTHS.MENU[].AUTHCODE`** |
-| 白名单 | `ServiceConst.noAuthApis` | 无 |
-| 用户类型 | `USERFLAG` 1=个人/管理员、2=机构、3=第三方 | 不区分 |
-| 协议前缀语义 | `DF_`=管理员、`SF_`=机构 | 无 |
-| 越权提示 | `未授权访问,no power：xxx` | `没有访问功能码：xxx 的权限` |
+> 授权模型差异（核心校验 `checkApiAuth` vs `func_id`、白名单、用户类型、协议前缀语义、越权提示）已由 §3.5 对照表完整覆盖，此处不重复。
 
 ### 6.4 执行阶段
 
-| 项 | `HandlerController` | `ToBackController` |
-|---|---|---|
-| 防重放 | 有（`security.cross`） | **无** |
-| 协议号 MD5 | 有（`api.md5`） | **无** |
-| 敏感词 | 有（`sensitiveMap` + `SensitivewordFilter`） | **无** |
-| API 转大写 | `convertApi()`（含 `MC*`→`XHV5*`） | 仅 `api.toUpperCase()` |
-| 登录级别校验 | `checkLoginType`（四套体系） | **无** |
-| 第三方模式 | `thirdApiMap` + `AuthUtils` | **无** |
-| 协议签订 | `checkAgree` | **无** |
-| 会员有效期 | `checkValidDate` | **无** |
-| 大屏白名单 | `checkDaPing` | **无** |
-| 资金密码/签名 | `checkFundPwdV2` / `checkFundSign` | **无** |
-| 多语言 | `handleLang` | **无** |
-| 机构代客权限 | `checkPowers`（`1001_AGENTFIRM_USERID`） | **无** |
-| 客户挂起 | `checkStatus`（`1001_GATEWAY_API`） | **无** |
-| 协议级授权 | `checkApiAuth` | **无**（`func_id` 覆盖） |
-| `MODU_ID=1036` 注入 `optip` | 有 | **无** |
-| APISTYLE 隔离 | 有 | **无**（无该字段） |
-| 批量上限 | `maxMultiApiCount` | **有** |
-| apiConfig 渠道差异化 | 有 | **有** |
-| 缓存 | 三级（PUB/FRM/CLI） | **无** |
-| 同步锁 | `lockApi`/`unLockApi` | **无** |
-| 出参脱敏 | `doAuthRtn` | **无** |
+> 本阶段差异与 §五「主动砍掉的能力」清单**逐项一一对应**（防重放 / 协议号 MD5 / 敏感词 / 登录级别 / 第三方模式 / 协议签订 / 会员有效期 / 大屏白名单 / 资金密码 / 多语言 / 机构代客 / 客户挂起 / 协议级授权 / APISTYLE 隔离 / 三级缓存 / 同步锁 / 出参脱敏……后台均为**无**；批量上限与 apiConfig 渠道差异化两者均**有**）。以 §五 表格为唯一清单，此处不再重复。
 
 ### 6.5 响应与可观测阶段
 
