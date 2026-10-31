@@ -2583,7 +2583,7 @@
           </div>
           <div class="prep-cat-body">
             <div class="prep-cat-title">RAG 面试实战 · 25 题 × 项目对照</div>
-            <div class="prep-cat-meta">4 份 + 291 篇语料 · 25 题骨架 + 政策 Agent 问答 + 吴师兄题库（`02-AI智能体/00-知识库/`）</div>
+            <div class="prep-cat-meta">3 份 + 291 篇语料 · 25 题骨架 + 吴师兄题库（`02-AI智能体/00-知识库/`）</div>
           </div>
           <div class="prep-cat-arrow">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -2593,11 +2593,6 @@
           <div class="prep-item tap" onclick="openFile('02-AI智能体/00-知识库/00-RAG面试实战手册.md')">
             <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
             <span class="prep-item-title">RAG 面试实战手册（25 题 × 项目对照）</span>
-            <span class="prep-item-badge md">MD</span>
-          </div>
-          <div class="prep-item tap" onclick="openFile('02-AI智能体/00-知识库/政策解读Agent-面试问题与回答要点.md')">
-            <div class="prep-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-            <span class="prep-item-title">政策解读 Agent 面试问答（A–J 组 55 题）</span>
             <span class="prep-item-badge md">MD</span>
           </div>
           <div class="prep-item tap" onclick="openFile('02-AI智能体/00-知识库/Agent/00-索引.md')">
@@ -3186,11 +3181,9 @@ var PREP_CATEGORIES = [
   { key: 'biz', title: '01 业务与价值', icon: 'briefcase', color: 'green',
     files: [
       { name: '01-平台定位与价值总纲.md（定位 × 价值统一口径）', type: 'md', path: '02-现货贸易/01-平台定位与价值总纲.md' },
-      { name: '01-业务价值与客户运营.md', type: 'md', path: '02-现货贸易/01-业务与价值/01-业务价值与客户运营.md' },
       { name: '02-平台定位与客户分析.html', type: 'html', path: '02-现货贸易/01-业务与价值/02-平台定位与客户分析.html' },
       { name: '02-业务全链路场景手册.md', type: 'md', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
-      { name: '17-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-现货贸易/03-架构决策/17-业务痛点与系统解决方案-架构详解.md' },
-      { name: '18-业务-技术映射地图.md', type: 'md', path: '02-现货贸易/03-架构决策/18-业务-技术映射地图.md' },
+      { name: '17-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-现货贸易/01-业务与价值/17-业务痛点与系统解决方案-架构详解.md' },
       { name: '09-期现结合业务实现思路.md', type: 'md', path: '02-现货贸易/01-业务与价值/09-期现结合业务实现思路.md' }
     ]
   },
@@ -3201,9 +3194,7 @@ var PREP_CATEGORIES = [
       { name: '05-B2B产品服务客户案例.slides.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/05-B2B产品服务客户案例.slides.pptx' },
       { name: '06-客户案例与行业对标手册.md', type: 'md', path: '02-现货贸易/02-客户与案例/06-客户案例与行业对标手册.md' },
       { name: '13-客户深度复盘与面试亮点.md', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
-      { name: '13-客户深度复盘与面试亮点', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
-      { name: '14-五类客户运营模式速查卡.html', type: 'html', path: '02-现货贸易/02-客户与案例/14-五类客户运营模式速查卡.html' },
-      { name: '15-五类客户运营模式深度拆解.html', type: 'html', path: '02-现货贸易/02-客户与案例/15-五类客户运营模式深度拆解.html' }
+      { name: '13-客户深度复盘与面试亮点', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' }
     ]
   },
   { key: 'arch', title: '04 架构决策', icon: 'layout', color: 'warm',
@@ -3212,7 +3203,6 @@ var PREP_CATEGORIES = [
       { name: '01-架构方法论与选型设计手册.md（上篇方法论 · 中篇建设框架 · 下篇技术选型）', type: 'md', path: '02-现货贸易/03-架构决策/01-架构方法论与选型设计手册.md' },
       { name: '02A-异构架构策略与真实系统叙事手册.md', type: 'md', path: '02-现货贸易/03-架构决策/02A-异构架构策略与真实系统叙事手册.md' },
       { name: '03A-平台化治理与多租户架构手册.md', type: 'md', path: '02-现货贸易/03-架构决策/03A-平台化治理与多租户架构手册.md' },
-      { name: '04-现货交易供应链-难点与解决方案速查手册.md', type: 'md', path: '02-现货贸易/03-架构决策/04-现货交易供应链-难点与解决方案速查手册.md' },
       { name: '05-Saga编排器详细介绍.md', type: 'md', path: '02-现货贸易/03-架构决策/05-Saga编排器详细介绍.md' },
       { name: '06-Cookie认证失败-5Why根因分析.md', type: 'md', path: '02-现货贸易/04-生产问题排查/06-Cookie认证失败-5Why根因分析.md' },
       { name: '07-Cookie认证失败-5Why根因分析.slides.pptx', type: 'pptx', path: '02-现货贸易/04-生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx' },
@@ -3227,7 +3217,6 @@ var PREP_CATEGORIES = [
 
       { name: 'java-architect-troubleshooting-handbook.md（Java 排障主手册 · 合并版：速查+下钻+Arthas/火焰图）', type: 'md', path: '02-现货贸易/04-生产问题排查/java-architect-troubleshooting-handbook.md' },
       { name: '11-midservice网关职责与治理设计.md', type: 'md', path: '02-现货贸易/03-架构决策/11-midservice网关职责与治理设计.md' },
-      { name: '11-midservice网关架构图.html', type: 'html', path: '02-现货贸易/03-架构决策/11-midservice网关架构图.html' },
       { name: '12-跨系统调用一致性方案.md', type: 'md', path: '02-现货贸易/03-架构决策/12-跨系统调用一致性方案.md' },
       { name: '12-图-待发送表状态机.html', type: 'html', path: '02-现货贸易/03-架构决策/12-图-待发送表状态机.html' },
       { name: '12-图-本地表双通道机制图.html', type: 'html', path: '02-现货贸易/03-架构决策/12-图-本地表双通道机制图.html' },
@@ -3237,7 +3226,6 @@ var PREP_CATEGORIES = [
       { name: '13-图-协调平面与数据平面对照图.html', type: 'html', path: '02-现货贸易/03-架构决策/13-图-协调平面与数据平面对照图.html' },
       { name: '14-区块链架构与一致性同构对照图.html', type: 'html', path: '02-现货贸易/03-架构决策/14-区块链架构与一致性同构对照图.html' },
       { name: '15-DS数据交换中心-C-Java异构桥接设计.md', type: 'md', path: '02-现货贸易/03-架构决策/15-DS数据交换中心-C-Java异构桥接设计.md' },
-      { name: '15-图-DS数据交换中心双通道流水线.html', type: 'html', path: '02-现货贸易/03-架构决策/15-图-DS数据交换中心双通道流水线.html' },
       { name: '16-平台五层架构全景图.html', type: 'html', path: '02-现货贸易/03-架构决策/16-平台五层架构全景图.html' },
       { name: '09-合同中心处理逻辑与交收结算引擎.md', type: 'md', path: '02-现货贸易/03-架构决策/09-合同中心处理逻辑与交收结算引擎.md' },
       { name: '10-Drools规则引擎与交收模式.md', type: 'md', path: '02-现货贸易/03-架构决策/10-Drools规则引擎与交收模式.md' }
@@ -3310,8 +3298,6 @@ var CASE_GROUPS = [
   { key: 'cases', title: '01 客户案例材料', icon: 'users', files: [
     { name: '13-客户深度复盘与面试亮点.md（五家 · 话术 + 追问 + 数据弹药）', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
     { name: '13-客户深度复盘与面试亮点', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
-    { name: '14-五类客户运营模式速查卡.html', type: 'html', path: '02-现货贸易/02-客户与案例/14-五类客户运营模式速查卡.html' },
-    { name: '15-五类客户运营模式深度拆解.html', type: 'html', path: '02-现货贸易/02-客户与案例/15-五类客户运营模式深度拆解.html' },
     { name: '06-客户案例与行业对标手册.md（钢铁场景故事 + 第一人称评价）', type: 'md', path: '02-现货贸易/02-客户与案例/06-客户案例与行业对标手册.md' },
     { name: '02-数字产业链服务平台-含痛点方案.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/02-数字产业链服务平台-含痛点方案.pptx' },
     { name: '04-B2B技术经理-能力全景介绍.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/04-B2B技术经理-能力全景介绍.pptx' },
@@ -3319,10 +3305,8 @@ var CASE_GROUPS = [
   ] },
   { key: 'scenes', title: '02 业务场景材料', icon: 'layers', files: [
     { name: '02-业务全链路场景手册.md（十大场景 + 26 痛点 + 5 分钟叙事）', type: 'md', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
-    { name: '18-业务-技术映射地图.md（场景 → 系统 → 技术点）', type: 'md', path: '02-现货贸易/03-架构决策/18-业务-技术映射地图.md' },
-    { name: '17-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-现货贸易/03-架构决策/17-业务痛点与系统解决方案-架构详解.md' },
+    { name: '17-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-现货贸易/01-业务与价值/17-业务痛点与系统解决方案-架构详解.md' },
     { name: '09-期现结合业务实现思路.md（基差 / 套保，对应晔龙）', type: 'md', path: '02-现货贸易/01-业务与价值/09-期现结合业务实现思路.md' },
-    { name: '01-业务价值与客户运营.md', type: 'md', path: '02-现货贸易/01-业务与价值/01-业务价值与客户运营.md' },
     { name: '01-平台定位与价值总纲.md（原产品定位 / 业务价值收口）', type: 'md', path: '02-现货贸易/01-平台定位与价值总纲.md' },
     { name: '06-快速通览一页纸简报.html', type: 'html', path: '01-备战手册/01-个人简历/06-快速通览一页纸简报.html' }
   ] }
@@ -3334,7 +3318,7 @@ var CASE_GROUPS = [
 var TODAY_TASKS_SEED = [
   { title: '背熟 30 秒自我介绍（第一击）', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
   { title: '脱手画四层架构，讲 2 分钟（第二击）', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
-  { title: '复述第 4 步：客户买单的四个死结', category: 'prep', tag: '备战', path: '02-现货贸易/03-架构决策/17-业务痛点与系统解决方案-架构详解.md', done: false },
+  { title: '复述第 4 步：客户买单的四个死结', category: 'prep', tag: '备战', path: '02-现货贸易/01-业务与价值/17-业务痛点与系统解决方案-架构详解.md', done: false },
   { title: '默写关键数字 6 个', category: 'prep', tag: '备战', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
   { title: '口述一个成果：问题→方案→结果', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
   { title: '自查 4 条禁用语录，说了就改口', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false }
@@ -3775,7 +3759,7 @@ var SPOT_CORE = [
   { title: 'B2B 项目底稿 · 七栏', desc: '业务背景 / 个人职责 / 主链路与失败链路 / 选型对照 / 难点与故障 / 指标口径 / 边界',
     icon: 'layers', color: 'cyan', badge: '主线', path: '00-面试计划/02-项目叙事-B2B.md' },
   { title: '业务痛点与系统解决方案', desc: '26 痛点 → 系统模块/机制 + 编号对照表（权威口径）',
-    icon: 'target', color: 'green', badge: '业务', path: '02-现货贸易/03-架构决策/17-业务痛点与系统解决方案-架构详解.md' },
+    icon: 'target', color: 'green', badge: '业务', path: '02-现货贸易/01-业务与价值/17-业务痛点与系统解决方案-架构详解.md' },
   { title: '架构方法论与选型设计', desc: '上篇方法论 / 中篇建设框架 / 下篇技术选型与三条铁律',
     icon: 'layout', color: 'purple', badge: '架构', path: '02-现货贸易/03-架构决策/01-架构方法论与选型设计手册.md' },
   { title: '一致性与异构 · 追问底稿', desc: '送达 / 补偿 / 内存 / 互译四类选型 + 三套追问链 + 口径数字',
@@ -3786,33 +3770,26 @@ var SPOT_CORE = [
 
 var SPOT_GROUPS = [
   { title: '业务与价值', icon: 'briefcase', files: [
-    { name: '业务价值与客户运营', type: 'md', path: '02-现货贸易/01-业务与价值/01-业务价值与客户运营.md' },
     { name: '平台定位与客户分析', type: 'html', path: '02-现货贸易/01-业务与价值/02-平台定位与客户分析.html' },
     { name: '业务全链路场景手册', type: 'md', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
-    { name: '业务痛点与系统解决方案', type: 'md', path: '02-现货贸易/03-架构决策/17-业务痛点与系统解决方案-架构详解.md' },
-    { name: '业务-技术映射地图', type: 'md', path: '02-现货贸易/03-架构决策/18-业务-技术映射地图.md' },
+    { name: '业务痛点与系统解决方案', type: 'md', path: '02-现货贸易/01-业务与价值/17-业务痛点与系统解决方案-架构详解.md' },
     { name: '期现结合业务实现思路', type: 'md', path: '02-现货贸易/01-业务与价值/09-期现结合业务实现思路.md' }
   ] },
   { title: '客户与案例', icon: 'users', files: [
     { name: '客户案例与行业对标手册', type: 'md', path: '02-现货贸易/02-客户与案例/06-客户案例与行业对标手册.md' },
-    { name: '客户深度复盘与面试亮点', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
-    { name: '13-客户深度复盘与面试亮点', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
-    { name: '五类客户运营模式速查卡', type: 'html', path: '02-现货贸易/02-客户与案例/14-五类客户运营模式速查卡.html' },
-    { name: '五类客户运营模式深度拆解', type: 'html', path: '02-现货贸易/02-客户与案例/15-五类客户运营模式深度拆解.html' }
+    { name: '客户深度复盘与面试亮点', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' }
   ] },
   { title: '架构决策', icon: 'layers', files: [
     { name: '名词解释与术语速查', type: 'md', path: '02-现货贸易/03-架构决策/00-名词解释与术语速查.md' },
     { name: '架构方法论与选型设计手册', type: 'md', path: '02-现货贸易/03-架构决策/01-架构方法论与选型设计手册.md' },
     { name: '异构架构策略与真实系统叙事', type: 'md', path: '02-现货贸易/03-架构决策/02A-异构架构策略与真实系统叙事手册.md' },
     { name: '平台化治理与多租户架构', type: 'md', path: '02-现货贸易/03-架构决策/03A-平台化治理与多租户架构手册.md' },
-    { name: '现货交易供应链六大难点速查', type: 'md', path: '02-现货贸易/03-架构决策/04-现货交易供应链-难点与解决方案速查手册.md' },
     { name: 'Saga 编排器', type: 'md', path: '02-现货贸易/03-架构决策/05-Saga编排器详细介绍.md' },
     { name: '合同中心 vs 订单中心', type: 'md', path: '02-现货贸易/03-架构决策/07-B2B合同中心vsB2C订单中心-区别分析.md' },
     { name: 'Dify 与自研业务中台选型', type: 'md', path: '02-现货贸易/03-架构决策/08-Dify与自研业务中台-技术选型复盘.md' },
     { name: '合同中心处理逻辑与交收结算引擎', type: 'md', path: '02-现货贸易/03-架构决策/09-合同中心处理逻辑与交收结算引擎.md' },
     { name: 'Drools 规则引擎与交收模式', type: 'md', path: '02-现货贸易/03-架构决策/10-Drools规则引擎与交收模式.md' },
     { name: 'midservice 网关职责与治理', type: 'md', path: '02-现货贸易/03-架构决策/11-midservice网关职责与治理设计.md' },
-    { name: 'midservice 网关架构图', type: 'html', path: '02-现货贸易/03-架构决策/11-midservice网关架构图.html' },
     { name: '跨系统调用一致性方案', type: 'md', path: '02-现货贸易/03-架构决策/12-跨系统调用一致性方案.md' },
     { name: 'C 核心单线程内存一致性', type: 'md', path: '02-现货贸易/03-架构决策/13-C核心单线程内存一致性设计.md' },
     { name: 'DS 数据中心 C↔Java 桥接', type: 'md', path: '02-现货贸易/03-架构决策/15-DS数据交换中心-C-Java异构桥接设计.md' },
@@ -3823,7 +3800,6 @@ var SPOT_GROUPS = [
     { name: '机制图 · 协调平面与数据平面', type: 'html', path: '02-现货贸易/03-架构决策/13-图-协调平面与数据平面对照图.html' },
     { name: '机制图 · C 核心热备一致性', type: 'html', path: '02-现货贸易/03-架构决策/13-图-C核心热备一致性机制图.html' },
     { name: '机制图 · 区块链一致性同构', type: 'html', path: '02-现货贸易/03-架构决策/14-区块链架构与一致性同构对照图.html' },
-    { name: '机制图 · DS 双通道流水线', type: 'html', path: '02-现货贸易/03-架构决策/15-图-DS数据交换中心双通道流水线.html' },
     { name: '平台五层架构全景图', type: 'html', path: '02-现货贸易/03-架构决策/16-平台五层架构全景图.html' }
   ] },
   { title: '生产问题排查', icon: 'server', files: [
@@ -3838,7 +3814,6 @@ var SPOT_GROUPS = [
   ] },
   { title: 'B2B 架构专题页', icon: 'briefcase', files: [
     { name: '5Whys 与业务技术映射速查卡', type: 'html', path: '02-现货贸易/03-架构决策/02C-5Whys与业务技术映射速查卡.html' },
-    { name: 'B2B 微服务系统架构图（手绘版）', type: 'html', path: '02-现货贸易/03-架构决策/03B-B2B微服务系统架构图-手绘版.html' },
     { name: 'DS 数据中心（防腐层）', type: 'html', path: '02-现货贸易/03-架构决策/data-exchange.html' },
     { name: '中间件网关', type: 'html', path: '02-现货贸易/03-架构决策/middleware-gateway.html' },
     { name: '外联网关', type: 'html', path: '02-现货贸易/03-架构决策/external-gateway.html' },
@@ -3881,11 +3856,9 @@ var SPOT_GROUPS = [
     { name: '11 订单系统设计', type: 'md', path: '02-现货贸易/03-架构决策/arch/11-订单系统设计.md' },
     { name: '12 支付系统设计', type: 'md', path: '02-现货贸易/03-架构决策/arch/12-支付系统设计.md' },
     { name: '14 接口性能优化', type: 'md', path: '02-现货贸易/03-架构决策/arch/14-接口性能优化.md' },
-    { name: '15 前端性能优化', type: 'md', path: '02-现货贸易/03-架构决策/arch/15-前端性能优化.md' },
     { name: '16 JVM 调优', type: 'md', path: '02-现货贸易/03-架构决策/arch/16-JVM调优.md' },
     { name: '18 合规与审计', type: 'md', path: '02-现货贸易/03-架构决策/arch/18-合规与审计.md' },
     { name: '21 监控与日志', type: 'md', path: '02-现货贸易/03-架构决策/arch/21-监控与日志.md' },
-    { name: '24 客服与售后系统', type: 'md', path: '02-现货贸易/03-架构决策/arch/24-客服与售后系统.md' },
     { name: '25 合同管理系统设计', type: 'md', path: '02-现货贸易/03-架构决策/arch/25-合同管理系统设计.md' },
     { name: '26 工作流与审批流', type: 'md', path: '02-现货贸易/03-架构决策/arch/26-工作流与审批流.md' },
     { name: '27 表单与模板配置', type: 'md', path: '02-现货贸易/03-架构决策/arch/27-表单与模板配置.md' },
@@ -3928,7 +3901,6 @@ var AI_AGENT_GROUPS = [
   ] },
   { title: '00 知识库 · 25 题 / 题库 / 语料', icon: 'mic', files: [
     { name: 'RAG 面试实战手册（25 题 × 项目）', type: 'md', path: '02-AI智能体/00-知识库/00-RAG面试实战手册.md' },
-    { name: '政策解读 Agent 面试问答（A–J 组）', type: 'md', path: '02-AI智能体/00-知识库/政策解读Agent-面试问题与回答要点.md' },
     { name: '吴师兄 Agent 题库（保留 5 篇）', type: 'md', path: '02-AI智能体/00-知识库/Agent/00-索引.md' },
     { name: 'RAG 语料索引（291 篇 · 13 桶）', type: 'md', path: '02-AI智能体/00-知识库/01-语料索引.md' }
   ] },
