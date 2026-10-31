@@ -184,7 +184,7 @@
   /* ===== 布局骨架 ===== */
   .app {
     position: relative; z-index: 1;
-    display: flex; flex-direction: column; height: 100dvh; width: 100%;
+    display: flex; flex-direction: column; height: 100vh; height: 100dvh; width: 100%;
     padding-top: env(safe-area-inset-top);
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
@@ -1139,7 +1139,7 @@
   .search-box input {
     flex: 1;
     background: transparent; border: none; outline: none;
-    color: var(--text); font-size: 14px;
+    color: var(--text); font-size: 16px;
   }
   .search-box input::placeholder { color: var(--text-3); }
 
@@ -2022,7 +2022,7 @@
       <span>技术管理</span>
     </div>
 
-    <div class="sidebar-nav-item" onclick="openPrepIndex()">
+    <div class="sidebar-nav-item" data-page="page-prep" onclick="switchTab('page-prep')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
       <span>备战手册</span>
     </div>
@@ -2103,7 +2103,7 @@
           </div>
           <div class="hero-stats">
             <div class="hero-stat">
-              <span class="hero-stat-num" id="heroTotal">51</span>
+              <span class="hero-stat-num" id="heroTotal">13</span>
               <span class="hero-stat-label">备战资料</span>
             </div>
             <div class="hero-stat">
@@ -2647,6 +2647,24 @@
       </button>
     </section>
 
+    <!-- ========== 页面：备战手册（卡片式，md/html 走站内阅读器） ========== -->
+    <section class="page" id="page-prep">
+
+      <div class="section-header" style="margin-top:0">
+        <div class="section-title"><span class="section-title-bar"></span>备战资料</div>
+        <span class="setting-value" id="prepTotalCount">-- 份</span>
+        <div class="section-more tap" onclick="window.open('01-备战手册/index.html','_blank')">
+          完整目录
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+
+      <div id="prepGroupList">
+        <!-- 由 JS 渲染 -->
+      </div>
+
+    </section>
+
   </main>
 </div>
 
@@ -2664,7 +2682,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
     <span>真题</span>
   </button>
-  <button class="tabbar-item tap" aria-label="备战手册" onclick="openPrepIndex()">
+  <button class="tabbar-item tap" data-page="page-prep" aria-label="备战手册" onclick="switchTab('page-prep')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
     <span>备战</span>
   </button>
@@ -2951,102 +2969,34 @@ var FACE_EXP_CATEGORIES = [
   }
 ];
 
-// 备战主题数据（01-备战手册/ 下除八股题库外的分类；03-技术真题见题库页）
+// 备战主题数据（仅收录 01-备战手册/ 目录下真实存在的文件；03-技术真题见题库页）
 var PREP_CATEGORIES = [
   { key: 'lib', title: '资料库总览', icon: 'layers', color: 'cyan',
     files: [
-      { name: '00-资料库总览.md（全库目录地图 + 权威源分工）', type: 'md', path: '01-备战手册/00-资料库总览.md' }
+      { name: '00-资料库总览.md（全库目录地图 + 权威源分工）', type: 'md', path: '01-备战手册/00-资料库总览.md' },
+      { name: 'Java核心复习综合手册.md', type: 'md', path: '01-备战手册/Java核心复习综合手册.md' }
     ]
   },
-  { key: 'main', title: '00 面试计划（10 件）', icon: 'layers', color: 'warm',
+  { key: 'prep', title: '面试准备', icon: 'zap', color: 'green',
     files: [
-      { name: '00-主线索引.md', type: 'md', path: '00-面试计划/00-主线索引.md' },
-      { name: '01-简历与自我定位.md', type: 'md', path: '00-面试计划/01-简历与自我定位.md' },
-      { name: '02-项目叙事-B2B.md', type: 'md', path: '00-面试计划/02-项目叙事-B2B.md' },
-      { name: '03-项目叙事-AI.md', type: 'md', path: '00-面试计划/03-项目叙事-AI.md' },
-      { name: '04-业务与客户价值.md', type: 'md', path: '00-面试计划/04-业务与客户价值.md' },
-      { name: '05-网关与高并发.md', type: 'md', path: '00-面试计划/05-网关与高并发.md' },
-      { name: '06-一致性与异构.md', type: 'md', path: '00-面试计划/06-一致性与异构.md' },
-      { name: '07-JVM与线上排查.md', type: 'md', path: '00-面试计划/07-JVM与线上排查.md' },
-      { name: '08-技术问答速查.md', type: 'md', path: '00-面试计划/08-技术问答速查.md' },
-      { name: '09-待复习与复盘.md', type: 'md', path: '00-面试计划/09-待复习与复盘.md' }
-    ]
-  },
-  { key: 'biz', title: '01 业务与价值', icon: 'briefcase', color: 'green',
-    files: [
-      { name: '01-平台定位与价值总纲.md（定位 × 价值统一口径）', type: 'md', path: '02-现货贸易/01-平台定位与价值总纲.md' },
-      { name: '02-平台定位与客户分析.html', type: 'html', path: '02-现货贸易/01-业务与价值/02-平台定位与客户分析.html' },
-      { name: '02-业务全链路场景手册.md', type: 'md', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' },
-      { name: '17-业务痛点与系统解决方案-架构详解.md', type: 'md', path: '02-现货贸易/01-业务与价值/17-业务痛点与系统解决方案-架构详解.md' },
-      { name: '09-期现结合业务实现思路.md', type: 'md', path: '02-现货贸易/01-业务与价值/09-期现结合业务实现思路.md' }
-    ]
-  },
-  { key: 'cases', title: '02 客户与案例', icon: 'presentation', color: 'orange',
-    files: [
-      { name: '02-数字产业链服务平台-含痛点方案.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/02-数字产业链服务平台-含痛点方案.pptx' },
-      { name: '04-B2B技术经理-能力全景介绍.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/04-B2B技术经理-能力全景介绍.pptx' },
-      { name: '05-B2B产品服务客户案例.slides.pptx', type: 'pptx', path: '02-现货贸易/02-客户与案例/05-B2B产品服务客户案例.slides.pptx' },
-      { name: '06-客户案例与行业对标手册.md', type: 'md', path: '02-现货贸易/02-客户与案例/06-客户案例与行业对标手册.md' },
-      { name: '13-客户深度复盘与面试亮点.md', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' },
-      { name: '13-客户深度复盘与面试亮点', type: 'md', path: '02-现货贸易/02-客户与案例/13-客户深度复盘与面试亮点.md' }
-    ]
-  },
-  { key: 'arch', title: '04 架构决策', icon: 'layout', color: 'warm',
-    files: [
-      { name: '00-名词解释与术语速查.md（WAL / 死信队列 / Saga / 2PC / TCC）', type: 'md', path: '02-现货贸易/03-架构决策/00-名词解释与术语速查.md' },
-      { name: '01-架构方法论与选型设计手册.md（上篇方法论 · 中篇建设框架 · 下篇技术选型）', type: 'md', path: '02-现货贸易/03-架构决策/01-架构方法论与选型设计手册.md' },
-      { name: '02A-异构架构策略与真实系统叙事手册.md', type: 'md', path: '02-现货贸易/03-架构决策/02A-异构架构策略与真实系统叙事手册.md' },
-      { name: '03A-平台化治理与多租户架构手册.md', type: 'md', path: '02-现货贸易/03-架构决策/03A-平台化治理与多租户架构手册.md' },
-      { name: '05-Saga编排器详细介绍.md', type: 'md', path: '02-现货贸易/03-架构决策/05-Saga编排器详细介绍.md' },
-      { name: '06-Cookie认证失败-5Why根因分析.md', type: 'md', path: '02-现货贸易/04-生产问题排查/06-Cookie认证失败-5Why根因分析.md' },
-      { name: '07-Cookie认证失败-5Why根因分析.slides.pptx', type: 'pptx', path: '02-现货贸易/04-生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx' },
-      { name: '07-B2B合同中心vsB2C订单中心-区别分析.md', type: 'md', path: '02-现货贸易/03-架构决策/07-B2B合同中心vsB2C订单中心-区别分析.md' },
-      { name: '08-Dify与自研业务中台-技术选型复盘.md', type: 'md', path: '02-现货贸易/03-架构决策/08-Dify与自研业务中台-技术选型复盘.md' },
-      /* 09-建设框架、10-技术选型方案 已合并进 01-架构方法论与选型设计手册（中篇/下篇） */
-      { name: '08-多机房多线路网络故障-排查实录.md', type: 'md', path: '02-现货贸易/04-生产问题排查/08-多机房多线路网络故障-排查实录.md' },
-      { name: '09-竞价页面突然变慢-排查实录.md', type: 'md', path: '02-现货贸易/04-生产问题排查/09-竞价页面突然变慢-排查实录.md' },
-      { name: '10-下载PDF致JVM进程消失-排查实录.md', type: 'md', path: '02-现货贸易/04-生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
-      { name: '11-网关扩容打穿DB-性能开发规范.md', type: 'md', path: '02-现货贸易/04-生产问题排查/11-网关扩容打穿DB-性能开发规范.md' },
-
-      { name: 'java-architect-troubleshooting-handbook.md（Java 排障主手册 · 合并版：速查+下钻+Arthas/火焰图）', type: 'md', path: '02-现货贸易/04-生产问题排查/java-architect-troubleshooting-handbook.md' },
-      { name: '11-midservice网关职责与治理设计.md', type: 'md', path: '02-现货贸易/03-架构决策/11-midservice网关职责与治理设计.md' },
-      { name: '12-跨系统调用一致性方案.md', type: 'md', path: '02-现货贸易/03-架构决策/12-跨系统调用一致性方案.md' },
-      { name: '12-图-待发送表状态机.html', type: 'html', path: '02-现货贸易/03-架构决策/12-图-待发送表状态机.html' },
-      { name: '12-图-本地表双通道机制图.html', type: 'html', path: '02-现货贸易/03-架构决策/12-图-本地表双通道机制图.html' },
-      { name: '12-图-确认收货主链路时序图.html', type: 'html', path: '02-现货贸易/03-架构决策/12-图-确认收货主链路时序图.html' },
-      { name: '13-C核心单线程内存一致性设计.md', type: 'md', path: '02-现货贸易/03-架构决策/13-C核心单线程内存一致性设计.md' },
-      { name: '13-图-C核心热备一致性机制图.html', type: 'html', path: '02-现货贸易/03-架构决策/13-图-C核心热备一致性机制图.html' },
-      { name: '13-图-协调平面与数据平面对照图.html', type: 'html', path: '02-现货贸易/03-架构决策/13-图-协调平面与数据平面对照图.html' },
-      { name: '14-区块链架构与一致性同构对照图.html', type: 'html', path: '02-现货贸易/03-架构决策/14-区块链架构与一致性同构对照图.html' },
-      { name: '15-DS数据交换中心-C-Java异构桥接设计.md', type: 'md', path: '02-现货贸易/03-架构决策/15-DS数据交换中心-C-Java异构桥接设计.md' },
-      { name: '16-平台五层架构全景图.html', type: 'html', path: '02-现货贸易/03-架构决策/16-平台五层架构全景图.html' },
-      { name: '09-合同中心处理逻辑与交收结算引擎.md', type: 'md', path: '02-现货贸易/03-架构决策/09-合同中心处理逻辑与交收结算引擎.md' },
-      { name: '10-Drools规则引擎与交收模式.md', type: 'md', path: '02-现货贸易/03-架构决策/10-Drools规则引擎与交收模式.md' }
-    ]
-  },
-  { key: 'mgmt', title: '04 技术管理（根级）', icon: 'users', color: 'purple',
-    files: [
-      { name: '00-技术管理索引.md', type: 'md', path: '04-技术管理/00-技术管理索引.md' },
-      { name: '01-技术整改十一项与落地.html', type: 'html', path: '04-技术管理/01-技术整改十一项与落地.html' },
-      { name: '02-技术管理补充件.md', type: 'md', path: '04-技术管理/02-技术管理补充件.md' },
-      { name: '02-面试自证与训练手册.md（§八 研发管理自证素材）', type: 'md', path: '01-备战手册/02-面试准备/02-面试自证与训练手册.md' },
-      { name: '01-面试话术与背诵手册.md（管理类高频题 6 问）', type: 'md', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md' },
-          { name: '02-技术经理成长手册.md（成长方法论总纲：Π型能力/站位诊断/6个月执行/外部路径）', type: 'md', path: '01-备战手册/01-个人简历/02-技术经理成长手册.md' },
-      { name: '03-技术情报收集与跨部门沟通手册.md', type: 'md', path: '01-备战手册/01-个人简历/03-技术情报收集与跨部门沟通手册.md' }
-    ]
-  },
-  { key: 'strategy', title: '02 面试准备', icon: 'zap', color: 'green',
-    files: [
-      { name: '02B-技术栈全景图.md（全景图 · 面试题库 · 复习手册）', type: 'md', path: '02-现货贸易/03-架构决策/02B-技术栈全景图.md' },
-      /* 03-技术栈深度面试题库、04-技术复习综合手册 已合并进 02B-技术栈全景图（第二/第三部分） */
       { name: '01-面试话术与背诵手册.md', type: 'md', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md' },
       { name: '01-面试话术与背诵手册.html', type: 'html', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.html' },
+      { name: '01-面试速记卡.md', type: 'md', path: '01-备战手册/02-面试准备/01-面试速记卡.md' },
       { name: '02-面试自证与训练手册.md', type: 'md', path: '01-备战手册/02-面试准备/02-面试自证与训练手册.md' },
-      { name: '02-AI智能体/01-认知框架/AI工程能力补强手册.md', type: 'md', path: '02-AI智能体/01-认知框架/AI工程能力补强手册.md' },
       { name: '03-系统架构叙事手册.md', type: 'md', path: '01-备战手册/02-面试准备/03-系统架构叙事手册.md' }
     ]
+  },
+  { key: 'resume', title: '个人简历', icon: 'users', color: 'purple',
+    files: [
+      { name: '00-完整简历-通用版.md', type: 'md', path: '01-备战手册/01-个人简历/00-完整简历-通用版.md' },
+      { name: '01-技术经理-简历.md', type: 'md', path: '01-备战手册/01-个人简历/01-技术经理-简历.md' },
+      { name: '02-技术经理成长手册.md（成长方法论总纲：Π型能力/站位诊断/6个月执行）', type: 'md', path: '01-备战手册/01-个人简历/02-技术经理成长手册.md' },
+      { name: '03-技术情报收集与跨部门沟通手册.md', type: 'md', path: '01-备战手册/01-个人简历/03-技术情报收集与跨部门沟通手册.md' },
+      { name: '04-简历知识补强清单.md', type: 'md', path: '01-备战手册/01-个人简历/04-简历知识补强清单.md' },
+      { name: '06-快速通览一页纸简报.html', type: 'html', path: '01-备战手册/01-个人简历/06-快速通览一页纸简报.html' }
+    ]
   }
-  /* 个人简历（01-备战手册/01-个人简历/）不再作为工作台入口，简历 / 网申 / 面试介绍 PPT 系列不在此登记 */
+  /* 辅助页（index.html / home.html / md-viewer.html / *.print.html）与 07-面试介绍PPT 素材（pptx/pdf）不登记 */
 ];
 
 /* ===== 案例 · 场景页数据（五类客户 / 十个业务场景 / 资料清单） ===== */
@@ -3173,6 +3123,7 @@ var pageTitles = {
   'page-bank': '技术真题',
   'page-ai': 'AI 经验线',
   'page-cases': '案例 · 场景',
+  'page-prep': '备战手册',
   'page-me': '我的'
 };
 
@@ -3463,6 +3414,44 @@ function renderBankGrid() {
 function renderFaceExpGrid() {
   var r = renderFlatCategoryCards(FACE_EXP_CATEGORIES);
   $('faceExpGrid').innerHTML = r.html;
+}
+
+// 渲染备战手册页：按分类分节 + 文件级卡片（md/html 走站内阅读器）
+function renderPrepPage() {
+  var html = '';
+  var total = 0;
+  var seen = {};
+  for (var i = 0; i < PREP_CATEGORIES.length; i++) {
+    var cat = PREP_CATEGORIES[i];
+    if (!cat.files || !cat.files.length) continue;
+    var count = 0;
+    var cards = '';
+    for (var j = 0; j < cat.files.length; j++) {
+      var f = cat.files[j];
+      var sig = f.path + '|' + f.name;
+      if (seen[sig]) continue;
+      seen[sig] = true;
+      count++;
+      cards += '<div class="bank-card ' + cat.color + ' tap" onclick="openFriendly(\'' + f.path.replace(/'/g, "\\'") + '\')">';
+      cards += '<div class="bank-top">';
+      cards += '<div class="bank-icon ' + cat.color + '">' + getIcon(cat.icon) + '</div>';
+      cards += '<span class="bank-count">' + f.type.toUpperCase() + '</span>';
+      cards += '</div>';
+      cards += '<div class="bank-info">';
+      cards += '<div class="bank-title">' + escapeHtml(f.name) + '</div>';
+      cards += '<div class="bank-desc">' + escapeHtml(cat.title) + '</div>';
+      cards += '</div></div>';
+    }
+    if (!count) continue;
+    total += count;
+    html += '<div class="section-header">';
+    html += '<div class="section-title"><span class="section-title-bar"></span>' + escapeHtml(cat.title) + '</div>';
+    html += '<span class="setting-value">' + count + ' 份</span>';
+    html += '</div>';
+    html += '<div class="bank-grid">' + cards + '</div>';
+  }
+  $('prepGroupList').innerHTML = html;
+  $('prepTotalCount').textContent = total + ' 份';
 }
 
 // 打开题库分类
@@ -4291,8 +4280,8 @@ function openFriendly(path) {
 
 /* ===== 快捷入口 ===== */
 function openPrepIndex() {
-  window.open('01-备战手册/index.html', '_blank');
-  showToast('打开备战手册');
+  // 卡片式：站内切换到备战手册页（不再新开外部标签）
+  switchTab('page-prep');
 }
 
 /* ===== 设置功能 ===== */
@@ -4826,6 +4815,7 @@ function init() {
   renderTodayTasks();
   renderBankGrid();
   renderFaceExpGrid();
+  renderPrepPage();
   renderDraftPage();
   renderPlanPage();
   renderAiPage();
