@@ -3579,11 +3579,12 @@ var SPOT_GROUPS = [
   ] },
   { title: '生产问题排查', icon: 'server', files: [
     { name: 'Cookie 认证失败 5Why', type: 'md', path: '02-现货贸易/04-生产问题排查/06-Cookie认证失败-5Why根因分析.md' },
+    { name: '登录态三存储不一致（假登录）', type: 'md', path: '02-现货贸易/04-生产问题排查/13-登录态三存储不一致-前端误判已登录-排查与治理.md' },
     { name: '多机房多线路网络故障', type: 'md', path: '02-现货贸易/04-生产问题排查/08-多机房多线路网络故障-排查实录.md' },
     { name: '竞价页面突然变慢', type: 'md', path: '02-现货贸易/04-生产问题排查/09-竞价页面突然变慢-排查实录.md' },
     { name: '下载 PDF 致 JVM 进程消失', type: 'md', path: '02-现货贸易/04-生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
     { name: '网关扩容打穿 DB', type: 'md', path: '02-现货贸易/04-生产问题排查/11-网关扩容打穿DB-性能开发规范.md' },
-    { name: 'Java 排障主手册', type: 'md', path: '02-现货贸易/04-生产问题排查/java-architect-troubleshooting-handbook.md' },
+    { name: 'Java 排障主手册', type: 'md', path: '02-现货贸易/04-生产问题排查/14-Java架构师实战排障手册.md' },
     { name: 'Cookie 5Why 演示', type: 'pptx', path: '02-现货贸易/04-生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx' }
   ] },
   { title: 'B2B 架构专题页', icon: 'briefcase', files: [
@@ -3594,27 +3595,27 @@ var SPOT_GROUPS = [
     { name: '竞价状态不一致 · 解决方案', type: 'md', path: '02-现货贸易/03-架构决策/一致性与异构/06-竞价状态不一致问题解决方案.md' }
   ] },
   { title: 'B2B 专题 · 网关与容量（midservice）', icon: 'server', files: [
-    { name: '全链路容量压测计划', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/全链路容量压测计划.md' },
-    { name: '5 万 QPS / 1000 TPS · 容量攻坚全案', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/5万QPS与1000TPS-容量攻坚全案.md' },
-    { name: '网关百万并发与协议隔离设计', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/网关百万并发与协议隔离设计.md' },
-    { name: '协议调用量探针机制设计', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/协议调用量探针机制设计.md' },
+    { name: '全链路容量压测计划', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/02-全链路容量压测计划.md' },
+    { name: '5 万 QPS / 1000 TPS · 容量攻坚全案', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/01-5万QPS与1000TPS-容量攻坚全案.md' },
+    { name: '网关百万并发与协议隔离设计', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/03-网关百万并发与协议隔离设计.md' },
+    { name: '协议调用量探针机制设计', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/07-协议调用量探针机制设计.md' },
     { name: '安全防护与熔断限流汇总', type: 'md', path: '02-现货贸易/03-架构决策/三级等保/安全防护与熔断限流汇总.md' },
-    { name: '读接口缓存判断方法', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/读接口缓存判断方法.md' },
-    { name: '连接池参数配置建议', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/连接池参数配置建议.md' },
-    { name: '连接池配置流程图', type: 'html', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/连接池配置流程图.html' },
-    { name: '慢查询 / 慢服务故障传导分析', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/慢查询慢服务故障传导分析.md' },
-    { name: '竞价详情页轮询改造 · WebSocket 事件驱动', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/竞价详情页轮询改造-WebSocket事件驱动方案.md' },
-    { name: '机制图 1 · 竞价推送架构（推拉分离）', type: 'html', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/图-竞价推送-推拉分离.html' },
-    { name: '机制图 2 · WebSocket 稳定性', type: 'html', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/图-竞价推送-WS稳定性三层.html' },
-    { name: '机制图 3 · 断线到恢复五步时序', type: 'html', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/图-竞价推送-重连五步时序.html' },
-    { name: 'HandlerController 网关功能详解', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/HandlerController-网关功能详解.md' },
+    { name: '读接口缓存判断方法', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/04-读接口缓存判断方法.md' },
+    { name: '连接池参数配置建议', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/05-连接池参数配置建议.md' },
+    { name: '连接池配置流程图', type: 'html', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/06-连接池配置流程图.html' },
+    { name: '慢查询 / 慢服务故障传导分析', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/08-慢查询慢服务故障传导分析.md' },
+    { name: '竞价详情页轮询改造 · WebSocket 事件驱动', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/09-竞价详情页轮询改造-WebSocket事件驱动方案.md' },
+    { name: '机制图 1 · 竞价推送架构（推拉分离）', type: 'html', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/10-图-竞价推送-推拉分离.html' },
+    { name: '机制图 2 · WebSocket 稳定性', type: 'html', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/11-图-竞价推送-WS稳定性三层.html' },
+    { name: '机制图 3 · 断线到恢复五步时序', type: 'html', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/12-图-竞价推送-重连五步时序.html' },
+    { name: 'HandlerController 网关功能详解', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/14-HandlerController-网关功能详解.md' },
     { name: 'ToBackController 与 HandlerController 对比', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/ToBackController-后台网关与HandlerController对比.md' }
   ] },
   { title: 'B2B 专题 · DS 数据中心（dataShare）', icon: 'database', files: [
-    { name: 'SDK 网关能力解析', type: 'md', path: '02-现货贸易/03-架构决策/一致性与异构/dataShare/dataShare-SDK网关能力解析.md' },
-    { name: '并发能力与缺陷清单', type: 'md', path: '02-现货贸易/03-架构决策/一致性与异构/dataShare/dataShare-并发能力与缺陷清单.md' },
-    { name: '服务端能力与瓶颈深度分析', type: 'md', path: '02-现货贸易/03-架构决策/一致性与异构/dataShare/dataShare-分布式服务能力与瓶颈分析.md' },
-    { name: 'worker 线程池改造方案', type: 'md', path: '02-现货贸易/03-架构决策/一致性与异构/dataShare/dataShare-worker线程池改造方案.md' }
+    { name: 'SDK 网关能力解析', type: 'md', path: '02-现货贸易/03-架构决策/一致性与异构/dataShare/03-dataShare-SDK网关能力解析.md' },
+    { name: '并发能力与缺陷清单', type: 'md', path: '02-现货贸易/03-架构决策/一致性与异构/dataShare/01-dataShare-并发能力与缺陷清单.md' },
+    { name: '服务端能力与瓶颈深度分析', type: 'md', path: '02-现货贸易/03-架构决策/一致性与异构/dataShare/02-dataShare-分布式服务能力与瓶颈分析.md' },
+    { name: 'worker 线程池改造方案', type: 'md', path: '02-现货贸易/03-架构决策/一致性与异构/dataShare/04-dataShare-worker线程池改造方案.md' }
   ] },
   { title: '交易系统专题 · 通用问题指南（arch）', icon: 'layers', files: [
     { name: '00 导读 · README', type: 'md', path: '02-现货贸易/03-架构决策/arch/README.md' },

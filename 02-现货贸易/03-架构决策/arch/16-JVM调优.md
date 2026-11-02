@@ -2,7 +2,7 @@
 
 > 如何让Java应用更稳定高效
 
-> **分工说明**：本章是**入门层**（内存模型 / GC / 常用参数）。**排障级的命令链、阈值、现场判读与六步作业单**只在 [`java-architect-troubleshooting-handbook.md`](../../04-生产问题排查/java-architect-troubleshooting-handbook.md) 维护（CPU / 内存泄漏 / OOM / GC / 线程 / 死锁 / 堆分析 / Arthas / 火焰图）；一次真实的进程消失复盘见 [`10-下载PDF致JVM进程消失-排查实录.md`](../../04-生产问题排查/10-下载PDF致JVM进程消失-排查实录.md)（Exit Code 137 = cgroup OOM Killer，不是 OOM 崩溃）。
+> **分工说明**：本章是**入门层**（内存模型 / GC / 常用参数）。**排障级的命令链、阈值、现场判读与六步作业单**只在 [`14-Java架构师实战排障手册.md`](../../04-生产问题排查/14-Java架构师实战排障手册.md) 维护（CPU / 内存泄漏 / OOM / GC / 线程 / 死锁 / 堆分析 / Arthas / 火焰图）；一次真实的进程消失复盘见 [`10-下载PDF致JVM进程消失-排查实录.md`](../../04-生产问题排查/10-下载PDF致JVM进程消失-排查实录.md)（Exit Code 137 = cgroup OOM Killer，不是 OOM 崩溃）。
 
 ---
 
