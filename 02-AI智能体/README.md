@@ -10,7 +10,7 @@
 | 目录 | 层 | 回答的问题 | 内容 | 规模 |
 |------|----|-----------|------|------|
 | `01-认知框架/` | 认知层 | LLM / Agent / Harness 是什么、边界在哪 | 三层认知总纲 + Agent / Harness 详细设计 + 报文全链路 + 补强手册 + **治理与护栏（上线准入）** + 两张架构图 | 6 md + 2 html/png |
-| `02-平台工程/` | 平台层 | 工具链怎么用、坑在哪 | Dify 15 章接入手册（权威源）+ RAG 16 卡点 + MinerU 解析改造 | 3 md |
+| `02-平台工程/` | 平台层 | 工具链怎么用、坑在哪 | Dify 15 章接入手册（权威源）+ RAG 16 卡点 + MinerU 解析改造 + **多轮 RAG 架构与状态管理图** | 3 md + 1 图（html/png） |
 | `03-业务设计/` | 设计层 | 具体业务 Agent 怎么设计 | 平台定位与价值 + 政策解读（通用 / 电力）+ 智能客服 + RAG 直击库 + `data/` 示例数据 | 5 md + 4 数据文件 |
 | ↗ `self-rag-engineering/`（**已外置**） | 工程层 | **不用 Dify 完全自研的 RAG 怎么做**（个人实战） | 2026-11-02 迁至 [`../../personal-ai-engineering/self-rag-engineering/`](../../personal-ai-engineering/self-rag-engineering/)：总览口径 + 总体架构 + 低代码编排 + 解析管道（MinerU / ffmpeg+ASR / Excel）+ 检索生成闸门 + 评测路线 + `ownrag/` 代码骨架（6 md + 代码骨架，本库不再存放） |
 | `05-项目底稿/` | 事实层 | 公司 AI 平台整体方案与我的参与边界 | AI 智能服务平台 9 页富 HTML（与 B2B 项目同一套版式）+ 1 篇口径声明 | 9 html + 1 md |
@@ -30,6 +30,7 @@
 | 凭什么敢上线 / 护栏怎么证明有效 | [`01-认知框架/AI治理与护栏-分层设计与上线准入清单.md`](./01-认知框架/AI治理与护栏-分层设计与上线准入清单.md) |
 | Dify 接入手册 | [`02-平台工程/Dify快速深入指南.md`](./02-平台工程/Dify快速深入指南.md) |
 | RAG 卡点排查 | [`02-平台工程/Dify-RAG关键点详解.md`](./02-平台工程/Dify-RAG关键点详解.md) |
+| 多轮 RAG 状态怎么管（三条状态线 / 每轮重鉴权 / 平台与中台分工） | [`02-平台工程/多轮RAG系统架构与状态管理图.html`](./02-平台工程/多轮RAG系统架构与状态管理图.html)（+ `.png`） |
 | 复杂 PDF 解析改造 | [`02-平台工程/minerU复杂PDF识别优化方案与选型分析.md`](./02-平台工程/minerU复杂PDF识别优化方案与选型分析.md) |
 | 不用 Dify 完全自研 RAG 怎么做（个人工程，**已外置**） | [`../../personal-ai-engineering/self-rag-engineering/00-总览与口径.md`](../../personal-ai-engineering/self-rag-engineering/00-总览与口径.md)｜代码骨架 [`ownrag/README.md`](../../personal-ai-engineering/self-rag-engineering/ownrag/README.md) |
 | 政策解读设计 | [`03-业务设计/政策解读Agent-通用设计.md`](./03-业务设计/政策解读Agent-通用设计.md) |
@@ -65,4 +66,4 @@
 - B2B 现货贸易主线：[`../02-现货贸易/index.html`](../02-现货贸易/index.html)
 - 技术选型复盘：[`../02-现货贸易/03-架构决策/模块流程说明/08-Dify与自研业务中台-技术选型复盘.md`](../02-现货贸易/03-架构决策/模块流程说明/08-Dify与自研业务中台-技术选型复盘.md)
 
-*最后更新：2026-11-02（`04-自研RAG工程/` 迁出至 `personal-ai-engineering/self-rag-engineering/`，本库改为指针；同日新增该工程层的索引已同步改写）*
+*最后更新：2026-11-12（新增「多轮 RAG 系统架构与状态管理图」html/png 于 `02-平台工程/`，四处索引同步；2026-11-02 `04-自研RAG工程/` 迁出至 `personal-ai-engineering/self-rag-engineering/`，本库改为指针）*

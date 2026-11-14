@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>合同交收主链路 · 履约管道图</title>
+<!--
+  ============================================================================
+  合同交收主链路 · 履约管道图（Pipeline / 阶段闸门图）
+  口径来源（本仓库权威件）：
+    02-现货贸易/03-架构决策/模块流程说明/09-合同中心处理逻辑与交收结算引擎.md
+    02-现货贸易/03-架构决策/模块流程说明/10-Drools规则引擎与交收模式.md
+  口径红线：合同是容器不是订单；交收模式决定节点先后，结算渠道决定资金流动；
+            合同域与履约域解耦。图中【设计推演】为 10 号文档未落地的设计思路。
+  ============================================================================
+-->
+<style>
+:root{
+  --ink:#1F2937; --ink2:#4B5563; --ink3:#8A93A0;
+  --line:#E3E7EE; --paper:#FFFFFF; --canvas:#F1F4F9;
+  --blue:#2C6FBE; --blue-bg:#F3F8FE;
+  --teal:#2E9E8F; --teal-bg:#F1FAF8;
+  --amber:#C98A1F; --amber-bg:#FEFAF0;
+  --purple:#7C5CBF; --purple-bg:#F8F5FE;
+  --red:#C0504D; --red-bg:#FDF3F2;
+  --grey:#8A93A0; --grey-bg:#F7F8FA;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--canvas);
+  font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+  color:var(--ink); padding:22px 26px 26px; -webkit-font-smoothing:antialiased;
+}
+.sheet{
+  width:1740px; margin:0 auto; background:var(--paper);
+  border-radius:16px; padding:30px 30px 24px;
+  box-shadow:0 10px 34px rgba(23,42,77,.10), 0 2px 8px rgba(23,42,77,.05);
+}
+
+/* ---------- 抬头 ---------- */
+.hd{border-bottom:1.6px solid var(--line); padding-bottom:15px; margin-bottom:22px;}
+.hd h1{font-size:26px; margin:0 0 8px; letter-spacing:.4px; font-weight:800;}
+.hd .sub{font-size:13px; color:var(--ink2); margin:0; line-height:1.7;}
+.hd .sub b{color:var(--blue); font-weight:800;}
+.hd .legend{display:flex; flex-wrap:wrap; gap:9px 22px; margin-top:14px;}
+.lg{display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--ink2); font-weight:600;}
+.lg .sw{width:26px; height:0; border-top-width:2.4px; border-top-style:solid;}
+.lg .sw.dash{border-top-style:dashed;}
+.lg .dot{width:11px; height:11px; border-radius:50%; border:2px solid var(--blue); background:#fff;}
+.lg .arwwrap{width:26px; height:12px; border-radius:3px; background:linear-gradient(90deg,#4A86D0,#2C6FBE); display:flex; align-items:center; justify-content:flex-end; padding-right:2px;}
+.lg .arw{width:0; height:0; border-left:7px solid #fff; border-top:4px solid transparent; border-bottom:4px solid transparent;}
+.lg .gate{width:22px; height:14px; border-radius:3px; border-left:3px solid var(--amber); background:var(--amber-bg);}
+
+/* ---------- 通用行 / 7 列栅格 ---------- */
+.row{display:grid; grid-template-columns:126px 1fr; gap:12px; align-items:stretch;}
+.row + .row{margin-top:12px;}
+.grid7{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:12px;}
+.rowhead{
+  border-radius:10px; background:var(--grey-bg); border:1.4px solid var(--line);
+  padding:12px 10px; display:flex; flex-direction:column; justify-content:center; gap:5px;
+}
+.rowhead .rt{font-size:12.5px; font-weight:800; color:var(--ink); letter-spacing:.3px;}
+.rowhead .rs{font-size:10px; color:var(--ink3); line-height:1.55; font-weight:600;}
+
+/* ---------- 主管道 ---------- */
+.pipeline{position:relative; padding-top:0;}
+.pipe{
+  position:absolute; left:6px; right:6px; top:22px; height:9px; z-index:1;
+  border-radius:6px;
+  background:linear-gradient(90deg,#4A86D0 0%,#2C6FBE 26%,#2E9E8F 58%,#C98A1F 82%,#7C5CBF 100%);
+  box-shadow:0 2px 5px rgba(44,111,190,.18);
+}
+.stage{position:relative; z-index:2; min-width:0; display:flex; flex-direction:column;}
+.stage .no{
+  position:relative; z-index:3; width:36px; height:36px; margin:4px auto 0;
+  border-radius:50%; background:#fff; border:2.6px solid var(--blue);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:800; color:var(--blue);
+  box-shadow:0 2px 6px rgba(31,41,55,.10);
+}
+.stage.s-start .no{background:var(--blue); color:#fff;}
+.stage.s-end .no{border-color:var(--purple); color:var(--purple); box-shadow:0 0 0 4px #F1EAFB;}
+.stage:not(:last-child)::after{
+  content:''; position:absolute; z-index:4; right:-11px; top:23px;
+  width:0; height:0; border-left:8px solid #fff; border-top:5px solid transparent; border-bottom:5px solid transparent;
+  filter:drop-shadow(0 0 1px rgba(44,111,190,.5));
+}
+.card{
+  margin-top:12px; border:1.6px solid var(--cc,var(--blue)); background:var(--cbg,var(--blue-bg));
+  border-radius:10px; padding:11px 11px 10px; min-height:214px; flex:1 1 auto;
+}
+.card .tag{font-size:10px; font-weight:800; color:var(--cc,var(--blue)); letter-spacing:.6px; margin-bottom:5px;}
+.card h3{font-size:14px; margin:0 0 7px; font-weight:800; color:var(--ink); letter-spacing:.2px;}
+.card .li{font-size:10.6px; color:var(--ink2); line-height:1.62; margin-bottom:4px; padding-left:9px; position:relative;}
+.card .li::before{content:''; position:absolute; left:0; top:6px; width:3px; height:3px; border-radius:50%; background:var(--cc,var(--blue));}
+.card .li b{color:var(--ink); font-weight:800;}
+.card .gate{
+  margin-top:8px; padding:5px 7px; border-left:3px solid var(--amber); background:#FFFDF6;
+  border-radius:0 5px 5px 0; font-size:10.2px; color:#8A6410; font-weight:700; line-height:1.5;
+}
+.card .gate b{color:#6D4E08;}
+.card .db{
+  margin-top:7px; padding-top:6px; border-top:1px dashed #D8DEE8;
+  font-size:9.8px; color:var(--ink3); line-height:1.5; font-weight:600;
+}
+.card .db code{font-family:Consolas,"Courier New",monospace; color:#4B5563; font-size:9.6px;}
+.c-blue  {--cc:var(--blue);   --cbg:var(--blue-bg);}
+.c-teal  {--cc:var(--teal);   --cbg:var(--teal-bg);}
+.c-amber {--cc:var(--amber);  --cbg:var(--amber-bg);}
+.c-purple{--cc:var(--purple); --cbg:var(--purple-bg);}
+.c-grey  {--cc:var(--grey);   --cbg:var(--grey-bg);}
+
+/* ---------- 三条轨道泳道 ---------- */
+.rail-label{
+  border-radius:10px; padding:10px; border:1.6px solid var(--rc); background:var(--rbg);
+  display:flex; flex-direction:column; justify-content:center; gap:4px;
+}
+.rail-label .rt{font-size:12.5px; font-weight:800; color:var(--rc);}
+.rail-label .rs{font-size:9.8px; color:var(--ink3); line-height:1.5; font-weight:600;}
+.rail-fund {--rc:var(--teal);   --rbg:var(--teal-bg);}
+.rail-goods{--rc:var(--amber);  --rbg:var(--amber-bg);}
+.rail-inv  {--rc:var(--purple); --rbg:var(--purple-bg);}
+.cell{
+  border:1.4px solid var(--line); border-left:3px solid var(--rc,var(--grey));
+  background:#FCFDFE; border-radius:8px; padding:8px 9px; min-height:66px;
+}
+.cell .ct{font-size:10.8px; font-weight:800; color:var(--rc,var(--ink)); margin-bottom:3px;}
+.cell .cd{font-size:9.9px; color:var(--ink2); line-height:1.5;}
+.cell.off{background:var(--grey-bg); border-style:dashed; border-left-color:#C9D2DE; opacity:.72;}
+.cell.off .ct{color:var(--ink3); font-weight:700;}
+.cell.off .cd{color:var(--ink3);}
+.cell.hot{background:var(--rbg,var(--teal-bg));}
+.rail-fund  .cell{--rc:var(--teal);   --rbg:var(--teal-bg);}
+.rail-goods .cell{--rc:var(--amber);  --rbg:var(--amber-bg);}
+.rail-inv   .cell{--rc:var(--purple); --rbg:var(--purple-bg);}
+
+/* ---------- 逆向旁路 ---------- */
+.bypass{
+  margin-top:16px; border:1.8px dashed var(--red); background:var(--red-bg);
+  border-radius:12px; padding:12px 14px;
+  display:grid; grid-template-columns:150px 1fr 1fr 1.15fr; gap:14px; align-items:stretch;
+}
+.bypass .bt{display:flex; flex-direction:column; justify-content:center; gap:5px;}
+.bypass .bt .t{font-size:13px; font-weight:800; color:var(--red);}
+.bypass .bt .s{font-size:10px; color:#9A4B48; line-height:1.55; font-weight:600;}
+.bp-col{border-left:1px solid #EBC7C5; padding-left:12px;}
+.bp-col h4{font-size:11px; font-weight:800; color:#8E3F3D; margin:0 0 6px;}
+.bp-col p{font-size:10.2px; color:#7A4B49; line-height:1.62; margin:0;}
+.bp-col p b{color:#8E3F3D;}
+.chips{display:flex; flex-wrap:wrap; gap:4px;}
+.chip{font-size:9.6px; font-weight:700; color:#8E3F3D; background:#fff; border:1px solid #EBC7C5; border-radius:4px; padding:2px 5px;}
+
+/* ---------- 脚注 ---------- */
+.notes{border-top:1.6px solid var(--line); margin-top:16px; padding-top:13px;}
+.notes p{font-size:11.2px; color:var(--ink2); margin:0 0 6px; line-height:1.7;}
+.notes p:last-child{margin-bottom:0;}
+.notes p b{color:var(--blue);}
+.notes .no{
+  display:inline-block; width:15px; height:15px; line-height:15px; text-align:center;
+  border-radius:50%; background:#EAF1FB; color:var(--blue); font-size:10px; font-weight:800;
+  margin-right:6px; vertical-align:1px;
+}
+.notes .warn{background:var(--red-bg); border-left:3px solid var(--red); padding:6px 10px; border-radius:0 5px 5px 0; color:#8E3F3D;}
+.notes .warn b{color:var(--red);}
+.notes .src{font-size:10px; color:var(--ink3); line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="hd">
+    <h1>合同交收主链路 · 履约管道图</h1>
+    <p class="sub">
+      从成交到归档的 <b>7 段管道</b> · <b>5 道守卫闸门</b> · <b>款 / 货 / 票三轨并行</b> · <b>1 条逆向旁路</b>。
+      一句话定位：合同中心 = <b>合同容器 + 履约编排 + 结算引擎 + 风控网关</b>；核心是合同域与履约域解耦，
+      <b>交收模式决定节点先后，结算渠道决定资金流动</b>，两者正交。
+    </p>
+    <div class="legend">
+      <span class="lg"><span class="sw" style="border-color:#2C6FBE"></span>主管道（阶段推进）</span>
+      <span class="lg"><span class="sw" style="border-color:#2E9E8F"></span>资金轨</span>
+      <span class="lg"><span class="sw" style="border-color:#C98A1F"></span>货权轨</span>
+      <span class="lg"><span class="sw" style="border-color:#7C5CBF"></span>票据轨</span>
+      <span class="lg"><span class="sw dash" style="border-color:#C0504D"></span>异常 / 逆向旁路</span>
+      <span class="lg"><span class="dot"></span>阶段节点</span>
+      <span class="lg"><span class="gate"></span>守卫闸门（入口 · G1–G5 · 终点）</span>
+      <span class="lg"><span class="arwwrap"><span class="arw"></span></span>阶段流向箭头</span>
+    </div>
+  </div>
+
+  <div class="board">
+
+    <!-- ===== 主管道 ===== -->
+    <div class="row">
+      <div class="rowhead">
+        <div class="rt">主管道</div>
+        <div class="rs">7 段 · 5 道守卫<br>合同域 → 履约域</div>
+      </div>
+      <div class="grid7 pipeline">
+        <div class="pipe"></div>
+
+        <div class="stage s-start">
+          <div class="no">00</div>
+          <div class="card c-grey">
+            <div class="tag">入口 · 交易域</div>
+            <h3>成交事件</h3>
+            <div class="li">挂牌 / 撮合成交，产出<b>成交结果</b></div>
+            <div class="li">携带交易事实 + 客户事实 + 品类事实，作为规则层输入</div>
+            <div class="li">交易域与合同域通过事件衔接，<b>不直接写履约状态</b></div>
+            <div class="gate"><b>入口条件</b> · 成交结果已确认、标的与数量锁定</div>
+            <div class="db">输入 <code>TradeFact</code></div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="no">01</div>
+          <div class="card c-blue">
+            <div class="tag">L1 · 合同创建</div>
+            <h3>合同容器建立</h3>
+            <div class="li">模板版本 / 条款库 / 计价机制 / 品质指标录入</div>
+            <div class="li"><b>合同是容器不是订单</b>：一合同对应 N 批发货计划</div>
+            <div class="li">只记商业契约：谁、什么、多少、什么价</div>
+            <div class="gate"><b>G1</b> · 模板版本有效、条款完备、品质指标有基准值</div>
+            <div class="db">落库 <code>contract</code> · <code>contract_item</code> · <code>contract_party</code></div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="no">02</div>
+          <div class="card c-blue">
+            <div class="tag">L2 · 合同签署</div>
+            <h3>签章生效与定模式</h3>
+            <div class="li">电子签章 / U-Key / 签署流程引擎，合同<b>版本链</b>起点</div>
+            <div class="li">生效时绑定 <code>delivery_mode</code> 与结算、配货通道</div>
+            <div class="li">三维决策：履约顺序 × 结算方式 × 货物方式</div>
+            <div class="gate"><b>G2</b> · 双方签署完成、模式与通道已绑定且互斥校验通过</div>
+            <div class="db">五种付款节奏：款到发货 / 货到付款 / 定金+尾款 / 分期 / 信用证</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="no">03</div>
+          <div class="card c-teal">
+            <div class="tag">域解耦点 · 计划生成</div>
+            <h3>结算计划 + 履约计划</h3>
+            <div class="li"><b>规则层</b>（无状态）产出 <code>SettlementPlan</code>：模式 / 付款节点 / 比例 / 账期 / 担保【设计推演】</div>
+            <div class="li"><b>履约域</b>按模式生成 <code>fulfillment_plan</code>，按批次拆分</div>
+            <div class="li">双轨分流：<b>顺序交收</b>（状态机）/ <b>自由交收</b>（事件驱动+规则），共用底层任务结构</div>
+            <div class="gate"><b>G3</b> · 计划快照 + 命中规则编号/版本入库，规则只读不调银行不改库存</div>
+            <div class="db">落库 <code>fulfillment_plan</code> · 计划级 <code>payment_order</code></div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="no">04</div>
+          <div class="card c-amber">
+            <div class="tag">L3 · 履约执行（核心）</div>
+            <h3>款 / 货 / 票三轨推进</h3>
+            <div class="li">状态机按计划推进；<b>策略</b>决定何时发起支付、何时放行发货</div>
+            <div class="li"><b>到账 / 发货 / 验收</b> 事件驱动推进，必要时重跑规则</div>
+            <div class="li"><code>Paid_Pool</code> 有钱可自动解锁卖方「发货」按钮——资金与状态联动</div>
+            <div class="gate"><b>G4 判断</b> · 发货前应付金额已到账？<b>否 → 挂起等待 + 超时补偿</b></div>
+            <div class="db">落库 <code>payment_order</code> · <code>shipment_order</code> · <code>fund_pool</code></div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="no">05</div>
+          <div class="card c-teal">
+            <div class="tag">L5 · 收货质检与结算</div>
+            <h3>真理账单与轧差</h3>
+            <div class="li">生成 <code>receipt_settlement_order</code>「<b>真理账单</b>」：按实收数量结算，多退少补</div>
+            <div class="li">轧差：<b>应退/补 = Paid_Pool − Σ Settled_Pool</b></div>
+            <div class="li">货款同时三件事：<b>核销给卖方 + 截留约 10% 开票保证金 + 扣手续费</b></div>
+            <div class="gate"><b>G5</b> · 质检 / 数量差异确认，账单生效后方可释放货款</div>
+            <div class="db">落库 <code>receipt_settlement</code> · <code>refund_order</code>（超付）</div>
+          </div>
+        </div>
+
+        <div class="stage s-end">
+          <div class="no">06</div>
+          <div class="card c-purple">
+            <div class="tag">终点 · 开票与归档</div>
+            <h3>收票确认 → 完结</h3>
+            <div class="li">卖方开票 → 买方确认收票 → <b>解冻 10% 开票保证金</b></div>
+            <div class="li">90% 可提现 + 10% 冻结，收票后释放；冲抵 / 罚没按计划收口</div>
+            <div class="li">日终对账通过后合同置完结，单据与凭证统一归档（MinIO）</div>
+            <div class="gate"><b>终点条件</b> · 收票确认 + 日终对账无差异 + 逆向单据全部结清</div>
+            <div class="db">落库 <code>invoice</code> · <code>contract(COMPLETED)</code></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== 资金轨 ===== -->
+    <div class="row rail-fund">
+      <div class="rail-label">
+        <div class="rt">资金轨</div>
+        <div class="rs">结算渠道决定资金<br>如何流动</div>
+      </div>
+      <div class="grid7">
+        <div class="cell off"><div class="ct">—</div><div class="cd">未进入履约</div></div>
+        <div class="cell off"><div class="ct">—</div><div class="cd">未进入履约</div></div>
+        <div class="cell off"><div class="ct">—</div><div class="cd">未进入履约</div></div>
+        <div class="cell"><div class="ct">计划快照</div><div class="cd">付款节点位置 / 比例 / 账期；规则版本号写进计划</div></div>
+        <div class="cell hot"><div class="ct">冻结 → 到账</div><div class="cd">FreezeDeposit / FreezePayment；Paid_Pool 记账；到账事件驱动状态机</div></div>
+        <div class="cell hot"><div class="ct">核销 · 截留 · 扣费</div><div class="cd">ReleasePayment + FreezeInvoiceBond(约10%) + DeductFee；按轧差多退少补</div></div>
+        <div class="cell"><div class="ct">解冻保证金</div><div class="cd">ReleaseInvoiceBond；90% 可提现 + 10% 冻结 → 释放</div></div>
+      </div>
+    </div>
+
+    <!-- ===== 货权轨 ===== -->
+    <div class="row rail-goods">
+      <div class="rail-label">
+        <div class="rt">货权轨</div>
+        <div class="rs">配货通道决定货物<br>场内 / 场外</div>
+      </div>
+      <div class="grid7">
+        <div class="cell off"><div class="ct">—</div><div class="cd">未进入履约</div></div>
+        <div class="cell off"><div class="ct">—</div><div class="cd">未进入履约</div></div>
+        <div class="cell off"><div class="ct">—</div><div class="cd">未进入履约</div></div>
+        <div class="cell"><div class="ct">批次拆分</div><div class="cd">履约计划按批次生成，每批独立物流 / 质检 / 结算子流程</div></div>
+        <div class="cell hot"><div class="ct">发货 → 收货确认</div><div class="cd">shipment_order + 物流单据；场内配货走电子仓单过户 / 质押解押</div></div>
+        <div class="cell hot"><div class="ct">质检 · 实收数量</div><div class="cd">按实收结算、品质差价公式、扣罚；生成收货结算单</div></div>
+        <div class="cell"><div class="ct">货权闭环</div><div class="cd">仓单 / 提单确权完成，履约凭证归档</div></div>
+      </div>
+    </div>
+
+    <!-- ===== 票据轨 ===== -->
+    <div class="row rail-inv">
+      <div class="rail-label">
+        <div class="rt">票据轨</div>
+        <div class="rs">开票保证金把票据<br>挂进资金链路</div>
+      </div>
+      <div class="grid7">
+        <div class="cell off"><div class="ct">—</div><div class="cd">未进入履约</div></div>
+        <div class="cell off"><div class="ct">—</div><div class="cd">未进入履约</div></div>
+        <div class="cell off"><div class="ct">—</div><div class="cd">未进入履约</div></div>
+        <div class="cell"><div class="ct">开票节点定义</div><div class="cd">计划中定义开票时点与开票保证金冻结比例</div></div>
+        <div class="cell"><div class="ct">单据登记</div><div class="cd">正向单据 receipt / shipment / settlement 生成，先不释放</div></div>
+        <div class="cell hot"><div class="ct">截留开票保证金</div><div class="cd">收货核销同步截留约 10%，作为卖方开票的履约担保</div></div>
+        <div class="cell hot"><div class="ct">开票 → 收票确认</div><div class="cd">invoice 生成、买方确认收票，触发解冻；未开票走保证金划扣</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== 逆向旁路 ===== -->
+  <div class="bypass">
+    <div class="bt">
+      <div class="t">逆向旁路</div>
+      <div class="s">正向单据与逆向单据解耦：<br>单环节故障不卡死全链</div>
+    </div>
+    <div class="bp-col">
+      <h4>触发场景（8 类违约节选）</h4>
+      <div class="chips">
+        <span class="chip">买方逾期不付款</span><span class="chip">拖延确认收货</span>
+        <span class="chip">卖方不发货 / 卷款</span><span class="chip">卖方不开票</span>
+        <span class="chip">货不对板</span><span class="chip">质量严重拒收</span>
+        <span class="chip">虚假仓单</span><span class="chip">隐性债务欠费</span>
+      </div>
+    </div>
+    <div class="bp-col">
+      <h4>逆向动作</h4>
+      <p><b>冻结机制</b>掌握物理控制权 + 逆向单据：
+      <b>penalty_order</b>（罚没）· <b>refund_order</b>（退款）· <b>dispute_ticket</b>（纠纷）。
+      让钱和货按契约自动流向该去的地方。</p>
+    </div>
+    <div class="bp-col">
+      <h4>对账补偿三层（挂在主链路旁，不占管道）</h4>
+      <p><b>L1</b> 本地消息表 + 定时重试（每 30 秒）｜<b>L2</b> 每 5 分钟巡检 PRE_FROZEN / FROZEN 超时｜<b>L3</b> 凌晨 02:00 日终全量对账。幂等键 <b>request_id(UUID)</b>，重试只执行一次。</p>
+    </div>
+  </div>
+
+  <!-- ===== 脚注 ===== -->
+  <div class="notes">
+    <p><span class="no">1</span><b>三句口径</b>：合同是「容器」不是「订单」（一合同 N 批发货计划）；交收模式决定节点先后、结算渠道决定资金流动，两者正交；合同域（商业契约，版本链）与履约域（执行计划）通过 <code>delivery_mode</code> + 事件总线解耦，新增交收模式 = 新增履约策略，合同核心零改动。</p>
+    <p><span class="no">2</span><b>五种交收模式只是参数组合</b>：款到发货与货到付款，本质是同一个「付款节点」在时间轴上的两个位置；定金+尾款 / 分期 / 信用证则是节点比例与担保方式的变化，不另造一套流程。结算 × 配货另有 2×2 通道矩阵（Q1 全场内 … Q4 纯场外），与付款节奏层正交，不要混谈。</p>
+    <p class="warn"><b>红线</b>：钱在银行存管子账户，平台只记虚拟账（Paid_Pool / Settled_Pool，履约计划级虚拟账户，非平台沉淀池）；<b>无支付牌照严禁资金池模式，资金池 + 二清 = 刑事风险</b>。跨域（合同-履约-结算-仓单）走事件驱动 + 每日对账兜底，不用 2PC/TCC；资金预检这一跳例外。</p>
+    <p class="src">口径依据：<code>02-现货贸易/03-架构决策/模块流程说明/09-合同中心处理逻辑与交收结算引擎.md</code>（【源文档】/【归纳】）、<code>10-Drools规则引擎与交收模式.md</code>（§3 为【设计推演】）。图中标注【设计推演】者为设计思路，非生产已实现；具体比例、定时参数、Drools 是否承担交收模式选择均属待核实项，见随图《待核实清单》。本图为口径整理图，非生产系统截图。</p>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>多轮 RAG 系统 · 完整架构与状态管理图（公司项目 · Dify 主线）</title>
+<!--
+  ============================================================================
+  多轮 RAG 系统 · 完整架构与状态管理图（分层架构 + 状态流转图）
+  轨道口径：公司项目「AI 智能服务平台」· Dify 承载；Harness / FastAPI 属个人储备，不进本图技术栈。
+  权威来源（本仓库）：
+    02-AI智能体/02-平台工程/Dify快速深入指南.md        §2.1 / §3 / §4.2 / §4.3 / §8.1–8.2 / §8.7
+    02-AI智能体/02-平台工程/Dify-RAG关键点详解.md       §3.2 / §3.3 / §4.2 / §6
+    02-AI智能体/03-业务设计/政策解读Agent-通用设计.md   §4 步骤 01/02/05/06/07 · §7.4
+    02-AI智能体/03-业务设计/智能客服-完整流程设计.md     §3.3 / §4.3 / §6 / §11.2 / §16 / §17
+    02-AI智能体/03-业务设计/RAG直击库-方案与治理.md     §1 L0/L1/L2 · §3 节点蓝图
+    00-面试计划/03-项目叙事-AI.md                       §1 三层架构 / §2 参与边界 / §3.1 三条硬约束
+  口径红线：本图是设计方案【设计】，不是上线实测报告；编排与状态实现由团队推进。
+  ============================================================================
+-->
+<style>
+:root{
+  --ink:#1F2937; --ink2:#4B5563; --ink3:#8A93A0;
+  --line:#E3E7EE; --paper:#FFFFFF; --canvas:#F1F4F9;
+  --blue:#2C6FBE; --blue-bg:#F3F8FE;
+  --teal:#2E9E8F; --teal-bg:#F1FAF8;
+  --amber:#C98A1F; --amber-bg:#FEFAF0;
+  --purple:#7C5CBF; --purple-bg:#F8F5FE;
+  --red:#C0504D; --red-bg:#FDF3F2;
+  --grey:#8A93A0; --grey-bg:#F7F8FA;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--canvas);
+  font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Source Han Sans SC","Noto Sans CJK SC",sans-serif;
+  color:var(--ink); padding:22px 26px 26px; -webkit-font-smoothing:antialiased;
+}
+.sheet{
+  width:1740px; margin:0 auto; background:var(--paper);
+  border-radius:16px; padding:30px 30px 24px;
+  box-shadow:0 10px 34px rgba(23,42,77,.10), 0 2px 8px rgba(23,42,77,.05);
+}
+
+/* ---------- 抬头 ---------- */
+.hd{border-bottom:1.6px solid var(--line); padding-bottom:14px; margin-bottom:14px;}
+.hd h1{font-size:26px; margin:0 0 8px; letter-spacing:.4px; font-weight:800;}
+.hd .sub{font-size:13px; color:var(--ink2); margin:0; line-height:1.75;}
+.hd .sub b{color:var(--blue); font-weight:800;}
+.hd .legend{display:flex; flex-wrap:wrap; gap:9px 22px; margin-top:13px;}
+.lg{display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--ink2); font-weight:600;}
+.lg .sw{width:26px; height:0; border-top-width:2.4px; border-top-style:solid;}
+.lg .sw.dash{border-top-style:dashed;}
+.lg .gate{width:22px; height:14px; border-radius:3px; border-left:3px solid var(--amber); background:var(--amber-bg);}
+.lg .io{font-size:9.6px; font-weight:800; padding:1px 5px; border-radius:3px; background:#EAF1FB; color:var(--blue); border:1px solid #C9DCF4;}
+.lg .io.w{background:#E5F5F1; color:var(--teal); border-color:#BFE5DC;}
+.lg .tri{display:flex; gap:3px;}
+.lg .tri i{width:9px; height:9px; border-radius:2px; display:block;}
+
+/* ---------- 口径条 ---------- */
+.scope{
+  display:grid; grid-template-columns:1.05fr 1fr 1.15fr; gap:12px;
+  border:1.5px solid var(--line); border-radius:11px; background:#FCFDFE; padding:11px 13px;
+}
+.scope .sc{min-width:0;}
+.scope .sc + .sc{border-left:1px dashed #D8DEE8; padding-left:13px;}
+.scope .t{font-size:11.2px; font-weight:800; color:var(--blue); margin-bottom:4px;}
+.scope .t.warm{color:var(--amber);}
+.scope .t.grey{color:var(--ink2);}
+.scope p{font-size:10.2px; line-height:1.62; color:var(--ink2); margin:0;}
+.scope p b{color:var(--ink); font-weight:800;}
+.tagpill{display:inline-block; font-size:9px; font-weight:800; border-radius:3px; padding:1px 5px; margin-right:4px; vertical-align:1px;}
+.tagpill.f{background:#EAF1FB; color:var(--blue);}
+.tagpill.d{background:#FEFAF0; color:#8A6410;}
+.tagpill.c{background:var(--grey-bg); color:var(--ink2);}
+
+/* ---------- 分带骨架 ---------- */
+.band{display:grid; grid-template-columns:126px 1fr; gap:12px; align-items:stretch; margin-top:12px;}
+.bh{
+  border-radius:10px; background:var(--grey-bg); border:1.4px solid var(--line);
+  padding:11px 10px; display:flex; flex-direction:column; justify-content:center; gap:5px;
+}
+.bh .t{font-size:12.5px; font-weight:800; color:var(--ink); letter-spacing:.3px;}
+.bh .s{font-size:9.8px; color:var(--ink3); line-height:1.55; font-weight:600;}
+.bh.star{background:var(--blue-bg); border-color:#C9DCF4;}
+.bh.star .t{color:var(--blue);}
+.bh.loop{background:var(--purple-bg); border-color:#DCCCF4;}
+.bh.loop .t{color:var(--purple);}
+
+.g3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px;}
+.g8{display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:9px;}
+.g5{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:11px;}
+.g2{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px;}
+
+/* ---------- 带 1 · 三条状态线 ---------- */
+.sline{
+  border:1.7px solid var(--cc); background:var(--cbg); border-radius:11px;
+  padding:12px 13px 11px; min-height:246px; display:flex; flex-direction:column;
+}
+.c-blue  {--cc:var(--blue);   --cbg:var(--blue-bg);}
+.c-teal  {--cc:var(--teal);   --cbg:var(--teal-bg);}
+.c-amber {--cc:var(--amber);  --cbg:var(--amber-bg);}
+.c-purple{--cc:var(--purple); --cbg:var(--purple-bg);}
+.c-grey  {--cc:var(--grey);   --cbg:var(--grey-bg);}
+.sline .no{
+  display:inline-block; align-self:flex-start; font-size:9.6px; font-weight:800; letter-spacing:.6px;
+  color:var(--cc); background:#fff; border:1px solid var(--cc); border-radius:4px; padding:2px 7px; margin-bottom:7px;
+}
+.sline h3{font-size:15px; margin:0 0 3px; font-weight:800; color:var(--ink);}
+.sline .life{font-size:10px; font-weight:800; color:var(--cc); margin-bottom:8px;}
+.sline .li{font-size:10.7px; color:var(--ink2); line-height:1.62; margin-bottom:4px; padding-left:9px; position:relative;}
+.sline .li::before{content:''; position:absolute; left:0; top:6px; width:3px; height:3px; border-radius:50%; background:var(--cc);}
+.sline .li b{color:var(--ink); font-weight:800;}
+.sline code{font-family:Consolas,"Courier New",monospace; font-size:9.8px; color:#3C5A80; background:#fff; border-radius:3px; padding:0 3px;}
+.sline .foot{
+  margin-top:auto; padding-top:8px; border-top:1px dashed #D8DEE8;
+  font-size:9.9px; color:var(--ink3); line-height:1.55; font-weight:600;
+}
+.sline .foot b{color:var(--cc); font-weight:800;}
+.relate{
+  margin-top:11px; border:1.6px solid #C9DCF4; background:linear-gradient(90deg,#F3F8FE,#FFFFFF);
+  border-radius:9px; padding:9px 13px; display:flex; align-items:center; gap:14px;
+}
+.relate .k{font-size:11.6px; font-weight:800; color:var(--blue); white-space:nowrap;}
+.relate .v{font-size:10.8px; color:var(--ink2); line-height:1.6;}
+.relate .v b{color:var(--ink); font-weight:800;}
+
+/* ---------- 带 2 · 单轮主链路 ---------- */
+.pipe8{position:relative;}
+.pipe{
+  position:absolute; left:5px; right:5px; top:21px; height:9px; z-index:1; border-radius:6px;
+  background:linear-gradient(90deg,#4A86D0 0%,#2C6FBE 30%,#2E9E8F 58%,#C98A1F 78%,#7C5CBF 100%);
+  box-shadow:0 2px 5px rgba(44,111,190,.18);
+}
+.stage{position:relative; z-index:2; min-width:0; display:flex; flex-direction:column;}
+.stage .no{
+  position:relative; z-index:3; width:34px; height:34px; margin:4px auto 0;
+  border-radius:50%; background:#fff; border:2.6px solid var(--blue);
+  display:flex; align-items:center; justify-content:center;
+  font-size:11.5px; font-weight:800; color:var(--blue);
+  box-shadow:0 2px 6px rgba(31,41,55,.10);
+}
+.stage.s-start .no{background:var(--blue); color:#fff;}
+.stage.s-end .no{border-color:var(--purple); color:var(--purple); box-shadow:0 0 0 4px #F1EAFB;}
+.stage:not(:last-child)::after{
+  content:''; position:absolute; z-index:4; right:-8px; top:22px;
+  width:0; height:0; border-left:7px solid #fff; border-top:4.5px solid transparent; border-bottom:4.5px solid transparent;
+  filter:drop-shadow(0 0 1px rgba(44,111,190,.5));
+}
+.pcard{
+  margin-top:12px; border:1.5px solid var(--cc,var(--blue)); background:var(--cbg,var(--blue-bg));
+  border-radius:9px; padding:9px 9px 8px; min-height:250px; flex:1 1 auto;
+  display:flex; flex-direction:column;
+}
+.pcard .tag{font-size:9.3px; font-weight:800; color:var(--cc,var(--blue)); letter-spacing:.4px; margin-bottom:4px;}
+.pcard h3{font-size:12.7px; margin:0 0 6px; font-weight:800; color:var(--ink); line-height:1.35;}
+.pcard .li{font-size:10.1px; color:var(--ink2); line-height:1.55; margin-bottom:4px; padding-left:8px; position:relative;}
+.pcard .li::before{content:''; position:absolute; left:0; top:5.5px; width:3px; height:3px; border-radius:50%; background:var(--cc,var(--blue));}
+.pcard .li b{color:var(--ink); font-weight:800;}
+.pcard code{font-family:Consolas,"Courier New",monospace; font-size:9.3px; color:#3C5A80; background:#fff; border-radius:3px; padding:0 2px;}
+.pcard .gate{
+  margin-top:6px; padding:4px 6px; border-left:3px solid var(--amber); background:#FFFDF6;
+  border-radius:0 4px 4px 0; font-size:9.6px; color:#8A6410; font-weight:700; line-height:1.5;
+}
+.pcard .gate b{color:#6D4E08;}
+.pcard .iobar{margin-top:auto; padding-top:7px; border-top:1px dashed #D8DEE8; display:flex; gap:4px; flex-wrap:wrap;}
+.io{font-size:9.2px; font-weight:800; padding:1px 5px; border-radius:3px; background:#EAF1FB; color:var(--blue); border:1px solid #C9DCF4; white-space:nowrap;}
+.io.w{background:#E5F5F1; color:var(--teal); border-color:#BFE5DC;}
+.io.n{background:var(--grey-bg); color:var(--ink2); border-color:var(--line);}
+
+/* ---------- 带 3 · 多轮迭代环 ---------- */
+.loopwrap{border:1.8px dashed var(--purple); background:var(--purple-bg); border-radius:11px; padding:11px 13px 12px;}
+.loophead{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  font-size:11.4px; font-weight:800; color:var(--purple); margin-bottom:9px;
+}
+.loophead .back{font-size:10px; font-weight:700; color:#6B4CA8; background:#fff; border:1px solid #DCCCF4; border-radius:4px; padding:2px 8px;}
+.lcard{background:#fff; border:1.4px solid #DCCCF4; border-radius:8px; padding:9px 10px; min-height:112px;}
+.lcard .n{font-size:9.6px; font-weight:800; color:var(--purple); margin-bottom:4px;}
+.lcard h4{font-size:11.6px; margin:0 0 5px; font-weight:800; color:var(--ink);}
+.lcard p{font-size:10px; color:var(--ink2); line-height:1.6; margin:0;}
+.lcard p b{color:#6B4CA8; font-weight:800;}
+
+/* ---------- 带 4 · 平台 vs 中台 ---------- */
+.duo{border:1.6px solid var(--cc); background:var(--cbg); border-radius:10px; padding:11px 13px;}
+.duo h3{font-size:13.4px; margin:0 0 3px; font-weight:800; color:var(--cc);}
+.duo .ds{font-size:10px; color:var(--ink2); margin-bottom:8px; font-weight:600;}
+.duo .li{font-size:10.6px; color:var(--ink2); line-height:1.6; margin-bottom:4px; padding-left:9px; position:relative;}
+.duo .li::before{content:''; position:absolute; left:0; top:6px; width:3px; height:3px; border-radius:50%; background:var(--cc);}
+.duo .li b{color:var(--ink); font-weight:800;}
+.duo code{font-family:Consolas,"Courier New",monospace; font-size:9.6px; color:#3C5A80; background:#fff; border-radius:3px; padding:0 3px;}
+.duo .warnline{margin-top:8px; padding-top:7px; border-top:1px dashed #D8DEE8; font-size:9.9px; color:var(--ink3); line-height:1.55;}
+.duo .warnline b{color:var(--red); font-weight:800;}
+
+/* ---------- 带 5 · 红线 ---------- */
+.redband{
+  margin-top:12px; border:1.8px dashed var(--red); background:var(--red-bg);
+  border-radius:11px; padding:11px 14px; display:grid; grid-template-columns:150px 1fr; gap:14px; align-items:center;
+}
+.redband .rt{font-size:12.6px; font-weight:800; color:var(--red); line-height:1.5;}
+.redband .rs{font-size:9.8px; color:#9A4B48; line-height:1.55; font-weight:600; margin-top:4px;}
+.redchips{display:grid; grid-template-columns:1fr 1fr; gap:5px 12px;}
+.rc{font-size:10.1px; color:#7A4B49; line-height:1.5; padding-left:11px; position:relative;}
+.rc::before{content:''; position:absolute; left:0; top:6px; width:5px; height:5px; border-radius:50%; background:var(--red);}
+.rc b{color:#8E3F3D; font-weight:800;}
+
+/* ---------- 脚注 ---------- */
+.notes{border-top:1.6px solid var(--line); margin-top:15px; padding-top:12px;}
+.notes p{font-size:10.8px; color:var(--ink2); margin:0 0 6px; line-height:1.7;}
+.notes p b{color:var(--blue);}
+.notes .src{font-size:9.8px; color:var(--ink3); line-height:1.65;}
+.notes code{font-family:Consolas,"Courier New",monospace; font-size:9.5px; color:#4B5563;}
+.notes .todo{background:var(--amber-bg); border-left:3px solid var(--amber); padding:6px 10px; border-radius:0 5px 5px 0; color:#8A6410; font-size:10.2px; line-height:1.65;}
+.notes .todo b{color:#6D4E08;}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="hd">
+    <h1>多轮 RAG 系统 · 完整架构与状态管理图</h1>
+    <p class="sub">
+      <b>公司项目 · Dify 主线</b> ｜ 三层架构定位 · <b>三条状态线</b> · 单轮 <b>8 段管道</b> · 多轮迭代环 · 平台已实现 vs 必须自补。
+      一句话定位：<b>多轮 RAG 的「记忆」不在模型里，在会话态里</b> —— Dify 记住 <code>conversation_id</code> 与消息历史，
+      <b>权限、槽位、历史重鉴权、审计</b>归自研业务中台；<b>上下文态是每轮拼出来的，不是存出来的</b>。
+    </p>
+    <div class="legend">
+      <span class="lg"><span class="sw" style="border-color:#2C6FBE"></span>单轮主链路（阶段推进）</span>
+      <span class="lg"><span class="io">读</span><span class="io w">写</span>状态读 / 写</span>
+      <span class="lg"><span class="gate"></span>权限硬闸门（检索前置）</span>
+      <span class="lg"><span class="sw dash" style="border-color:#7C5CBF"></span>多轮回边（N → N+1）</span>
+      <span class="lg"><span class="sw dash" style="border-color:#C0504D"></span>红线约束</span>
+      <span class="lg"><span class="tri"><i style="background:#2C6FBE"></i><i style="background:#2E9E8F"></i><i style="background:#C98A1F"></i></span>三条状态线（会话 / 轮次 / 上下文）</span>
+    </div>
+  </div>
+
+  <!-- ===== 带 0 · 轨道口径 ===== -->
+  <div class="scope">
+    <div class="sc">
+      <div class="t">轨道 · 三层架构</div>
+      <p><span class="tagpill f">实证</span><b>接入层</b>（渠道 / 身份 / 限流）→ <b>智能层 Dify</b>（社区版私有化二开：Workflow / Agent / RAG 管道 / Prompt）→ <b>业务层自研中台</b>（统一身份、细粒度鉴权、工具网关、审计、token 计量、会话与单据关联）→ <b>能力层</b>（模型、向量库、政策与产品知识库、直击库、解析产物）。</p>
+    </div>
+    <div class="sc">
+      <div class="t warm">参与边界（讲述必带限定语）</div>
+      <p>本人真实参与 = <b>前期选型复盘 + MinerU 复杂 PDF 解析改造 + 分块元数据与向量库入库链路 + 解析调度与失败兜底</b>；<b>编排调优、状态实现由团队推进</b>。本图是对该设计方案的归纳，不是上线实测报告。</p>
+    </div>
+    <div class="sc">
+      <div class="t grey">口径标记 · 图型说明</div>
+      <p><span class="tagpill f">实证</span>平台事实 / 项目事实　<span class="tagpill d">设计</span>方案已定、无生产数据　<span class="tagpill c">通用对照</span>原理对照，非项目实证。<b>Harness（Python + FastAPI + MainLoop）属个人技术储备，不进本平台技术栈</b>；图型 = 分层架构 + 状态流转（非泳道流程）。</p>
+    </div>
+  </div>
+
+  <!-- ===== 带 1 · 三条状态线（主角） ===== -->
+  <div class="band">
+    <div class="bh star">
+      <div class="t">★ 状态管理</div>
+      <div class="s">三条状态线<br>别混在一起管<br>生命周期 / 存放 / 能否丢</div>
+    </div>
+    <div>
+      <div class="g3">
+        <div class="sline c-blue">
+          <span class="no">STATE 01 · 跨轮次</span>
+          <h3>会话态</h3>
+          <div class="life">生命周期：跨轮次、跨请求 ｜ 不可丢 · 外置存储</div>
+          <div class="li"><code>conversation_id</code> 首轮留空、响应返回后<b>由业务侧持久化</b>；<code>user</code> 是会话隔离维度</div>
+          <div class="li">身份与权限画像 <code>clearance / groups / jurisdiction_set / valid_until</code>，<b>每轮重新加载</b></div>
+          <div class="li">槽位 <code>intent / entities / legal_entity / history_refs / attempt_count</code>、会话摘要、情绪与渠道</div>
+          <div class="li">生命周期五态：新建 → 活跃 → <b>静默超时（上下文保留但不混入新会话）</b> → 跨渠道接续 → 关闭</div>
+          <div class="foot">存放：<b>Dify 侧 PostgreSQL</b>（应用配置 / 会话 / 权限）＋ <b>中台会话表与单据关联</b>。⚠️ Service API 会话 ≠ WebApp 会话，同一 <code>user</code> 在 API 侧连续调用才保持上下文。</div>
+        </div>
+        <div class="sline c-teal">
+          <span class="no">STATE 02 · 单轮 run</span>
+          <h3>轮次态</h3>
+          <div class="life">生命周期：单次 run ｜ 跑完归档 · 可追溯</div>
+          <div class="li"><code>trace_id</code> 贯穿全链路（审计用）；本轮 <code>query</code> + <b>改写后 query</b>（原查询必须保留）</div>
+          <div class="li">结构化过滤条件：<code>on_date</code> / 地域 / 领域 / 密级；<b>权限画像快照</b></div>
+          <div class="li">候选池、混合检索两路结果、Rerank 分数与 <code>TopK</code>、条款级引用清单</div>
+          <div class="li"><b>◆ 闸门 A</b>（检索前权限硬过滤）与 <b>◆ 闸门 B</b>（生成后引用 / 位阶 / 密级核验）的判定结果</div>
+          <div class="foot">存放：<b>节点级 trace + 工作流运行日志</b>（状态 / token / 步数 / 耗时）＋ <b>append-only 审计日志</b>。事后能还原「当时他到底能看到什么」。</div>
+        </div>
+        <div class="sline c-amber">
+          <span class="no">STATE 03 · 单次模型调用</span>
+          <h3>上下文态</h3>
+          <div class="life">生命周期：单次模型调用 ｜ 可丢 · 内存重建</div>
+          <div class="li">拼给模型的 <code>messages</code> = 系统提示词 + 历史轮次（<b>按权限打标</b>）+ 本轮检索 chunks + 槽位</div>
+          <div class="li"><b>重建公式</b>：会话态（有权部分）＋ 轮次态 ＋ 本轮检索结果，<b>随时可重新拼装</b></div>
+          <div class="li">预算裁剪：话题切换<b>清理旧槽位</b>；指代 / 省略补全；无法消解 → 追问，不猜</div>
+          <div class="li">历史轮次携带的文档，<b>本轮鉴权时逐份重新校验</b>，无权者从上下文中剔除</div>
+          <div class="foot">存放：<b>只在内存</b>。⚠️ Dify 会话历史压缩策略较粗糙，超长会话<b>要自己在工作流层面处理</b>（会话摘要 + 截断）。</div>
+        </div>
+      </div>
+      <div class="relate">
+        <div class="k">判据 → 能丢的放内存，不能丢的落库</div>
+        <div class="v">上下文态<b>可重建</b>，会话态 / 轮次态<b>不可重建</b>；权限画像<b>每轮重载、绝不缓存复用</b>，否则第 3 轮有权的内容会在第 5 轮权限回收后泄露。<span class="tagpill d" style="margin-left:6px">设计</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 带 2 · 单轮主链路 8 段 ===== -->
+  <div class="band">
+    <div class="bh">
+      <div class="t">单轮主链路</div>
+      <div class="s">8 段 · Chatflow<br>提问 → 回写<br>每段标 Dify 节点 + 状态读写</div>
+    </div>
+    <div class="g8 pipe8">
+      <div class="pipe"></div>
+
+      <div class="stage s-start">
+        <div class="no">00</div>
+        <div class="pcard c-grey">
+          <div class="tag">入口 · Service API</div>
+          <h3>用户提问</h3>
+          <div class="li"><code>POST /v1/chat-messages</code>：<code>query</code> + <code>conversation_id</code> + <code>user</code></div>
+          <div class="li">首轮 <code>conversation_id</code> 留空，<b>响应返回后写回业务侧存储</b></div>
+          <div class="li">Chatbot / Chatflow 有会话记忆；Workflow / Completion 无状态</div>
+          <div class="gate"><b>入口</b> · 令牌有效、限流未超；无效 → 401 / 429 直接拒绝</div>
+          <div class="iobar"><span class="io">读 会话态</span><span class="io n">Start</span></div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="no">01</div>
+        <div class="pcard c-blue">
+          <div class="tag">A 组 · 接入与判定</div>
+          <h3>鉴权与权限画像</h3>
+          <div class="li">Start + HTTP（统一身份系统）：建会话上下文对象、生成 <code>trace_id</code></div>
+          <div class="li">拉取权限画像；<b>获取失败 → 拒绝服务</b>，不得兜底成默认宽松画像</div>
+          <div class="li"><b>每轮重新加载</b>，不在会话中缓存复用（防分步套取）</div>
+          <div class="gate"><b>守卫</b> · 身份级别 → 法律主体 → 单号归属，顺序不可颠倒</div>
+          <div class="iobar"><span class="io">读 会话态</span><span class="io w">写 轮次态</span></div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="no">02</div>
+        <div class="pcard c-blue">
+          <div class="tag">B 组 · 查询构造</div>
+          <h3>指代消解与改写</h3>
+          <div class="li">LLM 改写（口语 → 政策术语）+ Code 抽槽；<b>原问题必须一并送入检索</b></div>
+          <div class="li">「它 / 刚才说的」回指上文；「那电费呢」补全省略</div>
+          <div class="li">话题切换 → <b>清理旧槽位</b>，否则带上一话题参数答新问题</div>
+          <div class="gate"><b>兜底</b> · 无法消解 → 追问，不猜；改写只扩同义、不替换原问题</div>
+          <div class="iobar"><span class="io">读 会话态</span><span class="io w">写 轮次态</span></div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="no">03</div>
+        <div class="pcard c-amber">
+          <div class="tag">◆ 闸门 A · 检索前</div>
+          <h3>权限硬过滤</h3>
+          <div class="li">Code + 知识检索节点元数据过滤（<b>手动模式</b>，从上游变量显式传入）</div>
+          <div class="li">判定：<code>密级 ≤ clearance</code> AND <code>ACL ∩ groups ≠ ∅</code> AND 地域在可访问集合</div>
+          <div class="li"><b>绝对禁止先检索后过滤</b>：敏感文档一旦参与相似度计算就可能经排序 / 分数 / 截断片段泄露</div>
+          <div class="gate"><b>兜底</b> · 候选为 0 → 走「未找到依据」，<b>严禁放宽过滤条件重试</b></div>
+          <div class="iobar"><span class="io">读 轮次态</span><span class="io w">写 轮次态</span></div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="no">04</div>
+        <div class="pcard c-teal">
+          <div class="tag">C 组 · 检索</div>
+          <h3>混合检索 + Rerank</h3>
+          <div class="li">Knowledge Retrieval：向量 + 关键词（BM25 / 倒排）<b>并行</b>；文号 / 条款号走关键词通道</div>
+          <div class="li">两级过滤：知识库级定候选池，节点级做重排 / 截断</div>
+          <div class="li"><b>TopK 与 Score 阈值只在 Rerank 阶段生效</b>；不开 Rerank 等于白配</div>
+          <div class="gate"><b>坑</b> · 节点挂多知识库时元数据过滤不可用 → 按类目拆库</div>
+          <div class="iobar"><span class="io">读 轮次态</span><span class="io w">写 轮次态</span></div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="no">05</div>
+        <div class="pcard c-teal">
+          <div class="tag">D 组 · 上下文组装</div>
+          <h3>按权限重拼上下文</h3>
+          <div class="li">Code / Template：系统提示词 + 历史轮次 + 本轮 chunks，<b>逐份重新鉴权</b></div>
+          <div class="li">超预算主动裁剪；会话摘要替代全量历史</div>
+          <div class="li">检索为空 → 条件分支<b>明确拒答</b>，不把空上下文硬塞给 LLM</div>
+          <div class="gate"><b>三层防御</b> · Score 阈值 / 空结果分支 / Prompt 显式约束「不知道就说不知道」</div>
+          <div class="iobar"><span class="io">读 会话态+轮次态</span><span class="io w">写 上下文态</span></div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="no">06</div>
+        <div class="pcard c-amber">
+          <div class="tag">◆ 闸门 B · 生成后</div>
+          <h3>受约束生成与核验</h3>
+          <div class="li">LLM：JSON schema / <code>temp=0</code> / 强制条款级引用；<b>数字由变量占位符填充</b>，不由模型生成</div>
+          <div class="li">Code 三道核验：<b>quote 逐字比对</b>、效力位阶、密级与权限</div>
+          <div class="li">有效期 / 效力位阶 / 引用真伪<b>一律代码算</b>，不交给模型判断</div>
+          <div class="gate"><b>兜底</b> · 核验不过 → 重试 1 次 → 门控降级 / 转人工</div>
+          <div class="iobar"><span class="io">读 上下文态</span><span class="io w">写 轮次态</span></div>
+        </div>
+      </div>
+
+      <div class="stage s-end">
+        <div class="no">07</div>
+        <div class="pcard c-purple">
+          <div class="tag">E 组 · 交付与回流</div>
+          <h3>回写会话与审计</h3>
+          <div class="li">Answer + HTTP：消息历史 / 槽位 / 会话小结<b>写回会话态</b></div>
+          <div class="li">append-only 审计日志（含权限画像快照）；未命中样本回流直击库候选池</div>
+          <div class="li">L0 Annotation / L1 强命中直出 0 token；转人工<b>必带交接包</b>，客户不重讲一遍</div>
+          <div class="gate"><b>闭环</b> · 会话小结 + 满意度 + 候选知识，进入下一轮迭代</div>
+          <div class="iobar"><span class="io w">写 会话态</span><span class="io w">写 审计</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 带 3 · 多轮迭代环 ===== -->
+  <div class="band">
+    <div class="bh loop">
+      <div class="t">多轮迭代环</div>
+      <div class="s">07 → 00 回边<br>第 N 轮 → 第 N+1 轮<br>状态变化的 5 个动作</div>
+    </div>
+    <div class="loopwrap">
+      <div class="loophead">
+        <span>回边：本轮结束后，下一轮拿到的不是「同一段历史」，而是「按当前权限重新校验过的会话态」</span>
+        <span class="back">多轮回边 · N → N+1</span>
+      </div>
+      <div class="g5">
+        <div class="lcard">
+          <div class="n">① 继承</div>
+          <h4>指代与省略补全</h4>
+          <p>用 <code>history_refs</code> 回指上文实体；「它」「这个」「刚才说的」定位到具体文档 / 单号。<b>无法消解 → 追问，不猜</b>。</p>
+        </div>
+        <div class="lcard">
+          <div class="n">② 清理</div>
+          <h4>话题切换清槽位</h4>
+          <p>检测到新话题 → <b>清理旧槽位</b>，避免带着上一个话题的参数答新问题；静默超时的上下文保留但<b>不混入新会话</b>。</p>
+        </div>
+        <div class="lcard">
+          <div class="n">③ 重鉴</div>
+          <h4>权限每轮重载</h4>
+          <p>权限画像不缓存；<b>历史轮次携带的文档逐份重新鉴权</b>，无权者从上下文剔除；连续多轮触及权限边界 → 会话级告警。</p>
+        </div>
+        <div class="lcard">
+          <div class="n">④ 失效</div>
+          <h4>权限降级清会话</h4>
+          <p>离职 / 调岗导致权限回收时，<b>主动失效该用户所有活跃会话</b> —— 否则第 3 轮有权的内容会在第 5 轮泄露。</p>
+        </div>
+        <div class="lcard">
+          <div class="n">⑤ 压缩</div>
+          <h4>超长会话治理</h4>
+          <p>会话摘要 + 上下文预算裁剪；<b>Dify 会话历史压缩策略较粗糙</b>，超长会话必须在工作流层面自己处理。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 带 4 · 平台已实现 vs 必须自补 ===== -->
+  <div class="band">
+    <div class="bh">
+      <div class="t">职责分界</div>
+      <div class="s">Dify 智能层<br>vs 自研业务中台<br>谁实现 / 谁兜底</div>
+    </div>
+    <div class="g2">
+      <div class="duo c-blue">
+        <h3>Dify 智能层 · 平台已实现（开箱可用，语义仍要逐条核对）</h3>
+        <div class="ds">定位：解决「AI 怎么做得快、怎么调得好」</div>
+        <div class="li">四种应用形态的会话记忆边界：<b>Chatbot / Chatflow 有</b>，Workflow / Completion 无</div>
+        <div class="li"><code>conversation_id</code> + <code>user</code> 隔离；会话列表 / 消息历史 / 重命名 / 删除 / <b>会话变量读写</b></div>
+        <div class="li">系统变量 <code>sys.query</code> / <code>sys.user_id</code> / <code>sys.conversation_id</code>；节点变量 <code>{{#节点ID.字段#}}</code></div>
+        <div class="li">节点级 trace 与工作流运行日志（状态 / token / 步数 / 耗时）；<b>DAG 引擎保证终止性</b>（仅 Loop / Iteration 容器内可循环）</div>
+        <div class="li">Annotation 标注回复命中即返回（0 token）；<code>result</code> 变量自带分段内容 / 标题 / 元数据，天然可溯源</div>
+        <div class="warnline">缺口（官方诚实清单）：<b>无端到端评估体系</b>、元数据自动模式不可观测、<b>会话历史压缩策略粗糙</b>、元数据过滤不支持多知识库节点。</div>
+      </div>
+      <div class="duo c-teal">
+        <h3>自研业务中台 · 必须自己补（管得住的那一半）</h3>
+        <div class="ds">定位：解决「AI 怎么接得稳、怎么管得住」</div>
+        <div class="li">统一身份与<b>权限画像每轮重载</b>；历史文档逐份重鉴权；权限降级失效活跃会话</div>
+        <div class="li"><b>会话与单据关联</b>；上下文对象与 <code>session_id</code> 强绑定，并发会话独立上下文空间（防串线）</div>
+        <div class="li">跨渠道接续（网页 → APP 带摘要）、静默超时与关闭、<b>转人工交接包</b></div>
+        <div class="li">超长会话压缩与会话摘要；<code>legal_entity</code> 强制注入；金额模板化、撮合状态<b>带时点输出</b></div>
+        <div class="li">append-only 审计（含权限画像快照）、token 计量、未命中样本回流与直击库治理</div>
+        <div class="warnline">硬约束：<b>Dify 不直连业务数据库</b>；所有数据访问走中台受控工具，权限永远在中台执行，不把过滤责任交给 Prompt。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 带 5 · 红线 ===== -->
+  <div class="redband">
+    <div>
+      <div class="rt">红线 · 六条</div>
+      <div class="rs">违反任意一条，多轮 RAG 就会从「答得准」滑向「答得像但不敢用」。</div>
+    </div>
+    <div class="redchips">
+      <div class="rc"><b>确定性不交给模型</b>：有效期 / 效力位阶 / 密级权限 / 引用真伪一律 Code 节点算。</div>
+      <div class="rc"><b>先过滤后检索</b>：ACL 是检索的前置条件，不是检索后的清洗步骤。</div>
+      <div class="rc"><b>权限每轮重载</b>：绝不复用会话缓存，历史文档逐份重新鉴权。</div>
+      <div class="rc"><b>上下文串线 = 隐私事故</b>：A 主体的资料绝不出现在 B 主体会话里。</div>
+      <div class="rc"><b>工作流内不写复杂业务逻辑</b>：只做路由、拼装、调用与格式化。</div>
+      <div class="rc"><b>API 会话 ≠ WebApp 会话</b>；Harness / FastAPI 属个人储备，不混入平台技术栈。</div>
+    </div>
+  </div>
+
+  <!-- ===== 脚注 ===== -->
+  <div class="notes">
+    <p><b>口径来源（逐条可核）</b>：<code>Dify快速深入指南.md</code> §2.1 / §3 / §4.2 / §4.3 / §8.1–8.2 / §8.7 ｜ <code>Dify-RAG关键点详解.md</code> §3.2 / §3.3 / §4.1–4.3 / §6 ｜ <code>政策解读Agent-通用设计.md</code> §4 步骤 01·02·05·06·07 / §7.4 ｜ <code>智能客服-完整流程设计.md</code> §3.3 / §4.3 / §6 / §11.2 / §16 / §17 ｜ <code>RAG直击库-方案与治理.md</code> §1 / §3 ｜ <code>00-面试计划/03-项目叙事-AI.md</code> §1 / §2 / §3.1（三条硬约束）。</p>
+    <p class="src">图型：分层架构 + 状态流转（非泳道流程图）；实线 = 单轮主链路，虚线 = 多轮回边 / 红线约束。三条状态线的划分属<b>【通用对照】</b>原理说明，落到本项目时的实现责任按带 4 分工，<b>【设计】</b>方案已定、无生产数据。</p>
+    <p class="todo"><b>《待核实清单》</b>：① 亿图 / Dify 具体版本号未提供 → 未出 .eddx 源文件与菜单 / 快捷键路径，会话变量的作用域与上限、元数据过滤的版本行为须以所用版本官方文档为准；② 静默超时分钟数、上下文预算阈值、TopK / Score 取值均为设计起手值，非生产实测；③ 本图状态实现细节由团队推进，本人参与边界见带 0，<b>不得当作亲历实证讲述</b>。</p>
+  </div>
+
+</div>
+</body>
+</html>
