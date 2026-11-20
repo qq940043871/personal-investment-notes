@@ -31,7 +31,7 @@
 
 模型通常看不到后端函数的实现。你需要把工具转换成一份它能理解的 Schema，至少包含工具名、用途描述和参数约束。
 
-```
+```json
 tools = [{
     "type": "function",
     "function": {
@@ -63,7 +63,7 @@ tools = [{
 
 如果它认为不需要工具，可能直接返回普通文本。如果它认为需要工具，会在响应中返回一个或多个 tool call。每个调用一般包含调用 ID、工具名和序列化参数。
 
-```
+```json
 {
   "id": "call_x1",
   "type": "function",
@@ -82,7 +82,7 @@ tools = [{
 
 宿主程序可以是 Python 服务、Java 服务、Node 服务或 Agent 运行时。它收到 tool call 后，按工具名从注册表找到真实执行器。
 
-```
+```python
 registry = {
     "search_order": search_order,
     "search_document": search_document,
@@ -106,7 +106,7 @@ for call in assistant_message.tool_calls:
 
 工具执行完成后，应用要把两类消息追加到对话：模型刚才发出的 assistant tool call，以及与调用 ID 对应的 tool result。
 
-```
+```python
 messages.append(assistant_message)
 messages.append({
     "role": "tool",
@@ -129,7 +129,7 @@ messages.append({
 
 下面把各阶段串在一起：
 
-```
+```python
 def run_agent(user_text, current_user, max_steps):
     messages = [{"role": "user", "content": user_text}]
     state = build_initial_state(user_text, current_user)
@@ -223,7 +223,7 @@ Function Calling 有三个不同层次的“成功”。
 
 ReAct 教学 Demo 常让模型输出：
 
-```
+```text
 Action: search("关键词")
 ```
 
@@ -334,7 +334,6 @@ JSON 通过校验，不代表业务参数合理。例如日期范围颠倒、资
 
 只要始终记住一句话，这道题就不会答偏：模型负责说“我想调用什么”，你的程序负责判断“能不能调用、怎样调用”，工具结果回来后，模型才有资格继续回答。
 
-
 ---
 
 ## 继续追问（官方给出）
@@ -343,7 +342,6 @@ JSON 通过校验，不代表业务参数合理。例如日期范围颠倒、资
 1. assistant tool call 与 tool result 为什么都要加入消息历史？
 1. 一轮返回多个工具时，怎样判断串行、并行与依赖？
 1. 怎样评估该调不调、工具选择、参数和结果忠实度？
-
 
 ## 项目事实自检
 

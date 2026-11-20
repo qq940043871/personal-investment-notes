@@ -15,3 +15,7 @@ Thumbs.db
 
 # 临时调试产物（图表生成过程文件）
 _tmp_mysql_index/
+_fmt_analysis.txt
+
+# 格式化工具的原文备份（本地留档，不入库）
+tools/backup/
