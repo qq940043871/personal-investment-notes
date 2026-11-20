@@ -47,7 +47,7 @@
 >
 > **Harness 是个人技术储备，不是公司平台技术栈**（公司侧：Java 微服务中台 + C 内存撮合；政策 Agent 承载在 Dify）。
 >
-> **ownrag（外置 [`../../personal-ai-engineering/self-rag-engineering/`](../../personal-ai-engineering/self-rag-engineering/)，原 `04-自研RAG工程/`）与 Harness 同属个人线**（Python + FastAPI + Ollama）：验证选型复盘 §3.1 的"纯自研路线"，**不得写进公司平台能力清单**；全部指标 `【设计】`/`【待实测】`。
+> **ownrag（外置 [`../../personal-ai-engineering/self-rag-engineering/`](../../personal-ai-engineering/self-rag-engineering/)，原 `04-自研RAG工程/`）与 Harness 同属个人线**（Python + FastAPI + Ollama）：验证选型复盘 §3.1 的"纯自研路线"，**不得写进公司平台能力清单**；全部指标。
 >
 > `00-知识库/Agent/`、`00-知识库/RAG/` 是**外部抓取件**，只作「别人怎么问」的参照。
 

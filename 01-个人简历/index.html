@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#1e3a8a">
-<title>备战手册 — 文件索引与预览</title>
+<title>个人简历 — 文件索引与预览</title>
 <link rel="icon" type="image/png" href="../favicon.png">
 <link rel="shortcut icon" type="image/png" href="../favicon.png">
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -1043,16 +1043,16 @@ body {
   <div class="m-hero">
     <div class="m-hero-top">
       <div>
-        <div class="m-hero-title">📚 备战手册</div>
-        <div class="m-hero-sub">B2B大宗贸易供应链技术经理</div>
+        <div class="m-hero-title">📄 个人简历</div>
+        <div class="m-hero-sub">B2B大宗贸易供应链技术经理 · 简历与面试材料</div>
       </div>
     </div>
     <div class="m-hero-chips">
       <a class="m-hero-chip" href="../index.html">🏠 工作台</a>
-      <a class="m-hero-chip" href="01-个人简历/index.html">📄 简历</a>
+      <a class="m-hero-chip" href="index.html">📄 个人简历</a>
       <a class="m-hero-chip" href="../02-现货贸易/index.html">📦 现货贸易</a>
       <a class="m-hero-chip" href="../02-AI智能体/index.html">🤖 AI 智能体</a>
-      <a class="m-hero-chip" href="../index.html#page-bank">📝 真题</a>
+      <a class="m-hero-chip" href="../00-面试计划/00-主线索引.md">🎯 面试计划</a>
     </div>
     <div class="m-hero-chips" style="margin-top:8px">
       <span class="m-hero-chip" id="mHeroStats">-- 份文件</span>
@@ -1081,24 +1081,23 @@ body {
 <!-- ============= SIDEBAR ============= -->
 <aside class="sidebar">
   <div class="sidebar-header">
-    <h1>📚 备战手册</h1>
-    <div class="subtitle">B2B大宗贸易供应链技术经理</div>
+    <h1>📄 个人简历</h1>
+    <div class="subtitle">B2B大宗贸易供应链技术经理 · 简历与面试材料</div>
   </div>
 
   <div class="sidebar-nav-links">
     <a href="../index.html">🏠 工作台</a>
-    <a href="01-个人简历/index.html">📄 个人简历</a>
+    <a href="index.html">📄 个人简历</a>
     <a href="../02-现货贸易/index.html">📦 现货贸易</a>
     <a href="../02-AI智能体/index.html">🤖 AI 智能体</a>
-    <a href="../index.html#page-bank">📝 技术真题</a>
+    <a href="../00-面试计划/00-主线索引.md">🎯 面试计划</a>
   </div>
 
   <div class="sidebar-stats">
-    <span class="stat-chip md">24 .md</span>
-    <span class="stat-chip html">9 .html</span>
+    <span class="stat-chip md">4 .md</span>
+    <span class="stat-chip html">2 .html</span>
     <span class="stat-chip pptx">2 .pptx</span>
-    <span class="stat-chip">2 .pdf</span>
-    <span class="stat-chip">39 文件</span>
+    <span class="stat-chip">8 文件</span>
   </div>
 
   <div class="search-box">
@@ -1117,7 +1116,6 @@ body {
     <span class="current-file" id="currentFileName">请从左侧选择文件</span>
     <div class="actions" id="toolbarActions" style="display:none;">
       <button class="btn" id="tocBtn" style="display:none;" onclick="toggleToc()">📑 目录</button>
-      <button class="btn" id="tocBtn" style="display:none;" onclick="toggleToc()">📑 目录</button>
       <button class="btn" onclick="window.open(currentFilePath, '_blank')" title="在新窗口打开"><span class="btn-full">📄 新窗口打开</span><span class="btn-short">↗</span></button>
       <button class="btn" id="downloadBtn" onclick="downloadFile()">⬇ 下载</button>
     </div>
@@ -1131,10 +1129,10 @@ body {
 
     <div class="content-area" id="contentArea">
       <div class="welcome">
-        <div class="welcome-icon">📖</div>
-        <h2>备战手册</h2>
-        <p>技术管理 + 面试准备两类；业务价值 / 客户案例 / 架构决策三类已归位 <b>02-现货贸易</b>，产品定位收口为根目录总纲。</p>
-        <p style="margin-top:8px;font-size:13px;">技术真题见「📝 技术真题」，项目底稿见「📦 现货贸易 / 🤖 AI 智能体」→</p>
+        <div class="welcome-icon">📄</div>
+        <h2>个人简历</h2>
+        <p>简历正文、成长手册、技术情报简报与面试介绍 PPT，均在本目录；从左侧文件树选择即可阅读。</p>
+        <p style="margin-top:8px;font-size:13px;">面试主线见「🎯 面试计划」，项目底稿见「📦 现货贸易 / 🤖 AI 智能体」，返回「🏠 工作台」→</p>
       </div>
     </div>
   </div>
@@ -1142,67 +1140,26 @@ body {
 
 <script>
 // ===================== DIRECTORY TREE DATA =====================
+// 页面位于 01-个人简历/ 下，所有路径均相对本目录解析。
 const TREE = [
   {
-    name: '01-个人简历', icon: '📄', open: true,
+    name: '07-面试介绍PPT', icon: '🖼️', open: false,
     files: [
-      'home.html',
-      '00-完整简历-通用版.md',
-      '01-技术经理-简历.md',
-      '01-技术经理-简历.print.html',
-      '02-技术经理成长手册.md',
-      '03-技术情报收集与跨部门沟通手册.md',
-      '04-简历知识补强清单.md',
-      '06-快速通览一页纸简报.html'
-    ],
-    children: [
-      {
-        name: '05-网申投递', icon: '🧰', open: false,
-        files: [
-          '01-易盛研发岗-简历.md',
-          '02-易盛网申五项-可直接粘贴.md',
-          '03-豫信电科-报名表粘贴稿.md',
-          '04-BOSS直聘-字段粘贴稿.md',
-          '05-猎聘-字段粘贴稿.md',
-          '13-超聚变面试准备.md'
-        ]
-      },
-      {
-        name: '07-面试介绍PPT', icon: '🖼️', open: false,
-        files: [
-          'index.html',
-          'PPT模板与排版规范.md'
-        ]
-      }
-    ]
-  },
-  {
-    name: '02-面试准备', icon: '🎯', open: true,
-    files: [
-      '01-面试话术与背诵手册.md',
-      '01-面试话术与背诵手册.html',
-      '02-面试自证与训练手册.md',
-      '03-系统架构叙事手册.md'
-    ]
-  },
-  {
-    name: '04-技术管理（根级 · 已上提）', icon: '🛠️', dir: '../04-技术管理', open: false,
-    files: [
-      '00-技术管理索引.md',
-      '01-技术整改十一项与落地.html',
-      '02-技术管理补充件.md'
-    ]
-  },
-  {
-    name: '02B-技术栈全景图（已迁 03-架构决策）', icon: '🗺️', dir: '../02-现货贸易/03-架构决策', open: false,
-    files: [
-      '模块流程说明/02B-技术栈全景图.md'
+      'index.html',
+      'PPT模板与排版规范.md',
+      '个人简历介绍-24页.pptx',
+      '面试自我介绍-haswhere.pptx'
     ]
   }
 ];
 
-// Root-level files
-const ROOT_FILES = ['00-资料库总览.md'];
+// 根目录文件（本目录直属）
+const ROOT_FILES = [
+  '00-完整简历-精修版.md',
+  '02-技术经理成长手册.md',
+  '03-技术情报收集与跨部门沟通手册.md',
+  '06-快速通览一页纸简报.html'
+];
 
 // ===================== STATE =====================
 let currentFilePath = '';
@@ -1433,7 +1390,7 @@ function loadMarkdown(path) {
       contentArea.scrollTop = 0;
       window.scrollTo(0, 0);
 
-      // 生成大纲目录（与备战手册内置阅读器一致）
+      // 生成大纲目录
       const body = contentArea.querySelector('.markdown-body');
       wrapTables(body);
       interceptLinks(body);
@@ -1575,7 +1532,7 @@ function cleanName(name) {
 function mCategories() {
   const cats = [{
     key: 'root',
-    title: '总纲 · 入口',
+    title: '简历 · 文档',
     icon: '📌',
     color: '#475569',
     files: ROOT_FILES.slice(),
@@ -1737,7 +1694,7 @@ function mSearch(q) {
 }
 
 /* 站内文档互链：把正文里的 xxx.md / xxx.html 链接拦下来，走内置阅读器 */
-const M_KNOWN_DIRS = ['../04-技术管理', '02-面试准备'];
+const M_KNOWN_DIRS = ['07-面试介绍PPT'];
 
 function resolvePath(href) {
   const base = currentFilePath.split('/');
