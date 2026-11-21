@@ -24,7 +24,6 @@
 
 ### 1. String、StringBuilder 和 StringBuffer 的区别与适用场景
 
-**真题来源：** 阿里、字节、腾讯高频题
 
 **答案要点：**
 
@@ -56,7 +55,6 @@ for (int i = 0; i < 1000; i++) {
 
 ### 2. Java异常体系结构与分类
 
-**真题来源：** 美团、京东面试题
 
 **答案要点：**
 
@@ -86,7 +84,6 @@ Throwable
 
 ### 3. HashMap、LinkedHashMap 和 TreeMap 的区别
 
-**真题来源：** 阿里、字节高频题
 
 **答案要点：**
 
@@ -106,7 +103,6 @@ Throwable
 
 ### 4. Java中的四种引用类型
 
-**真题来源：** 字节、腾讯面试题
 
 **答案要点：**
 
@@ -130,7 +126,6 @@ WeakReference<Object> weakRef = new WeakReference<>(new Object());
 
 ### 5. Java多态性的实现机制
 
-**真题来源：** 各大厂基础必考题
 
 **答案要点：**
 
@@ -155,7 +150,6 @@ WeakReference<Object> weakRef = new WeakReference<>(new Object());
 
 ### 6. JVM内存模型与垃圾回收机制
 
-**真题来源：** 阿里、字节、腾讯高频题
 
 **答案要点：**
 
@@ -200,7 +194,6 @@ JVM内存
 
 ### 7. Java内存模型（JMM）与并发特性
 
-**真题来源：** 字节、阿里架构师岗位
 
 **答案要点：**
 
@@ -229,7 +222,6 @@ JVM内存
 
 ### 8. JVM调优实战经验
 
-**真题来源：** 阿里P7+、字节架构师
 
 **答案要点：**
 
@@ -328,7 +320,6 @@ java -Xms8g -Xmx8g \
 
 ### 9. synchronized与Lock的区别
 
-**真题来源：** 阿里、美团高频题
 
 **答案要点：**
 
@@ -364,7 +355,6 @@ try {
 
 ### 10. 线程池原理与参数配置
 
-**真题来源：** 阿里、字节、腾讯必考题
 
 **答案要点：**
 
@@ -424,7 +414,6 @@ int coreSize = (int)(CPU核数 * (1 + 等待时间/计算时间))
 
 ### 11. CAS与原子类
 
-**真题来源：** 字节、美团高频题
 
 **答案要点：**
 
@@ -455,7 +444,6 @@ ref.compareAndSet(1, 2, stamp, stamp + 1);
 
 ### 12. ConcurrentHashMap实现原理
 
-**真题来源：** 阿里、腾讯高频题
 
 **答案要点：**
 
@@ -490,7 +478,6 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 
 ### 13. Spring IOC容器原理与Bean生命周期
 
-**真题来源：** 阿里、字节、美团必考题
 
 **答案要点：**
 
@@ -520,7 +507,6 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 
 ### 14. Spring AOP实现原理
 
-**真题来源：** 阿里、字节面试题
 
 **答案要点：**
 
@@ -555,7 +541,6 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 
 ### 15. Spring Boot自动配置原理
 
-**真题来源：** 阿里、字节高频题
 
 **答案要点：**
 
@@ -593,7 +578,6 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 
 ### 16. Spring事务传播机制
 
-**真题来源：** 阿里、美团高频题
 
 **答案要点：**
 
@@ -620,7 +604,6 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 
 ### 17. MySQL索引数据结构与优化
 
-**真题来源：** 阿里、字节、美团必考题
 
 **答案要点：**
 
@@ -657,7 +640,6 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 
 ### 18. MySQL事务隔离级别与锁机制
 
-**真题来源：** 阿里、字节高频题
 
 **答案要点：**
 
@@ -689,7 +671,6 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 
 ### 19. SQL优化实战经验
 
-**真题来源：** 各大厂高频题
 
 **答案要点：**
 
@@ -734,7 +715,6 @@ SELECT * FROM orders WHERE id > 1000000 LIMIT 10;
 
 ### 20. CAP定理与BASE理论
 
-**真题来源：** 阿里架构师、字节高频题
 
 **答案要点：**
 
@@ -748,8 +728,8 @@ SELECT * FROM orders WHERE id > 1000000 LIMIT 10;
 
 **取舍：**
 - **CA**：单机数据库（无分布式）
-- **CP**：Redis、HBase、Zookeeper
-- **AP**：Cassandra、DynamoDB、Eureka
+- **CP**：Zookeeper、HBase
+- **AP**：Cassandra、DynamoDB、Eureka、Redis（主从/集群异步复制，主流口径归 AP）
 
 **BASE理论：**
 - **Basically Available**：基本可用
@@ -760,7 +740,6 @@ SELECT * FROM orders WHERE id > 1000000 LIMIT 10;
 
 ### 21. 分布式事务解决方案
 
-**真题来源：** 阿里、字节架构师岗位
 
 **答案要点：**
 
@@ -786,7 +765,6 @@ public void placeOrder(Order order) {
 
 ### 22. 服务注册与发现
 
-**真题来源：** 阿里、美团高频题
 
 **答案要点：**
 
@@ -812,7 +790,6 @@ public void placeOrder(Order order) {
 
 ### 23. 分布式锁实现
 
-**真题来源：** 阿里、字节高频题
 
 **答案要点：**
 
@@ -852,7 +829,6 @@ try {
 
 ### 24. 消息队列核心问题
 
-**真题来源：** 阿里、字节、美团高频题
 
 **答案要点：**
 
@@ -889,7 +865,6 @@ public boolean process(String messageId) {
 
 ### 25. 缓存三大问题及解决方案
 
-**真题来源：** 阿里、字节、美团必考题
 
 **答案要点：**
 
@@ -919,7 +894,6 @@ boolean exists = filter.mightContain("key");
 
 ### 26. 高并发系统设计
 
-**真题来源：** 阿里架构师、字节高频题
 
 **答案要点：**
 
@@ -969,7 +943,6 @@ try {
 
 ### 27. 秒杀系统设计
 
-**真题来源：** 阿里、字节高频题
 
 **答案要点：**
 
@@ -1076,7 +1049,6 @@ public void createOrder(SeckillMessage message) {
 
 ### 28. 红黑树特性与Java中的应用
 
-**真题来源：** 字节、阿里高频题
 
 **答案要点：**
 
@@ -1100,7 +1072,6 @@ public void createOrder(SeckillMessage message) {
 
 ### 29. 布隆过滤器原理
 
-**真题来源：** 字节、美团高频题
 
 **答案要点：**
 
@@ -1123,7 +1094,6 @@ public void createOrder(SeckillMessage message) {
 
 ### 30. 常见排序算法对比
 
-**真题来源：** 各大厂基础题
 
 **答案要点：**
 
@@ -1141,7 +1111,6 @@ public void createOrder(SeckillMessage message) {
 
 ### 31. 单例模式的多种实现
 
-**真题来源：** 各大厂高频题
 
 **答案要点：**
 
@@ -1206,7 +1175,6 @@ public enum Singleton {
 
 ### 32. 代理模式与装饰器模式的区别
 
-**真题来源：** 阿里、字节面试题
 
 **答案要点：**
 
@@ -1223,7 +1191,6 @@ public enum Singleton {
 
 ### 33. TCP三次握手与四次挥手
 
-**真题来源：** 阿里、字节高频题
 
 **答案要点：**
 
@@ -1257,7 +1224,6 @@ public enum Singleton {
 
 ### 34. HTTP与HTTPS的区别
 
-**真题来源：** 各大厂基础题
 
 **答案要点：**
 
@@ -1282,7 +1248,6 @@ public enum Singleton {
 
 ### 35. Docker与Kubernetes核心概念
 
-**真题来源：** 阿里、字节高频题
 
 **答案要点：**
 
@@ -1308,7 +1273,6 @@ public enum Singleton {
 
 ### 36. Java新特性（JDK17/21）
 
-**真题来源：** 阿里、字节技术前沿题
 
 **答案要点：**
 
@@ -1333,9 +1297,7 @@ Thread.ofVirtual().start(() -> {
 
 ## 十二、大模型应用开发
 
-> 合并自《02_高级Java开发全栈面试真题》——AI 应用开发岗位差异化考点。
-
-### 41. LangChain Java 开发实战
+### 37. LangChain Java 开发实战
 
 **标准答案：**
 
@@ -1457,7 +1419,7 @@ public class RAGService {
 
 ---
 
-### 42. 向量数据库集成
+### 38. 向量数据库集成
 
 **标准答案：**
 
@@ -1552,7 +1514,7 @@ R<SearchResults> results = milvusClient.search(searchParam);
 
 ---
 
-### 43. 异步调用与流式响应
+### 39. 异步调用与流式响应
 
 **标准答案：**
 
@@ -1624,9 +1586,8 @@ public Flux<String> streamChat(@RequestBody ChatRequest request) {
 
 ## 十三、行为与经验题
 
-### 37. 线上故障排查经验
+### 40. 线上故障排查经验
 
-**真题来源：** 阿里P7+、字节架构师
 
 **答案要点：**
 
@@ -1652,9 +1613,8 @@ public Flux<String> streamChat(@RequestBody ChatRequest request) {
 
 ---
 
-### 38. 项目难点与挑战
+### 41. 项目难点与挑战
 
-**真题来源：** 所有大厂必考题
 
 **答题框架（STAR法则）：**
 
@@ -1670,9 +1630,8 @@ public Flux<String> streamChat(@RequestBody ChatRequest request) {
 
 ---
 
-### 39. 架构设计原则与经验
+### 42. 架构设计原则与经验
 
-**真题来源：** 阿里架构师、技术专家
 
 **答案要点：**
 
@@ -1700,9 +1659,8 @@ public Flux<String> streamChat(@RequestBody ChatRequest request) {
 
 ---
 
-### 40. 团队协作与冲突解决
+### 43. 团队协作与冲突解决
 
-**真题来源：** 高级职位必考题
 
 **答案要点：**
 

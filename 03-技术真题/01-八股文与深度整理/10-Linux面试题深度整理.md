@@ -474,12 +474,12 @@ func() { local x=1; echo $x; return 0; }
 3. **IO 多路复用**：select/poll/epoll 一个线程监控大量 fd。
 4. **信号驱动 IO**：数据就绪发信号通知。
 5. **异步 IO（AIO）**：内核完成全部操作后通知，如 io_uring。
-- **epoll 优势**（对比 select/poll）：无 1024 上限、O(1) 就绪通知、mmap 共享内核事件表、水平/边缘触发。
+- **epoll 优势**（对比 select/poll）：无 1024 上限、O(1) 就绪通知、内核红黑树 + 就绪链表（就绪事件由 epoll_wait 拷贝给用户态）、水平/边缘触发。
 - 经典追问：为什么 Redis/Nginx 高并发用 epoll？——单线程处理万级连接，靠事件驱动避免线程切换开销。
 
 ### 10.2 page cache 与脏页回写？
 - 读文件先到 page cache，命中免磁盘 IO；写文件先写 cache 标记脏页，后台按策略回写。
-- 回写触发：`vm.dirty_ratio`（脏页占内存比例，默认 20%）触发后台回写；`vm.dirty_background_ratio`（默认 10%）触发前台阻塞。
+- 回写触发：`vm.dirty_background_ratio`（默认 10%）触发后台回写；`vm.dirty_ratio`（默认 20%）触发写进程的前台（阻塞式）回写。
 - 刷盘：`sync` 手动；`/proc/sys/vm/dirty_expire_centisecs` 超时回写。
 - 追问：为什么 MySQL 需要 `innodb_flush_log_at_trx_commit=1` 且不依赖 OS 缓存？——OS 缓存掉电丢数据，InnoDB 自己控制 fsync。
 

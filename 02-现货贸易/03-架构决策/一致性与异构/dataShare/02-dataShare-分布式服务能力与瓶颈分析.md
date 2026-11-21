@@ -1,6 +1,6 @@
 # dataShare 服务端能力与瓶颈深度分析
 
-> **定位（2026-10-31）**：缺陷清单与并发上限以《[dataShare-并发能力与缺陷清单](./01-dataShare-并发能力与缺陷清单.md)》为**唯一权威**；本文保留服务端能力、调用画像与流程时序的推导视角，与权威篇冲突处以权威篇为准。
+> 缺陷清单与并发上限详见 [01-dataShare-并发能力与缺陷清单](./01-dataShare-并发能力与缺陷清单.md)。
 
 > 分析对象：`dataShare-2.6.2`（服务端 159 个类） + `dataShareClientAPI-1.3.4` / `dataShareCommon-1.1.3`（SDK）
 > 消费方：`J_1018_midservice-v1.1.188.228.5`（188 个类 / 46943 行）
@@ -26,9 +26,8 @@
   - [附带能力：通知下发、配置读取、运行时控制面](#附带能力通知下发配置读取运行时控制面)
 - [四、midservice 侧的使用画像](#四midservice-侧的使用画像)
 - [五、关键流程时序](#五关键流程时序)
-- [六、系统瓶颈（索引 · 已收口）](#六系统瓶颈索引--已收口)
-  - [瓶颈汇总表](#瓶颈汇总表)
-- [七、缺陷清单与改造建议（已收口，见另文）](#七缺陷清单与改造建议已收口见另文)
+- [六、系统瓶颈（索引）](#六系统瓶颈索引)
+- [七、缺陷清单与改造建议](#七缺陷清单与改造建议)
 - [八、架构评价](#八架构评价)
 
 ---
@@ -472,52 +471,19 @@ else if (errMsg.indexOf("服务端休息了下") > -1 && ...) { ... }
 
 ---
 
-## 六、系统瓶颈（索引 · 已收口）
+## 六、系统瓶颈（索引）
 
-> 本章原为 P0/P1/P2 逐项机理分析（约 250 行），2026-10-31 收口至《[dataShare-并发能力与缺陷清单](./01-dataShare-并发能力与缺陷清单.md)》（唯一权威）：P0 项对应其 **A 类（并发正确性）/ B 类（可用性）**，P1/P2 项对应其 **C 类（性能）**。逐项代码取证（file:line）、量化测算与全局串行点全表（权威篇 §2.7）以权威篇为准，本文不再双份维护。
+> P0 项对应 01 号文档的 **A 类（并发正确性）/ B 类（可用性）**，P1/P2 项对应其 **C 类（性能）**；逐项代码取证（file:line）、量化测算与全局串行点全表（01 号文档 §2.7）见 [`01-dataShare-并发能力与缺陷清单.md`](./01-dataShare-并发能力与缺陷清单.md)。
 
-映射关系速查：
-
-| 本文原条目 | 权威篇落点 |
-|---|---|
-| P0-1 `SocketClientConnectManager` 池创建竞态 / 永久死锁 | 权威篇 A2 |
-| P0-2 池耗尽 → 关池 → 递归重试雪崩 | A 类（关池全局锁）+ B 类（雪崩链） |
-| P0-3 midservice 三处全局 `synchronized` | B3 / §2.7 表 #9~#11 |
-| P0-4 `LockUtils.lockMap` 竞态 + 泄漏 | A 类锁条目 / §2.7 |
-| P0-5 midservice 未用 dataShare 分布式锁 | §八·架构问题 8 |
-| P1（无锁 HashMap 路由、每请求 JDBC、HTTP 客户端泄漏、热路径分配、O(n) 扫描、敏感词 Trie、revert 往返、消费线程无界、队列统计、offset N+1） | C 类对应条目 + §2.4 逐跳约束 |
-| P2 共 20 项（热路径日志、String.format、正则重编译、脱敏 indexOf 等） | C 类（中低优先级） |
-
-### 瓶颈汇总表
-
-| 级别 | 瓶颈 | 位置 | 影响面 |
-|---|---|---|---|
-| **P0** | `SocketClientConnectManager` 类级锁 + 池创建竞态死锁 | `SocketClientConnectManager.java:28-63` | **全部后端调用串行化**；极端情况永久死锁 |
-| **P0** | 池耗尽 → 关池 → 递归重试雪崩 | `ConnSocketCommandParse.java:150-154` | 全链路放大 |
-| **P0** | midservice 3 处全局 `synchronized` | `DSUtils.java:35`、`SerialService.java:31`、`ServiceUtils.java:169` | **每请求** |
-| **P0** | `LockUtils.lockMap` 竞态 + 泄漏 | `HandlerController.java:1735-1740` | 互斥失效 + 内存泄漏 |
-| **P0** | 不用 dataShare 分布式锁 | midservice 全库 | 多实例一致性缺失 |
-| **P1** | 6 个无锁 HashMap/TreeMap 承载并发路由 | `HessianServiceCache` / `HttpServiceCache` / `AESKeyCache` / `ProducerCache` / `SubscribeCache` / `HessianFactoryUtils` | 数据竞争，可能死循环/CME |
-| **P1** | 每请求一次 JDBC（缓存未接线） | `PubConfigServiceImpl.java:54` | DB QPS |
-| **P1** | 每 publish 一次 Redis + 潜在 JDBC | `MQTopicServiceImpl.java:27-48` | DB QPS |
-| **P1** | 分布式锁四项缺陷 | `T00010040_LockBusinessService.java:87-101` | 正确性 + 性能 |
-| **P1** | HTTP 客户端每请求 new + 不 close | `HttpClientUtils.java` ×5 | 连接泄漏 |
-| **P1** | 热路径 per-request 分配（prototype/clone/StringBuilder） | `HandlerImpl`、`ServerProtocolCache`、`CommandParseUtils` | GC 压力 |
-| **P1** | midservice 路由 O(n) 扫描（每请求 2 次 + 1745 条 KeyMapper） | `HandlerController.java:622,749`；`KeyMapper.java:113` | CPU |
-| **P1** | 敏感词 Trie 每次重建 + O(len²) | `SensitivewordFilter.java:26-29,54-65` | DS 往返 + CPU |
-| **P1** | `DSUtils.revert` 原生序列化往返 ×113 | `DSUtils.java:143` | CPU + 分配 |
-| **P1** | 消费线程无界 + 1MB/线程 + 忙轮询背压 | `SubscribeThreadUtils.java:8`、`KrackleConsumer.java:162,175,179` | 资源耗尽 |
-| **P1** | 队列统计 O(n) + `DS-QUEUE-ALL` 泄漏 | `T00010039:89-97`、`T00010037:50-56` | Redis 内存 |
-| **P1** | 60s 全量刷 offset 的 N+1 SQL | `HandleLastOffsetThread.java:34-41` | DB |
-| **P2** | 20 项（热路径日志、String.format、addProvider、正则重编译、脱敏 indexOf、审计 MQ 阻塞、无界连接池、BeanFactory.clear 等） | 见上表 | 综合 |
+- **P0 并发正确性 / 可用性（5 项：池创建竞态死锁、池耗尽递归重试雪崩、midservice 全局 `synchronized`、`LockUtils` 竞态泄漏、未用分布式锁）** → 见 `./01-dataShare-并发能力与缺陷清单.md` §A 类 / §B 类
+- **P1 性能（12 项：无锁 HashMap 路由、每请求 JDBC、HTTP 客户端泄漏、热路径分配、O(n) 扫描、敏感词 Trie、revert 往返、消费线程无界、队列统计、offset N+1 等）** → 见 `./01-dataShare-并发能力与缺陷清单.md` §C 类
+- **P2 中低优先级（20 项：热路径日志、String.format、正则重编译、脱敏 indexOf 等）** → 见 `./01-dataShare-并发能力与缺陷清单.md` §C 类（中低优先级）
 
 ---
 
-## 七、缺陷清单与改造建议（已收口，见另文）
+## 七、缺陷清单与改造建议
 
-> 缺陷与安全风险（原 S1–S7 / F1–F16）、改造优先级（原“立即 / 短期 / 中期”三档）已统一收口到 [`01-dataShare-并发能力与缺陷清单.md`](./01-dataShare-并发能力与缺陷清单.md)：A–E 类 57 项缺陷、全局串行点全表、各级资源上限实测方法、三档整改清单与“缺陷 → 修复动作”对应关系。
->
-> 原第七章内容与该文 D/E 类及第三部分同源且更简，已删除以免双份维护；本文只保留**服务端能力**（三~五章）与**瓶颈索引**（六章，2026-10-31 收口）。
+> 缺陷与安全风险、改造优先级（"立即 / 短期 / 中期"三档）已汇总在 [`01-dataShare-并发能力与缺陷清单.md`](./01-dataShare-并发能力与缺陷清单.md)：A–E 类 57 项缺陷、全局串行点全表、各级资源上限实测方法、三档整改清单与"缺陷 → 修复动作"对应关系。
 
 ---
 

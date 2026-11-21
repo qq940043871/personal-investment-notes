@@ -12,13 +12,13 @@
 | `01-认知框架/` | 认知层 | LLM / Agent / Harness 是什么、边界在哪 | 三层认知总纲 + Agent / Harness 详细设计 + 报文全链路 + 补强手册 + **治理与护栏（上线准入）** + 两张架构图 | 6 md + 2 html/png |
 | `02-平台工程/` | 平台层 | 工具链怎么用、坑在哪 | Dify 15 章接入手册（权威源）+ RAG 16 卡点 + **幻觉排查归因分叉** + MinerU 解析改造 + **多轮 RAG 架构与状态管理图** | 4 md + 1 图（html/png） |
 | `03-业务设计/` | 设计层 | 具体业务 Agent 怎么设计 | 平台定位与价值 + 政策解读（通用 / 电力）+ 智能客服 + RAG 直击库 + `data/` 示例数据 | 5 md + 4 数据文件 |
-| ↗ `self-rag-engineering/`（**已外置**） | 工程层 | **不用 Dify 完全自研的 RAG 怎么做**（个人实战） | 2026-11-02 迁至 [`../../personal-ai-engineering/self-rag-engineering/`](../../personal-ai-engineering/self-rag-engineering/)：总览口径 + 总体架构 + 低代码编排 + 解析管道（MinerU / ffmpeg+ASR / Excel）+ 检索生成闸门 + 评测路线 + `ownrag/` 代码骨架（6 md + 代码骨架，本库不再存放） |
+| ↗ `ai-rag-self-engineering/`（**已外置**） | 工程层 | **不用 Dify 完全自研的 RAG 怎么做**（个人实战） | 2026-11-02 迁至 [`../../personal-ai-engineering/ai-rag-self-engineering/`](../../personal-ai-engineering/ai-rag-self-engineering/)：总览口径 + 总体架构 + 低代码编排 + 解析管道（MinerU / ffmpeg+ASR / Excel）+ 检索生成闸门 + 评测路线 + `ownrag/` 代码骨架（6 md + 代码骨架，本库不再存放） |
 | `05-项目底稿/` | 事实层 | 公司 AI 平台整体方案与我的参与边界 | AI 智能服务平台 9 页富 HTML（与 B2B 项目同一套版式）+ 1 篇口径声明 | 9 html + 1 md |
-| `00-知识库/` | 表达层 | 上面几层面试怎么讲、原料去哪查 | RAG 25 题手册 + 政策 Agent 问答 + 吴师兄 Agent 题库 5 篇 + 288 篇 RAG 语料 13 桶 | 3 md + 19 篇子文件 |
+| `00-知识库/` | 表达层 | 上面几层面试怎么讲、原料去哪查 | RAG 25 题手册 + RAG 四大高阶难题拆解 + 吴师兄 Agent 题库 5 篇 + 288 篇 RAG 语料 13 桶 | 3 md + 19 篇子文件 |
 
 > **依赖单向**：`01 → 02 → 03`，`04` 是个人工程层（承接 01 方法论、参照 02 工具事实，**与 05 平行不得互混**），`05` 是事实层（只陈述，不写新方案），`00-知识库` 消费以上全部且不得另立口径。
 > `04` 编号已启用为「自研 RAG 工程」（2026-11-02；原「04-面试」已更名 `00-知识库`，旧引用不冲突），`06-大模型企业落地` 已撤销——选型口径见 [`../02-现货贸易/03-架构决策/模块流程说明/08-Dify与自研业务中台-技术选型复盘.md`](../02-现货贸易/03-架构决策/模块流程说明/08-Dify与自研业务中台-技术选型复盘.md)，参与边界见 [`05-项目底稿/ai-project-overview.md`](./05-项目底稿/ai-project-overview.md)。
-> **`04` 正文已外置**（2026-11-02）：整体迁至 `../../personal-ai-engineering/self-rag-engineering/` 并重命名，本库只留指针，改路径时只改指针、不得把正文复制回来。
+> **`04` 正文已外置**（2026-11-02）：整体迁至 `../../personal-ai-engineering/ai-rag-self-engineering/`，本库只留指针，改路径时只改指针、不得把正文复制回来。
 
 ## 🔥 常用入口
 
@@ -33,7 +33,7 @@
 | 线上幻觉排查（先查哪层） | [`02-平台工程/RAG线上幻觉排查-归因分叉方法论.md`](./02-平台工程/RAG线上幻觉排查-归因分叉方法论.md) |
 | 多轮 RAG 状态怎么管（三条状态线 / 每轮重鉴权 / 平台与中台分工） | [`02-平台工程/多轮RAG系统架构与状态管理图.html`](./02-平台工程/多轮RAG系统架构与状态管理图.html)（+ `.png`） |
 | 复杂 PDF 解析改造 | [`02-平台工程/minerU复杂PDF识别优化方案与选型分析.md`](./02-平台工程/minerU复杂PDF识别优化方案与选型分析.md) |
-| 不用 Dify 完全自研 RAG 怎么做（个人工程，**已外置**） | [`../../personal-ai-engineering/self-rag-engineering/00-总览与口径.md`](../../personal-ai-engineering/self-rag-engineering/00-总览与口径.md)｜代码骨架 [`ownrag/README.md`](../../personal-ai-engineering/self-rag-engineering/ownrag/README.md) |
+| 不用 Dify 完全自研 RAG 怎么做（个人工程，**已外置**） | [`../../personal-ai-engineering/ai-rag-self-engineering/00-总览与口径.md`](../../personal-ai-engineering/ai-rag-self-engineering/00-总览与口径.md)｜代码骨架 [`ownrag/README.md`](../../personal-ai-engineering/ai-rag-self-engineering/ownrag/README.md) |
 | 政策解读设计 | [`03-业务设计/政策解读Agent-通用设计.md`](./03-业务设计/政策解读Agent-通用设计.md) |
 | 平台定位与三条硬约束 | [`03-业务设计/AI智能体企业级应用平台-定位与项目价值.md`](./03-业务设计/AI智能体企业级应用平台-定位与项目价值.md) |
 | 项目 9 页 | [`05-项目底稿/overview.html`](./05-项目底稿/overview.html) |
@@ -47,7 +47,7 @@
 >
 > **Harness 是个人技术储备，不是公司平台技术栈**（公司侧：Java 微服务中台 + C 内存撮合；政策 Agent 承载在 Dify）。
 >
-> **ownrag（外置 [`../../personal-ai-engineering/self-rag-engineering/`](../../personal-ai-engineering/self-rag-engineering/)，原 `04-自研RAG工程/`）与 Harness 同属个人线**（Python + FastAPI + Ollama）：验证选型复盘 §3.1 的"纯自研路线"，**不得写进公司平台能力清单**；全部指标。
+> **ownrag（外置 [`../../personal-ai-engineering/ai-rag-self-engineering/`](../../personal-ai-engineering/ai-rag-self-engineering/)，原 `04-自研RAG工程/`）与 Harness 同属个人线**（Python + FastAPI + Ollama）：验证选型复盘 §3.1 的"纯自研路线"，**不得写进公司平台能力清单**；全部指标标【设计/待实测】。
 >
 > `00-知识库/Agent/`、`00-知识库/RAG/` 是**外部抓取件**，只作「别人怎么问」的参照。
 

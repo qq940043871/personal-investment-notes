@@ -2653,7 +2653,7 @@
       <div class="section-header" style="margin-top:0">
         <div class="section-title"><span class="section-title-bar"></span>备战资料</div>
         <span class="setting-value" id="prepTotalCount">-- 份</span>
-        <div class="section-more tap" onclick="window.open('01-备战手册/index.html','_blank')">
+        <div class="section-more tap" onclick="window.open('01-个人简历/index.html','_blank')">
           完整目录
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
@@ -2972,34 +2972,29 @@ var FACE_EXP_CATEGORIES = [
   }
 ];
 
-// 备战主题数据（仅收录 01-备战手册/ 目录下真实存在的文件；03-技术真题见题库页）
+// 备战主题数据（仅收录 00-面试计划/ 与 01-个人简历/ 目录下真实存在的文件；03-技术真题见题库页）
 var PREP_CATEGORIES = [
-  { key: 'lib', title: '资料库总览', icon: 'layers', color: 'cyan',
+  { key: 'lib', title: '综合手册', icon: 'layers', color: 'cyan',
     files: [
-      { name: '00-资料库总览.md（全库目录地图 + 权威源分工）', type: 'md', path: '01-备战手册/00-资料库总览.md' },
-      { name: 'Java核心复习综合手册.md', type: 'md', path: '01-备战手册/Java核心复习综合手册.md' }
+      { name: 'Java 深度题库（详版）', type: 'md', path: '03-技术真题/01-八股文与深度整理/01-Java面试题深度整理.md' }
     ]
   },
   { key: 'prep', title: '面试准备', icon: 'zap', color: 'green',
     files: [
-      { name: '01-面试话术与背诵手册.md', type: 'md', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md' },
-      { name: '01-面试话术与背诵手册.html', type: 'html', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.html' },
-      { name: '01-面试速记卡.md', type: 'md', path: '01-备战手册/02-面试准备/01-面试速记卡.md' },
-      { name: '02-面试自证与训练手册.md', type: 'md', path: '01-备战手册/02-面试准备/02-面试自证与训练手册.md' },
-      { name: '03-系统架构叙事手册.md', type: 'md', path: '01-备战手册/02-面试准备/03-系统架构叙事手册.md' }
+      { name: '10-面试训练手册.md（心态 · 框架 · 话术 · 自证）', type: 'md', path: '00-面试计划/10-面试训练手册.md' },
+      { name: '01-简历与自我定位.md（含面试当天速记卡）', type: 'md', path: '00-面试计划/01-简历与自我定位.md' },
+      { name: '12-系统架构高频问题清单.md', type: 'md', path: '00-面试计划/12-系统架构高频问题清单.md' }
     ]
   },
   { key: 'resume', title: '个人简历', icon: 'users', color: 'purple',
     files: [
-      { name: '00-完整简历-通用版.md', type: 'md', path: '01-备战手册/01-个人简历/00-完整简历-通用版.md' },
-      { name: '01-技术经理-简历.md', type: 'md', path: '01-备战手册/01-个人简历/01-技术经理-简历.md' },
-      { name: '02-技术经理成长手册.md（成长方法论总纲：Π型能力/站位诊断/6个月执行）', type: 'md', path: '01-备战手册/01-个人简历/02-技术经理成长手册.md' },
-      { name: '03-技术情报收集与跨部门沟通手册.md', type: 'md', path: '01-备战手册/01-个人简历/03-技术情报收集与跨部门沟通手册.md' },
-      { name: '04-简历知识补强清单.md', type: 'md', path: '01-备战手册/01-个人简历/04-简历知识补强清单.md' },
-      { name: '06-快速通览一页纸简报.html', type: 'html', path: '01-备战手册/01-个人简历/06-快速通览一页纸简报.html' }
+      { name: '00-完整简历-精修版.md', type: 'md', path: '01-个人简历/00-完整简历-精修版.md' },
+      { name: '02-技术经理成长手册.md（成长方法论总纲：Π型能力/站位诊断/6个月执行）', type: 'md', path: '01-个人简历/02-技术经理成长手册.md' },
+      { name: '03-技术情报收集与跨部门沟通手册.md', type: 'md', path: '01-个人简历/03-技术情报收集与跨部门沟通手册.md' },
+      { name: '06-快速通览一页纸简报.html', type: 'html', path: '01-个人简历/06-快速通览一页纸简报.html' }
     ]
   }
-  /* 辅助页（index.html / home.html / md-viewer.html / *.print.html）与 07-面试介绍PPT 素材（pptx/pdf）不登记 */
+  /* 辅助页（各目录 index.html / *.print.html）与 07-面试介绍PPT 素材（pptx/pdf）不登记 */
 ];
 
 /* ===== 案例 · 场景页数据（五类客户 / 十个业务场景 / 资料清单） ===== */
@@ -3044,12 +3039,12 @@ var CASE_SCENES = [
 
 // 今日任务种子数据
 var TODAY_TASKS_SEED = [
-  { title: '背熟 30 秒自我介绍（第一击）', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
-  { title: '脱手画四层架构，讲 2 分钟（第二击）', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
+  { title: '背熟 30 秒自我介绍（第一击）', category: 'mock', tag: '口述', path: '00-面试计划/10-面试训练手册.md', done: false },
+  { title: '脱手画四层架构，讲 2 分钟（第二击）', category: 'mock', tag: '口述', path: '00-面试计划/10-面试训练手册.md', done: false },
   { title: '复述第 4 步：客户买单的四个死结', category: 'prep', tag: '备战', path: '02-现货贸易/01-业务与价值/17-业务痛点与系统解决方案-架构详解.md', done: false },
-  { title: '默写关键数字 6 个', category: 'prep', tag: '备战', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
-  { title: '口述一个成果：问题→方案→结果', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false },
-  { title: '自查 4 条禁用语录，说了就改口', category: 'mock', tag: '口述', path: '01-备战手册/02-面试准备/01-面试话术与背诵手册.md', done: false }
+  { title: '默写关键数字 6 个', category: 'prep', tag: '备战', path: '00-面试计划/10-面试训练手册.md', done: false },
+  { title: '口述一个成果：问题→方案→结果', category: 'mock', tag: '口述', path: '00-面试计划/10-面试训练手册.md', done: false },
+  { title: '自查 4 条禁用语录，说了就改口', category: 'mock', tag: '口述', path: '00-面试计划/10-面试训练手册.md', done: false }
 ];
 
 /* ===== SVG 图标库 ===== */
@@ -4839,7 +4834,7 @@ function init() {
   updateGreeting();
   updateStatusTime();
 
-  // 支持 hash 直达页面（供 01-备战手册 等外部入口跳转，如 ../index.html#page-bank）
+  // 支持 hash 直达页面（供各目录门户等外部入口跳转，如 ../index.html#page-bank）
   function applyHashPage() {
     var hashPage = (location.hash || '').replace('#', '');
     if (hashPage && document.getElementById(hashPage)) switchTab(hashPage);

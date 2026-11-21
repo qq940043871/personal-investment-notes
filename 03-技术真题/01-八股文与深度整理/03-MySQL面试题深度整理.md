@@ -186,7 +186,7 @@ trx_id ∈ m_ids                → 仍在活跃，不可见
 ```sql
 -- 表 t(id 唯一, 数据 1,3,5,10)，RR：
 SELECT * FROM t WHERE id=5 FOR UPDATE;   -- 只锁 5（记录锁）
-SELECT * FROM t WHERE id=3 FOR UPDATE;   -- 3 不存在 → 间隙锁 (1,3)
+SELECT * FROM t WHERE id=2 FOR UPDATE;   -- 2 不存在 → 间隙锁 (1,3)
 SELECT * FROM t WHERE id>=3 FOR UPDATE;  -- 锁 (1,3]...(10,+∞)
 ```
 
@@ -428,4 +428,3 @@ IS NULL/IS NOT NULL 可走索引（与 Oracle 不同）；count(列) 跳过 NULL
 
 ---
 
-*整理时间：2026-08 · 建议结合线上 EXPLAIN 实测验证各规则*

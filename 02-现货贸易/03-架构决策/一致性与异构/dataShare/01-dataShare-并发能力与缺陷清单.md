@@ -1,6 +1,6 @@
 # dataShare 并发能力与缺陷清单
 
-> 合并自《系统缺陷与并发能力分析》（A–E 类缺陷清单 + 全局串行点表 + 修复优先级）与《端到端链路并发能力分析》（五跳拓扑 + 逐跳约束 + 总公式 + 场景数字 + 瓶颈排名 + 改造预估），是 dataShare **缺陷与并发**两条主线的唯一权威版本。
+> 本文为 dataShare 缺陷与并发能力的汇总篇：A–E 类缺陷清单 + 全局串行点表 + 修复优先级 + 五跳拓扑 + 逐跳约束 + 总公式 + 场景数字 + 瓶颈排名 + 改造预估。
 >
 > 分析对象：`dataShare-2.6.2` 服务端 + `dataShareClientAPI-1.3.4` SDK + `J_1018_midservice-v1.1.188.228.5`。全部结论附 `文件:行号` 证据；**代码能确定的写"事实"，需要实测的写"推断"并给出测定方法**。
 
@@ -556,8 +556,6 @@ this.log.info(new StringBuilder().append("...").append(protocolStr).append("] st
 | D19 | `removeKeys` 中残留 `System.out.println(infoKeys.length)` | SDK `redis/RedisTools.java:267` |
 | D20 | `CommandParseUtils.getSringCommand` 是 `getCommand` 的非静态重复实现，方法名拼写错误，**无调用者** | `service/nio/core/CommandParseUtils.java:19-29` |
 
-> 注：D17–D20 原列在《分布式服务能力与瓶颈分析》第七章的功能缺陷表（F4–F6、F8），合并时移入本表，该章现已改为指针。
-
 ---
 
 ## E 类：安全缺陷
@@ -626,7 +624,7 @@ server.getConfig().setSendBufferSize(200704);          // ← 每连接 200KB
 // ImageCompressUtils.java:88-90  ← 赋给全局 DSUtils.dsClient
 dsBean.setTimeOut(20000);
 dsBean.setInitCon(2);
-dsBean.setMaxCon(5);            // ← ★ 只有 5 条连接！
+dsBean.setMaxCon(5);            // ← 测试入口 initDS 设置的值，生产 maxCon 待核实
 
 // ThirdNoitfyController.java:162-164
 dsBean.setTimeOut(10000);
@@ -636,7 +634,7 @@ dsBean.setMaxCon(30);
 
 **[事实] 极严重的发现**：`ImageCompressUtils.initDS()` 里的 `dsBean.setMaxCon(5)` 设置的是 **`DSUtils.dsClient`（全局共享的客户端）**，而 135 个 DS 调用点全部走 `DSUtils.getClient()`。
 
-**⇒ 若该配置在生产生效，midservice → dataShare 的并发上限只有 5 条连接。** 每个 DS 调用独占一条连接（`DSClientAPI.execute` 是同步 BIO，`getSocketClient` → `sendTo` → `readMainHeader` → `releaseConnection`），**第 6 个并发 DS 调用必须等 `maxWaitMillis=5000`**，超时抛 `Timeout waiting for idle object` → 触发 **A3 雪崩：关闭整池、全部在途连接被强杀**。
+**⇒ 源码出现 maxCon=5（测试入口 initDS），生产值取决于外部 core 模块，待核实；若该值在生产生效，midservice → dataShare 的并发上限即 5 条连接。** 每个 DS 调用独占一条连接（`DSClientAPI.execute` 是同步 BIO，`getSocketClient` → `sendTo` → `readMainHeader` → `releaseConnection`），**届时第 6 个并发 DS 调用必须等 `maxWaitMillis=5000`**，超时抛 `Timeout waiting for idle object` → 触发 **A3 雪崩：关闭整池、全部在途连接被强杀**。
 
 > ⚠️ `initDS()` 在本 jar 内的唯一调用点是 `ImageCompressUtils.main()`（测试用 main），生产的初始化可能在外部 `core` 模块（`com.ylsoft.mid.core.utils.CoreUtils`）中。**这是必须立即到生产环境核实的配置项。**
 
@@ -772,7 +770,7 @@ poolConfig.setMaxWaitMillis(5000L);        // ← 硬编码 5 秒
 // ImageCompressUtils.java:88-90
 dsBean.setTimeOut(20000);
 dsBean.setInitCon(2);
-dsBean.setMaxCon(5);            // ← ★ 只有 5
+dsBean.setMaxCon(5);            // ← 测试入口 initDS 设置的值，生产 maxCon 待核实
 
 // ThirdNoitfyController.java:162-164
 dsBean.setTimeOut(10000);
@@ -780,11 +778,7 @@ dsBean.setInitCon(2);
 dsBean.setMaxCon(30);
 ```
 
-> ⚠️ **重要修正（相对上一轮结论）**：`ImageCompressUtils.initDS()` 内的 `DSUtils.dsClient = dsClient`（`:83`）虽是**全局共享客户端**，但 `initDS()` 在本 jar 内的唯一调用点是 `ImageCompressUtils.main()`（`:107`，测试用 main）——**它不是生产初始化路径**。
->
-> 生产的 DS 客户端来自**外部 core 模块**：`ServiceServlet.java:223` 与 `RedisCallUtils.java:27` 都调 `CoreUtils.getDSClientAPI()`（`com.ylsoft.ooo.core.utils.CoreUtils`，**不在本源码树内**）。
->
-> **⇒ `DSUtils.dsClient` 由外部 core 模块在启动时赋值，其 `maxCon` 无法从本源码确定，必须到生产核实。** 这直接决定第 2 跳的并发上限。
+> 注：`ImageCompressUtils.initDS()` 内的 `DSUtils.dsClient = dsClient`（`:83`）虽是**全局共享客户端**，但 initDS 在本 jar 内的唯一调用点是测试 main（`ImageCompressUtils.main()`，`:107`）——**不是生产初始化路径**。生产的 DS 客户端来自**外部 core 模块**：`ServiceServlet.java:223` 与 `RedisCallUtils.java:27` 都调 `CoreUtils.getDSClientAPI()`（`com.ylsoft.ooo.core.utils.CoreUtils`，**不在本源码树内**）。`DSUtils.dsClient` 由外部 core 模块在启动时赋值，其 `maxCon` 无法从本源码确定，必须到生产核实——这直接决定第 2 跳的并发上限。
 
 ```bash
 # 生产核实（优先级最高）
@@ -809,7 +803,7 @@ if (errMsg.indexOf("Timeout waiting for idle object") > -1) {
 ```
 第 N+1 个并发 DS 请求等 5 秒 → 超时 → **关闭整个池（所有在途连接被强杀）** → 所有并发 DS 请求同时失败 → 递归重建 → 雪崩。
 
-**⇒ `maxCon=5` 意味着整个 midservice 对 dataShare 只有 5 并发，第 6 个请求就开始 5 秒等待并可能触发雪崩。**
+**⇒ 源码出现 maxCon=5（测试入口 initDS），生产值取决于外部 core 模块，待核实；若该值在生产生效，整个 midservice 对 dataShare 只有 5 并发，第 6 个请求就开始 5 秒等待并可能触发雪崩。**
 
 #### 约束 2-B：ansyKey 池容量
 
@@ -1181,7 +1175,7 @@ if (errMsg.indexOf("Read timed out") > -1) {
 |---|---|---|---|
 | dataShare 前端连接 | fd 限制（1000～65535） | OS `nofile` | 代码无限制 |
 | **midservice HTTP 线程** | **Tomcat maxThreads（默认 200）** | 外置 `server.xml` | **硬顶** |
-| **midservice → dataShare 连接** | **DSBean.maxCon（发现配置为 5！）** | 外部 core 模块 | **硬顶，可能极小** |
+| **midservice → dataShare 连接** | **DSBean.maxCon（源码出现 maxCon=5，测试入口 initDS；生产值取决于外部 core 模块，待核实）** | 外部 core 模块 | **硬顶，具体值待核实** |
 | midservice → 业务后端连接 | 21 池 × maxCon=50 = 1050 | `ServiceConfig` | 受 Tomcat 封顶 |
 | **midservice 单用户单 API** | **1** | per-user 锁（`:712→761`） | **硬顶，最狠** |
 | dataShare → 后端连接 | `Σ(SOCKET_MAX)` | DB `TB_DS_PROTOCOL` | 硬顶 |
@@ -1196,7 +1190,7 @@ if (errMsg.indexOf("Read timed out") > -1) {
 ```
 有效并发 ≈ min(
     Tomcat_maxThreads,          # 默认 200
-    DSBean.maxCon,              # ★ 可能只有 5
+    DSBean.maxCon,              # 源码出现 5（测试入口 initDS），生产值待核实
     单用户单API = 1,            # per-user 锁
     Σ(SOCKET_MAX)               # 后端池
 )
@@ -1226,7 +1220,7 @@ if (errMsg.indexOf("Read timed out") > -1) {
 | 1 | Tomcat 线程 | 部署配置（默认 200） | 硬顶 | `ServiceServlet.java:104`（只读 port） |
 | 1 | **per-user 锁** | **1** | **永久** | `HandlerController.java:712→761` |
 | 1 | `getTokenId` 全局锁 | ~10万-100万 ops/s | 串行 | `ServiceUtils.java:169` |
-| 2 | **DS 客户端池** | **DSBean.maxCon（可能 5）** | 硬顶 | `ImageCompressUtils.java:90`（待核实） |
+| 2 | **DS 客户端池** | **DSBean.maxCon（源码出现 5，测试入口 initDS；生产值待核实）** | 硬顶 | `ImageCompressUtils.java:90` |
 | 2 | ansyKey 池 | 65534 | 硬顶 | `HeaderKeyPool.java:15` |
 | 2 | 池耗尽行为 | — | 雪崩 | `BIOSocketConnectManager.java:54-64` |
 | 3 | **IO 线程数** | **1 或 N** | **永久** | `DSRunMain.java:85`（`★待实测`） |

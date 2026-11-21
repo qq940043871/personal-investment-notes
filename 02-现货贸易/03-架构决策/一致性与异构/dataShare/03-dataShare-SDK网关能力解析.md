@@ -625,15 +625,7 @@ initRedisConnnection()
 
 ### 代码缺陷
 
-| # | 问题 | 位置 |
-|---|---|---|
-| 1 | **`DSBean` 构造函数 Bug**：`this.userPswd = "test@123"` 误写成 `this.userName`，导致 `getUserPswd()` 永远返回 null。**必须显式调 `setUserPswd()`**，否则登录失败 | `bean/DSBean.java:25-26` |
-| 2 | **退订命令号异常**：类名 `DS0001fa10Protocol` 暗示命令号 `0001fa10`，但 `getSubLowProtocol()` 返回 `52`(0x34)，**与订阅命令号完全相同**，只能靠 body 差异区分，不符合协议设计规范 | `DS0001fa10Protocol.java:31` vs `DS00010034Protocol.java:35` |
-| 3 | **ansyKey 三次归还**：`HandleAnsyRequestThread` 在 try / catch / finally 三条路径都调 `returnKey`，靠 `LinkedBlockingQueue.offer` 幂等兜住，属明显重复代码 | `thread/HandleAnsyRequestThread.java:52/57/64` |
-| 4 | **配置键名 Bug**：`ShardedReidsPool` 中 `getIntValue` 硬编码读小写 `"key"`，与传入的大写字段名不匹配 | `redis/ShardedReidsPool.java:56` |
-| 5 | **硬编码 TTL**：`hset` 固定 10800 秒不可配置 | `redis/RedisTools.java:317` |
-| 6 | **死代码残留**：`getFromObjectFromRedis` 分支中 `str1 = null; return str1;` 使用前未声明（反编译伪影，原逻辑可疑） | `redis/RedisTools.java:26-28` |
-| 7 | **调试输出残留**：`removeKeys` 中 `System.out.println(infoKeys.length)` | `redis/RedisTools.java:267` |
+> 代码级缺陷与修复优先级（DSBean 密码 Bug、退订命令号撞车、ansyKey 三次归还、Redis 配置键名 Bug、硬编码 TTL、调试残留等 6 条）见 [`./01-dataShare-并发能力与缺陷清单.md`](./01-dataShare-并发能力与缺陷清单.md) D14–D20；另有一条本文独有：**死代码残留** —— `getFromObjectFromRedis` 分支中 `str1 = null; return str1;` 使用前未声明（反编译伪影，原逻辑可疑，`redis/RedisTools.java:26-28`）。
 
 ### 架构局限
 

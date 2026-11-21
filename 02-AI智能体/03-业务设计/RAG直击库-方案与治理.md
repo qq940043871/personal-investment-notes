@@ -36,11 +36,12 @@
 ## 2. 目录结构与文件职责
 
 ```
-rag-cases/
-├── README.md                 ← 本文件：方案、SOP、治理规则
-├── registry.csv              ← 主数据（唯一事实来源），含全部治理字段
-├── import-to-dify.csv        ← 由 registry 导出的导入文件（question,answer 两列）
-└── candidates.example.jsonl  ← 候选样本格式示例（采集投递格式）
+02-AI智能体/03-业务设计/
+├── RAG直击库-方案与治理.md   ← 本文件：方案、SOP、治理规则
+└── data/rag-cases/
+    ├── registry.csv              ← 主数据（唯一事实来源），含全部治理字段
+    ├── import-to-dify.csv        ← 由 registry 导出的导入文件（question,answer 两列）
+    └── candidates.example.jsonl  ← 候选样本格式示例（采集投递格式）
 ```
 
 **铁律：`registry.csv` 是唯一事实来源，`import-to-dify.csv` 永远是它的导出副本，禁止手改。**
