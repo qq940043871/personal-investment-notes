@@ -22,7 +22,8 @@ def compare(bak: str, new: str):
             added.extend(nl[j1:j2])
     ok = True
     for r in removed:
-        if r.strip() != '':
+        # 允许删除空行，以及无语言开标签 ```（被替换为 ```lang）
+        if r.strip() != '' and r.strip() != '```':
             ok = False
             print('  异常删除行:', repr(r[:100]))
     for a in added:
