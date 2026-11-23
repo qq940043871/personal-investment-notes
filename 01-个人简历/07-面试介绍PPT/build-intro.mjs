@@ -166,7 +166,7 @@ function anchor(s, x, y, w, h, { tag, text, accent = T.accent }) {
   const s = slide();
   chrome(s, { part: PART[0], label: "自我介绍", page: 2, total: TOTAL });
   const y0 = claim(s, "13 年一线技术，专注大宗商品交易这一个领域", {
-    sub: "现任 B2B 大宗商品在线交易平台技术经理 · 带 20 人研发团队，向总经理汇报",
+    sub: "现任 B2B 大宗商品在线交易平台技术经理 · 带 20 人研发团队，向副总汇报",
   });
 
   const lw = 7.3;
@@ -190,7 +190,7 @@ function anchor(s, x, y, w, h, { tag, text, accent = T.accent }) {
     { tag: "EXPERIENCE", title: "13 年一线", text: "专注大宗商品交易与资金场景" },
     { tag: "TEAM", title: "20 人团队", text: "3 C / 6 Java / 5 Vue / 5 测试" },
     { tag: "ARCHITECTURE", title: "12+ 微服务", text: "业务中台 + DS 数据中心两层" },
-    { tag: "ROLE", title: "技术经理", text: "Java 侧负责人 · 向总经理汇报" },
+    { tag: "ROLE", title: "技术经理", text: "Java 侧负责人 · 向副总汇报" },
   ];
   const ch = (4.85 - 3 * 0.12) / 4;
   items.forEach((it, i) => miniCard(s, rx, y0 + 0.06 + i * (ch + 0.12), rw, ch, it));
@@ -203,13 +203,13 @@ function anchor(s, x, y, w, h, { tag, text, accent = T.accent }) {
 {
   const s = slide();
   chrome(s, { part: PART[0], label: "工作经历", page: 3, total: TOTAL });
-  const y0 = claim(s, "工作经历：从清算开发到 20 人团队技术经理", {
-    sub: "同一领域深耕 13 年——前 2 年金融级清算打底，后 11 年在同一业务域做到平台化；2024 起延伸 AI 支线",
+  const y0 = claim(s, "工作经历：从 Java 开发到 20 人团队技术经理", {
+    sub: "同一领域深耕 13 年——前 2 年 Java 开发打底（东软、东方通信），后 11 年在同一业务域做到平台化；2024 起延伸 AI 支线",
   });
 
   const items = [
-    { y: "2013 — 2015", role: "Java 开发工程师", org: "某软件公司 · 清算 / GIS",
-      pts: ["清算与 GIS 后端开发", "日处理交易量超 10 万笔", "数据精确性 > 一切"] },
+    { y: "2013 — 2015", role: "Java 开发工程师", org: "东软 · 东方通信",
+      pts: ["人力管理 / GIS 平台 / 宽带运营支撑", "Java 后端开发与实施交付", "数据精确性 > 一切"] },
     { y: "2015 — 2020", role: "核心开发工程师", org: "某软件公司 · 交易系统",
       pts: ["从 0 到 1 参与交易系统建设", "参数化配置、多模式交易", "外部系统对接"] },
     { y: "2020 — 至今", role: "技术经理（Java 侧负责人）", org: "某软件公司 · B2B 交易平台",
@@ -242,7 +242,7 @@ function anchor(s, x, y, w, h, { tag, text, accent = T.accent }) {
     });
     bullets(s, it.pts, g[i].x + 0.18, lineY + 1.12, g[i].w - 0.36, 1.55, { size: 10, line: 1.26, gap: 7 });
   });
-  band(s, { y: 6.42, text: "13 年 = 2 年清算 + 11 年本司；20 人 = 3 C / 6 Java / 5 Vue / 5 测试 —— 这两个数字必须脱口而出，全篇一致。" });
+  band(s, { y: 6.42, text: "13 年 = 前 2 年 Java 开发（东软、东方通信）+ 11 年本司；20 人 = 3 C / 6 Java / 5 Vue / 5 测试（含本人）—— 这两个数字必须脱口而出，全篇一致。" });
   s.addNotes("工作经历按「时间 → 职位 → 公司 → 职责」四段讲，重点落在 2020—至今这段（带团队、平台化、异构治理）。13 年只待过一家公司会被追问，先自己把结构讲清。");
 }
 
