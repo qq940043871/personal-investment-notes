@@ -256,7 +256,7 @@ function anchor(s, x, y, w, h, { tag, text, accent = T.accent }) {
     sub: "运行时真实口径；涉及考核线的数字一律带「当时设定的团队目标」限定语",
   });
   const data = [
-    { eyebrow: "RELIABILITY", value: "3 年+", label: "零资金差错 · 冬储高峰连续两季零 P0" },
+    { eyebrow: "RELIABILITY", value: "3 年+", label: "零资金差错（交易 / 结算 / 清算）" },
     { eyebrow: "DELIVERY", value: "2 月 → 1 周", label: "新客户上线周期（配置化改造）" },
     { eyebrow: "INTEGRATION", value: "3 周 → 5 天", label: "外部系统对接周期（统一适配层）" },
     { eyebrow: "AVAILABILITY", value: "99.95%", label: "外部接口平均可用率" },
