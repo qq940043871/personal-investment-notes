@@ -14,6 +14,7 @@
 | `jvm_diag.sh` | 现场一键取证脚本（系统 + JVM + 线程 + 网络，打包 tar.gz） |
 | `11-网关扩容打穿DB-性能开发规范.md` | 容量基线与高并发五层防线（DB 侧的「事前」半边） |
 | `08/09/10-*-排查实录.md` | 真实故障复盘（多机房线路、竞价页面变慢、下载 PDF 致 JVM 进程消失） |
+| `15-进程凭空消失-SIGKILL与OOM排查步骤.md` | **"日志干净 + 退出码 137"专用口径**：dmesg / cgroup 取证、cgroup OOM vs 整机 OOM、`oom_score_adj` 与 `MemoryMax` 预防 |
 
 ## 业务现象 → 故事速查
 
@@ -189,7 +190,7 @@ jmap -histo:live 12345 | head -30 # 对象实例统计（会 STW，线上慎用�
 | 大对象短生命周期 | 频繁大数组分配 | 池化或流式处理 |
 
 > **两个容易踩的坑**：
-> - 进程**没有日志就消失**、Exit Code 137 → 不是 OOM 崩溃，是 **cgroup OOM Killer** 杀的，走 `10-下载PDF致JVM进程消失-排查实录.md`（`limits.memory = Xmx + 堆外预算`）。
+> - 进程**没有日志就消失**、Exit Code 137 → 不是 OOM 崩溃，是 **cgroup OOM Killer** 杀的，走 [`15-进程凭空消失-SIGKILL与OOM排查步骤.md`](./15-进程凭空消失-SIGKILL与OOM排查步骤.md)（`limits.memory = Xmx + 堆外预算`）；退出码 134/139 且带 `hs_err_pid*.log` 才是 native 崩溃，走 10 号实录。
 > - 大 dump（>1GB）会让 MAT 自己 OOM，先用零依赖流式工具出**类直方图 → 数组长度指纹 → `char[]` 关键词取证**，再回代码找分配点。
 
 ---
