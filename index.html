@@ -2989,8 +2989,6 @@ var PREP_CATEGORIES = [
   { key: 'resume', title: '个人简历', icon: 'users', color: 'purple',
     files: [
       { name: '00-完整简历-精修版.md', type: 'md', path: '01-个人简历/00-完整简历-精修版.md' },
-      { name: '02-技术经理成长手册.md（成长方法论总纲：Π型能力/站位诊断/6个月执行）', type: 'md', path: '01-个人简历/02-技术经理成长手册.md' },
-      { name: '03-技术情报收集与跨部门沟通手册.md', type: 'md', path: '01-个人简历/03-技术情报收集与跨部门沟通手册.md' },
       { name: '06-快速通览一页纸简报.html', type: 'html', path: '01-个人简历/06-快速通览一页纸简报.html' }
     ]
   }
@@ -3538,7 +3536,15 @@ var MGMT_CORE = [
   { title: '技术整改十一项与落地', desc: '背景问题 → 方案 → 效果：把「每次定制改代码」变成「配置与契约」',
     icon: 'tool', color: 'purple', badge: '整改', path: '04-技术管理/01-技术整改十一项与落地.html' },
   { title: '技术管理补充件', desc: '产品特有管理难点 / 工程效能工具链（CI/CD、Code Review）/ 整改十一项细节',
-    icon: 'layers', color: 'green', badge: '补充', path: '04-技术管理/02-技术管理补充件.md' }
+    icon: 'layers', color: 'green', badge: '补充', path: '04-技术管理/02A-技术管理补充件.md' },
+  { title: '技术经理成长手册', desc: '成长方法论总纲：Π 型能力 / 站位诊断 / 6 个月执行',
+    icon: 'trending-up', color: 'warm', badge: '成长', path: '04-技术管理/02B-技术经理成长手册.md' },
+  { title: '替代岗招聘与面试要求', desc: 'JD + 能力模型 + 题库 + 评分表 + 90 天验收（对外发 JD / 对内做评估）',
+    icon: 'briefcase', color: 'cyan', badge: '招聘', path: '04-技术管理/03-技术经理-替代岗招聘与面试要求.md' },
+  { title: '管理叙事放映导览', desc: 'PPT 22–33 页逐页口播骨架 + 必报数字 + 口径护栏',
+    icon: 'presentation', color: 'pink', badge: '放映', path: '04-技术管理/04-管理叙事放映导览.md' },
+  { title: '技术情报收集与跨部门沟通', desc: '三组人肉传感器 + 跨部门必问清单 + 向上要资源 + 情报转化闭环',
+    icon: 'users', color: 'orange', badge: '沟通', path: '04-技术管理/05-技术情报收集与跨部门沟通手册.md' }
 ];
 
 var SPOT_GROUPS = [
@@ -3585,6 +3591,7 @@ var SPOT_GROUPS = [
     { name: '进程消失 · 叙事 B（native 崩溃 134/139）', type: 'md', path: '02-现货贸易/04-生产问题排查/10-下载PDF致JVM进程消失-排查实录.md' },
     { name: '网关扩容打穿 DB', type: 'md', path: '02-现货贸易/04-生产问题排查/11-网关扩容打穿DB-性能开发规范.md' },
     { name: 'Java 排障主手册', type: 'md', path: '02-现货贸易/04-生产问题排查/14-Java架构师实战排障手册.md' },
+    { name: 'Kafka 重复投递 · 短信/站内信双发', type: 'md', path: '02-现货贸易/04-生产问题排查/16-Kafka重复投递导致短信站内信重复-排查与治理.md' },
     { name: '进程凭空消失（137/SIGKILL · OOM）', type: 'md', path: '02-现货贸易/04-生产问题排查/15-进程凭空消失-SIGKILL与OOM排查步骤.md' },
     { name: 'Cookie 5Why 演示', type: 'pptx', path: '02-现货贸易/04-生产问题排查/07-Cookie认证失败-5Why根因分析.slides.pptx' }
   ] },
@@ -3638,7 +3645,7 @@ var SPOT_GROUPS = [
     { name: '25 合同管理系统设计', type: 'md', path: '02-现货贸易/03-架构决策/arch/25-合同管理系统设计.md' },
     { name: '26 工作流与审批流', type: 'md', path: '02-现货贸易/03-架构决策/arch/26-工作流与审批流.md' },
     { name: '27 表单与模板配置', type: 'md', path: '02-现货贸易/03-架构决策/arch/27-表单与模板配置.md' },
-    { name: '研发效能 · CI/CD 与 CodeReview', type: 'md', path: '04-技术管理/02-技术管理补充件.md' }
+    { name: '研发效能 · CI/CD 与 CodeReview', type: 'md', path: '04-技术管理/02A-技术管理补充件.md' }
   ] }
 ];
 
