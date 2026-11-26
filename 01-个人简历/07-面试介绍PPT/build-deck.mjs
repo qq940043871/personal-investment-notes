@@ -213,7 +213,7 @@ const PART = [
     y += 0.32;
   };
   box(0.92, "Java 业务编排层", "订单 / 风控 / 结算 / 报表 / 生态对接", T.surface, T.hairline); y += 0.92;
-  link("Hessian over HTTP（同步） · Socket（异步）");
+  link("双通道都是同步指令 · 区别在通信协议");
   box(0.92, "DS 数据中心（Java）", "桥接层 / 防腐层 Anti-Corruption Layer —— 协议转换、连接管理、可靠性收敛于一层", T.accentSoft, T.accent, T.accentDark); y += 0.92;
   link("TCP 自定义二进制协议");
   box(0.92, "交易核心（C 语言）", "单线程内存撮合 · 纳秒级延迟确定性 · 无 GC 停顿 · 异步落库", T.surface, T.hairline); y += 0.92;

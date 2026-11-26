@@ -338,7 +338,7 @@
                 </div>
                 <div class="rounded-xl bg-emerald-50 p-4">
                     <div class="text-xs font-bold text-emerald-600 mb-1.5">L3 · DS 数据中心（Java 自研 · 防腐层 ACL）⭐</div>
-                    <p class="text-xs">C↔Java 的<strong>唯一桥</strong>：下层 TCP + 自定义二进制报文，上层 <strong>Hessian over HTTP</strong>（同步）/ <strong>Socket</strong>（异步）。承担连接管理、心跳保活、断线重连、熔断降级、超时与请求 ID 追踪、协议版本兼容。选 Hessian 不选 JSON——高频二进制交互，序列化/解析开销低得多。</p>
+                    <p class="text-xs">C↔Java 的<strong>唯一桥</strong>：下层 TCP + 自定义二进制报文，上层 <strong>Hessian over HTTP</strong> / <strong>Socket</strong>——两条通道都是同步指令，区别在协议（Hessian 对接 Java 接口 / Socket 私有帧对接 C 引擎）。承担连接管理、心跳保活、断线重连、熔断降级、超时与请求 ID 追踪、协议版本兼容。选 Hessian 不选 JSON——高频二进制交互，序列化/解析开销低得多。</p>
                 </div>
                 <div class="rounded-xl bg-amber-50 p-4">
                     <div class="text-xs font-bold text-amber-600 mb-1.5">L4 · C 撮合引擎（性能底座 · 双核之二）</div>

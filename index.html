@@ -2205,25 +2205,26 @@
             <span class="hb-source">§1.2</span>
           </div>
           <ol class="hb-list">
-            <li><span class="hb-num">01</span><span><span class="hb-key">驾驭异构架构</span>｜C+Java+Vue，四层架构 / 双核驱动 / 自定义报文</span></li>
-            <li><span class="hb-num">02</span><span><span class="hb-key">技术+业务双修</span>｜五大业务模块 / 客户价值三层 / 五道壁垒</span></li>
-            <li><span class="hb-num">03</span><span><span class="hb-key">从救火队长到技术操盘手</span>｜On-call / 技术债台账 / 复盘不追责</span></li>
+            <li><span class="hb-num">01</span><span><span class="hb-key">驾驭异构架构</span>｜从网关 + 合同交收入手，再扩到四层 / 双核 / 自定义报文</span></li>
+            <li><span class="hb-num">02</span><span><span class="hb-key">技术+业务双修</span>｜五块→三层→五道壁垒走同一条线，别背术语</span></li>
+            <li><span class="hb-num">03</span><span><span class="hb-key">技术操盘手</span>｜机制→问题→结果：On-call / 技术债台账 / 复盘不追责 / 接口契约治理</span></li>
           </ol>
-          <div class="hb-note">客场不求赢、不丢分：坦诚边界 + 平移思路，把客场拉回主场。</div>
+          <div class="hb-note">先讲你真正做过的那块，再往外扩一层；客场不求赢、不丢分。</div>
         </article>
 
         <article class="hb-card warm">
           <div class="hb-head">
             <span class="hb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg></span>
-            <span class="hb-title">框架 · 三套答题骨架</span>
+            <span class="hb-title">框架 · STAR + 三套骨架</span>
             <span class="hb-source">§3</span>
           </div>
           <ol class="hb-list">
-            <li><span class="hb-num">01</span><span><span class="hb-key">PEARL</span>｜经历/深挖题：Problem → Evidence → Alternatives → Reasoning → Lesson</span></li>
-            <li><span class="hb-num">02</span><span><span class="hb-key">BOUNDARY</span>｜不熟模块：Boundary → Ownership → Mechanism → Result</span></li>
-            <li><span class="hb-num">03</span><span><span class="hb-key">SCOPE</span>｜技术选型：Situation → Constraint → Options → Pick → Effect</span></li>
+            <li><span class="hb-num">01</span><span><span class="hb-key">STAR</span>｜通用底座：Situation → Task → Action → Result（S:A:R ≈ 1:4:2）</span></li>
+            <li><span class="hb-num">02</span><span><span class="hb-key">PEARL</span>｜经历/深挖题：Problem → Evidence → Alternatives → Reasoning → Lesson</span></li>
+            <li><span class="hb-num">03</span><span><span class="hb-key">BOUNDARY</span>｜不熟模块：Boundary → Ownership → Mechanism → Result</span></li>
+            <li><span class="hb-num">04</span><span><span class="hb-key">SCOPE</span>｜技术选型：Situation → Constraint → Options → Pick → Effect</span></li>
           </ol>
-          <div class="hb-note">分工：经历类用 PEARL，不熟模块用 BOUNDARY，选型题用 SCOPE。</div>
+          <div class="hb-note">先讲全 STAR，再按场景升级：经历用 PEARL，不熟用 BOUNDARY，选型用 SCOPE。</div>
         </article>
 
         <article class="hb-card emerald">
@@ -4143,7 +4144,7 @@ var SPOT_STEPS = [
     path: '02-现货贸易/03-架构决策/一致性与异构/13-C核心单线程内存一致性设计.md', key: true },
   { n: 7, act: '第二幕 · 拿得出手的活', title: 'DS 异构桥接 · 双通道与编解码',
     q: '为什么 Hessian 不用 JSON / PB？编解码凭什么不能在 IO 线程里做？',
-    chips: ['Hessian over HTTP（同步）+ Socket（异步批量）', '32B 定长头 + TLV', '编解码在 IO 线程外', '有界队列三级背压'],
+    chips: ['双通道都是同步指令、区别在协议（Hessian 对接 Java / Socket 私有帧对接 C）', '32B 定长头 + TLV', '桥接 SDK 屏蔽连接/心跳/重连', '现状全链路同步阻塞（见 dataShare 缺陷清单）'],
     src: '叙事主稿 §2 第 4 件 · 03-架构决策/一致性与异构/15-DS数据交换中心-C-Java异构桥接设计.md',
     path: '02-现货贸易/03-架构决策/一致性与异构/15-DS数据交换中心-C-Java异构桥接设计.md', key: true },
 

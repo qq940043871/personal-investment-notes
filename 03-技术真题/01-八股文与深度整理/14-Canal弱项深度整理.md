@@ -11,7 +11,7 @@
 |---|---|---|
 | 接入层 | **midservice** 自研网关（Java Web，多实例）+ midmon 监控 | 不直接涉及 Canal |
 | 业务层 | **服务化拆分**：12+ 个独立部署的业务服务（用户、商品、交易、合同、履约、结算、通知、配置等），服务间走 DS 总线 RPC（Hessian）与 Kafka 事件 | Canal 订阅的 binlog 来自这些服务对应的 schema |
-| 异构桥接 | **DS 数据中心**（dataShare，防腐层）：Hessian over HTTP（同步）+ Socket 长连接（异步） | 撮合结果不经过 Canal，走 DS |
+| 异构桥接 | **DS 数据中心**（dataShare，防腐层）：双通道都是同步指令、区别在协议（Hessian 对接 Java / Socket 私有帧对接 C） | 撮合结果不经过 Canal，走 DS |
 | 撮合层 | **C 撮合引擎**，单线程内存撮合 | 不经过 Canal |
 | 缓存层 | **独立缓存调度服务**（Java，独立进程）+ **Redis**（单机 / 主从，Redisson 分布式锁） | Canal 的唯一下游消费方 |
 | 数据层 | **MySQL 主从**（主写从读，半同步复制）；按领域垂直分 schema、共用一个实例（逻辑分库） | Canal 的数据源 |
