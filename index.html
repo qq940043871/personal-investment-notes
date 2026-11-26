@@ -1764,7 +1764,9 @@
   }
   .reader-error-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
   .reader-error-title { font-size: 16px; color: var(--text); margin-bottom: 6px; font-weight: 600; }
-  .reader-error-desc { font-size: 13px; margin-bottom: 16px; }
+  .reader-error-desc { font-size: 13px; margin-bottom: 16px; word-break: break-all; }
+  .reader-error-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .reader-error-actions .btn { min-width: 120px; }
 
   /* ============================================================
      手机端阅读优化：阅读进度 / 字号设置 / 目录抽屉 / 表格·代码横滑
@@ -3544,7 +3546,9 @@ var MGMT_CORE = [
   { title: '管理叙事放映导览', desc: 'PPT 22–33 页逐页口播骨架 + 必报数字 + 口径护栏',
     icon: 'presentation', color: 'pink', badge: '放映', path: '04-技术管理/04-管理叙事放映导览.md' },
   { title: '技术情报收集与跨部门沟通', desc: '三组人肉传感器 + 跨部门必问清单 + 向上要资源 + 情报转化闭环',
-    icon: 'users', color: 'orange', badge: '沟通', path: '04-技术管理/05-技术情报收集与跨部门沟通手册.md' }
+    icon: 'users', color: 'orange', badge: '沟通', path: '04-技术管理/05-技术情报收集与跨部门沟通手册.md' },
+  { title: '技术管理常遇问题与应答', desc: '需求评审最大挑战 / 怎么审代码 / 怎么保正确性：判定规则 + 口径红线 + 追问预案',
+    icon: 'target', color: 'pink', badge: '应答', path: '04-技术管理/06-技术管理常遇问题与应答.md' }
 ];
 
 var SPOT_GROUPS = [
@@ -3616,8 +3620,7 @@ var SPOT_GROUPS = [
     { name: '机制图 1 · 竞价推送架构（推拉分离）', type: 'html', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/10-图-竞价推送-推拉分离.html' },
     { name: '机制图 2 · WebSocket 稳定性', type: 'html', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/11-图-竞价推送-WS稳定性三层.html' },
     { name: '机制图 3 · 断线到恢复五步时序', type: 'html', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/12-图-竞价推送-重连五步时序.html' },
-    { name: 'HandlerController 网关功能详解', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/14-HandlerController-网关功能详解.md' },
-    { name: 'ToBackController 与 HandlerController 对比', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/ToBackController-后台网关与HandlerController对比.md' }
+    { name: 'HandlerController 网关功能详解', type: 'md', path: '02-现货贸易/03-架构决策/网关与高并发/midservice/14-HandlerController-网关功能详解.md' }
   ] },
   { title: 'B2B 专题 · DS 数据中心（dataShare）', icon: 'database', files: [
     { name: 'SDK 网关能力解析', type: 'md', path: '02-现货贸易/03-架构决策/一致性与异构/dataShare/03-dataShare-SDK网关能力解析.md' },
@@ -4377,11 +4380,18 @@ function openMdReader(path, name, opts) {
   switchTab('page-reader');
 
   // 压入历史记录：手机返回键 / 手势返回逐篇回退，最后才退出阅读器
+  // 同一篇文档重复打开（连点卡片）不再重复压栈，否则「返回」要点两次才生效
   if (!opts.noHistory) {
+    var sameEntry = false;
     try {
-      history.pushState({ wbReader: path }, '');
-      readerPushed = true;
+      sameEntry = !!(history.state && history.state.wbReader === path);
     } catch (e) {}
+    if (!sameEntry) {
+      try {
+        history.pushState({ wbReader: path }, '');
+        readerPushed = true;
+      } catch (e) {}
+    }
   }
 
   // 显示加载状态
@@ -4517,12 +4527,23 @@ function scrollToHeading(id, el) {
 
 // 显示错误
 function showReaderError(msg, path) {
+  var safePath = String(path || '').replace(/'/g, "\\'");
+  var is404 = /HTTP\s*404/.test(String(msg || ''));
+  var title = is404 ? '文档不存在' : '无法加载文档';
+  // 404 是链接失效（文件被删除 / 改名 / 路径变更），不是协议问题，别误导用户
+  var desc = is404
+    ? '文件已被删除、改名或路径变更：<br>' + escapeHtml(path)
+    : escapeHtml(msg) + '<br>请确保通过 HTTP 服务器访问（非 file:// 协议）';
+
   $('readerContent').innerHTML =
     '<div class="reader-error">' +
     '<div class="reader-error-icon">📄</div>' +
-    '<div class="reader-error-title">无法加载文档</div>' +
-    '<div class="reader-error-desc">' + escapeHtml(msg) + '<br>请确保通过 HTTP 服务器访问（非 file:// 协议）</div>' +
-    '<button class="btn btn-primary tap" onclick="window.open(\'' + path.replace(/'/g, "\\'") + '\',\'_blank\')">在新窗口打开</button>' +
+    '<div class="reader-error-title">' + title + '</div>' +
+    '<div class="reader-error-desc">' + desc + '</div>' +
+    '<div class="reader-error-actions">' +
+    '<button class="btn btn-primary tap" onclick="goBackFromReader()">返回上一页</button>' +
+    '<button class="btn btn-outline tap" onclick="window.open(\'' + safePath + '\',\'_blank\')">在新窗口打开</button>' +
+    '</div>' +
     '</div>';
 }
 
