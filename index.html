@@ -466,6 +466,59 @@
   .task-arrow { color: var(--text-3); flex: none; }
   .task-arrow svg { width: 18px; height: 18px; }
 
+  /* ===== 答题骨架快速入口 ===== */
+  .doc-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 8px; }
+  .doc-card {
+    display: flex; align-items: center; gap: 11px;
+    padding: 12px 13px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+  }
+  .doc-no {
+    width: 30px; height: 30px; flex: none; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+  }
+  .doc-card:nth-child(1) .doc-no { background: rgba(34, 211, 238, 0.15); color: var(--primary); }
+  .doc-card:nth-child(2) .doc-no { background: rgba(129, 140, 248, 0.15); color: var(--secondary); }
+  .doc-card:nth-child(3) .doc-no { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
+  .doc-card:nth-child(4) .doc-no { background: rgba(52, 211, 153, 0.15); color: var(--success); }
+  .doc-body { flex: 1; min-width: 0; }
+  .doc-title { font-size: 13.5px; font-weight: 700; }
+  .doc-desc { font-size: 11.5px; color: var(--text-2); margin-top: 3px; line-height: 1.5; }
+  .doc-arrow { color: var(--text-3); flex: none; }
+  .doc-arrow svg { width: 16px; height: 16px; }
+
+  /* ===== 自我介绍卡 ===== */
+  .intro-card {
+    position: relative; overflow: hidden;
+    padding: 16px; margin-bottom: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-l);
+  }
+  .intro-card::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 2px; background: var(--accent); }
+  .intro-label {
+    font-size: 10px; font-weight: 800; letter-spacing: .12em;
+    color: var(--primary); margin-bottom: 8px;
+  }
+  .intro-lead { font-size: 13.5px; line-height: 1.75; color: var(--text); margin: 0 0 12px; }
+  .intro-lead strong { color: var(--primary); font-weight: 700; }
+  .intro-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .intro-item {
+    display: grid; grid-template-columns: 24px 1fr; column-gap: 8px; row-gap: 2px;
+    padding: 10px 12px;
+    background: var(--inset); border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+  }
+  .intro-num {
+    grid-row: 1 / 3; align-self: center;
+    font-size: 11px; font-weight: 800; color: var(--secondary);
+  }
+  .intro-name { font-size: 13px; font-weight: 700; }
+  .intro-desc { font-size: 11.5px; color: var(--text-2); line-height: 1.55; }
+
   /* ===== 训练手册关键卡片 ===== */
   .handbook-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 8px; }
   .hb-card {
@@ -1425,6 +1478,16 @@
     .fw-item { padding: 14px 16px; }
     .strike-card:hover, .fw-item:hover { border-color: rgba(34, 211, 238, 0.25); }
 
+    /* 答题骨架入口桌面版：两列 */
+    .doc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .doc-card { padding: 13px 15px; transition: border-color .15s, transform .15s; }
+    .doc-card:hover { border-color: rgba(34, 211, 238, 0.25); transform: translateY(-1px); }
+
+    /* 自我介绍卡桌面版 */
+    .intro-card { padding: 20px 22px; }
+    .intro-lead { font-size: 15px; }
+    .intro-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+
     /* 训练手册关键卡片桌面版：两列 */
     .handbook-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
     .hb-card { padding: 16px 18px 16px 20px; transition: border-color .15s; }
@@ -2172,6 +2235,37 @@
         </div>
       </div>
 
+      <!-- 自我介绍：首页第一屏 -->
+      <div class="section-header">
+        <div class="section-title"><span class="section-title-bar"></span>自我介绍 · 一句话定位</div>
+        <div class="section-more tap" onclick="openFriendly('00-面试计划/02-项目叙事-B2B.md')">
+          逐字稿
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+
+      <div class="intro-card">
+        <div class="intro-label">OPENING · 30 秒定位</div>
+        <p class="intro-lead">我一句话定位：<strong>Java 侧负责人 + C/Java 技术接口人</strong>——在一个「C 单线程撮合 + Java 微服务中台」的异构系统里，管住两边对话的那一层，不写 C 代码。</p>
+        <div class="intro-grid">
+          <div class="intro-item">
+            <span class="intro-num">01</span>
+            <span class="intro-name">架构决策</span>
+            <span class="intro-desc">四层边界怎么切、异构怎么治</span>
+          </div>
+          <div class="intro-item">
+            <span class="intro-num">02</span>
+            <span class="intro-name">机制建设</span>
+            <span class="intro-desc">评审、On-call、技术债台账、接口契约治理</span>
+          </div>
+          <div class="intro-item">
+            <span class="intro-num">03</span>
+            <span class="intro-name">疑难兜底</span>
+            <span class="intro-desc">团队接住 80% 现场问题，我只介入疑难与跨系统</span>
+          </div>
+        </div>
+      </div>
+
       <!-- 面试训练手册：首页关键卡片 -->
       <div class="section-header">
         <div class="section-title"><span class="section-title-bar"></span>训练手册 · 关键卡片</div>
@@ -2240,6 +2334,46 @@
           </ol>
           <div class="hb-note">收尾钩子：团队现在最缺的是业务深度还是工程规范？两边我都补过课。</div>
         </article>
+      </div>
+
+      <!-- 答题骨架：四份文档的快速入口 -->
+      <div class="section-header">
+        <div class="section-title"><span class="section-title-bar"></span>答题骨架 · 快速入口</div>
+      </div>
+
+      <div class="doc-grid">
+        <div class="doc-card tap" onclick="openFriendly('00-面试计划/10-面试训练手册.md')">
+          <div class="doc-no">10</div>
+          <div class="doc-body">
+            <div class="doc-title">面试训练手册</div>
+            <div class="doc-desc">心态 · 框架 · 话术 · 自证</div>
+          </div>
+          <div class="doc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+        <div class="doc-card tap" onclick="openFriendly('00-面试计划/12-系统架构高频问题清单.md')">
+          <div class="doc-no">12</div>
+          <div class="doc-body">
+            <div class="doc-title">系统架构高频问题清单</div>
+            <div class="doc-desc">架构追问 · 高频题 · 第二层答法</div>
+          </div>
+          <div class="doc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+        <div class="doc-card tap" onclick="openFriendly('00-面试计划/13-万能答题骨架与表达速查.md')">
+          <div class="doc-no">13</div>
+          <div class="doc-body">
+            <div class="doc-title">万能答题骨架与表达速查</div>
+            <div class="doc-desc">先说几点 · 分点展开 · 收口追问</div>
+          </div>
+          <div class="doc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+        <div class="doc-card tap" onclick="openFriendly('00-面试计划/14-七类题型骨架答案示例.md')">
+          <div class="doc-no">14</div>
+          <div class="doc-body">
+            <div class="doc-title">七类题型骨架答案示例</div>
+            <div class="doc-desc">七类题型 · 现场答案 · 口径红线</div>
+          </div>
+          <div class="doc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
       </div>
 
       <!-- 资料入口（与侧边栏导航一一对应） -->
@@ -3094,7 +3228,9 @@ var PREP_CATEGORIES = [
     files: [
       { name: '10-面试训练手册.md（心态 · 框架 · 话术 · 自证）', type: 'md', path: '00-面试计划/10-面试训练手册.md' },
       { name: '01-简历与自我定位.md（含面试当天速记卡）', type: 'md', path: '00-面试计划/01-简历与自我定位.md' },
-      { name: '12-系统架构高频问题清单.md', type: 'md', path: '00-面试计划/12-系统架构高频问题清单.md' }
+      { name: '12-系统架构高频问题清单.md', type: 'md', path: '00-面试计划/12-系统架构高频问题清单.md' },
+      { name: '13-万能答题骨架与表达速查.md', type: 'md', path: '00-面试计划/13-万能答题骨架与表达速查.md' },
+      { name: '14-七类题型骨架答案示例.md', type: 'md', path: '00-面试计划/14-七类题型骨架答案示例.md' }
     ]
   },
   { key: 'resume', title: '个人简历', icon: 'users', color: 'purple',
