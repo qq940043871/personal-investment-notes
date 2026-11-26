@@ -466,6 +466,53 @@
   .task-arrow { color: var(--text-3); flex: none; }
   .task-arrow svg { width: 18px; height: 18px; }
 
+  /* ===== 训练手册关键卡片 ===== */
+  .handbook-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 8px; }
+  .hb-card {
+    position: relative; overflow: hidden;
+    padding: 14px 15px 14px 17px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-l);
+  }
+  .hb-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+  .hb-card.cyan::before { background: var(--primary); }
+  .hb-card.purple::before { background: var(--secondary); }
+  .hb-card.warm::before { background: var(--warning); }
+  .hb-card.emerald::before { background: var(--success); }
+  .hb-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .hb-icon {
+    width: 26px; height: 26px; flex: none; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hb-icon svg { width: 15px; height: 15px; }
+  .hb-card.cyan .hb-icon { background: rgba(34, 211, 238, 0.15); color: var(--primary); }
+  .hb-card.purple .hb-icon { background: rgba(129, 140, 248, 0.15); color: var(--secondary); }
+  .hb-card.warm .hb-icon { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
+  .hb-card.emerald .hb-icon { background: rgba(52, 211, 153, 0.15); color: var(--success); }
+  .hb-title { flex: 1; min-width: 0; font-size: 14px; font-weight: 700; }
+  .hb-source {
+    font-size: 10px; font-weight: 700; color: var(--text-3);
+    background: var(--surface-2); border-radius: 999px; padding: 2px 7px;
+  }
+  .hb-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+  .hb-list li { display: flex; gap: 9px; align-items: flex-start; font-size: 12.5px; line-height: 1.6; }
+  .hb-num {
+    flex: none; margin-top: 1px;
+    font-size: 10px; font-weight: 800; line-height: 1.4;
+    border-radius: 6px; padding: 2px 5px;
+  }
+  .hb-card.cyan .hb-num { background: rgba(34, 211, 238, 0.12); color: var(--primary); }
+  .hb-card.purple .hb-num { background: rgba(129, 140, 248, 0.12); color: var(--secondary); }
+  .hb-card.warm .hb-num { background: rgba(251, 191, 36, 0.12); color: var(--warning); }
+  .hb-card.emerald .hb-num { background: rgba(52, 211, 153, 0.12); color: var(--success); }
+  .hb-key { font-weight: 700; color: var(--text); }
+  .hb-note {
+    margin-top: 10px; padding: 8px 10px;
+    background: var(--inset); border: 1px dashed var(--border-strong);
+    border-radius: 10px; font-size: 11.5px; color: var(--text-2); line-height: 1.6;
+  }
+
   /* ===== 面试计划页 ===== */
   .plan-hero {
     display: flex; align-items: center; justify-content: space-between; gap: 14px;
@@ -1378,6 +1425,11 @@
     .fw-item { padding: 14px 16px; }
     .strike-card:hover, .fw-item:hover { border-color: rgba(34, 211, 238, 0.25); }
 
+    /* 训练手册关键卡片桌面版：两列 */
+    .handbook-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .hb-card { padding: 16px 18px 16px 20px; transition: border-color .15s; }
+    .hb-card:hover { border-color: rgba(34, 211, 238, 0.25); }
+
     /* 任务列表 */
     .task-item {
       padding: 12px 14px;
@@ -2109,8 +2161,8 @@
               <span class="hero-stat-label">备战资料</span>
             </div>
             <div class="hero-stat">
-              <span class="hero-stat-num" id="heroDone">0</span>
-              <span class="hero-stat-label">今日完成</span>
+              <span class="hero-stat-num">4</span>
+              <span class="hero-stat-label">关键卡片</span>
             </div>
             <div class="hero-stat">
               <span class="hero-stat-num" id="heroDays">0</span>
@@ -2120,17 +2172,73 @@
         </div>
       </div>
 
-      <!-- 今日任务：首页核心 -->
+      <!-- 面试训练手册：首页关键卡片 -->
       <div class="section-header">
-        <div class="section-title"><span class="section-title-bar"></span>今日任务</div>
-        <div class="section-more tap" onclick="showToast('已刷新任务列表')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-          刷新
+        <div class="section-title"><span class="section-title-bar"></span>训练手册 · 关键卡片</div>
+        <div class="section-more tap" onclick="openFriendly('00-面试计划/10-面试训练手册.md')">
+          查看手册
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
       </div>
 
-      <div class="task-list" id="todayTaskList">
-        <!-- 由 JS 渲染 -->
+      <div class="handbook-grid">
+        <article class="hb-card cyan">
+          <div class="hb-head">
+            <span class="hb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
+            <span class="hb-title">心态 · 当天五条</span>
+            <span class="hb-source">§7.4</span>
+          </div>
+          <ol class="hb-list">
+            <li><span class="hb-num">01</span><span>不是乞求工作而是探讨价值</span></li>
+            <li><span class="hb-num">02</span><span>他问的不是 JD 而是“你来了会发生什么变化”</span></li>
+            <li><span class="hb-num">03</span><span>诚实比完美重要</span></li>
+            <li><span class="hb-num">04</span><span>B2B + 异构是你的稀缺性</span></li>
+            <li><span class="hb-num">05</span><span>每个回答都：先结论、再原因、后数据</span></li>
+          </ol>
+          <div class="hb-note">不慌公式：知道什么不必准备 + 主场练到肌肉记忆 + 有兜底话术 + 相信是双向选择。</div>
+        </article>
+
+        <article class="hb-card purple">
+          <div class="hb-head">
+            <span class="hb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+            <span class="hb-title">主场 · 只准备三个</span>
+            <span class="hb-source">§1.2</span>
+          </div>
+          <ol class="hb-list">
+            <li><span class="hb-num">01</span><span><span class="hb-key">驾驭异构架构</span>｜C+Java+Vue，四层架构 / 双核驱动 / 自定义报文</span></li>
+            <li><span class="hb-num">02</span><span><span class="hb-key">技术+业务双修</span>｜五大业务模块 / 客户价值三层 / 五道壁垒</span></li>
+            <li><span class="hb-num">03</span><span><span class="hb-key">从救火队长到技术操盘手</span>｜On-call / 技术债台账 / 复盘不追责</span></li>
+          </ol>
+          <div class="hb-note">客场不求赢、不丢分：坦诚边界 + 平移思路，把客场拉回主场。</div>
+        </article>
+
+        <article class="hb-card warm">
+          <div class="hb-head">
+            <span class="hb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg></span>
+            <span class="hb-title">框架 · 三套答题骨架</span>
+            <span class="hb-source">§3</span>
+          </div>
+          <ol class="hb-list">
+            <li><span class="hb-num">01</span><span><span class="hb-key">PEARL</span>｜经历/深挖题：Problem → Evidence → Alternatives → Reasoning → Lesson</span></li>
+            <li><span class="hb-num">02</span><span><span class="hb-key">BOUNDARY</span>｜不熟模块：Boundary → Ownership → Mechanism → Result</span></li>
+            <li><span class="hb-num">03</span><span><span class="hb-key">SCOPE</span>｜技术选型：Situation → Constraint → Options → Pick → Effect</span></li>
+          </ol>
+          <div class="hb-note">分工：经历类用 PEARL，不熟模块用 BOUNDARY，选型题用 SCOPE。</div>
+        </article>
+
+        <article class="hb-card emerald">
+          <div class="hb-head">
+            <span class="hb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+            <span class="hb-title">叙事 · 前 5 分钟定生死</span>
+            <span class="hb-source">§2</span>
+          </div>
+          <ol class="hb-list">
+            <li><span class="hb-num">01</span><span><span class="hb-key">30 秒定位</span>｜年限结构 / 团队规模 / 汇报对象 / 目标岗位</span></li>
+            <li><span class="hb-num">02</span><span><span class="hb-key">2 分钟架构速写</span>｜接入 → 网关 → 中台+DS+C → 数据 → 9+ 外部系统</span></li>
+            <li><span class="hb-num">03</span><span><span class="hb-key">反抛一个问题</span>｜先听 C↔Java 报文设计，还是业务层？</span></li>
+          </ol>
+          <div class="hb-note">收尾钩子：团队现在最缺的是业务深度还是工程规范？两边我都补过课。</div>
+        </article>
       </div>
 
       <!-- 资料入口（与侧边栏导航一一对应） -->
@@ -3035,17 +3143,7 @@ var CASE_SCENES = [
   { title: '⑩ 多角色权限体系', phase: '全链路', desc: 'RBAC + 数据权限 + 菜单权限；一个公司账号 N 类人在用，产品侧 15 个角色。', path: '02-现货贸易/01-业务与价值/02-业务全链路场景手册.md' }
 ];
 
-/* 首页已精简：开场三击 / 叙事框架 7 步 / 关键数字 / 禁用语录 的素材与渲染逻辑已移除 */
-
-// 今日任务种子数据
-var TODAY_TASKS_SEED = [
-  { title: '背熟 30 秒自我介绍（第一击）', category: 'mock', tag: '口述', path: '00-面试计划/10-面试训练手册.md', done: false },
-  { title: '脱手画四层架构，讲 2 分钟（第二击）', category: 'mock', tag: '口述', path: '00-面试计划/10-面试训练手册.md', done: false },
-  { title: '复述第 4 步：客户买单的四个死结', category: 'prep', tag: '备战', path: '02-现货贸易/01-业务与价值/17-业务痛点与系统解决方案-架构详解.md', done: false },
-  { title: '默写关键数字 6 个', category: 'prep', tag: '备战', path: '00-面试计划/10-面试训练手册.md', done: false },
-  { title: '口述一个成果：问题→方案→结果', category: 'mock', tag: '口述', path: '00-面试计划/10-面试训练手册.md', done: false },
-  { title: '自查 4 条禁用语录，说了就改口', category: 'mock', tag: '口述', path: '00-面试计划/10-面试训练手册.md', done: false }
-];
+/* 首页关键卡片为静态 HTML，素材来源：00-面试计划/10-面试训练手册.md */
 
 /* ===== SVG 图标库 ===== */
 var ICONS = {
@@ -3172,36 +3270,6 @@ function initDB() {
     seed: []
   });
 
-  // 任务表
-  WorkbenchDB.init({
-    table: 'tasks',
-    fields: [
-      { name: 'id', type: 'string', auto: true },
-      { name: 'title', type: 'string', required: true, maxLength: 100, label: '任务标题' },
-      { name: 'category', type: 'string', label: '分类' },
-      { name: 'tag', type: 'string', label: '标签' },
-      { name: 'path', type: 'string', label: '关联路径' },
-      { name: 'date', type: 'string', label: '日期' },
-      { name: 'done', type: 'boolean', default: false, label: '是否完成' },
-      { name: 'created_at', type: 'string', auto: true }
-    ],
-    seed: (function () {
-      var seeds = [];
-      var today = todayStr();
-      for (var i = 0; i < TODAY_TASKS_SEED.length; i++) {
-        seeds.push({
-          title: TODAY_TASKS_SEED[i].title,
-          category: TODAY_TASKS_SEED[i].category,
-          tag: TODAY_TASKS_SEED[i].tag,
-          path: TODAY_TASKS_SEED[i].path,
-          date: today,
-          done: false
-        });
-      }
-      return seeds;
-    })()
-  });
-
   // 学习日统计
   WorkbenchDB.init({
     table: 'stats',
@@ -3215,27 +3283,11 @@ function initDB() {
   });
 }
 
-/* ===== 每日任务补种===== */
+/* ===== 连续打卡 ===== */
 
-// 每天首次进入工作台时补种当天任务，并把连续打卡天数接上
-function ensureTodayTasks() {
-  var today = todayStr();
-  var todayTasks = WorkbenchDB.list('tasks', function (r) { return r.date === today; });
-
-  if (todayTasks.length === 0) {
-    for (var i = 0; i < TODAY_TASKS_SEED.length; i++) {
-      WorkbenchDB.insert('tasks', {
-        title: TODAY_TASKS_SEED[i].title,
-        category: TODAY_TASKS_SEED[i].category,
-        tag: TODAY_TASKS_SEED[i].tag,
-        path: TODAY_TASKS_SEED[i].path,
-        date: today,
-        done: false
-      });
-    }
-  }
-
-  touchStreak(today);
+// 每天首次进入工作台时记录学习日，接上连续打卡天数
+function touchTodayStreak() {
+  touchStreak(todayStr());
 }
 
 // 连续打卡：今天已记录则不动，否则接续昨天
@@ -3282,67 +3334,8 @@ function openFile(path) {
 
 /* ===== 渲染函数 ===== */
 
-// 渲染今日任务
-function renderTodayTasks() {
-  var tasks = WorkbenchDB.list('tasks', function (r) { return r.date === todayStr(); });
-  // 按加入顺序排列（第一击 → 第六击），而不是通用的倒序
-  tasks.sort(function (a, b) {
-    var ca = a.created_at || '', cb = b.created_at || '';
-    return ca < cb ? -1 : (ca > cb ? 1 : 0);
-  });
-  var html = '';
-
-  if (tasks.length === 0) {
-    html = '<div class="empty-state"><div class="empty-icon">🎉</div><div class="empty-text">今日任务已全部完成！</div></div>';
-    $('todayTaskList').innerHTML = html;
-    return;
-  }
-
-  for (var i = 0; i < tasks.length; i++) {
-    var t = tasks[i];
-    var tagClass = t.category === 'bank' ? 'bank' : t.category === 'prep' ? 'prep' : 'mock';
-    var doneClass = t.done ? ' done' : '';
-    html += '<div class="task-item' + doneClass + '" data-id="' + t.id + '">';
-    html += '<div class="task-check' + doneClass + ' tap" onclick="toggleTask(\'' + t.id + '\')">';
-    html += getIcon('check');
-    html += '</div>';
-    html += '<div class="task-body" onclick="openTaskPath(\'' + t.id + '\')">';
-    html += '<div class="task-title">' + escapeHtml(t.title) + '</div>';
-    html += '<div class="task-meta">';
-    html += '<span class="task-tag ' + tagClass + '">' + escapeHtml(t.tag || '') + '</span>';
-    html += '<span>' + (t.done ? '已完成' : '进行中') + '</span>';
-    html += '</div></div>';
-    html += '<div class="task-arrow">' + getIcon('chevron-right') + '</div>';
-    html += '</div>';
-  }
-
-  $('todayTaskList').innerHTML = html;
-  updateHomeStats();
-}
-
-// 切换任务完成状态
-function toggleTask(taskId) {
-  var task = WorkbenchDB.findBy('tasks', 'id', taskId);
-  if (!task) return;
-  WorkbenchDB.update('tasks', taskId, { done: !task.done });
-  renderTodayTasks();
-  showToast(task.done ? '已取消完成' : '任务完成！继续加油');
-}
-
-// 打开任务关联的资料
-function openTaskPath(taskId) {
-  var task = WorkbenchDB.findBy('tasks', 'id', taskId);
-  if (!task || !task.path) return;
-  openFriendly(task.path);
-}
-
 // 更新首页统计
 function updateHomeStats() {
-  var tasks = WorkbenchDB.list('tasks', function (r) { return r.date === todayStr(); });
-  var doneCount = tasks.filter(function (t) { return t.done; }).length;
-
-  $('heroDone').textContent = doneCount;
-
   var total = TOTAL_PREP_FILES;
   var progressCount = WorkbenchDB.list('progress', function (r) { return r.done; }).length;
   var pct = total > 0 ? Math.round((progressCount / total) * 100) : 0;
@@ -4316,24 +4309,11 @@ function closeConfirmModal() {
 
 function confirmReset() {
   WorkbenchDB.clear('progress');
-  WorkbenchDB.clear('tasks');
   WorkbenchDB.clear('stats');
   // 重新灌种子
-  var today = todayStr();
-  for (var i = 0; i < TODAY_TASKS_SEED.length; i++) {
-    WorkbenchDB.insert('tasks', {
-      title: TODAY_TASKS_SEED[i].title,
-      category: TODAY_TASKS_SEED[i].category,
-      tag: TODAY_TASKS_SEED[i].tag,
-      path: TODAY_TASKS_SEED[i].path,
-      date: today,
-      done: false
-    });
-  }
-  WorkbenchDB.insert('stats', { date: today, streak: 1 });
+  WorkbenchDB.insert('stats', { date: todayStr(), streak: 1 });
 
   closeConfirmModal();
-  renderTodayTasks();
   updateHomeStats();
   showToast('已重置学习进度');
 }
@@ -4850,8 +4830,7 @@ function toggleTheme() {
 function init() {
   applyTheme(getTheme());
   initDB();
-  ensureTodayTasks();
-  renderTodayTasks();
+  touchTodayStreak();
   renderBankGrid();
   renderFaceExpGrid();
   renderPrepPage();

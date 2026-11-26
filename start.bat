@@ -14,6 +14,7 @@ echo.
 
 rem ===== Check port =====
 echo [1/3] Checking port %PORT%...
+set PID=
 for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":%PORT% " ^| findstr LISTENING') do (
     set PID=%%a
     goto :found_pid
@@ -41,6 +42,16 @@ echo   Press Ctrl+C to stop
 echo ========================================
 echo.
 
-npx http-server -p %PORT% -c-1
+rem ===== Local zero-dependency server: skip the npx/npm bootstrap (~1.7s per run) =====
+where node >nul 2>&1
+if errorlevel 1 goto :fallback_npx
+if not exist "%SCRIPT_DIR%tools\serve.js" goto :fallback_npx
+node "%SCRIPT_DIR%tools\serve.js" %PORT%
+goto :end
 
+:fallback_npx
+echo   [fallback] node or tools\serve.js not found, using npx http-server...
+npx --yes http-server -p %PORT% -c-1
+
+:end
 endlocal
