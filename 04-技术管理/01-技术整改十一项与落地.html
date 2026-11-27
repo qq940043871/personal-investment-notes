@@ -182,7 +182,7 @@
             <div class="block-label text-blue-500 mt-4">方案设计</div>
             <ul>
                 <li><strong>等保体系</strong>：分区分域网络架构、最小权限与双因子认证、全链路操作审计留痕（与业务留痕复用同一套日志体系）、传输/存储加密、安全开发生命周期（代码扫描+上线安全评审）纳入研发流程</li>
-                <li><strong>信创适配层</strong>：抽象数据访问层与中间件层——MySQL↔GaussDB、Tomcat↔TongWeb、CentOS↔openEuler 通过适配层切换；信创组件纳入 CI 双栈回归验证</li>
+                <li><strong>信创适配层</strong>：抽象数据访问层与中间件层——MySQL↔GaussDB、Tomcat↔TongWeb、CentOS↔openEuler 通过适配层切换；信创适配层已按双栈清单验证，CI 接入推进中</li>
                 <li><strong>分级实施</strong>：L2 基础版（通用组件替换）与 L3 增强版（全栈信创+密码改造）分级报价分级实施，改造成本可控（L2 约 90 万量级评估）</li>
             </ul>
             <div class="block-label text-emerald-600 mt-4">落地效果</div>
@@ -250,7 +250,7 @@
             <div class="overflow-x-auto"><table class="doc-table"><thead><tr><th>能力</th><th>技术选型</th><th>设计要点</th></tr></thead><tbody>
                 <tr><td><strong>文档转换与预览</strong></td><td>LibreOffice（headless 无头模式）+ Umo Editor</td><td>Word→PDF 高还原度转换（表格/字体/版式保真）；Umo Editor 前端在线预览与编辑；转换任务走异步队列，结果缓存——同一文档不重复转换；模板填充（合同套打）复用同一转换管线</td></tr>
                 <tr><td><strong>自动翻译</strong></td><td>LibreTranslate（私有化部署）</td><td>开源离线部署，<b>数据不出内网</b>（规避出境合规与按次付费）；统一 REST 封装；与国际化词库（专项①）打通——行业术语表作为翻译记忆，保证术语一致性</td></tr>
-                <tr><td><strong>视频网关</strong></td><td>统一流媒体服务（GB28181/RTSP/RTMP 接入）</td><td>直播推拉流、云端录制、回放点播、实时截图统一封装；业务系统只拿<b>播放地址 + 事件回调</b>；监控/仓正确认/物流在途/庭审式见证等场景统一接入</td></tr>
+                <tr><td><strong>视频网关</strong></td><td>统一流媒体服务（RTSP/RTMP 接入）</td><td>直播推拉流、云端录制、回放点播、实时截图统一封装；业务系统只拿<b>播放地址 + 事件回调</b>；监控/仓正确认/物流在途/庭审式见证等场景统一接入</td></tr>
                 <tr><td><strong>统一审批流</strong></td><td>流程引擎与业务解耦（模板化配置）</td><td>流程模板/节点/审批人解析规则（角色/上级/指定人）、加签转办、超时催办、委托代理全部平台化；业务系统只做"提交单据 + 接收审批事件"两个动作；可视化流程配置，超金额自动加签等规则化</td></tr>
                 <tr><td><strong>OCR 识别</strong></td><td>PaddleOCR（私有化部署，GPU/CPU 弹性）</td><td>营业执照/身份证/银行卡/银行回单/合同关键字段结构化识别模板；统一 OCR API + 识别置信度分级——高置信自动填充、低置信人工复核兜底；识别记录可回溯</td></tr>
             </tbody></table></div>
