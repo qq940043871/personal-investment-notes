@@ -208,7 +208,7 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 4px 20px 12px;
   }
-  .header-left { display: flex; flex-direction: column; gap: 2px; }
+  .header-left { display: flex; flex-direction: row; align-items: center; gap: 10px; }
   .header-actions { display: flex; align-items: center; gap: 10px; }
   .header-greeting { font-size: 13px; color: var(--text-3); }
   .header-title { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
@@ -1243,6 +1243,105 @@
   }
   .search-box input::placeholder { color: var(--text-3); }
 
+  /* ===== 移动端完整菜单（抽屉） ===== */
+  .menu-toggle {
+    width: 40px; height: 40px; flex: none;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    -webkit-backdrop-filter: var(--blur);
+    backdrop-filter: var(--blur);
+  }
+  .menu-toggle:active { transform: scale(0.94); }
+  .menu-toggle svg { width: 20px; height: 20px; }
+  .menu-mask {
+    position: fixed; inset: 0; z-index: 90;
+    background: var(--scrim);
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s ease;
+  }
+  .menu-mask.open { opacity: 1; pointer-events: auto; }
+  .menu-drawer {
+    position: fixed; top: 0; bottom: 0; left: 0; z-index: 91;
+    width: min(80vw, 320px);
+    display: flex; flex-direction: column;
+    background: var(--surface-solid);
+    border-right: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    transform: translateX(-102%);
+    transition: transform .24s ease;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .menu-drawer.open { transform: translateX(0); }
+  .menu-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 16px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .menu-head-title { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; }
+  .menu-close {
+    width: 32px; height: 32px; flex: none;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .menu-close svg { width: 16px; height: 16px; }
+  .menu-body { flex: 1; overflow-y: auto; padding: 6px 10px 28px; }
+  .menu-group-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .12em;
+    color: var(--text-3);
+    padding: 14px 10px 6px;
+  }
+  .menu-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    color: var(--text-2);
+    font-size: 13.5px;
+    cursor: pointer;
+  }
+  .menu-item svg { width: 18px; height: 18px; flex: none; }
+  .menu-item.active { background: rgba(34, 211, 238, 0.12); color: var(--primary); font-weight: 600; }
+  .menu-doc-item {
+    display: flex; gap: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 12px; line-height: 1.55;
+    color: var(--text-2);
+    cursor: pointer;
+  }
+  .menu-doc-item:active { background: var(--surface-2); }
+  .menu-doc-no { flex: none; color: var(--primary); font-weight: 700; }
+
+  /* ===== 面试复盘页 ===== */
+  .review-item {
+    align-items: flex-start;
+    border-left: 3px solid transparent;
+  }
+  .review-item .plan-day-badge { margin-top: 2px; }
+  .review-item .task-title { font-size: 13.5px; line-height: 1.5; }
+  .review-item .plan-day-accept {
+    font-size: 11px; color: var(--text-3); margin-top: 5px; line-height: 1.6;
+  }
+  .review-latest {
+    font-size: 9.5px; font-weight: 700;
+    padding: 2px 6px; border-radius: 4px;
+    background: rgba(52, 211, 153, 0.14);
+    color: var(--success);
+    margin-left: 6px;
+  }
+  @media (max-width: 380px) {
+    .tabbar-item { font-size: 10px; }
+    .tabbar-item svg { width: 22px; height: 22px; }
+  }
+
   /* ===== 桌面端侧边栏导航（大屏显示） ===== */
   .desktop-sidebar {
     display: none;
@@ -1255,6 +1354,7 @@
 
     /* 隐藏底部 tabbar 和移动端状态栏 */
     .tabbar { display: none !important; }
+    .menu-toggle, .menu-drawer, .menu-mask { display: none !important; }
     .status-bar { display: none; }
 
     /* ===== 桌面端侧边栏（升级） ===== */
@@ -2117,6 +2217,11 @@
       <span>面试计划</span>
     </div>
 
+    <div class="sidebar-nav-item" data-page="page-review" onclick="switchTab('page-review')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6a2 2 0 0 1 2 2v0h1a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h1v0a2 2 0 0 1 2-2z"/><polyline points="9 13 11 15 15 10"/></svg>
+      <span>面试复盘</span>
+    </div>
+
     <div class="sidebar-section-label">资料</div>
 
     <div class="sidebar-nav-item" data-page="page-spot" onclick="switchTab('page-spot')">
@@ -2191,6 +2296,9 @@
   <!-- 页面头部（动态标题） -->
   <header class="app-header">
     <div class="header-left">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="完整菜单" title="完整菜单" onclick="openMenuDrawer()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
       <div class="header-greeting" id="headerGreeting">继续加油</div>
     </div>
     <div class="header-actions">
@@ -2471,6 +2579,36 @@
         <div class="plan-rule"><span class="plan-rule-num">2</span><span>达不到就砍掉明天的次要项，<b>不砍睡眠</b>。只有 1.5–2 小时时按此砍序：D13 → D11 第 2 题 → D10 MyBatis 细节 → D4 集合与类加载。</span></div>
         <div class="plan-rule"><span class="plan-rule-num">3</span><span>绝不砍的四项：D2–D3（项目）、D7（网关/故障）、D9（AI 口径）、D14（总演练）；口径冲突一律以主线件为准。</span></div>
       </div>
+    </section>
+
+    <!-- ========== 页面：面试复盘（源自 00-面试计划/00-AI面试复盘，实时读取最新 md） ========== -->
+    <section class="page" id="page-review">
+
+      <div class="plan-hero">
+        <div>
+          <div class="plan-hero-title">面试复盘 · 实时查看</div>
+          <div class="plan-hero-desc">一问一文件 · 点开即读 · 每次打开实时拉取最新 md，改完刷新就是最新版</div>
+        </div>
+        <div class="plan-hero-side">
+          <div class="plan-hero-num" id="reviewCount">0</div>
+          <div class="plan-hero-label">份复盘稿</div>
+        </div>
+      </div>
+
+      <div class="section-header" style="margin-top:0">
+        <div class="section-title"><span class="section-title-bar"></span>复盘清单</div>
+        <div class="section-more tap" onclick="openFriendly('00-面试计划/00-AI面试复盘/14-C与Java异构与一致性问题-标准答案.md')">
+          最新一份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+      <div id="reviewList"><!-- 由 JS 渲染 --></div>
+
+      <div class="section-header">
+        <div class="section-title"><span class="section-title-bar"></span>复盘方法 · 收口</div>
+      </div>
+      <div class="bank-grid" id="reviewToolGrid"><!-- 由 JS 渲染 --></div>
+
     </section>
 
     <!-- ========== 页面2：题库 ========== -->
@@ -2916,6 +3054,10 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
     <span>计划</span>
   </button>
+  <button class="tabbar-item tap" data-page="page-review" aria-label="面试复盘" onclick="switchTab('page-review')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6a2 2 0 0 1 2 2v0h1a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h1v0a2 2 0 0 1 2-2z"/><polyline points="9 13 11 15 15 10"/></svg>
+    <span>复盘</span>
+  </button>
   <button class="tabbar-item tap" data-page="page-bank" aria-label="真题" onclick="switchTab('page-bank')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
     <span>真题</span>
@@ -2933,6 +3075,73 @@
     <span>我的</span>
   </button>
 </nav>
+
+<!-- 移动端完整菜单抽屉 -->
+<div class="menu-mask" id="menuMask" onclick="closeMenuDrawer()"></div>
+<aside class="menu-drawer" id="menuDrawer" aria-hidden="true">
+  <div class="menu-head">
+    <div class="menu-head-title">完整菜单</div>
+    <button class="menu-close" type="button" aria-label="关闭菜单" onclick="closeMenuDrawer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="menu-body">
+    <div class="menu-group-label">主导航</div>
+    <div class="menu-item" data-page="page-home" onclick="menuGo('page-home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V21h-6v-6h-6v6H3z"/></svg>
+      <span>首页</span>
+    </div>
+    <div class="menu-item" data-page="page-plan" onclick="menuGo('page-plan')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="9 16 11 18 15 14"/></svg>
+      <span>面试计划</span>
+    </div>
+    <div class="menu-item" data-page="page-review" onclick="menuGo('page-review')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6a2 2 0 0 1 2 2v0h1a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h1v0a2 2 0 0 1 2-2z"/><polyline points="9 13 11 15 15 10"/></svg>
+      <span>面试复盘</span>
+    </div>
+    <div class="menu-item" data-page="page-bank" onclick="menuGo('page-bank')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>技术真题</span>
+    </div>
+    <div class="menu-item" data-page="page-prep" onclick="menuGo('page-prep')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <span>备战手册</span>
+    </div>
+
+    <div class="menu-group-label">资料</div>
+    <div class="menu-item" data-page="page-spot" onclick="menuGo('page-spot')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      <span>现货贸易</span>
+    </div>
+    <div class="menu-item" data-page="page-ai-agent" onclick="menuGo('page-ai-agent')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
+      <span>AI 智能体</span>
+    </div>
+    <div class="menu-item" data-page="page-mgmt" onclick="menuGo('page-mgmt')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span>技术管理</span>
+    </div>
+    <div class="menu-item" data-page="page-cases" onclick="menuGo('page-cases')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      <span>案例 · 场景</span>
+    </div>
+    <div class="menu-item" data-page="page-spot-line" onclick="menuGo('page-spot-line')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      <span>现货经验线</span>
+    </div>
+    <div class="menu-item" data-page="page-ai" onclick="menuGo('page-ai')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4"/><circle cx="9.5" cy="14" r="1"/><circle cx="14.5" cy="14" r="1"/><path d="M2 13h2"/><path d="M20 13h2"/></svg>
+      <span>AI 经验线</span>
+    </div>
+    <div class="menu-item" data-page="page-me" onclick="menuGo('page-me')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>我的</span>
+    </div>
+
+    <div class="menu-group-label">面试复盘 · 直达</div>
+    <div id="menuReviewDocs"><!-- 由 JS 渲染 --></div>
+  </div>
+</aside>
 
 <!-- 确认弹层 -->
 <div class="modal-mask" id="confirmModal">
@@ -3310,6 +3519,7 @@ function updateGreeting() {
 var pageTitles = {
   'page-home': '面试工作台',
   'page-plan': '面试计划',
+  'page-review': '面试复盘',
   'page-spot': '现货贸易',
   'page-spot-line': '现货经验线',
   'page-ai-agent': 'AI 智能体',
@@ -3342,6 +3552,9 @@ function switchTab(pageId) {
   document.querySelectorAll('.sidebar-nav-item[data-page]').forEach(function (item) {
     item.classList.toggle('active', item.dataset.page === pageId);
   });
+
+  // 切换移动端完整菜单状态
+  syncMenuActive();
 
   // 更新标题（当前页头为问候语布局，无 headerTitle 节点时跳过）
   var title = pageTitles[pageId] || '工作台';
@@ -3990,6 +4203,118 @@ function renderPlanPage() {
   if ($('homePlanDesc')) {
     $('homePlanDesc').textContent = PLAN_MAINLINES.length + ' 份主线件 · 已完成 ' + n + '/' + PLAN_DAYS.length + ' 天';
   }
+}
+
+/* ===== 面试复盘页数据（源自 00-面试计划/00-AI面试复盘） ===== */
+var REVIEW_DOCS = [
+  { no: '14', title: 'C 与 Java 异构 + 服务一致性（标准答案）', tag: '标准答案', tagClass: 'bank',
+    date: '2026-11-28', latest: true,
+    desc: '异构是「怎么对上话」，一致性是「对上话之后怎么不失真」：DS 防腐层 + 契约治理 + 待发送表。',
+    path: '00-面试计划/00-AI面试复盘/14-C与Java异构与一致性问题-标准答案.md' },
+  { no: '01', title: '网关十道关：性能损耗与系统安全的平衡', tag: '网关', tagClass: 'bank',
+    date: '2026-11-26',
+    desc: '拦截成本前低后高：本地校验先把脏流量榨干，最贵的反射与下游连接只留给干净流量。',
+    path: '00-面试计划/00-AI面试复盘/01-网关十道关·性能损耗与系统安全的平衡.md' },
+  { no: '07', title: '是否出现过误封 · 如何快速解封并补偿用户', tag: '误封', tagClass: 'mock',
+    date: '2026-11-26',
+    desc: '没有自动封禁，只有误拦：靠配置回退秒级恢复；补偿流程不虚构、不偷换概念。',
+    path: '00-面试计划/00-AI面试复盘/07-是否出现过误封与如何快速解封补偿用户.md' },
+  { no: '09', title: 'C 与 Java 接口延迟 / 数据格式分歧的协调', tag: '协作', tagClass: 'prep',
+    date: '2026-11-26',
+    desc: '延迟按 SLA 用数据定责，格式按契约走评审；DS 做转换，两侧独立演进。',
+    path: '00-面试计划/00-AI面试复盘/09-C与Java团队接口延迟与数据格式分歧的协调.md' },
+  { no: '12', title: '外部系统超时 · 熔断降级与人工闭环', tag: '稳定性', tagClass: 'mock',
+    date: '2026-11-26',
+    desc: '四层防护到人工闭环：统一 SDK → 异步状态机 → 可靠送达 → 日终对账，绝不静默丢单。',
+    path: '00-面试计划/00-AI面试复盘/12-外部系统超时与熔断降级人工闭环.md' },
+  { no: '13', title: '系统不足与重新设计 · 改进排期表', tag: '设计', tagClass: 'prep',
+    date: '2026-11-26',
+    desc: '不足按四层诚实分层，重做讲「更早做 X」，排期按 安全 > 资金 > 稳定 > 可维护。',
+    path: '00-面试计划/00-AI面试复盘/13-系统不足与重新设计-改进排期表.md' }
+];
+
+var REVIEW_TOOLS = [
+  { title: '待复习与复盘', desc: '错题、口径回查与每日复盘入口', icon: 'target', color: 'warm', badge: '复盘',
+    path: '00-面试计划/09-待复习与复盘.md' },
+  { title: '主线索引', desc: '九份主线件与 14 天面试节奏', icon: 'file', color: 'cyan', badge: '索引',
+    path: '00-面试计划/00-主线索引.md' },
+  { title: '面试训练手册', desc: '模拟面试流程与表达校准', icon: 'mic', color: 'purple', badge: '训练',
+    path: '00-面试计划/10-面试训练手册.md' }
+];
+
+function renderReviewPage() {
+  var html = '', i, d;
+  for (i = 0; i < REVIEW_DOCS.length; i++) {
+    d = REVIEW_DOCS[i];
+    html += '<div class="task-item review-item tap" onclick="openFriendly(\'' + d.path.replace(/'/g, "\\'") + '\')">';
+    html += '<div class="plan-day-badge">' + escapeHtml(d.no) + '</div>';
+    html += '<div class="task-body">';
+    html += '<div class="task-title">' + escapeHtml(d.title) + (d.latest ? '<span class="review-latest">最新</span>' : '') + '</div>';
+    html += '<div class="task-meta"><span class="task-tag ' + d.tagClass + '">' + escapeHtml(d.tag) + '</span><span>' + escapeHtml(d.date) + '</span></div>';
+    html += '<div class="plan-day-accept">' + escapeHtml(d.desc) + '</div>';
+    html += '</div>';
+    html += '<div class="task-arrow">' + getIcon('chevron-right') + '</div>';
+    html += '</div>';
+  }
+  if ($('reviewList')) { $('reviewList').innerHTML = html; }
+  if ($('reviewCount')) { $('reviewCount').textContent = REVIEW_DOCS.length; }
+
+  var tHtml = '';
+  for (i = 0; i < REVIEW_TOOLS.length; i++) {
+    d = REVIEW_TOOLS[i];
+    tHtml += '<div class="bank-card ' + d.color + ' tap" onclick="openFriendly(\'' + d.path.replace(/'/g, "\\'") + '\')">';
+    tHtml += '<div class="bank-top">';
+    tHtml += '<div class="bank-icon ' + d.color + '">' + getIcon(d.icon) + '</div>';
+    tHtml += '<span class="bank-count">' + escapeHtml(d.badge) + '</span>';
+    tHtml += '</div>';
+    tHtml += '<div class="bank-info">';
+    tHtml += '<div class="bank-title">' + escapeHtml(d.title) + '</div>';
+    tHtml += '<div class="bank-desc">' + escapeHtml(d.desc) + '</div>';
+    tHtml += '</div></div>';
+  }
+  if ($('reviewToolGrid')) { $('reviewToolGrid').innerHTML = tHtml; }
+
+  // 移动端完整菜单里的复盘直达列表
+  var mHtml = '';
+  for (i = 0; i < REVIEW_DOCS.length; i++) {
+    d = REVIEW_DOCS[i];
+    mHtml += '<div class="menu-doc-item" onclick="openFriendlyFromMenu(\'' + d.path.replace(/'/g, "\\'") + '\')">';
+    mHtml += '<span class="menu-doc-no">' + escapeHtml(d.no) + '</span><span>' + escapeHtml(d.title) + '</span>';
+    mHtml += '</div>';
+  }
+  if ($('menuReviewDocs')) { $('menuReviewDocs').innerHTML = mHtml; }
+}
+
+/* ===== 移动端完整菜单 ===== */
+function openMenuDrawer() {
+  var drawer = $('menuDrawer'), mask = $('menuMask');
+  if (drawer) { drawer.classList.add('open'); drawer.setAttribute('aria-hidden', 'false'); }
+  if (mask) mask.classList.add('open');
+  syncMenuActive();
+}
+
+function closeMenuDrawer() {
+  var drawer = $('menuDrawer'), mask = $('menuMask');
+  if (drawer) { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); }
+  if (mask) mask.classList.remove('open');
+}
+
+function menuGo(pageId) {
+  closeMenuDrawer();
+  switchTab(pageId);
+}
+
+function openFriendlyFromMenu(path) {
+  closeMenuDrawer();
+  openFriendly(path);
+}
+
+function syncMenuActive() {
+  var active = document.querySelector('.page.active');
+  var id = active ? active.id : 'page-home';
+  document.querySelectorAll('.menu-item[data-page]').forEach(function (item) {
+    item.classList.toggle('active', item.dataset.page === id);
+  });
 }
 
 // 搜索过滤题库（按卡片文本匹配，平铺后依旧可用）
@@ -4873,6 +5198,7 @@ function init() {
   renderPrepPage();
   renderDraftPage();
   renderPlanPage();
+  renderReviewPage();
   renderAiPage();
   renderSpotLinePage();
   renderCaseScenePage();
@@ -4924,6 +5250,7 @@ function init() {
   // Esc 关闭目录抽屉与设置面板
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' || e.keyCode === 27) {
+      closeMenuDrawer();
       closeTocDrawer();
       closeReaderSettings();
     }
